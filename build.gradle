@@ -21,9 +21,10 @@ repositories {
 dependencies {
 	// *** spring starter *** //
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa' // data jpa
-	implementation 'org.springframework.boot:spring-boot-starter-security' // redis
+	implementation 'org.springframework.boot:spring-boot-starter-security' // security
 	implementation 'org.springframework.boot:spring-boot-starter-validation' // validation
 	implementation 'org.springframework.boot:spring-boot-starter-web' // starter web
+
 
 	// *** lombok *** //
 	compileOnly 'org.projectlombok:lombok'
@@ -37,6 +38,10 @@ dependencies {
 	// *** swagger *** //
 	implementation 'io.springfox:springfox-swagger2:2.9.2'
 	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
+
+	// *** redis *** //
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis' //redis
+
 }
 
 test {

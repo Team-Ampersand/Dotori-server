@@ -32,6 +32,11 @@ spring:
           auto: create
     show-sql: true
 
+  ### Redis 설정 ###
+  redis:
+    image: redis:latest
+    host: localhost
+    port: 6379
 
 ### Logging ###
 logging:
