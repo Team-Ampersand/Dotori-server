@@ -1,5 +1,6 @@
 package com.server.Dotori.model.music;
 
+import com.server.Dotori.model.BaseTimeEntity;
 import com.server.Dotori.model.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import java.time.LocalDateTime;
+
 import static javax.persistence.GenerationType.*;
 
 @Entity
@@ -15,7 +18,7 @@ import static javax.persistence.GenerationType.*;
 @Builder @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Music {
+public class Music extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
     @Column(name = "music_id")
@@ -29,5 +32,5 @@ public class Music {
     private Member member;
 
     @Column(name = "music_time", nullable = false)
-    private String time;
+    private LocalDateTime time;
 }
