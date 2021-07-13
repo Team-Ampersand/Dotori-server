@@ -1,5 +1,12 @@
 package com.server.Dotori.model.member.enumType;
 
-public enum Role {
-    ROLE_ADMIN, ROLE_MEMBER, ROLE_COUNCILLOR, ROLE_DEVELOPER
+import org.springframework.security.core.GrantedAuthority;
+
+public enum Role implements GrantedAuthority {
+
+    ROLE_ADMIN, ROLE_MEMBER, ROLE_COUNCILLOR, ROLE_DEVELOPER;
+
+    public String getAuthority() {
+        return name();
+    }
 }
