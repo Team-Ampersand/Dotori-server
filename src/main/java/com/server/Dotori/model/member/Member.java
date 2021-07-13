@@ -47,7 +47,7 @@ public class Member implements UserDetails {
 
     @Enumerated(STRING) @Column(name = "Role")
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "Role", joinColumns = @JoinColumn(name = "UserIdx"))
+    @CollectionTable(name = "Role", joinColumns = @JoinColumn(name = "member_id"))
     @Builder.Default
     private List<Role> roles = new ArrayList<>();
 
