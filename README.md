@@ -1,6 +1,6 @@
 ## <p align="center"> <img src="./DetailedData/dotori-logo.png" width="130px"> </p>
 
-Dotori, Domitory를 담다.
+Dotori, Dormitory를 담다.
 > Dotori, Put a Dormitory in it.
 
 ### Dotori🐿 서버 개발을 위해 지켜야 할 협업 규칙 🚀
