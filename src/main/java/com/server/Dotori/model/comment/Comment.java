@@ -37,7 +37,4 @@ public class Comment extends BaseTimeEntity {
     @Column(name = "comment_writer", nullable = false)
     private String writer;
 
-    @Column(name = "comment_date", nullable = false)
-    private LocalDateTime time;
-
 }

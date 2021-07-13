@@ -39,7 +39,4 @@ public class Point extends BaseTimeEntity {
     @Column(name = "point_amount", nullable = false)
     private Long amount;
 
-    @Column(name = "point_gived", nullable = false)
-    private LocalDateTime gived;
-
 }

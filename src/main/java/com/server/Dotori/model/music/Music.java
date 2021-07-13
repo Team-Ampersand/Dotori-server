@@ -31,6 +31,4 @@ public class Music extends BaseTimeEntity {
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
-    @Column(name = "music_time", nullable = false)
-    private LocalDateTime time;
 }

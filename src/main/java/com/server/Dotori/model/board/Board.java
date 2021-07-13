@@ -32,7 +32,4 @@ public class Board extends BaseTimeEntity {
     @Column(name = "board_content", length = 500, nullable = false)
     private String content;
 
-    @Column(name = "board_time", nullable = false)
-    private LocalDateTime time;
-
 }
