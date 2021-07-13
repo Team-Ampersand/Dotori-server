@@ -1,5 +1,6 @@
 package com.server.Dotori.model.board;
 
+import com.server.Dotori.model.BaseTimeEntity;
 import com.server.Dotori.model.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +16,7 @@ import static javax.persistence.GenerationType.*;
 @Entity @Table(name = "Board")
 @Builder @Getter
 @NoArgsConstructor @AllArgsConstructor
-public class Board {
+public class Board extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
     @Column(name = "board_id")

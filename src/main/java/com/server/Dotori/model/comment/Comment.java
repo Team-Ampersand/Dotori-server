@@ -1,5 +1,6 @@
 package com.server.Dotori.model.comment;
 
+import com.server.Dotori.model.BaseTimeEntity;
 import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.member.Member;
 import lombok.AllArgsConstructor;
@@ -16,7 +17,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity @Table(name = "Comment")
 @Builder @Getter
 @NoArgsConstructor @AllArgsConstructor
-public class Comment {
+public class Comment extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
     @Column(name = "comment_id")
