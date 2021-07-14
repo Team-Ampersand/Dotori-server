@@ -38,6 +38,11 @@ spring:
     host: localhost
     port: 6379
 
+  ### Message 설정 ###
+  messages:
+    basename: i18n/exception
+    encoding: UTF-8
+
 ### Logging ###
 logging:
   level:
