@@ -25,11 +25,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation' // validation
 	implementation 'org.springframework.boot:spring-boot-starter-web' // starter web
 
+	// *** h2 *** //
+	runtimeOnly 'com.h2database:h2'
 
 	// *** lombok *** //
+	implementation 'org.projectlombok:lombok'
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
 	annotationProcessor 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok'
 
 	// *** test *** //
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -42,6 +46,8 @@ dependencies {
 	// *** redis *** //
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis' //redis
 
+	// *** 다국어 처리를 위한 yaml-resource-bundle *** //
+	implementation 'net.rakugakibox.util:yaml-resource-bundle:1.2'
 }
 
 test {
