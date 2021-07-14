@@ -18,21 +18,24 @@ import java.util.ResourceBundle;
 @Configuration
 public class MessageConfiguration implements WebMvcConfigurer {
 
-    @Bean // 세션 지역설정
+    // 세션 지역설정
+    @Bean
     public SessionLocaleResolver sessionLocalResolver(){
         SessionLocaleResolver sessionLocaleResolver = new SessionLocaleResolver();
         sessionLocaleResolver.setDefaultLocale(Locale.KOREAN);
         return sessionLocaleResolver;
     }
 
-    @Bean // 지역설정을 변경하는 인터셉터.
+    // 지역설정을 변경하는 인터셉터.
+    @Bean
     public LocaleChangeInterceptor localeChangeInterceptor(){
         LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
         localeChangeInterceptor.setParamName("lang");
         return localeChangeInterceptor;
     }
 
-    @Override // 인터셉터를 시스템 레지스트리에 등록
+    // 인터셉터를 시스템 레지스트리에 등록
+    @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
     }
