@@ -1,0 +1,27 @@
+unknown:
+  code: "-9999"
+  msg: "An unknown error occurred."
+
+unauthorized:
+  code: "-1"
+  msg: "Credentials are not valid."
+
+forbidden:
+  code: "-2"
+  msg: "You do not have access."
+
+not-found:
+  code: "-3"
+  msg: "API not exist."
+
+user-not-found:
+  code: "-900"
+  msg: "User could not be found."
+
+access-token-expired:
+  code: "-800"
+  msg: "The access token has expired."
+
+invalid-token:
+  code: "-810"
+  msg: "The token invalid"

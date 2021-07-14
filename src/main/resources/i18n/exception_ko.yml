@@ -1,0 +1,27 @@
+unknown:
+  code: "-9999"
+  msg: "알 수 없는 오류가 발생했습니다."
+
+unauthorized:
+  code: "-1"
+  msg: "인증정보가 올바르지 않습니다."
+
+forbidden:
+  code: "-2"
+  msg: "접근 권한이 없습니다."
+
+not-found:
+  code: "-3"
+  msg: "API가 존재하지 않습니다."
+
+user-not-found:
+  code: "-900"
+  msg: "해당 유저를 찾을 수 없습니다."
+
+access-token-expired:
+  code: "-800"
+  msg: "액세스 토큰이 만료되었습니다."
+
+invalid-token:
+  code: "-810"
+  msg: "토큰이 올바르지 않습니다."
