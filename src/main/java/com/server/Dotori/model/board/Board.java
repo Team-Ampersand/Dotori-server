@@ -18,7 +18,8 @@ import static javax.persistence.GenerationType.*;
 @NoArgsConstructor @AllArgsConstructor
 public class Board extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = IDENTITY)
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
     @Column(name = "board_id")
     private Long id;
 
@@ -32,4 +33,11 @@ public class Board extends BaseTimeEntity {
     @Column(name = "board_content", length = 500, nullable = false)
     private String content;
 
+    public void updateTitle(Board board) {
+        this.title = title != null ? title : this.title;
+    }
+
+    public void updateContent(Board board) {
+        this.content = content != null ? content : this.content;
+    }
 }
