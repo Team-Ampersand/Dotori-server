@@ -48,6 +48,9 @@ dependencies {
 
 	// *** 다국어 처리를 위한 yaml-resource-bundle *** //
 	implementation 'net.rakugakibox.util:yaml-resource-bundle:1.2'
+
+	// *** ModelMapper *** //
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.8'
 }
 
 test {
