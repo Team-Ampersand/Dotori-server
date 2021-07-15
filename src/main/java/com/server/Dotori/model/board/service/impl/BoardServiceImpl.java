@@ -60,6 +60,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Page<BoardAllResponseDto> readAllBoard(Pageable pageable) {
         Page<Board> boards = boardRepository.findAll(pageable);
+
         return boards.map(board -> {
             List<Role> roles = board.getMember().getRoles();
             ModelMapper mapper = new ModelMapper();
