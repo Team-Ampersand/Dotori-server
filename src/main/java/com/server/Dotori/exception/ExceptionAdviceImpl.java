@@ -1,6 +1,7 @@
 package com.server.Dotori.exception;
 
 import com.server.Dotori.exception.ExceptionAdvice;
+import com.server.Dotori.exception.board.exception.BoardNotFoundException;
 import com.server.Dotori.exception.customError.exception.CustomForbiddenException;
 import com.server.Dotori.exception.customError.exception.CustomNotFoundException;
 import com.server.Dotori.exception.customError.exception.CustomUnauthorizedException;
@@ -86,5 +87,12 @@ public class ExceptionAdviceImpl implements ExceptionAdvice {
     public CommonResult invalidTokenException(InvalidTokenException ex) {
         log.debug("=== Invalid Token Exception 발생 ===");
         return getExceptionResponseObj(INVALID_TOKEN);
+    }
+
+    /*** Board Exception ***/
+    @Override
+    public CommonResult boardNotFoundException(BoardNotFoundException ex) {
+        log.debug("=== Board Not Found Exception 발생 ===");
+        return getExceptionResponseObj(BOARD_NOT_FOUND);
     }
 }

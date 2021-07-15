@@ -25,3 +25,7 @@ access-token-expired:
 invalid-token:
   code: "-810"
   msg: "토큰이 올바르지 않습니다."
+
+board-not-found:
+  code: "-700"
+  msg: "해당 게시물을 찾을 수 없습니다"
