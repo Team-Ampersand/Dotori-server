@@ -43,6 +43,7 @@ public class BoardServiceImpl implements BoardService {
 
         boardDto.setMember(member);
         boardRepository.save(boardDto.toEntity());
+        // 토큰에서 꺼낸 role을 toEntity에서 넘겨주는 방식 생각
     }
 
     @Override

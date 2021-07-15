@@ -22,28 +22,70 @@ public class BoardController {
     private final BoardService boardService;
     private final ResponseService responseService;
 
+    /*** create Board ***/
     @PostMapping("/admin/board")
-    public CommonResult createBoard(@RequestBody BoardDto boardDto) {
+    public CommonResult createBoardByAdmin(@RequestBody BoardDto boardDto) {
         boardService.createBoard(boardDto);
         return responseService.getSuccessResult();
     }
 
+    @PostMapping("/councillor/board")
+    public CommonResult createBoardByCouncillor(@RequestBody BoardDto boardDto) {
+        boardService.createBoard(boardDto);
+        return responseService.getSuccessResult();
+    }
+
+    /*** read Board Id ***/
     @GetMapping("/member/board/{id}")
     public CommonResult readBoardById(@PathVariable("id") Long id) {
         BoardResponseDto board = boardService.readBoardById(id);
         return responseService.getSingleResult(board);
     }
 
+    @GetMapping("/admin/board/{id}")
+    public CommonResult readBoardById_Admin(@PathVariable("id") Long id) {
+        BoardResponseDto board = boardService.readBoardById(id);
+        return responseService.getSingleResult(board);
+    }
+
+    @GetMapping("/councillor/board/{id}")
+    public CommonResult readBoardById_Councillor(@PathVariable("id") Long id) {
+        BoardResponseDto board = boardService.readBoardById(id);
+        return responseService.getSingleResult(board);
+    }
+
+    /*** read All Board ***/
     @GetMapping("/member/board")
     public SingleResult<Page<BoardAllResponseDto>> readAllBoard(@PageableDefault(size = 5) Pageable pageable) {
         Page<BoardAllResponseDto> boards = boardService.readAllBoard(pageable);
         return responseService.getSingleResult(boards);
     }
 
-    @DeleteMapping("/board/{id}")
+    @GetMapping("/admin/board")
+    public SingleResult<Page<BoardAllResponseDto>> readAllBoard_Admin(@PageableDefault(size = 5) Pageable pageable) {
+        Page<BoardAllResponseDto> boards = boardService.readAllBoard(pageable);
+        return responseService.getSingleResult(boards);
+    }
+
+    @GetMapping("/councillor/board")
+    public SingleResult<Page<BoardAllResponseDto>> readAllBoard_Councillor(@PageableDefault(size = 5) Pageable pageable) {
+        Page<BoardAllResponseDto> boards = boardService.readAllBoard(pageable);
+        return responseService.getSingleResult(boards);
+    }
+
+    /*** update board ***/
+
+
+    /*** delete board ***/
+    @DeleteMapping("/admin/board/{id}")
     public CommonResult deleteBoard(@PathVariable("id") Long id) {
         boardService.deleteBoard(id);
         return responseService.getSuccessResult();
     }
 
+    @DeleteMapping("/councillor/board/{id}")
+    public CommonResult deleteBoard_Councillor(@PathVariable("id") Long id) {
+        boardService.deleteBoard(id);
+        return responseService.getSuccessResult();
+    }
 }
