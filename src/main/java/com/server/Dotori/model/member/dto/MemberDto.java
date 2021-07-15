@@ -21,7 +21,7 @@ public class MemberDto {
     private String username;
 
     @NotBlank(message = "stdNum should be valid")
-    @Size(min=1)
+    @Size(min = 4, max = 4)
     private String stdNum;
 
     @NotBlank(message = "password should be valid")
