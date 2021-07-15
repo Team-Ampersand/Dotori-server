@@ -37,4 +37,8 @@ public class Comment extends BaseTimeEntity {
     @Column(name = "comment_writer", nullable = false)
     private String writer;
 
+
+    private void updateContent(Comment comment) {
+        this.contents = contents != null ? contents : this.contents;
+    }
 }
