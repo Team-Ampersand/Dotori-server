@@ -72,4 +72,12 @@ public class BoardServiceImpl implements BoardService {
         });
     }
 
+    @Override
+    public void deleteBoard(Long id) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new BoardNotFoundException());
+
+        boardRepository.deleteById(id);
+    }
+
 }

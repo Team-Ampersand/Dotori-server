@@ -13,4 +13,6 @@ public interface BoardService {
     BoardResponseDto readBoardById(Long id);
 
     Page<BoardAllResponseDto> readAllBoard(Pageable pageable);
+
+    void deleteBoard(Long id);
 }

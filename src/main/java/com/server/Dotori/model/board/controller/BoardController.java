@@ -40,4 +40,10 @@ public class BoardController {
         return responseService.getSingleResult(boards);
     }
 
+    @DeleteMapping("/board/{id}")
+    public CommonResult deleteBoard(@PathVariable("id") Long id) {
+        boardService.deleteBoard(id);
+        return responseService.getSuccessResult();
+    }
+
 }
