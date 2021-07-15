@@ -28,7 +28,6 @@ public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
-    private final CurrentUserUtil currentUserUtil;
 
     @Override
     public void createBoard(BoardDto boardDto) {
@@ -43,7 +42,7 @@ public class BoardServiceImpl implements BoardService {
 
         boardDto.setMember(member);
         boardRepository.save(boardDto.toEntity());
-        // 토큰에서 꺼낸 role을 toEntity에서 넘겨주는 방식 생각
+        // 토큰에서 꺼낸 username으로 findByUsername해서 나온 엔티티에서 roles 가져와서 넘기기
     }
 
     @Override
@@ -61,21 +60,18 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Page<BoardAllResponseDto> readAllBoard(Pageable pageable) {
         Page<Board> boards = boardRepository.findAll(pageable);
-        return boards.map(new Function<Board, BoardAllResponseDto>() {
-            @Override
-            public BoardAllResponseDto apply(Board board) {
-                List<Role> roles = board.getMember().getRoles();
-                ModelMapper mapper = new ModelMapper();
-                BoardAllResponseDto map = mapper.map(board, BoardAllResponseDto.class);
-                map.setRoles(roles);
-                return map;
-            }
+        return boards.map(board -> {
+            List<Role> roles = board.getMember().getRoles();
+            ModelMapper mapper = new ModelMapper();
+            BoardAllResponseDto map = mapper.map(board, BoardAllResponseDto.class);
+            map.setRoles(roles);
+            return map;
         });
     }
 
     @Override
     public void deleteBoard(Long id) {
-        Board board = boardRepository.findById(id)
+        boardRepository.findById(id)
                 .orElseThrow(() -> new BoardNotFoundException());
 
         boardRepository.deleteById(id);
