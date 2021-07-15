@@ -34,7 +34,7 @@ public class BoardController {
         return responseService.getSingleResult(board);
     }
 
-    @GetMapping("/board")
+    @GetMapping("/member/board")
     public SingleResult<Page<BoardAllResponseDto>> readAllBoard(@PageableDefault(size = 5) Pageable pageable) {
         Page<BoardAllResponseDto> boards = boardService.readAllBoard(pageable);
         return responseService.getSingleResult(boards);
