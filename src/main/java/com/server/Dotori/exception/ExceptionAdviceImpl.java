@@ -2,6 +2,7 @@ package com.server.Dotori.exception;
 
 import com.server.Dotori.exception.ExceptionAdvice;
 import com.server.Dotori.exception.board.exception.BoardNotFoundException;
+import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToModify;
 import com.server.Dotori.exception.customError.exception.CustomForbiddenException;
 import com.server.Dotori.exception.customError.exception.CustomNotFoundException;
 import com.server.Dotori.exception.customError.exception.CustomUnauthorizedException;
@@ -94,5 +95,11 @@ public class ExceptionAdviceImpl implements ExceptionAdvice {
     public CommonResult boardNotFoundException(BoardNotFoundException ex) {
         log.debug("=== Board Not Found Exception 발생 ===");
         return getExceptionResponseObj(BOARD_NOT_FOUND);
+    }
+
+    @Override
+    public CommonResult boardNotHavePermissionToModify(BoardNotHavePermissionToModify ex) {
+        log.debug("=== Board Not Have Permission To Modify Exception 발생 ===");
+        return getExceptionResponseObj(BOARD_NOT_HAVE_PERMISSION_TO_MODIFY);
     }
 }

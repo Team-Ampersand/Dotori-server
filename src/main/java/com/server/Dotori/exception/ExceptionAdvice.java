@@ -1,6 +1,7 @@
 package com.server.Dotori.exception;
 
 import com.server.Dotori.exception.board.exception.BoardNotFoundException;
+import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToModify;
 import com.server.Dotori.exception.customError.exception.CustomForbiddenException;
 import com.server.Dotori.exception.customError.exception.CustomNotFoundException;
 import com.server.Dotori.exception.customError.exception.CustomUnauthorizedException;
@@ -26,6 +27,7 @@ public interface ExceptionAdvice {
     String INVALID_TOKEN = "invalid-token";
 
     String BOARD_NOT_FOUND = "board-not-found";
+    String BOARD_NOT_HAVE_PERMISSION_TO_MODIFY = "board-not-have-permission-to-modify";
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -57,7 +59,7 @@ public interface ExceptionAdvice {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     CommonResult accessTokenExpiredException(AccessTokenExpiredException ex);
 
-    // 올바르지 않는 토큰
+    // 올바르지 않은 토큰
     @ExceptionHandler(InvalidTokenException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     CommonResult invalidTokenException(InvalidTokenException ex);
@@ -67,4 +69,9 @@ public interface ExceptionAdvice {
     @ExceptionHandler(BoardNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     CommonResult boardNotFoundException(BoardNotFoundException ex);
+
+    // 게시물 수정 권한이 없습니다.
+    @ExceptionHandler(BoardNotHavePermissionToModify.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    CommonResult boardNotHavePermissionToModify(BoardNotHavePermissionToModify ex);
 }
