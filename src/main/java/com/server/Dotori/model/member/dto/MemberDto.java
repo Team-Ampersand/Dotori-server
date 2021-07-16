@@ -37,7 +37,7 @@ public class MemberDto {
                 .stdNum(this.stdNum)
                 .password(this.getPassword())
                 .email(this.getEmail())
-                .roles(Collections.singletonList(Role.ROLE_MEMBER))
+                .roles(Collections.singletonList(Role.ROLE_ADMIN)) //임시로 ADMIN으로 설정
                 .music(Music.CAN)
                 .selfStudy(SelfStudy.CAN)
                 .build();

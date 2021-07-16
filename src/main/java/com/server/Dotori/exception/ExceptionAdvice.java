@@ -1,5 +1,6 @@
 package com.server.Dotori.exception;
 
+import com.server.Dotori.exception.board.exception.BoardNotFoundException;
 import com.server.Dotori.exception.customError.exception.CustomForbiddenException;
 import com.server.Dotori.exception.customError.exception.CustomNotFoundException;
 import com.server.Dotori.exception.customError.exception.CustomUnauthorizedException;
@@ -23,6 +24,8 @@ public interface ExceptionAdvice {
 
     String ACCESS_TOKEN_EXPIRED = "access-token-expired";
     String INVALID_TOKEN = "invalid-token";
+
+    String BOARD_NOT_FOUND = "board-not-found";
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -58,4 +61,10 @@ public interface ExceptionAdvice {
     @ExceptionHandler(InvalidTokenException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     CommonResult invalidTokenException(InvalidTokenException ex);
+
+    /*** Board Exception ***/
+    // 게시물을 찾을 수 없습니다.
+    @ExceptionHandler(BoardNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    CommonResult boardNotFoundException(BoardNotFoundException ex);
 }
