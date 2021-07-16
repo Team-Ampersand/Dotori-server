@@ -41,7 +41,7 @@ public class DeveloperController {
 
     @PutMapping("/board/{id}")
     public CommonResult updateBoard_Developer(@PathVariable("id") Long id, BoardDto boardDto) {
-        boardService.deleteBoard(id);
+        boardService.updateBoard(id, boardDto);
         return responseService.getSuccessResult();
     }
 
