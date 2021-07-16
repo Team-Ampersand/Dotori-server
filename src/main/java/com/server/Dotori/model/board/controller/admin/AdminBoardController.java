@@ -39,6 +39,12 @@ public class AdminBoardController {
         return responseService.getSingleResult(boards);
     }
 
+    @PutMapping("/board/{id}")
+    public CommonResult updateBoard_Admin(@PathVariable("id") Long id, BoardDto boardDto) {
+        boardService.updateBoard(id, boardDto);
+        return responseService.getSuccessResult();
+    }
+
     @DeleteMapping("/board/{id}")
     public CommonResult deleteBoard(@PathVariable("id") Long id) {
         boardService.deleteBoard(id);

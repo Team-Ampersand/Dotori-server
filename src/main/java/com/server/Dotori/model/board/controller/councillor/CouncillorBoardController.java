@@ -39,6 +39,12 @@ public class CouncillorBoardController {
         return responseService.getSingleResult(boards);
     }
 
+    @PutMapping("/board/{id}")
+    public CommonResult updateBoard_Councillor(@PathVariable("id") Long id, BoardDto boardDto) {
+        boardService.deleteBoard(id);
+        return responseService.getSuccessResult();
+    }
+
     @DeleteMapping("/board/{id}")
     public CommonResult deleteBoard_Councillor(@PathVariable("id") Long id) {
         boardService.deleteBoard(id);
