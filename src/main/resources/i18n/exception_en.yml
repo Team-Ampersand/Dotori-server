@@ -29,3 +29,7 @@ invalid-token:
 board-not-found:
   code: "-700"
   msg: "Board could not be found."
+
+board-not-have-permission-to-modify:
+  code: "-710"
+  msg: "You don't have permission to modify this post."

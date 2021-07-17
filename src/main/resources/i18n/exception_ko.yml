@@ -29,3 +29,7 @@ invalid-token:
 board-not-found:
   code: "-700"
   msg: "해당 게시물을 찾을 수 없습니다"
+
+board-not-have-permission-to-modify:
+  code: "-710"
+  msg: "해당 게시물 수정 권한이 없습니다."

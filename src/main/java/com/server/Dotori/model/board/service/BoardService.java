@@ -14,5 +14,7 @@ public interface BoardService {
 
     Page<BoardAllResponseDto> readAllBoard(Pageable pageable);
 
+    void updateBoard(Long id, BoardDto boardDto);
+
     void deleteBoard(Long id);
 }

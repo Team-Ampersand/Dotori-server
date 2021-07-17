@@ -1,6 +1,8 @@
 package com.server.Dotori.model.board.service.impl;
 
 import com.server.Dotori.exception.board.exception.BoardNotFoundException;
+import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToModify;
+import com.server.Dotori.exception.customError.exception.CustomForbiddenException;
 import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.board.dto.BoardAllResponseDto;
 import com.server.Dotori.model.board.dto.BoardDto;
@@ -18,9 +20,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
+
+import static com.server.Dotori.model.member.enumType.Role.ROLE_ADMIN;
+import static com.server.Dotori.model.member.enumType.Role.ROLE_MEMBER;
 
 @Service
 @RequiredArgsConstructor
@@ -68,6 +75,17 @@ public class BoardServiceImpl implements BoardService {
             map.setRoles(roles);
             return map;
         });
+    }
+
+    @Override
+    @Transactional
+    public void updateBoard(Long id, BoardDto boardDto) {
+        Board board = boardRepository.findById(id)
+                .orElseThrow(() -> new BoardNotFoundException());
+
+        if (board.getMember().getRoles().toString().equals(Collections.singletonList(ROLE_MEMBER).toString())) throw new BoardNotHavePermissionToModify();
+
+        board.updateBoard(boardDto.getTitle(), boardDto.getContent());
     }
 
     @Override

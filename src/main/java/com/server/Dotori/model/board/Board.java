@@ -33,7 +33,7 @@ public class Board extends BaseTimeEntity {
     @Column(name = "board_content", length = 500, nullable = false)
     private String content;
 
-    public void updateBoard(Board board) {
+    public void updateBoard(String title, String content) {
         this.title = title != null ? title : this.title;
         this.content = content != null ? content : this.content;
     }
