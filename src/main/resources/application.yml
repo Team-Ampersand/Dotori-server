@@ -47,3 +47,9 @@ spring:
 logging:
   level:
     org.hibernate.type.descriptor.sql : trace
+
+
+security:
+  jwt:
+    token:
+      secretKey: afsdasfdASAWRSasgdvFTUJARGtasdfSRTJSRTEQR14asdfVA
