@@ -37,7 +37,7 @@ public class BoardServiceImpl implements BoardService {
     private final MemberRepository memberRepository;
 
     @Override
-    public void createBoard(BoardDto boardDto) {
+    public Long createBoard(BoardDto boardDto) {
         // 유저 로직이 완성되면 request로 token을 받아 이름을 추출해서 member에 findByUsername 넣어줌
         MemberDto memberDto = MemberDto.builder()
                 .username("배태현")
@@ -48,8 +48,9 @@ public class BoardServiceImpl implements BoardService {
         Member member = memberRepository.save(memberDto.toEntity());
 
         boardDto.setMember(member);
-        boardRepository.save(boardDto.toEntity());
+        Board board = boardRepository.save(boardDto.toEntity());
         // 토큰에서 꺼낸 username으로 findByUsername해서 나온 엔티티에서 roles 가져와서 넘기기
+        return board.getId();
     }
 
     @Override
@@ -79,21 +80,23 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public void updateBoard(Long id, BoardDto boardDto) {
+    public Long updateBoard(Long id, BoardDto boardDto) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new BoardNotFoundException());
 
         if (board.getMember().getRoles().toString().equals(Collections.singletonList(ROLE_MEMBER).toString())) throw new BoardNotHavePermissionToModify();
 
         board.updateBoard(boardDto.getTitle(), boardDto.getContent());
+        return board.getId();
     }
 
     @Override
-    public void deleteBoard(Long id) {
-        boardRepository.findById(id)
+    public Long deleteBoard(Long id) {
+        Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new BoardNotFoundException());
 
         boardRepository.deleteById(id);
+        return board.getId();
     }
 
 }
