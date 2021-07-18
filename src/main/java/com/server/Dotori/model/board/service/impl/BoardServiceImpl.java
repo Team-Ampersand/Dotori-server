@@ -2,7 +2,6 @@ package com.server.Dotori.model.board.service.impl;
 
 import com.server.Dotori.exception.board.exception.BoardNotFoundException;
 import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToModify;
-import com.server.Dotori.exception.customError.exception.CustomForbiddenException;
 import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.board.dto.BoardAllResponseDto;
 import com.server.Dotori.model.board.dto.BoardDto;
@@ -13,9 +12,7 @@ import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.MemberRepository;
-import com.server.Dotori.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,9 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 
-import static com.server.Dotori.model.member.enumType.Role.ROLE_ADMIN;
 import static com.server.Dotori.model.member.enumType.Role.ROLE_MEMBER;
 
 @Service
@@ -45,7 +40,7 @@ public class BoardServiceImpl implements BoardService {
                 .password("1234")
                 .stdNum("1234")
                 .build();
-        Member member = memberRepository.save(memberDto.toEntity());
+        Member member = memberRepository.save(memberDto.toEntity(Role.ROLE_ADMIN));
 
         boardDto.setMember(member);
         Board board = boardRepository.save(boardDto.toEntity());
