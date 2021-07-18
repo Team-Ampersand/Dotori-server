@@ -17,7 +17,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1")
-public class MemberController1 {
+public class MemberController {
 
     private final MemberService memberService;
     private final ResponseService responseService;
