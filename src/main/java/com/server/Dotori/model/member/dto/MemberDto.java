@@ -31,15 +31,19 @@ public class MemberDto {
     @NotBlank(message = "email should be valid")
     private String email;
 
-    public Member toEntity(){
+    @NotBlank(message = "roles should be valid")
+    private String key;
+
+    public Member toEntity(Role roleAdmin){
         return Member.builder()
-                .username(this.getUsername())
-                .stdNum(this.stdNum)
-                .password(this.getPassword())
-                .email(this.getEmail())
-                .roles(Collections.singletonList(Role.ROLE_ADMIN)) //임시로 ADMIN으로 설정
+                .username(username)
+                .stdNum(stdNum)
+                .password(password)
+                .email(email)
+                .roles(Collections.singletonList(roleAdmin))
                 .music(Music.CAN)
                 .selfStudy(SelfStudy.CAN)
+                .point(0L)
                 .build();
     }
 }
