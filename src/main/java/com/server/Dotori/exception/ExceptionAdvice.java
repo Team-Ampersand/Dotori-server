@@ -1,6 +1,8 @@
 package com.server.Dotori.exception;
 
 import com.server.Dotori.exception.board.exception.BoardNotFoundException;
+import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToCreate;
+import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToDelete;
 import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToModify;
 import com.server.Dotori.exception.customError.exception.CustomForbiddenException;
 import com.server.Dotori.exception.customError.exception.CustomNotFoundException;
@@ -27,7 +29,9 @@ public interface ExceptionAdvice {
     String INVALID_TOKEN = "invalid-token";
 
     String BOARD_NOT_FOUND = "board-not-found";
+    String BOARD_NOT_HAVE_PERMISSION_TO_CREATE = "board-not-have-permission-to-create";
     String BOARD_NOT_HAVE_PERMISSION_TO_MODIFY = "board-not-have-permission-to-modify";
+    String BOARD_NOT_HAVE_PERMISSION_TO_DELETE = "board-not-have-permission-to-delete";
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -65,6 +69,11 @@ public interface ExceptionAdvice {
     CommonResult invalidTokenException(InvalidTokenException ex);
 
     /*** Board Exception ***/
+    //게시물 생성 권한이 없습니다
+    @ExceptionHandler(BoardNotHavePermissionToCreate.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    CommonResult boardNotHavePermissionToCreate(BoardNotHavePermissionToCreate ex);
+
     // 게시물을 찾을 수 없습니다.
     @ExceptionHandler(BoardNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -74,4 +83,8 @@ public interface ExceptionAdvice {
     @ExceptionHandler(BoardNotHavePermissionToModify.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     CommonResult boardNotHavePermissionToModify(BoardNotHavePermissionToModify ex);
+
+    @ExceptionHandler(BoardNotHavePermissionToDelete.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    CommonResult boardNotHavePermissionToDelete(BoardNotHavePermissionToDelete ex);
 }

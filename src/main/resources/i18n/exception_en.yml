@@ -30,6 +30,14 @@ board-not-found:
   code: "-700"
   msg: "Board could not be found."
 
+board-not-have-permission-to-create:
+  code: "-720"
+  msg: "You don't have permission to create post."
+
 board-not-have-permission-to-modify:
   code: "-710"
   msg: "You don't have permission to modify this post."
+
+board-not-have-permission-to-delete:
+  code: "-730"
+  msg: "You don't have permission to delete this post."
