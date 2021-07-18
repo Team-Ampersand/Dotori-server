@@ -8,13 +8,13 @@ import org.springframework.data.domain.Pageable;
 
 public interface BoardService {
 
-    void createBoard(BoardDto boardDto);
+    Long createBoard(BoardDto boardDto);
 
     BoardResponseDto readBoardById(Long id);
 
     Page<BoardAllResponseDto> readAllBoard(Pageable pageable);
 
-    void updateBoard(Long id, BoardDto boardDto);
+    Long updateBoard(Long id, BoardDto boardDto);
 
-    void deleteBoard(Long id);
+    Long deleteBoard(Long id);
 }
