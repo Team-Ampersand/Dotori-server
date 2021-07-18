@@ -1,6 +1,8 @@
 package com.server.Dotori.model.board.service.impl;
 
 import com.server.Dotori.exception.board.exception.BoardNotFoundException;
+import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToCreate;
+import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToDelete;
 import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToModify;
 import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.board.dto.BoardAllResponseDto;
@@ -41,6 +43,8 @@ public class BoardServiceImpl implements BoardService {
                 .stdNum("1234")
                 .build();
         Member member = memberRepository.save(memberDto.toEntity(Role.ROLE_ADMIN));
+
+        if (member.getRoles().toString().equals(Collections.singletonList(ROLE_MEMBER).toString())) throw new BoardNotHavePermissionToCreate();
 
         boardDto.setMember(member);
         Board board = boardRepository.save(boardDto.toEntity());
@@ -89,6 +93,8 @@ public class BoardServiceImpl implements BoardService {
     public Long deleteBoard(Long id) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new BoardNotFoundException());
+
+        if (board.getMember().getRoles().toString().equals(Collections.singletonList(ROLE_MEMBER).toString())) throw new BoardNotHavePermissionToDelete();
 
         boardRepository.deleteById(id);
         return board.getId();

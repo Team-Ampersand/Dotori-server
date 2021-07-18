@@ -2,6 +2,8 @@ package com.server.Dotori.exception;
 
 import com.server.Dotori.exception.ExceptionAdvice;
 import com.server.Dotori.exception.board.exception.BoardNotFoundException;
+import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToCreate;
+import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToDelete;
 import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToModify;
 import com.server.Dotori.exception.customError.exception.CustomForbiddenException;
 import com.server.Dotori.exception.customError.exception.CustomNotFoundException;
@@ -90,6 +92,12 @@ public class ExceptionAdviceImpl implements ExceptionAdvice {
         return getExceptionResponseObj(INVALID_TOKEN);
     }
 
+    @Override
+    public CommonResult boardNotHavePermissionToCreate(BoardNotHavePermissionToCreate ex) {
+        log.debug("=== Board Not Have Permission To Create Exception 발생 ===");
+        return getExceptionResponseObj(BOARD_NOT_HAVE_PERMISSION_TO_CREATE);
+    }
+
     /*** Board Exception ***/
     @Override
     public CommonResult boardNotFoundException(BoardNotFoundException ex) {
@@ -101,5 +109,11 @@ public class ExceptionAdviceImpl implements ExceptionAdvice {
     public CommonResult boardNotHavePermissionToModify(BoardNotHavePermissionToModify ex) {
         log.debug("=== Board Not Have Permission To Modify Exception 발생 ===");
         return getExceptionResponseObj(BOARD_NOT_HAVE_PERMISSION_TO_MODIFY);
+    }
+
+    @Override
+    public CommonResult boardNotHavePermissionToDelete(BoardNotHavePermissionToDelete ex) {
+        log.debug("=== Board Not Have Permission To Delete Exception 발생 ===");
+        return getExceptionResponseObj(BOARD_NOT_HAVE_PERMISSION_TO_DELETE);
     }
 }
