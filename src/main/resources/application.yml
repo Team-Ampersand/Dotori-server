@@ -48,8 +48,15 @@ logging:
   level:
     org.hibernate.type.descriptor.sql : trace
 
-
+### Token Key ###
 security:
   jwt:
     token:
       secretKey: afsdasfdASAWRSasgdvFTUJARGtasdfSRTJSRTEQR14asdfVA
+
+### Auth Key ###
+authKey:
+  adminKey: ABC1
+  councillorKey: ABC2
+  memberKey: ABC3
+  developerKey: ABC4

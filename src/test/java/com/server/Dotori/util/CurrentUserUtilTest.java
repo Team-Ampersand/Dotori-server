@@ -40,7 +40,7 @@ class CurrentUserUtilTest {
                 .build();
 
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        memberRepository.save(userDto.toEntity());
+        memberRepository.save(userDto.toEntity(Role.ROLE_ADMIN));
         System.out.println("======== saved =========");
 
         // when login session 발급
@@ -69,7 +69,7 @@ class CurrentUserUtilTest {
                 .email("123@naver.com")
                 .build();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        memberRepository.save(memberDto.toEntity());
+        memberRepository.save(memberDto.toEntity(Role.ROLE_ADMIN));
         System.out.println("======== saved =========");
 
         // when login session 발급
@@ -85,8 +85,8 @@ class CurrentUserUtilTest {
         //then
         Member currentUser = currentUserUtil.getCurrentUser();
         assertTrue(currentUser != null, "true");
-        assertEquals(memberDto.toEntity().getUsername(), currentUser.getUsername());
-        assertEquals(memberDto.toEntity().getEmail(), currentUser.getEmail());
+        assertEquals(memberDto.toEntity(Role.ROLE_ADMIN).getUsername(), currentUser.getUsername());
+        assertEquals(memberDto.toEntity(Role.ROLE_ADMIN).getEmail(), currentUser.getEmail());
     }
 
 
