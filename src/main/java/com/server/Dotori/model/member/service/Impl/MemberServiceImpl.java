@@ -54,7 +54,9 @@ public class MemberServiceImpl implements MemberService {
             Member userInfo = memberRepository.save(memberDto.toEntity(ROLE_DEVELOPER));
             return userInfo.getId();
         }
-        return 0L;
+        Member findUser = memberRepository.findByUsername(memberDto.getUsername());
+
+        return findUser.getId();
     }
 
     @Override
