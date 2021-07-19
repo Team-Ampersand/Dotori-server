@@ -61,12 +61,12 @@ public interface ExceptionAdvice {
     CommonResult userNotFoundException(UserNotFoundException ex);
 
     @ExceptionHandler(UserAlreadyException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.CONFLICT)
     CommonResult userAlreadyException(UserAlreadyException ex);
 
 
     @ExceptionHandler(UserPasswordNotMatchingException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     CommonResult userPasswordNotMatchingException(UserPasswordNotMatchingException ex);
 
     /*** Token Exceptions ***/
