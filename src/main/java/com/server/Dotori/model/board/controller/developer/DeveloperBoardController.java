@@ -42,14 +42,14 @@ public class DeveloperBoardController {
     }
 
     @PutMapping("/board/{id}")
-    public CommonResult updateBoard_Developer(@PathVariable("id") Long id, BoardDto boardDto, HttpServletRequest request) {
-        boardService.updateBoard(id, boardDto, request);
+    public CommonResult updateBoard_Developer(@PathVariable("id") Long id, BoardDto boardDto) {
+        boardService.updateBoard(id, boardDto);
         return responseService.getSuccessResult();
     }
 
     @DeleteMapping("/board/{id}")
-    public CommonResult deleteBoard_Developer(@PathVariable("id") Long id, HttpServletRequest request) {
-        boardService.deleteBoard(id, request);
+    public CommonResult deleteBoard_Developer(@PathVariable("id") Long id) {
+        boardService.deleteBoard(id);
         return responseService.getSuccessResult();
     }
 }

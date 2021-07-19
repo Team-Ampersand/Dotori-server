@@ -16,7 +16,7 @@ public interface BoardService {
 
     Page<BoardAllResponseDto> readAllBoard(Pageable pageable);
 
-    Long updateBoard(Long id, BoardDto boardDto, HttpServletRequest request);
+    Long updateBoard(Long id, BoardDto boardDto);
 
-    Long deleteBoard(Long id, HttpServletRequest request);
+    Long deleteBoard(Long id);
 }

@@ -38,7 +38,8 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public Long createBoard(BoardDto boardDto, HttpServletRequest request) {
-        // 유저 로직이 완성되면 request로 token을 받아 이름을 추출해서 member에 findByUsername 넣어줌
+        //생성할 때 한번 더 검증해준다
+        //생성하기 전 findBy할 수 없으니까
         String token = jwtTokenProvider.resolveToken(request);
         String username = jwtTokenProvider.getUsername(token);
         Member findUser = memberRepository.findByUsername(username);
@@ -78,30 +79,22 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public Long updateBoard(Long id, BoardDto boardDto, HttpServletRequest request) {
-        String token = jwtTokenProvider.resolveToken(request);
-        String username = jwtTokenProvider.getUsername(token);
-        Member findUser = memberRepository.findByUsername(username);
-
+    public Long updateBoard(Long id, BoardDto boardDto) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new BoardNotFoundException());
 
-        if (findUser.getRoles().toString().equals(Collections.singletonList(ROLE_MEMBER).toString())) throw new BoardNotHavePermissionToModify();
+        if (board.getMember().getRoles().toString().equals(Collections.singletonList(ROLE_MEMBER).toString())) throw new BoardNotHavePermissionToModify();
 
         board.updateBoard(boardDto.getTitle(), boardDto.getContent());
         return board.getId();
     }
 
     @Override
-    public Long deleteBoard(Long id, HttpServletRequest request) {
-        String token = jwtTokenProvider.resolveToken(request);
-        String username = jwtTokenProvider.getUsername(token);
-        Member findUser = memberRepository.findByUsername(username);
-
+    public Long deleteBoard(Long id) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new BoardNotFoundException());
 
-        if (findUser.getRoles().toString().equals(Collections.singletonList(ROLE_MEMBER).toString())) throw new BoardNotHavePermissionToDelete();
+        if (board.getMember().getRoles().toString().equals(Collections.singletonList(ROLE_MEMBER).toString())) throw new BoardNotHavePermissionToDelete();
 
         boardRepository.deleteById(id);
         return board.getId();

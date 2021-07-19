@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,14 +43,14 @@ public class AdminBoardController {
     }
 
     @PutMapping("/board/{id}")
-    public CommonResult updateBoard_Admin(@PathVariable("id") Long id, BoardDto boardDto, HttpServletRequest request) {
-        boardService.updateBoard(id, boardDto, request);
+    public CommonResult updateBoard_Admin(@PathVariable("id") Long id,@RequestBody BoardDto boardDto) {
+        boardService.updateBoard(id, boardDto);
         return responseService.getSuccessResult();
     }
 
     @DeleteMapping("/board/{id}")
-    public CommonResult deleteBoard(@PathVariable("id") Long id, HttpServletRequest request) {
-        boardService.deleteBoard(id, request);
+    public CommonResult deleteBoard(@PathVariable("id") Long id) {
+        boardService.deleteBoard(id);
         return responseService.getSuccessResult();
     }
 }
