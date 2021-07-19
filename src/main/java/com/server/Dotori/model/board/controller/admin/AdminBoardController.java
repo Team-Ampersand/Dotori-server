@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/v1/admin")
 @RequiredArgsConstructor
@@ -22,8 +24,8 @@ public class AdminBoardController {
     private final ResponseService responseService;
 
     @PostMapping("/board")
-    public CommonResult createBoardByAdmin(@RequestBody BoardDto boardDto) {
-        boardService.createBoard(boardDto);
+    public CommonResult createBoardByAdmin(@RequestBody BoardDto boardDto, HttpServletRequest request) {
+        boardService.createBoard(boardDto, request);
         return responseService.getSuccessResult();
     }
 
@@ -40,14 +42,14 @@ public class AdminBoardController {
     }
 
     @PutMapping("/board/{id}")
-    public CommonResult updateBoard_Admin(@PathVariable("id") Long id, BoardDto boardDto) {
-        boardService.updateBoard(id, boardDto);
+    public CommonResult updateBoard_Admin(@PathVariable("id") Long id, BoardDto boardDto, HttpServletRequest request) {
+        boardService.updateBoard(id, boardDto, request);
         return responseService.getSuccessResult();
     }
 
     @DeleteMapping("/board/{id}")
-    public CommonResult deleteBoard(@PathVariable("id") Long id) {
-        boardService.deleteBoard(id);
+    public CommonResult deleteBoard(@PathVariable("id") Long id, HttpServletRequest request) {
+        boardService.deleteBoard(id, request);
         return responseService.getSuccessResult();
     }
 }

@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/v1/councillor")
 @RequiredArgsConstructor
@@ -22,8 +24,8 @@ public class CouncillorBoardController {
     private final ResponseService responseService;
 
     @PostMapping("/board")
-    public CommonResult createBoardByCouncillor(@RequestBody BoardDto boardDto) {
-        boardService.createBoard(boardDto);
+    public CommonResult createBoardByCouncillor(@RequestBody BoardDto boardDto, HttpServletRequest request) {
+        boardService.createBoard(boardDto, request);
         return responseService.getSuccessResult();
     }
 
@@ -40,14 +42,14 @@ public class CouncillorBoardController {
     }
 
     @PutMapping("/board/{id}")
-    public CommonResult updateBoard_Councillor(@PathVariable("id") Long id, BoardDto boardDto) {
-        boardService.updateBoard(id, boardDto);
+    public CommonResult updateBoard_Councillor(@PathVariable("id") Long id, BoardDto boardDto, HttpServletRequest request) {
+        boardService.updateBoard(id, boardDto, request);
         return responseService.getSuccessResult();
     }
 
     @DeleteMapping("/board/{id}")
-    public CommonResult deleteBoard_Councillor(@PathVariable("id") Long id) {
-        boardService.deleteBoard(id);
+    public CommonResult deleteBoard_Councillor(@PathVariable("id") Long id, HttpServletRequest request) {
+        boardService.deleteBoard(id, request);
         return responseService.getSuccessResult();
     }
 }
