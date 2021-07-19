@@ -10,7 +10,9 @@ import com.server.Dotori.exception.customError.exception.CustomNotFoundException
 import com.server.Dotori.exception.customError.exception.CustomUnauthorizedException;
 import com.server.Dotori.exception.token.exception.AccessTokenExpiredException;
 import com.server.Dotori.exception.token.exception.InvalidTokenException;
+import com.server.Dotori.exception.user.exception.UserAlreadyException;
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
+import com.server.Dotori.exception.user.exception.UserPasswordNotMatchingException;
 import com.server.Dotori.response.ResponseService;
 import com.server.Dotori.response.result.CommonResult;
 import lombok.RequiredArgsConstructor;
@@ -77,6 +79,18 @@ public class ExceptionAdviceImpl implements ExceptionAdvice {
     public CommonResult userNotFoundException(UserNotFoundException ex){
         log.debug("=== User Not Found Exception 발생 ===");
         return getExceptionResponseObj(USER_NOT_FOUND);
+    }
+
+    @Override
+    public CommonResult userAlreadyException(UserAlreadyException ex) {
+        log.debug("=== User Already Exception 발생 ===");
+        return getExceptionResponseObj(USER_ALREADY);
+    }
+
+    @Override
+    public CommonResult userPasswordNotMatchingException(UserPasswordNotMatchingException ex) {
+        log.debug("=== User Password Not Matching Exception 발생 ===");
+        return getExceptionResponseObj(USER_PASSWORD_NOT_MATCHING);
     }
 
     /*** Token Exceptions ***/

@@ -18,6 +18,14 @@ user-not-found:
   code: "-900"
   msg: "User could not be found."
 
+user-already:
+  code: "-910"
+  msg: "User already join."
+
+user-password-not-matching:
+  code: "-920"
+  msg: "User password is not matching."
+
 access-token-expired:
   code: "-800"
   msg: "The access token has expired."
