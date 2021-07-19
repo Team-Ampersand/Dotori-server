@@ -10,6 +10,7 @@ import com.server.Dotori.exception.customError.exception.CustomNotFoundException
 import com.server.Dotori.exception.customError.exception.CustomUnauthorizedException;
 import com.server.Dotori.exception.token.exception.AccessTokenExpiredException;
 import com.server.Dotori.exception.token.exception.InvalidTokenException;
+import com.server.Dotori.exception.token.exception.LogoutTokenException;
 import com.server.Dotori.exception.user.exception.UserAlreadyException;
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.exception.user.exception.UserPasswordNotMatchingException;
@@ -104,6 +105,12 @@ public class ExceptionAdviceImpl implements ExceptionAdvice {
     public CommonResult invalidTokenException(InvalidTokenException ex) {
         log.debug("=== Invalid Token Exception 발생 ===");
         return getExceptionResponseObj(INVALID_TOKEN);
+    }
+
+    @Override
+    public CommonResult logoutTokenException(LogoutTokenException ex) {
+        log.debug("=== Logout Token Exception 발생 ===");
+        return getExceptionResponseObj(LOGOUT_TOKEN);
     }
 
     @Override
