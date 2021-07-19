@@ -9,6 +9,7 @@ import com.server.Dotori.exception.customError.exception.CustomNotFoundException
 import com.server.Dotori.exception.customError.exception.CustomUnauthorizedException;
 import com.server.Dotori.exception.token.exception.AccessTokenExpiredException;
 import com.server.Dotori.exception.token.exception.InvalidTokenException;
+import com.server.Dotori.exception.token.exception.LogoutTokenException;
 import com.server.Dotori.exception.user.exception.UserAlreadyException;
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.exception.user.exception.UserPasswordNotMatchingException;
@@ -31,6 +32,7 @@ public interface ExceptionAdvice {
 
     String ACCESS_TOKEN_EXPIRED = "access-token-expired";
     String INVALID_TOKEN = "invalid-token";
+    String LOGOUT_TOKEN = "logout-token";
 
     String BOARD_NOT_FOUND = "board-not-found";
     String BOARD_NOT_HAVE_PERMISSION_TO_CREATE = "board-not-have-permission-to-create";
@@ -79,6 +81,10 @@ public interface ExceptionAdvice {
     @ExceptionHandler(InvalidTokenException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     CommonResult invalidTokenException(InvalidTokenException ex);
+
+    @ExceptionHandler(LogoutTokenException.class)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    CommonResult logoutTokenException(LogoutTokenException ex);
 
     /*** Board Exception ***/
     //게시물 생성 권한이 없습니다
