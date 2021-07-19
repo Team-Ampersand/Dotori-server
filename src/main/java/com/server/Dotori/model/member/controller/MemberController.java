@@ -1,16 +1,13 @@
 package com.server.Dotori.model.member.controller;
 
-import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.dto.MemberLoginDto;
+import com.server.Dotori.model.member.dto.UserEmailDto;
 import com.server.Dotori.model.member.service.MemberService;
 import com.server.Dotori.response.ResponseService;
 import com.server.Dotori.response.result.CommonResult;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -32,6 +29,12 @@ public class MemberController {
     public CommonResult signin(@RequestBody MemberLoginDto memberLoginDto){
         Map<String, String> data = memberService.signin(memberLoginDto);
         return responseService.getSingleResult(data);
+    }
+
+    @PutMapping("/auth")
+    public CommonResult auth(@RequestBody UserEmailDto userEmailDto){
+        memberService.auth(userEmailDto);
+        return responseService.getSuccessResult();
     }
 
 
