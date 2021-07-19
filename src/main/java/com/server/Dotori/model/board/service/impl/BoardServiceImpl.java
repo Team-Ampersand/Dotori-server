@@ -14,6 +14,7 @@ import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,21 +34,19 @@ public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
-    public Long createBoard(BoardDto boardDto) {
-        // 유저 로직이 완성되면 request로 token을 받아 이름을 추출해서 member에 findByUsername 넣어줌
-        MemberDto memberDto = MemberDto.builder()
-                .username("배태현")
-                .email("123@naver.com")
-                .password("1234")
-                .stdNum("1234")
-                .build();
-        Member member = memberRepository.save(memberDto.toEntity(Role.ROLE_ADMIN));
+    public Long createBoard(BoardDto boardDto, HttpServletRequest request) {
+        //생성할 때 한번 더 검증해준다
+        //생성하기 전 findBy할 수 없으니까
+        String token = jwtTokenProvider.resolveToken(request);
+        String username = jwtTokenProvider.getUsername(token);
+        Member findUser = memberRepository.findByUsername(username);
 
-        if (member.getRoles().toString().equals(Collections.singletonList(ROLE_MEMBER).toString())) throw new BoardNotHavePermissionToCreate();
+        if (findUser.getRoles().toString().equals(Collections.singletonList(ROLE_MEMBER).toString())) throw new BoardNotHavePermissionToCreate();
 
-        boardDto.setMember(member);
+        boardDto.setMember(findUser);
         Board board = boardRepository.save(boardDto.toEntity());
         // 토큰에서 꺼낸 username으로 findByUsername해서 나온 엔티티에서 roles 가져와서 넘기기
         return board.getId();

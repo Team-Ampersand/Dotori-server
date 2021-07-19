@@ -11,7 +11,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/v1/admin")
@@ -22,8 +25,8 @@ public class AdminBoardController {
     private final ResponseService responseService;
 
     @PostMapping("/board")
-    public CommonResult createBoardByAdmin(@RequestBody BoardDto boardDto) {
-        boardService.createBoard(boardDto);
+    public CommonResult createBoardByAdmin(@RequestBody BoardDto boardDto, HttpServletRequest request) {
+        boardService.createBoard(boardDto, request);
         return responseService.getSuccessResult();
     }
 
@@ -40,7 +43,7 @@ public class AdminBoardController {
     }
 
     @PutMapping("/board/{id}")
-    public CommonResult updateBoard_Admin(@PathVariable("id") Long id, BoardDto boardDto) {
+    public CommonResult updateBoard_Admin(@PathVariable("id") Long id,@RequestBody BoardDto boardDto) {
         boardService.updateBoard(id, boardDto);
         return responseService.getSuccessResult();
     }

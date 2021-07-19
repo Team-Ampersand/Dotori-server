@@ -6,9 +6,11 @@ import com.server.Dotori.model.board.dto.BoardResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface BoardService {
 
-    Long createBoard(BoardDto boardDto);
+    Long createBoard(BoardDto boardDto, HttpServletRequest request);
 
     BoardResponseDto readBoardById(Long id);
 

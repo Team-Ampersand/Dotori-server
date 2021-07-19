@@ -9,7 +9,9 @@ import com.server.Dotori.exception.customError.exception.CustomNotFoundException
 import com.server.Dotori.exception.customError.exception.CustomUnauthorizedException;
 import com.server.Dotori.exception.token.exception.AccessTokenExpiredException;
 import com.server.Dotori.exception.token.exception.InvalidTokenException;
+import com.server.Dotori.exception.user.exception.UserAlreadyException;
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
+import com.server.Dotori.exception.user.exception.UserPasswordNotMatchingException;
 import com.server.Dotori.response.result.CommonResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,6 +26,8 @@ public interface ExceptionAdvice {
     String CUSTOM_404_NOT_FOUND = "not-found";
 
     String USER_NOT_FOUND = "user-not-found";
+    String USER_ALREADY = "user-already";
+    String USER_PASSWORD_NOT_MATCHING = "user-password-not-matching";
 
     String ACCESS_TOKEN_EXPIRED = "access-token-expired";
     String INVALID_TOKEN = "invalid-token";
@@ -56,6 +60,14 @@ public interface ExceptionAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     CommonResult userNotFoundException(UserNotFoundException ex);
 
+    @ExceptionHandler(UserAlreadyException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    CommonResult userAlreadyException(UserAlreadyException ex);
+
+
+    @ExceptionHandler(UserPasswordNotMatchingException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    CommonResult userPasswordNotMatchingException(UserPasswordNotMatchingException ex);
 
     /*** Token Exceptions ***/
     // 액세스 토큰이 만료되었습니다.
