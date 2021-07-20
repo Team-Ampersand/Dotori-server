@@ -32,8 +32,7 @@ public class CommentServiceImpl implements CommentService {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new BoardNotFoundException());
         Member findUser = memberRepository.findByUsername(username);
-        List<Role> roles = findUser.getRoles();
-
+        //댓글 작성자 이름 옆에 권한 나타내주면 좋아보임
         commentDto.setBoard(board);
         commentDto.setMember(findUser);
         commentRepository.save(commentDto.toEntity(findUser.getUsername()));
