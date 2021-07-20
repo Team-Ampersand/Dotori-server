@@ -1,5 +1,6 @@
 package com.server.Dotori.model.comment;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.server.Dotori.model.BaseTimeEntity;
 import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.member.Member;
@@ -24,6 +25,7 @@ public class Comment extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 
