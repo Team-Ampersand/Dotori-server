@@ -11,8 +11,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import java.time.LocalDateTime;
-
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity @Table(name = "Comment")
@@ -25,7 +23,6 @@ public class Comment extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 
@@ -36,11 +33,8 @@ public class Comment extends BaseTimeEntity {
     @Column(name = "comment_contents", nullable = false)
     private String contents;
 
-    @Column(name = "comment_writer", nullable = false)
-    private String writer;
-
-
     private void updateContent(String contents) {
         this.contents = contents != null ? contents : this.contents;
     }
+
 }
