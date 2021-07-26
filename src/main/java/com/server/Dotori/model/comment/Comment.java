@@ -1,5 +1,6 @@
 package com.server.Dotori.model.comment;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.server.Dotori.model.BaseTimeEntity;
 import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.member.Member;
@@ -9,8 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import java.time.LocalDateTime;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -34,11 +33,8 @@ public class Comment extends BaseTimeEntity {
     @Column(name = "comment_contents", nullable = false)
     private String contents;
 
-    @Column(name = "comment_writer", nullable = false)
-    private String writer;
-
-
     private void updateContent(String contents) {
         this.contents = contents != null ? contents : this.contents;
     }
+
 }

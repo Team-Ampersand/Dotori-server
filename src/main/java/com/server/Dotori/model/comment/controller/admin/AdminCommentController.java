@@ -1,11 +1,11 @@
-package com.server.Dotori.model.board.controller.developer;
+package com.server.Dotori.model.comment.controller.admin;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/developer")
 @RequiredArgsConstructor
-public class DeveloperBoardController {
+@RequestMapping("/v1/admin")
+public class AdminCommentController {
 
 }
