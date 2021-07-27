@@ -1,0 +1,83 @@
+package com.server.Dotori.model.board.service;
+
+import com.server.Dotori.model.board.Board;
+import com.server.Dotori.model.board.dto.BoardSaveDto;
+import com.server.Dotori.model.board.repository.BoardRepository;
+import com.server.Dotori.model.member.Member;
+import com.server.Dotori.model.member.dto.MemberDto;
+import com.server.Dotori.model.member.enumType.Role;
+import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.util.CurrentUserUtil;
+import lombok.RequiredArgsConstructor;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Commit;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+@Commit
+class BoardServiceTest {
+
+    @Autowired
+    private BoardService boardService;
+    @Autowired
+    private MemberRepository memberRepository;
+    @Autowired
+    private BoardRepository boardRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @BeforeEach
+    @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
+    void currentUser() {
+        //given
+        MemberDto memberDto = MemberDto.builder()
+                .username("배태현")
+                .stdNum("2409")
+                .password("0809")
+                .email("s20032@gsm.hs.kr")
+                .build();
+        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        memberRepository.save(memberDto.toEntity(Role.ROLE_ADMIN));
+        System.out.println("======== saved =========");
+
+        // when login session 발급
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                memberDto.getUsername(),
+                memberDto.getPassword(),
+                List.of(new SimpleGrantedAuthority(Role.ROLE_ADMIN.name())));
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(token);
+        System.out.println("=================================");
+        System.out.println(context);
+
+        //then
+        String currentUsername = CurrentUserUtil.getCurrentUserNickname();
+        assertEquals("배태현", currentUsername);
+    }
+
+    @Test
+    public void createBoardTest() {
+        //given //when
+        Board board = boardService.createBoard(
+                BoardSaveDto.builder()
+                        .title("도토리 공지사항")
+                        .content("도토리 공지사항 생성 테스트")
+                        .build()
+        );
+
+        //then
+        assertTrue(board.getId() != null);
+    }
+}
