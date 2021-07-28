@@ -77,6 +77,7 @@ class BoardServiceTest {
     }
 
     @Test
+    @DisplayName("공지사항 생성 테스트")
     public void createBoardTest() {
         //given //when
         Board board = boardService.createBoard(
@@ -130,5 +131,29 @@ class BoardServiceTest {
 
         //then
         assertThat(findBoard.getId()).isEqualTo(board.getId());
+    }
+
+    @Test
+    @DisplayName("공지사항 수정 테스트")
+    public void updateBoardTest() {
+        //given
+        Board board = boardService.createBoard(
+                BoardSaveDto.builder()
+                        .title("도토리 공지사항")
+                        .content("도토리 공지사항 수정 테스트")
+                        .build()
+        );
+
+        //when
+        boardService.updateBoard(board.getId(),
+                    BoardSaveDto.builder()
+                            .title("수정함")
+                            .content("수정함")
+                            .build()
+                );
+
+        //then
+        assertThat(board.getTitle()).isEqualTo("수정함");
+        assertThat(board.getContent()).isEqualTo("수정함");
     }
 }
