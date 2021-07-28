@@ -45,4 +45,10 @@ public class AdminBoardController {
         boardService.updateBoard(boardId, boardUpdateDto);
         return responseService.getSuccessResult();
     }
+
+    @DeleteMapping("/board/{id}")
+    public CommonResult deleteBoard(@PathVariable("id") Long boardId) {
+        boardService.deleteBoard(boardId);
+        return responseService.getSuccessResult();
+    }
 }

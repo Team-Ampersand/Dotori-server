@@ -21,6 +21,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -151,5 +152,23 @@ class BoardServiceTest {
         //then
         assertThat(board.getTitle()).isEqualTo("수정함");
         assertThat(board.getContent()).isEqualTo("수정함");
+    }
+
+    @Test
+    public void deleteBoardTest() {
+        //given
+        Board board = boardService.createBoard(
+                BoardDto.builder()
+                        .title("도토리 공지사항")
+                        .content("도토리 공지사항 삭제 테스트")
+                        .build()
+        );
+
+        //when
+        boardService.deleteBoard(board.getId());
+
+        //then
+        List<Board> findAll = boardRepository.findAll();
+        assertTrue(findAll.size() == 0);
     }
 }
