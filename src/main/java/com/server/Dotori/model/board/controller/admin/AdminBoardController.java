@@ -2,7 +2,7 @@ package com.server.Dotori.model.board.controller.admin;
 
 import com.server.Dotori.model.board.dto.BoardGetDto;
 import com.server.Dotori.model.board.dto.BoardGetIdDto;
-import com.server.Dotori.model.board.dto.BoardSaveDto;
+import com.server.Dotori.model.board.dto.BoardDto;
 import com.server.Dotori.model.board.service.BoardService;
 import com.server.Dotori.response.ResponseService;
 import com.server.Dotori.response.result.CommonResult;
@@ -23,8 +23,8 @@ public class AdminBoardController {
 
     @PostMapping("/board")
     @ResponseStatus( HttpStatus.CREATED )
-    public CommonResult createBoard(@RequestBody BoardSaveDto boardSaveDto) {
-        boardService.createBoard(boardSaveDto);
+    public CommonResult createBoard(@RequestBody BoardDto boardDto) {
+        boardService.createBoard(boardDto);
         return responseService.getSuccessResult();
     }
 
@@ -38,5 +38,17 @@ public class AdminBoardController {
     public CommonResult getBoardById(@PathVariable("id") Long boardId) {
         BoardGetIdDto findBoardById = boardService.getBoardById(boardId);
         return responseService.getSingleResult(findBoardById);
+    }
+
+    @PutMapping("/board/{id}")
+    public CommonResult updateBoard(@PathVariable("id") Long boardId, @RequestBody BoardDto boardUpdateDto) {
+        boardService.updateBoard(boardId, boardUpdateDto);
+        return responseService.getSuccessResult();
+    }
+
+    @DeleteMapping("/board/{id}")
+    public CommonResult deleteBoard(@PathVariable("id") Long boardId) {
+        boardService.deleteBoard(boardId);
+        return responseService.getSuccessResult();
     }
 }

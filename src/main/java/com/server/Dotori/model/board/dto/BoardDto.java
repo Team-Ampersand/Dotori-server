@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Getter @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BoardSaveDto {
+public class BoardDto {
 
     @NotNull
     private String title;

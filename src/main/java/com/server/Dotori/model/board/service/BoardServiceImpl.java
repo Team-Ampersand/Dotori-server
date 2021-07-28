@@ -1,14 +1,15 @@
 package com.server.Dotori.model.board.service;
 
 import com.server.Dotori.exception.board.exception.BoardNotFoundException;
+import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToCreate;
+import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToDelete;
 import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToModify;
 import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.board.dto.BoardGetDto;
 import com.server.Dotori.model.board.dto.BoardGetIdDto;
-import com.server.Dotori.model.board.dto.BoardSaveDto;
+import com.server.Dotori.model.board.dto.BoardDto;
 import com.server.Dotori.model.board.repository.BoardRepository;
 import com.server.Dotori.model.member.Member;
-import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -18,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
-import java.util.List;
 
 import static com.server.Dotori.model.member.enumType.Role.*;
 
@@ -30,9 +30,10 @@ public class BoardServiceImpl implements BoardService {
     private final CurrentUserUtil currentUserUtil;
 
     @Override
-    public Board createBoard(BoardSaveDto boardSaveDto) {
+    public Board createBoard(BoardDto boardDto) {
         Member currentUser = currentUserUtil.getCurrentUser();
-        return boardRepository.save(boardSaveDto.saveToEntity(currentUser));
+
+        return boardRepository.save(boardDto.saveToEntity(currentUser));
     }
 
     @Override
@@ -62,16 +63,20 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public Board updateBoard(Long boardId, BoardSaveDto boardUpdateDto) {
+    public Board updateBoard(Long boardId, BoardDto boardUpdateDto) {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException());
-
-        if (board.getMember().getRoles().toString().equals(
-                Collections.singletonList(ROLE_MEMBER).toString()
-        )) throw new BoardNotHavePermissionToModify();
 
         board.updateBoard(boardUpdateDto.getTitle(), boardUpdateDto.getContent());
 
         return board;
+    }
+
+    @Override
+    public void deleteBoard(Long boardId) {
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new BoardNotFoundException());
+
+        boardRepository.deleteById(board.getId());
     }
 }

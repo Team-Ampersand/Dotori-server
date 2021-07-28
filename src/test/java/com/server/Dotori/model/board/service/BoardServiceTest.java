@@ -3,15 +3,12 @@ package com.server.Dotori.model.board.service;
 import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.board.dto.BoardGetDto;
 import com.server.Dotori.model.board.dto.BoardGetIdDto;
-import com.server.Dotori.model.board.dto.BoardSaveDto;
+import com.server.Dotori.model.board.dto.BoardDto;
 import com.server.Dotori.model.board.repository.BoardRepository;
-import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.util.CurrentUserUtil;
-import lombok.RequiredArgsConstructor;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -81,7 +78,7 @@ class BoardServiceTest {
     public void createBoardTest() {
         //given //when
         Board board = boardService.createBoard(
-                BoardSaveDto.builder()
+                BoardDto.builder()
                         .title("도토리 공지사항")
                         .content("도토리 공지사항 생성 테스트")
                         .build()
@@ -120,7 +117,7 @@ class BoardServiceTest {
     public void getBoardByIdTest() {
         //given
         Board board = boardService.createBoard(
-                BoardSaveDto.builder()
+                BoardDto.builder()
                         .title("도토리 공지사항")
                         .content("도토리 공지사항 id로 공지사항 조회 테스트")
                         .build()
@@ -138,7 +135,7 @@ class BoardServiceTest {
     public void updateBoardTest() {
         //given
         Board board = boardService.createBoard(
-                BoardSaveDto.builder()
+                BoardDto.builder()
                         .title("도토리 공지사항")
                         .content("도토리 공지사항 수정 테스트")
                         .build()
@@ -146,7 +143,7 @@ class BoardServiceTest {
 
         //when
         boardService.updateBoard(board.getId(),
-                    BoardSaveDto.builder()
+                    BoardDto.builder()
                             .title("수정함")
                             .content("수정함")
                             .build()
@@ -155,5 +152,24 @@ class BoardServiceTest {
         //then
         assertThat(board.getTitle()).isEqualTo("수정함");
         assertThat(board.getContent()).isEqualTo("수정함");
+    }
+
+    @Test
+    @DisplayName("공지사항 삭제 테스트")
+    public void deleteBoardTest() {
+        //given
+        Board board = boardService.createBoard(
+                BoardDto.builder()
+                        .title("도토리 공지사항")
+                        .content("도토리 공지사항 삭제 테스트")
+                        .build()
+        );
+
+        //when
+        boardService.deleteBoard(board.getId());
+
+        //then
+        List<Board> findAll = boardRepository.findAll();
+        assertTrue(findAll.size() == 0);
     }
 }
