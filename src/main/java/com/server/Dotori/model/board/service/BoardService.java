@@ -14,4 +14,6 @@ public interface BoardService {
     Page<BoardGetDto> getAllBoard(Pageable pageable);
 
     BoardGetIdDto getBoardById(Long boardId);
+
+    Board updateBoard(Long boardId, BoardSaveDto boardUpdateDto);
 }
