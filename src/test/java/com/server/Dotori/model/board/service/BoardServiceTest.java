@@ -155,6 +155,7 @@ class BoardServiceTest {
     }
 
     @Test
+    @DisplayName("공지사항 삭제 테스트")
     public void deleteBoardTest() {
         //given
         Board board = boardService.createBoard(
