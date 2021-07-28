@@ -2,6 +2,7 @@ package com.server.Dotori.model.board.service;
 
 import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.board.dto.BoardGetDto;
+import com.server.Dotori.model.board.dto.BoardGetIdDto;
 import com.server.Dotori.model.board.dto.BoardSaveDto;
 import com.server.Dotori.model.board.repository.BoardRepository;
 import com.server.Dotori.model.member.Member;
@@ -30,6 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -89,6 +91,7 @@ class BoardServiceTest {
     }
 
     @Test
+    @DisplayName("모든 공지사항 조회")
     public void getAllBoardTest() {
         //given
         Pageable pageable = Pageable.ofSize(5);
@@ -108,6 +111,24 @@ class BoardServiceTest {
         Page<BoardGetDto> pageBoard = boardService.getAllBoard(pageable);
 
         //then
-        Assertions.assertThat(pageBoard.getSize() == 30);
+        assertThat(pageBoard.getSize() == 30);
+    }
+
+    @Test
+    @DisplayName("공지사항 id로 공지사항 조회")
+    public void getBoardByIdTest() {
+        //given
+        Board board = boardService.createBoard(
+                BoardSaveDto.builder()
+                        .title("도토리 공지사항")
+                        .content("도토리 공지사항 id로 공지사항 조회 테스트")
+                        .build()
+        );
+
+        //when
+        BoardGetIdDto findBoard = boardService.getBoardById(board.getId());
+
+        //then
+        assertThat(findBoard.getId()).isEqualTo(board.getId());
     }
 }
