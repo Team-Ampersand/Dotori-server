@@ -1,28 +1,26 @@
 package com.server.Dotori.model.board.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.member.Member;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
-@Getter @Setter
-@AllArgsConstructor
+@Getter @Builder
 @NoArgsConstructor
-@Builder
+@AllArgsConstructor
 public class BoardDto {
 
-    @NotBlank
+    @NotNull
     private String title;
 
-    @NotBlank
+    @NotNull
     private String content;
 
-    @JsonIgnore
-    private Member member;
-
-    public Board toEntity() {
+    public Board saveToEntity(Member member) {
         return Board.builder()
                 .title(title)
                 .content(content)

@@ -1,22 +1,21 @@
 package com.server.Dotori.model.board.service;
 
-import com.server.Dotori.model.board.dto.BoardAllResponseDto;
+import com.server.Dotori.model.board.Board;
+import com.server.Dotori.model.board.dto.BoardGetDto;
+import com.server.Dotori.model.board.dto.BoardGetIdDto;
 import com.server.Dotori.model.board.dto.BoardDto;
-import com.server.Dotori.model.board.dto.BoardResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import javax.servlet.http.HttpServletRequest;
-
 public interface BoardService {
 
-    Long createBoard(BoardDto boardDto, HttpServletRequest request);
+    Board createBoard(BoardDto boardDto);
 
-    BoardResponseDto readBoardById(Long id);
+    Page<BoardGetDto> getAllBoard(Pageable pageable);
 
-    Page<BoardAllResponseDto> readAllBoard(Pageable pageable);
+    BoardGetIdDto getBoardById(Long boardId);
 
-    Long updateBoard(Long id, BoardDto boardDto);
+    Board updateBoard(Long boardId, BoardDto boardUpdateDto);
 
-    Long deleteBoard(Long id);
+    void deleteBoard(Long boardId);
 }
