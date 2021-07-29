@@ -32,7 +32,8 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Transactional
+//@Transactional
+@Commit
 class BoardServiceTest {
 
     @Autowired
