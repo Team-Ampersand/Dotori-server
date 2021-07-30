@@ -1,8 +1,10 @@
 package com.server.Dotori.model.board.controller.admin;
 
+import com.querydsl.core.Tuple;
+import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.board.dto.BoardGetDto;
-import com.server.Dotori.model.board.dto.BoardGetIdDto;
 import com.server.Dotori.model.board.dto.BoardDto;
+import com.server.Dotori.model.board.dto.BoardGetIdDto;
 import com.server.Dotori.model.board.service.BoardService;
 import com.server.Dotori.response.ResponseService;
 import com.server.Dotori.response.result.CommonResult;
@@ -12,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/admin")

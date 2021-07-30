@@ -23,6 +23,7 @@ public class Comment extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 

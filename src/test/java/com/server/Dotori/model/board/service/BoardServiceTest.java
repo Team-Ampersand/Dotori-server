@@ -1,14 +1,16 @@
 package com.server.Dotori.model.board.service;
 
+import com.querydsl.core.Tuple;
 import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.board.dto.BoardGetDto;
-import com.server.Dotori.model.board.dto.BoardGetIdDto;
 import com.server.Dotori.model.board.dto.BoardDto;
+import com.server.Dotori.model.board.dto.BoardGetIdDto;
 import com.server.Dotori.model.board.repository.BoardRepository;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.util.CurrentUserUtil;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
+//@Commit
 class BoardServiceTest {
 
     @Autowired
