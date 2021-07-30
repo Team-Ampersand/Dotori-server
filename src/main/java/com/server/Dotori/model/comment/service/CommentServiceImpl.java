@@ -22,14 +22,17 @@ public class CommentServiceImpl implements CommentService {
     private final CurrentUserUtil currentUserUtil;
 
     @Override
-    public Long createComment(Long boardId, CommentDto commentDto) {
+    public Comment createComment(Long boardId, CommentDto commentDto) {
 
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException());
 
         Member currentUser = currentUserUtil.getCurrentUser();
 
-        Comment comment = commentRepository.save(commentDto.saveToEntity(board, currentUser));
-        return comment.getId();
+        Comment comment = commentRepository.save(
+                commentDto.saveToEntity(board, currentUser)
+        );
+
+        return comment;
     }
 }

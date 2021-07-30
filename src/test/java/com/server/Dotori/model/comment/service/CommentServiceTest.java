@@ -5,6 +5,7 @@ import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.board.dto.BoardDto;
 import com.server.Dotori.model.board.repository.BoardRepository;
 import com.server.Dotori.model.board.service.BoardService;
+import com.server.Dotori.model.comment.Comment;
 import com.server.Dotori.model.comment.dto.CommentDto;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
@@ -12,6 +13,7 @@ import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.util.CurrentUserUtil;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -62,32 +64,28 @@ class CommentServiceTest {
         //then
         String currentUsername = CurrentUserUtil.getCurrentUserNickname();
         assertEquals("배태현", currentUsername);
+    }
 
-        boardService.createBoard(
+    @Test
+    @DisplayName("게시글에 댓글이 잘 생성되는지 확인하는 테스트")
+    public void createCommentTest() {
+        //given
+        Board board = boardService.createBoard(
                 BoardDto.builder()
                         .title("도토리 공지사항")
                         .content("도토리 공지사항 생성 테스트")
                         .build()
         );
-    }
 
-    @Test
-    public void createCommentTest() {
-        //given
-        Board board = boardRepository.findById(1L)
-                .orElseThrow(() -> new BoardNotFoundException());
         //when
-
-        //then
-
-        Long comment = commentService.createComment(
+        Comment comment = commentService.createComment(
                 board.getId(),
                 CommentDto.builder()
                         .contents("댓글")
                         .build()
         );
 
-        Assertions.assertThat(comment).isEqualTo(board.getId());
-
+        //then
+        assertEquals(comment.getContents(), "댓글");
     }
 }
