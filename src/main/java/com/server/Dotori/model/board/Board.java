@@ -37,10 +37,6 @@ public class Board extends BaseTimeEntity {
     @Column(name = "board_content", length = 500, nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "board")
-    @JsonManagedReference
-    private List<Comment> comments = new ArrayList<>();
-
     public void updateBoard(String title, String content) {
         this.title = title != null ? title : this.title;
         this.content = content != null ? content : this.content;
