@@ -1,6 +1,5 @@
 package com.server.Dotori.model.board.dto;
 
-import com.server.Dotori.model.comment.Comment;
 import com.server.Dotori.model.member.enumType.Role;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;

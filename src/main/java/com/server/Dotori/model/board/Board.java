@@ -2,7 +2,6 @@ package com.server.Dotori.model.board;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.server.Dotori.model.BaseTimeEntity;
-import com.server.Dotori.model.comment.Comment;
 import com.server.Dotori.model.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
