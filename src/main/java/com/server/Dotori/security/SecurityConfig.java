@@ -42,15 +42,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // Entry points
         http.authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/").permitAll()
+                .antMatchers("/v1/admin/test").hasRole("ADMIN")
+                .antMatchers("/v1/member/test").hasRole("MEMBER")
+                .antMatchers("/v1/councillor/test").hasRole("COUNCILLOR")
+                .antMatchers("/v1/developer/test").hasRole("DEVELOPER")
                 .antMatchers("/exception/**").permitAll()
+                .antMatchers("/h2-console").permitAll()
                 .antMatchers("/h2-console/**/**").permitAll()
+                .antMatchers("/**").permitAll()
                 // Disallow everything else..
                 .anyRequest().authenticated();
 
         // If a user try to access a resource without having enough permissions
         http.exceptionHandling().accessDeniedPage("/login");
     }
+
+    //===========================================================//
 
     @Bean
     public PasswordEncoder passwordEncoder() {
