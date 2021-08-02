@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.List;
 
 import static com.server.Dotori.model.member.enumType.Music.*;
 
@@ -36,5 +37,10 @@ public class MusicServiceImpl implements MusicService {
         } else {
             throw new IllegalArgumentException("이미 음악을 신청하신 회원입니다"); //Exception생성하여 예외처리하기
         }
+    }
+
+    @Override
+    public List<Music> getAllMusic() {
+        return musicRepository.findAll();
     }
 }
