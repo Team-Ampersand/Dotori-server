@@ -101,11 +101,7 @@ public class Member implements UserDetails {
         return true;
     }
 
-    private void updatePassword(Member member) {
-        this.password = password != null ? password : this.password;
-    }
-
-    private void updatePoint(Member member) {
-        this.point = point != null ? point : this.point;
+    public void updateMusic(Music music) {
+        this.music = music != null ? music : this.music;
     }
 }
