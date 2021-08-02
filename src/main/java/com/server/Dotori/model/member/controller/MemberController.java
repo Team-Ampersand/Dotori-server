@@ -1,8 +1,10 @@
 package com.server.Dotori.model.member.controller;
 
 import com.server.Dotori.model.member.dto.MemberDto;
+import com.server.Dotori.model.member.dto.MemberEmailDto;
+import com.server.Dotori.model.member.dto.MemberEmailKeyDto;
 import com.server.Dotori.model.member.dto.MemberLoginDto;
-import com.server.Dotori.model.member.dto.UserEmailDto;
+import com.server.Dotori.model.member.service.EmailService;
 import com.server.Dotori.model.member.service.MemberService;
 import com.server.Dotori.response.ResponseService;
 import com.server.Dotori.response.result.CommonResult;
@@ -18,6 +20,7 @@ public class MemberController {
 
     private final MemberService memberService;
     private final ResponseService responseService;
+    private final EmailService emailService;
 
     @PostMapping("/signup")
     public CommonResult signup(@RequestBody MemberDto memberDto){
@@ -31,11 +34,6 @@ public class MemberController {
         return responseService.getSingleResult(data);
     }
 
-    @PutMapping("/auth")
-    public CommonResult auth(@RequestBody UserEmailDto userEmailDto){
-        memberService.auth(userEmailDto);
-        return responseService.getSuccessResult();
-    }
 
 
 }
