@@ -28,9 +28,13 @@ public class MusicServiceImpl implements MusicService {
     public Music musicApplication(MusicApplicationDto musicApplicationDto) {
         Member currentUser = currentUserUtil.getCurrentUser();
 
-        Music music = musicRepository.save(musicApplicationDto.saveToEntity(currentUser));
-        currentUser.updateMusic(APPLIED);
+        if (currentUser.getMusic() == CAN) {
+            Music music = musicRepository.save(musicApplicationDto.saveToEntity(currentUser));
+            currentUser.updateMusic(APPLIED);
+            return music;
 
-        return music;
+        } else {
+            throw new IllegalArgumentException("이미 음악을 신청하신 회원입니다"); //Exception생성하여 예외처리하기
+        }
     }
 }
