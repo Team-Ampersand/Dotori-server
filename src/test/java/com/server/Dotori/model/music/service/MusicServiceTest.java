@@ -1,5 +1,6 @@
 package com.server.Dotori.model.music.service;
 
+import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
@@ -23,6 +24,8 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.server.Dotori.model.member.enumType.Music.*;
 import static org.assertj.core.api.Assertions.*;
@@ -81,5 +84,27 @@ class MusicServiceTest {
         //then
         assertThat(music.getMember().getMusic()).isEqualTo(APPLIED);
         assertThat(music.getUrl()).isEqualTo("https://www.youtube.com/watch?v=6h9qmKWK6Io");
+    }
+
+    @Test
+    @DisplayName("신청된 모든 음악 목록이 잘 조회되는지 확인하는 테스트")
+    public void getAllMusicTest() {
+        //given
+        Member currentUser = currentUserUtil.getCurrentUser();
+
+        List<Music> musicList = Stream.generate(
+                () -> Music.builder()
+                        .url("https://www.youtube.com/watch?v=her_7pa0vrg&pp=sAQA")
+                        .member(currentUser)
+                        .build()
+        ).limit(30).collect(Collectors.toList());
+
+        musicRepository.saveAll(musicList);
+
+        //when
+        List<Music> getAllMusic = musicService.getAllMusic();
+
+        //then
+        assertEquals(getAllMusic.size(), 30);
     }
 }
