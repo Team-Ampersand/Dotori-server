@@ -104,4 +104,12 @@ public class Member implements UserDetails {
     public void updateMusic(Music music) {
         this.music = music != null ? music : this.music;
     }
+
+    public void updatePassword(String password) {
+        this.password = password != null ? password : this.password;
+    }
+
+    public void updatePoint(Long point) {
+        this.point = point != null ? point : this.point;
+    }
 }
