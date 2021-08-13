@@ -12,6 +12,6 @@ public interface MusicService {
     List<Music> getAllMusic();
 
     void deleteMusic(Long musicId);
-
+  
     void updateMemberMusicStatus();
 }
