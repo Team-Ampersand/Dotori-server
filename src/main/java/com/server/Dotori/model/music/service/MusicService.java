@@ -10,4 +10,6 @@ public interface MusicService {
     Music musicApplication(MusicApplicationDto musicApplicationDto);
 
     List<Music> getAllMusic();
+
+    void updateMemberMusicStatus();
 }

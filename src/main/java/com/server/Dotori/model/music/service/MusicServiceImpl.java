@@ -43,4 +43,10 @@ public class MusicServiceImpl implements MusicService {
     public List<Music> getAllMusic() {
         return musicRepository.findAll();
     }
+
+    @Override
+    @Transactional
+    public void updateMemberMusicStatus() {
+        musicRepository.updateMusicStatusMemberByMember();
+    }
 }
