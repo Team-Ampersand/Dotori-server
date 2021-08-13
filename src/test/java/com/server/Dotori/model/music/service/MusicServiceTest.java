@@ -114,6 +114,28 @@ class MusicServiceTest {
     }
 
     @Test
+    @DisplayName("신청된 음악이 삭제되는지 확인하는 테스트")
+    public void deleteMusicTest() {
+        //given
+        Member currentUser = currentUserUtil.getCurrentUser();
+
+        List<Music> musicList = Stream.generate(
+                () -> Music.builder()
+                        .url("https://www.youtube.com/watch?v=her_7pa0vrg&pp=sAQA")
+                        .member(currentUser)
+                        .build()
+        ).limit(10).collect(Collectors.toList());
+
+        List<Music> musics = musicRepository.saveAll(musicList);
+
+        //when
+        musicService.deleteMusic(musics.get(9).getId());
+
+        //then
+        assertEquals(9, musicRepository.findAll().size());
+    }
+
+    @Test
     @DisplayName("회원들의 음악신청여부가 제대로 업데이트 되는지 확인하는 테스트")
     public void memberMusicStatusTest() {
         //given
