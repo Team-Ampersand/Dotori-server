@@ -48,4 +48,10 @@ public class MusicServiceImpl implements MusicService {
     public void deleteMusic(Long musicId) {
         musicRepository.deleteById(musicId);
     }
+
+    @Override
+    @Transactional
+    public void updateMemberMusicStatus() {
+        musicRepository.updateMusicStatusMemberByMember();
+    }
 }

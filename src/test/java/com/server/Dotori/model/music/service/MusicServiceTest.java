@@ -4,15 +4,15 @@ import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
+import com.server.Dotori.model.member.enumType.SelfStudy;
 import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.model.member.service.MemberService;
 import com.server.Dotori.model.music.Music;
 import com.server.Dotori.model.music.dto.MusicApplicationDto;
 import com.server.Dotori.model.music.repository.MusicRepository;
 import com.server.Dotori.util.CurrentUserUtil;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +23,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -41,6 +43,9 @@ class MusicServiceTest {
     @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private MemberRepository memberRepository;
     @Autowired private CurrentUserUtil currentUserUtil;
+    @Autowired private MemberService memberService;
+    @Autowired
+    EntityManager em;
 
     @BeforeEach
     @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
@@ -128,5 +133,60 @@ class MusicServiceTest {
 
         //then
         assertEquals(9, musicRepository.findAll().size());
+    }
+
+    @Test
+    @DisplayName("회원들의 음악신청여부가 제대로 업데이트 되는지 확인하는 테스트")
+    public void memberMusicStatusTest() {
+        //given
+        memberRepository.save(
+                Member.builder()
+                        .username("qoxogus1")
+                        .stdNum("2410")
+                        .password("1234")
+                        .email("s20033@gsm.hs.kr")
+                        .roles(Collections.singletonList(Role.ROLE_ADMIN))
+                        .music(APPLIED)
+                        .selfStudy(SelfStudy.CAN)
+                        .point(0L)
+                        .build()
+        );
+
+        memberRepository.save(
+                Member.builder()
+                        .username("qwer")
+                        .stdNum("2408")
+                        .password("1234")
+                        .email("s20031@gsm.hs.kr")
+                        .roles(Collections.singletonList(Role.ROLE_ADMIN))
+                        .music(APPLIED)
+                        .selfStudy(SelfStudy.CAN)
+                        .point(0L)
+                        .build()
+        );
+
+        memberRepository.save(
+                Member.builder()
+                        .username("rewq")
+                        .stdNum("2407")
+                        .password("1234")
+                        .email("s20030@gsm.hs.kr")
+                        .roles(Collections.singletonList(Role.ROLE_ADMIN))
+                        .music(CAN)
+                        .selfStudy(SelfStudy.CAN)
+                        .point(0L)
+                        .build()
+        );
+
+        //when
+        musicService.updateMemberMusicStatus();
+
+        em.flush();
+        em.clear();
+
+        //then
+        assertEquals(CAN, memberRepository.findByUsername("qoxogus1").getMusic());
+        assertEquals(CAN, memberRepository.findByUsername("qwer").getMusic());
+        assertEquals(CAN, memberRepository.findByUsername("rewq").getMusic()); //이 회원은 그대로 CAN
     }
 }
