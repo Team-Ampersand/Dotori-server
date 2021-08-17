@@ -1,8 +1,10 @@
 plugins {
 	id 'org.springframework.boot' version '2.5.2'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10" //querydsl
 	id 'java'
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10" //querydsl
+	// *** Q-Type error *** //
+	id "io.franzbecker.gradle-lombok" version "3.0.0"
 }
 
 group = 'com.server'
