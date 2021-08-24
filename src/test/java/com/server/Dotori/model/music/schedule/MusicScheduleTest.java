@@ -1,6 +1,7 @@
 package com.server.Dotori.model.music.schedule;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,7 +20,8 @@ class MusicScheduleTest {
     private ScheduledTaskHolder scheduledTaskHolder;
 
     @Test
-    public void testYearlyCronTaskScheduled() {
+    @DisplayName("일정이 잘 예약되었는지 확인하는 테스트")
+    public void saturdayMusicDeleteAllTest() {
         Set<ScheduledTask> scheduledTasks = scheduledTaskHolder.getScheduledTasks();
         scheduledTasks.forEach(scheduledTask -> scheduledTask.getTask().getRunnable().getClass().getDeclaredMethods());
 
@@ -28,7 +30,6 @@ class MusicScheduleTest {
                 .map(scheduledTask -> (CronTask) scheduledTask.getTask())
                 .filter(cronTask -> cronTask.getExpression().equals("0 59 23 ? * SAT") && cronTask.toString().equals("com.server.Dotori.model.music.schedule.MusicSchedule.saturdayMusicDeleteAll"))
                 .count();
-        
         Assertions.assertThat(count).isEqualTo(1L);
     }
 
