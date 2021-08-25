@@ -31,8 +31,7 @@ import static com.server.Dotori.model.member.enumType.SelfStudy.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@Commit
-//@Transactional
+@Transactional
 class SelfStudyServiceTest {
 
     @Autowired private PasswordEncoder passwordEncoder;
