@@ -18,7 +18,7 @@ public class SelfStudyController {
     private final ResponseService responseService;
     private final SelfStudyService selfStudyService;
 
-    @GetMapping ("/selfstudy")
+    @PutMapping("/selfstudy")
     @ResponseStatus( HttpStatus.CREATED )
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
