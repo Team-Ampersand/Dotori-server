@@ -2,7 +2,6 @@ package com.server.Dotori.model.board;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.server.Dotori.model.BaseTimeEntity;
-import com.server.Dotori.model.comment.Comment;
 import com.server.Dotori.model.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,10 +35,6 @@ public class Board extends BaseTimeEntity {
 
     @Column(name = "board_content", length = 500, nullable = false)
     private String content;
-
-    @OneToMany(mappedBy = "board")
-    @JsonManagedReference
-    private List<Comment> comments = new ArrayList<>();
 
     public void updateBoard(String title, String content) {
         this.title = title != null ? title : this.title;

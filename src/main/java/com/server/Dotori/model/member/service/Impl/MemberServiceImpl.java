@@ -4,13 +4,9 @@ import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.dto.MemberLoginDto;
-import com.server.Dotori.model.member.dto.UserEmailDto;
-import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.MemberRepository;
-import com.server.Dotori.model.member.service.EmailService;
 import com.server.Dotori.model.member.service.MemberService;
 import com.server.Dotori.security.jwt.JwtTokenProvider;
-import com.server.Dotori.util.KeyUtil;
 import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,8 +26,6 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisUtil redisUtil;
-    private final KeyUtil keyUtil;
-    private final EmailService emailService;
 
     @Value("${authKey.adminKey}")
     private String adminKey;
@@ -88,10 +82,4 @@ public class MemberServiceImpl implements MemberService {
         return map;
     }
 
-    @Override
-    public String auth(UserEmailDto userEmailDto) {
-        String key = keyUtil.keyIssuance();
-        emailService.sandEmail(userEmailDto.getUserEmail(),key);
-        return "인증 키 : " + key;
-    }
 }

@@ -1,13 +1,11 @@
 package com.server.Dotori.model.board.service;
 
+import com.querydsl.core.Tuple;
 import com.server.Dotori.exception.board.exception.BoardNotFoundException;
-import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToCreate;
-import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToDelete;
-import com.server.Dotori.exception.board.exception.BoardNotHavePermissionToModify;
 import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.board.dto.BoardGetDto;
-import com.server.Dotori.model.board.dto.BoardGetIdDto;
 import com.server.Dotori.model.board.dto.BoardDto;
+import com.server.Dotori.model.board.dto.BoardGetIdDto;
 import com.server.Dotori.model.board.repository.BoardRepository;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.util.CurrentUserUtil;
@@ -17,10 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collections;
-
-import static com.server.Dotori.model.member.enumType.Role.*;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +45,7 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardGetIdDto getBoardById(Long boardId) {
+
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException());
 

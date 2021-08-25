@@ -1,9 +1,9 @@
 package com.server.Dotori.model.board.dto;
 
-import com.server.Dotori.model.comment.Comment;
 import com.server.Dotori.model.member.enumType.Role;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,9 +16,11 @@ public class BoardGetIdDto {
     private Long id;
     private String title;
     private String content;
-    private List<Comment> comments;
     private List<Role> roles;
 
     @CreatedDate
     private LocalDateTime createdDate;
+
+    @LastModifiedDate
+    private LocalDateTime modifiedDate;
 }
