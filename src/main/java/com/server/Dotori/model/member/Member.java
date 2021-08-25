@@ -104,4 +104,8 @@ public class Member implements UserDetails {
     public void updateMusic(Music music) {
         this.music = music != null ? music : this.music;
     }
+
+    public void updateSelfStudy(SelfStudy selfStudy) {
+        this.selfStudy = selfStudy != null ? selfStudy : this.selfStudy;
+    }
 }
