@@ -37,6 +37,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     }
 
     @Override
+    @Transactional
     public void cancelSelfStudy() {
         Member currentUser = currentUserUtil.getCurrentUser();
 
