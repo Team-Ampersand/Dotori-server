@@ -35,4 +35,17 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         } else
             throw new IllegalArgumentException("자습신청 인원이 모두 찼습니다.");
     }
+
+    @Override
+    @Transactional
+    public void cancelSelfStudy() {
+        Member currentUser = currentUserUtil.getCurrentUser();
+
+        if (currentUser.getSelfStudy() == APPLIED) {
+            currentUser.updateSelfStudy(CANT);
+            count -= 1;
+            log.info(String.valueOf(count));
+        } else
+            throw new IllegalArgumentException("자습신청을 취소할 수 있는 상태가 아닙니다.");
+    }
 }
