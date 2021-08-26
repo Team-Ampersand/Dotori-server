@@ -75,4 +75,12 @@ class SelfStudyServiceTest {
 
         assertEquals(APPLIED, currentUserUtil.getCurrentUser().getSelfStudy());
     }
+
+    @Test
+    public void cancelSelfStudy() {
+        selfStudyService.requestSelfStudy();
+        selfStudyService.cancelSelfStudy();
+
+        assertEquals(CANT, currentUserUtil.getCurrentUser().getSelfStudy());
+    }
 }
