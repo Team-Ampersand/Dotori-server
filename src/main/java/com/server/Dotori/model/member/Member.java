@@ -114,7 +114,7 @@ public class Member implements UserDetails {
 
     public void updatePoint(Long point) {
         this.point = point != null ? point : this.point;
-      
+    }
     public void updateSelfStudy(SelfStudy selfStudy) {
         this.selfStudy = selfStudy != null ? selfStudy : this.selfStudy;
     }
