@@ -4,6 +4,7 @@ import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.model.member.service.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,28 +28,29 @@ class CurrentUserUtilTest {
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
+    private MemberService memberService;
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Test
     public void currentUserNickname() {
         //given
-        MemberDto userDto = MemberDto.builder()
+        MemberDto memberDto = MemberDto.builder()
                 .username("노경준")
-                .stdNum("1")
+                .stdNum("2206")
                 .password("1234")
-                .email("123@naver.com")
+                .email("s20018@gmail.com")
+                .key("ABC1")
+                .answer("hello")
                 .build();
-
-        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        memberRepository.save(userDto.toEntity(Role.ROLE_ADMIN));
-        System.out.println("======== saved =========");
+        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        memberService.signup(memberDto);
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                userDto.getUsername(),
-                userDto.getPassword(),
-                List.of(new SimpleGrantedAuthority(Role.ROLE_MEMBER.name())));
-
+                memberDto.getUsername(),
+                memberDto.getPassword(),
+                List.of(new SimpleGrantedAuthority(Role.ROLE_ADMIN.name())));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
         System.out.println("=================================");
@@ -64,12 +66,13 @@ class CurrentUserUtilTest {
         //given
         MemberDto memberDto = MemberDto.builder()
                 .username("노경준")
-                .stdNum("1")
+                .stdNum("2206")
                 .password("1234")
-                .email("123@naver.com")
+                .email("s20018@gmail.com")
+                .key("ABC1")
+                .answer("hello")
                 .build();
-        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        memberRepository.save(memberDto.toEntity(Role.ROLE_ADMIN));
+        memberService.signup(memberDto);
         System.out.println("======== saved =========");
 
         // when login session 발급
@@ -85,8 +88,8 @@ class CurrentUserUtilTest {
         //then
         Member currentUser = currentUserUtil.getCurrentUser();
         assertTrue(currentUser != null, "true");
-        assertEquals(memberDto.toEntity(Role.ROLE_ADMIN).getUsername(), currentUser.getUsername());
-        assertEquals(memberDto.toEntity(Role.ROLE_ADMIN).getEmail(), currentUser.getEmail());
+        assertEquals(memberDto.getUsername(), currentUser.getUsername());
+        assertEquals(memberDto.getEmail(), currentUser.getEmail());
     }
 
 
