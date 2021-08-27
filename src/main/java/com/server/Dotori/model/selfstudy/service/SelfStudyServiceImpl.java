@@ -1,13 +1,16 @@
 package com.server.Dotori.model.selfstudy.service;
 
+import com.querydsl.core.QueryResults;
 import com.server.Dotori.model.member.Member;
-import com.server.Dotori.model.member.enumType.SelfStudy;
-import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.model.selfstudy.dto.SelfStudyStudentsDto;
+import com.server.Dotori.model.selfstudy.repository.SelfStudyRepository;
 import com.server.Dotori.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static com.server.Dotori.model.member.enumType.SelfStudy.*;
 
@@ -17,6 +20,7 @@ import static com.server.Dotori.model.member.enumType.SelfStudy.*;
 public class SelfStudyServiceImpl implements SelfStudyService {
 
     private final CurrentUserUtil currentUserUtil;
+    private final SelfStudyRepository selfStudyRepository;
 
     Integer count = 0;
 
@@ -47,5 +51,10 @@ public class SelfStudyServiceImpl implements SelfStudyService {
             log.info(String.valueOf(count));
         } else
             throw new IllegalArgumentException("자습신청을 취소할 수 있는 상태가 아닙니다.");
+    }
+
+    @Override
+    public List<SelfStudyStudentsDto> getSelfStudyStudents() {
+        return selfStudyRepository.findBySelfStudyAPLLIED();
     }
 }

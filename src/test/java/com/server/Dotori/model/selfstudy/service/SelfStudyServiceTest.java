@@ -8,6 +8,7 @@ import com.server.Dotori.model.member.enumType.SelfStudy;
 import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.model.member.service.MemberService;
 import com.server.Dotori.model.music.repository.MusicRepository;
+import com.server.Dotori.model.selfstudy.dto.SelfStudyStudentsDto;
 import com.server.Dotori.util.CurrentUserUtil;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -85,5 +86,16 @@ class SelfStudyServiceTest {
         selfStudyService.cancelSelfStudy();
 
         assertEquals(CANT, currentUserUtil.getCurrentUser().getSelfStudy());
+    }
+
+    @Test
+    @DisplayName("자습 신청한 학생들 목록이 잘 조회 되나요?")
+    public void getSelfStudyStudents() {
+        //given //when
+        selfStudyService.requestSelfStudy();
+        List<SelfStudyStudentsDto> selfStudyStudents = selfStudyService.getSelfStudyStudents();
+
+        //then
+        assertEquals(1, selfStudyStudents.size());
     }
 }
