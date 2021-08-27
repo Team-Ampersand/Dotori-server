@@ -39,6 +39,7 @@ public class MemberServiceTest {
                 .password("1234")
                 .email("s20018@gsm.hs.kr")
                 .key("ABC1")
+                .answer("hello")
                 .build();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 
