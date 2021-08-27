@@ -25,7 +25,7 @@ public class EmailSandServiceImpl implements EmailSandService {
     public void sandPasswordEmail(String userEmail, String password) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(userEmail);
-        message.setSubject("[DOTORI] 인증 키");
+        message.setSubject("[DOTORI] 임시 비밀번호");
         message.setText("DOTORI 에서 보낸 임시 비밀번호 : " + password);
         mailSender.send(message);
     }
