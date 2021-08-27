@@ -1,6 +1,6 @@
 package com.server.Dotori.model.member.controller;
 
-import com.server.Dotori.model.member.dto.MemberEmailDto;
+import com.server.Dotori.model.member.dto.EmailDto;
 import com.server.Dotori.model.member.dto.MemberEmailKeyDto;
 import com.server.Dotori.model.member.service.EmailService;
 import com.server.Dotori.response.ResponseService;
@@ -20,14 +20,20 @@ public class EmailController {
     private final ResponseService responseService;
 
     @PostMapping("/auth")
-    public CommonResult auth(@RequestBody MemberEmailDto memberEmailDto){
-        emailService.auth(memberEmailDto);
+    public CommonResult authKey(@RequestBody EmailDto emailDto){
+        emailService.authKey(emailDto);
         return responseService.getSuccessResult();
     }
 
     @PostMapping("/auth/check")
     public CommonResult authCheck(@RequestBody MemberEmailKeyDto memberEmailKeyDto){
         emailService.authCheck(memberEmailKeyDto);
+        return responseService.getSuccessResult();
+    }
+
+    @PostMapping("/auth/password")
+    public CommonResult authPassword(@RequestBody EmailDto emailDto){
+        emailService.authPassword(emailDto);
         return responseService.getSuccessResult();
     }
 }
