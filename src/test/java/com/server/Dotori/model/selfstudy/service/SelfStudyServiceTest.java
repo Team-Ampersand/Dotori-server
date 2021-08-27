@@ -49,6 +49,7 @@ class SelfStudyServiceTest {
                 .stdNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
+                .answer("배털")
                 .build();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
         memberRepository.save(memberDto.toEntity(Role.ROLE_ADMIN));
@@ -70,6 +71,7 @@ class SelfStudyServiceTest {
     }
 
     @Test
+    @DisplayName("자습신청이 제대로 되나요?")
     public void requestSelfStudyTest() {
         selfStudyService.requestSelfStudy();
 
@@ -77,6 +79,7 @@ class SelfStudyServiceTest {
     }
 
     @Test
+    @DisplayName("자습신청 취소가 제대로 되나요?")
     public void cancelSelfStudy() {
         selfStudyService.requestSelfStudy();
         selfStudyService.cancelSelfStudy();
