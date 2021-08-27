@@ -71,6 +71,7 @@ class SelfStudyServiceTest {
     }
 
     @Test
+    @DisplayName("자습신청이 제대로 되나요?")
     public void requestSelfStudyTest() {
         selfStudyService.requestSelfStudy();
 
@@ -78,6 +79,7 @@ class SelfStudyServiceTest {
     }
 
     @Test
+    @DisplayName("자습신청 취소가 제대로 되나요?")
     public void cancelSelfStudy() {
         selfStudyService.requestSelfStudy();
         selfStudyService.cancelSelfStudy();
