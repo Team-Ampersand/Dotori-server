@@ -31,7 +31,7 @@ public class MemberServiceTest {
     private PasswordEncoder passwordEncoder;
 
     @Test
-    void singup(){
+    void signup(){
         //given
         MemberDto memberDto = MemberDto.builder()
                 .username("노경준")
@@ -58,4 +58,5 @@ public class MemberServiceTest {
         String currentUserName = CurrentUserUtil.getCurrentUserNickname();
         assertThat(currentUserName).isEqualTo(memberRepository.findByUsername("노경준").getUsername());
     }
+
 }
