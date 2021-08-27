@@ -48,6 +48,9 @@ public class Member implements UserDetails {
     @Column(name = "member_point", columnDefinition = "Long default 0")
     private Long point;
 
+    @Column(name = "member_answer", nullable = false, updatable = false)
+    private String answer;
+
     @Enumerated(STRING) @Column(name = "Role")
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "Role", joinColumns = @JoinColumn(name = "member_id"))
@@ -103,5 +106,16 @@ public class Member implements UserDetails {
 
     public void updateMusic(Music music) {
         this.music = music != null ? music : this.music;
+    }
+
+    public void updatePassword(String password) {
+        this.password = password != null ? password : this.password;
+    }
+
+    public void updatePoint(Long point) {
+        this.point = point != null ? point : this.point;
+    }
+    public void updateSelfStudy(SelfStudy selfStudy) {
+        this.selfStudy = selfStudy != null ? selfStudy : this.selfStudy;
     }
 }

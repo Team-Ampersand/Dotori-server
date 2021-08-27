@@ -34,6 +34,9 @@ public class MemberDto {
     @NotBlank(message = "roles should be valid")
     private String key;
 
+    @NotBlank(message = "answer should be valid")
+    private String answer;
+
     public Member toEntity(Role roleAdmin){
         return Member.builder()
                 .username(username)
@@ -44,6 +47,7 @@ public class MemberDto {
                 .music(Music.CAN)
                 .selfStudy(SelfStudy.CAN)
                 .point(0L)
+                .answer(answer)
                 .build();
     }
 }
