@@ -24,9 +24,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 
+import static com.server.Dotori.model.member.enumType.Music.APPLIED;
 import static com.server.Dotori.model.member.enumType.Music.CAN;
 import static com.server.Dotori.model.member.enumType.SelfStudy.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,7 +41,8 @@ class SelfStudyServiceTest {
     @Autowired private MemberRepository memberRepository;
     @Autowired private CurrentUserUtil currentUserUtil;
     @Autowired private SelfStudyService selfStudyService;
-    @Autowired private MemberService memberService;
+    @Autowired
+    EntityManager em;
 
     @BeforeEach
     @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
@@ -97,5 +100,63 @@ class SelfStudyServiceTest {
 
         //then
         assertEquals(1, selfStudyStudents.size());
+    }
+
+    @Test
+    @DisplayName("학생들의 자습신청 상태가 잘 변경되나요?")
+    public void updateSelfStudyStatus() {
+        //given
+        memberRepository.save(
+                Member.builder()
+                        .username("qoxogus1")
+                        .stdNum("2410")
+                        .password("1234")
+                        .email("s20033@gsm.hs.kr")
+                        .roles(Collections.singletonList(Role.ROLE_ADMIN))
+                        .music(CAN)
+                        .selfStudy(SelfStudy.APPLIED)
+                        .point(0L)
+                        .answer("배털")
+                        .build()
+        );
+
+        memberRepository.save(
+                Member.builder()
+                        .username("qwer")
+                        .stdNum("2408")
+                        .password("1234")
+                        .email("s20031@gsm.hs.kr")
+                        .roles(Collections.singletonList(Role.ROLE_ADMIN))
+                        .music(CAN)
+                        .selfStudy(CANT)
+                        .point(0L)
+                        .answer("배털")
+                        .build()
+        );
+
+        memberRepository.save(
+                Member.builder()
+                        .username("rewq")
+                        .stdNum("2407")
+                        .password("1234")
+                        .email("s20030@gsm.hs.kr")
+                        .roles(Collections.singletonList(Role.ROLE_ADMIN))
+                        .music(CAN)
+                        .selfStudy(SelfStudy.CAN)
+                        .point(0L)
+                        .answer("배털")
+                        .build()
+        );
+
+        //when
+        selfStudyService.updateSelfStudyStatus();
+
+        em.flush();
+        em.clear();
+
+        //then
+        assertEquals(SelfStudy.CAN, memberRepository.findByUsername("qoxogus1").getSelfStudy());
+        assertEquals(SelfStudy.CAN, memberRepository.findByUsername("qwer").getSelfStudy());
+        assertEquals(SelfStudy.CAN, memberRepository.findByUsername("rewq").getSelfStudy()); //이 회원은 그대로 CAN
     }
 }
