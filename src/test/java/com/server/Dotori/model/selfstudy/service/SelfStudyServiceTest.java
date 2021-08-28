@@ -79,7 +79,7 @@ class SelfStudyServiceTest {
     public void requestSelfStudyTest() {
         selfStudyService.requestSelfStudy();
 
-        assertEquals(APPLIED, currentUserUtil.getCurrentUser().getSelfStudy());
+        assertEquals(SelfStudy.APPLIED, currentUserUtil.getCurrentUser().getSelfStudy());
     }
 
     @Test
