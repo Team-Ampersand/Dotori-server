@@ -3,7 +3,7 @@ package com.server.Dotori.model.member.service.Impl;
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.dto.EmailDto;
 import com.server.Dotori.model.member.dto.MemberEmailKeyDto;
-import com.server.Dotori.model.member.service.EmailSandService;
+import com.server.Dotori.model.member.service.EmailSendService;
 import com.server.Dotori.model.member.service.EmailService;
 import com.server.Dotori.util.KeyUtil;
 import com.server.Dotori.util.redis.RedisUtil;
@@ -15,15 +15,15 @@ import org.springframework.stereotype.Service;
 public class EmailServiceImpl implements EmailService {
 
     private final KeyUtil keyUtil;
-    private final EmailSandService emailSandService;
+    private final EmailSendService emailSendService;
     private final RedisUtil redisUtil;
 
     @Override
     public String authKey(EmailDto emailDto) {
         String key = keyUtil.keyIssuance();
         redisUtil.setDataExpire(key, emailDto.getUserEmail(), 3 * 60 * 1000L);
-        emailSandService.sandEmail(emailDto.getUserEmail(),key);
-        return "인증 키 : " + key;
+        emailSendService.sendEmail(emailDto.getUserEmail(),key);
+        return key;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class EmailServiceImpl implements EmailService {
     public String authPassword(EmailDto emailDto) {
         String email = emailDto.getUserEmail();
         String password = getTempPassword();
-        emailSandService.sandPasswordEmail(email,password);
+        emailSendService.sendPasswordEmail(email,password);
         return "임시 비밀번호 : " + password;
     }
 
