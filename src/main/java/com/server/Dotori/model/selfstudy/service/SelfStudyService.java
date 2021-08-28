@@ -12,4 +12,6 @@ public interface SelfStudyService {
     void cancelSelfStudy();
 
     List<SelfStudyStudentsDto> getSelfStudyStudents();
+
+    void updateSelfStudyStatus();
 }

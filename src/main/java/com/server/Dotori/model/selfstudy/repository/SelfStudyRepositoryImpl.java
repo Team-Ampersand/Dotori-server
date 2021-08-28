@@ -27,4 +27,17 @@ public class SelfStudyRepositoryImpl implements SelfStudyRepositoryCustom {
                         member.selfStudy.eq(SelfStudy.APPLIED)
                 ).fetch();
     }
+
+    @Override
+    public void updateSelfStudyStatus() {
+
+        queryFactory
+                .update(member)
+                .where(
+                        member.selfStudy.eq(SelfStudy.APPLIED)
+                        .or(member.selfStudy.eq(SelfStudy.CANT))
+                )
+                .set(member.selfStudy, SelfStudy.CAN)
+                .execute();
+    }
 }
