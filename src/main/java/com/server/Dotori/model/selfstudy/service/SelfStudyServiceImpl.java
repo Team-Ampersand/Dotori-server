@@ -57,4 +57,10 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     public List<SelfStudyStudentsDto> getSelfStudyStudents() {
         return selfStudyRepository.findBySelfStudyAPLLIED();
     }
+
+    @Override
+    @Transactional
+    public void updateSelfStudyStatus() {
+        selfStudyRepository.updateSelfStudyStatus();
+    }
 }
