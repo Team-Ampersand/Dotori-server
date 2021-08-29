@@ -3,6 +3,7 @@ package com.server.Dotori.model.member.service;
 import com.server.Dotori.model.member.dto.EmailDto;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.dto.MemberEmailKeyDto;
+import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.util.redis.RedisUtil;
 
 
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 public class EmailServiceTest {
@@ -24,6 +27,12 @@ public class EmailServiceTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private MemberService memberService;
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Test
     void authKey(){
@@ -46,7 +55,30 @@ public class EmailServiceTest {
 
         //then
         System.out.println("======================== " + key + " =========================");
-        Assertions.assertThat(memberDto.getEmail()).isEqualTo(redisUtil.getData(key));
+        assertThat(memberDto.getEmail()).isEqualTo(redisUtil.getData(key));
+    }
+
+    @Test
+    void authPassword(){
+        // given
+        MemberDto memberDto = MemberDto.builder()
+                .username("노경준")
+                .stdNum("2206")
+                .password("1234")
+                .email("s20018@gsm.hs.kr")
+                .key("ABC1")
+                .answer("hello")
+                .build();
+
+        EmailDto emailDto = new EmailDto();
+        emailDto.setUserEmail(memberDto.getEmail());
+
+        // when
+        memberService.signup(memberDto);
+        String result = emailService.authPassword(emailDto);
+
+        // then
+        assertThat(result).isEqualTo(memberRepository.findByEmail(memberDto.getEmail()).getPassword());
     }
 
 }
