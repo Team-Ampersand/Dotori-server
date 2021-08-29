@@ -1,14 +1,19 @@
 package com.server.Dotori.model.member.service.Impl;
 
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
+import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.EmailDto;
 import com.server.Dotori.model.member.dto.MemberEmailKeyDto;
+import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.model.member.service.EmailSendService;
 import com.server.Dotori.model.member.service.EmailService;
 import com.server.Dotori.util.KeyUtil;
 import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -17,6 +22,8 @@ public class EmailServiceImpl implements EmailService {
     private final KeyUtil keyUtil;
     private final EmailSendService emailSendService;
     private final RedisUtil redisUtil;
+    private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public String authKey(EmailDto emailDto) {
@@ -35,12 +42,20 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    @Transactional
     @Override
     public String authPassword(EmailDto emailDto) {
         String email = emailDto.getUserEmail();
         String password = getTempPassword();
         emailSendService.sendPasswordEmail(email,password);
-        return "임시 비밀번호 : " + password;
+
+        Member findMember = memberRepository.findByEmail(emailDto.getUserEmail());
+        if(findMember == null) throw new UserNotFoundException();
+
+        String encodePw = passwordEncoder.encode(password);
+        findMember.updatePassword(encodePw);
+
+        return encodePw;
     }
 
     // 난수를 호출하는 메소드
