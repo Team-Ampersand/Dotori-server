@@ -1,7 +1,5 @@
 package com.server.Dotori.model.point.service;
 
-import com.server.Dotori.model.board.repository.BoardRepository;
-import com.server.Dotori.model.board.service.BoardService;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
@@ -30,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class PointServiceImpl {
+class PointServiceTest {
 
     @Autowired
     private MemberRepository memberRepository;
@@ -89,17 +87,11 @@ class PointServiceImpl {
                         .build()
         );
 
-//        PointDto pointDto = new PointDto();
-//        pointDto.setAdminId(memberRepository.findByUsername("배태현").getId());
-//        pointDto.setReceiverId(memberRepository.findByUsername("qoxoqoxo").getId());
-//        pointDto.setPoint(3L);
-
         //when
         pointService.point(
                 PointDto.builder()
-                        .adminId(memberRepository.findByUsername("배태현").getId())
                         .receiverId(memberRepository.findByUsername("qoxoqoxo").getId())
-                        .point(3L)
+                        .point(-3L)
                         .build()
         );
 
@@ -107,6 +99,6 @@ class PointServiceImpl {
         em.clear();
 
         //then
-        assertEquals(3L, memberRepository.findByUsername("qoxoqoxo").getPoint());
+        assertEquals(-3L, memberRepository.findByUsername("qoxoqoxo").getPoint());
     }
 }
