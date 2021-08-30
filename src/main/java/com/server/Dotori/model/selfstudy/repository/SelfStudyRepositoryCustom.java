@@ -8,4 +8,6 @@ import java.util.List;
 public interface SelfStudyRepositoryCustom {
 
     List<SelfStudyStudentsDto> findBySelfStudyAPLLIED();
+
+    void updateSelfStudyStatus();
 }
