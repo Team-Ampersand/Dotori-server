@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.service;
 
+import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.EmailDto;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.dto.MemberEmailKeyDto;
@@ -8,15 +9,20 @@ import com.server.Dotori.util.redis.RedisUtil;
 
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.transaction.Transactional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@Transactional
 public class EmailServiceTest {
 
     @Autowired
@@ -75,10 +81,10 @@ public class EmailServiceTest {
 
         // when
         memberService.signup(memberDto);
-        String result = emailService.authPassword(emailDto);
+        Member result = emailService.authPassword(emailDto);
 
         // then
-        assertThat(result).isEqualTo(memberRepository.findByEmail(memberDto.getEmail()).getPassword());
+        assertThat(result.getPassword()).isEqualTo(memberRepository.findByEmail(memberDto.getEmail()).getPassword());
     }
 
 }
