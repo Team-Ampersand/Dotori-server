@@ -35,8 +35,10 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public String authCheck(MemberEmailKeyDto memberEmailKeyDto) {
-        if(redisUtil.getData(memberEmailKeyDto.getKey()) != null){
-            return redisUtil.getData(memberEmailKeyDto.getKey());
+        if(redisUtil.getData(memberEmailKeyDto.getKey()) != null && redisUtil.getData(memberEmailKeyDto.getKey()).equals(memberRepository.findByEmail(memberEmailKeyDto.getKey()).getEmail())){
+            String userEmail = redisUtil.getData(memberEmailKeyDto.getKey());
+            redisUtil.deleteData(memberEmailKeyDto.getKey());
+            return userEmail;
         }else{
             throw new UserNotFoundException();
         }
@@ -44,7 +46,7 @@ public class EmailServiceImpl implements EmailService {
 
     @Transactional
     @Override
-    public String authPassword(EmailDto emailDto) {
+    public Member authPassword(EmailDto emailDto) {
         String email = emailDto.getUserEmail();
         String password = getTempPassword();
         emailSendService.sendPasswordEmail(email,password);
@@ -52,10 +54,9 @@ public class EmailServiceImpl implements EmailService {
         Member findMember = memberRepository.findByEmail(emailDto.getUserEmail());
         if(findMember == null) throw new UserNotFoundException();
 
-        String encodePw = passwordEncoder.encode(password);
-        findMember.updatePassword(encodePw);
+        findMember.updatePassword(passwordEncoder.encode(password));
 
-        return encodePw;
+        return findMember;
     }
 
     // 난수를 호출하는 메소드
