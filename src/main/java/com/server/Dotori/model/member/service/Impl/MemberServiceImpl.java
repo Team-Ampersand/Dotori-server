@@ -38,7 +38,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public Long signup(MemberDto memberDto){
-        if(memberRepository.findByUsername(memberDto.getUsername()) != null){
+        if(memberRepository.existsByUsername(memberDto.getUsername())){
             throw new UserNotFoundException();
         }
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
@@ -56,7 +56,6 @@ public class MemberServiceImpl implements MemberService {
             return userInfo.getId();
         }
         Member findUser = memberRepository.findByUsername(memberDto.getUsername());
-
         return findUser.getId();
     }
 

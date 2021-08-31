@@ -1,9 +1,11 @@
 package com.server.Dotori.model.member.service;
 
-import com.server.Dotori.model.member.dto.MemberEmailDto;
+import com.server.Dotori.model.member.Member;
+import com.server.Dotori.model.member.dto.EmailDto;
 import com.server.Dotori.model.member.dto.MemberEmailKeyDto;
 
 public interface EmailService {
-    String auth(MemberEmailDto memberEmailDto);
+    String authKey(EmailDto emailDto);
     String authCheck(MemberEmailKeyDto memberEmailKeyDto);
+    Member authPassword(EmailDto emailDto);
 }
