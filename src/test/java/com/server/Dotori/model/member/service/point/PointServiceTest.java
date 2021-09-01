@@ -2,6 +2,7 @@ package com.server.Dotori.model.member.service.point;
 
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
+import com.server.Dotori.model.member.dto.point.GetPointDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.enumType.SelfStudy;
 import com.server.Dotori.model.member.repository.MemberRepository;
@@ -101,5 +102,43 @@ class PointServiceTest {
 
         //then
         assertEquals(-3L, memberRepository.findByUsername("qoxoqoxo").getPoint());
+    }
+
+    @Test
+    @DisplayName("반별로 학생들의 상벌점이 조회되나요?")
+    public void getAllStudentsPointTest() {
+        memberRepository.save(
+                Member.builder()
+                        .username("qoxoqoxo")
+                        .stdNum("1120")
+                        .password("1234")
+                        .email("s20013@gsm.hs.kr")
+                        .roles(Collections.singletonList(Role.ROLE_MEMBER))
+                        .music(CAN)
+                        .selfStudy(SelfStudy.CAN)
+                        .point(-2L)
+                        .answer("배털")
+                        .build()
+        );
+
+        memberRepository.save(
+                Member.builder()
+                        .username("qoxoqoxo")
+                        .stdNum("1119")
+                        .password("1234")
+                        .email("s20083@gsm.hs.kr")
+                        .roles(Collections.singletonList(Role.ROLE_MEMBER))
+                        .music(CAN)
+                        .selfStudy(SelfStudy.CAN)
+                        .point(-13L)
+                        .answer("배털")
+                        .build()
+        );
+
+        //when
+        List<GetPointDto> allStudentPoint = pointService.getAllStudentPoint(11L);
+
+        //then
+        assertNotNull(allStudentPoint);
     }
 }
