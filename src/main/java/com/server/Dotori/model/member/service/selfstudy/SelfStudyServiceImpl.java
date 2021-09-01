@@ -62,4 +62,9 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     public void updateSelfStudyStatus() {
         memberRepository.updateSelfStudyStatus();
     }
+
+    @Override
+    public Integer selfStudyCount() {
+        return count;
+    }
 }
