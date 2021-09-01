@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.repository;
 
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -26,7 +27,9 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                         member.username)
                 ).where(
                         member.selfStudy.eq(SelfStudy.APPLIED)
-                ).fetch();
+                )
+                .orderBy(member.stdNum.asc())
+                .fetch();
     }
 
     @Override
