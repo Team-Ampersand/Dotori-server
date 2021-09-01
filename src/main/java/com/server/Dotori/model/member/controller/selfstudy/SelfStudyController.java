@@ -60,4 +60,14 @@ public class SelfStudyController {
         selfStudyService.updateSelfStudyStatus();
         return responseService.getSuccessResult();
     }
+
+    @GetMapping ("/selfstudy/count")
+    @ResponseStatus( HttpStatus.OK )
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public SingleResult selfStudyTotalCount() {
+        return responseService.getSingleResult(selfStudyService.selfStudyCount());
+    }
 }
