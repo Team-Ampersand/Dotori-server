@@ -64,7 +64,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     }
 
     @Override
-    public Integer selfStudyCount() {
+    public int selfStudyCount() {
         return count;
     }
 }

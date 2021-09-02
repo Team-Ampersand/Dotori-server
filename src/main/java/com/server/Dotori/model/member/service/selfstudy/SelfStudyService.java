@@ -14,5 +14,5 @@ public interface SelfStudyService {
 
     void updateSelfStudyStatus();
 
-    Integer selfStudyCount();
+    int selfStudyCount();
 }
