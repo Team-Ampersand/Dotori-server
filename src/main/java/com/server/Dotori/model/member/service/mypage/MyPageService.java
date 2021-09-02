@@ -1,2 +1,8 @@
-package com.server.Dotori.model.member.service.mypage;public interface MyPageService {
+package com.server.Dotori.model.member.service.mypage;
+
+import com.server.Dotori.model.member.dto.GetAboutPointDto;
+
+public interface MyPageService {
+
+    GetAboutPointDto getMyProfile();
 }
