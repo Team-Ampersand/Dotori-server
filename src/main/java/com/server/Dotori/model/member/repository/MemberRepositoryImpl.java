@@ -1,11 +1,10 @@
 package com.server.Dotori.model.member.repository;
 
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.server.Dotori.model.member.dto.point.GetPointDto;
-import com.server.Dotori.model.member.dto.selfstudy.SelfStudyStudentsDto;
+import com.server.Dotori.model.member.Member;
+import com.server.Dotori.model.member.dto.GetAboutPointDto;
+import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 import com.server.Dotori.model.member.enumType.SelfStudy;
 import lombok.RequiredArgsConstructor;
 
@@ -46,9 +45,9 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
     }
 
     @Override
-    public List<GetPointDto> findStudentPoint(Long id) {
+    public List<GetAboutPointDto> findStudentPoint(Long id) {
         return queryFactory.from(member)
-                .select(Projections.constructor(GetPointDto.class,
+                .select(Projections.constructor(GetAboutPointDto.class,
                         member.id,
                         member.stdNum,
                         member.username,
@@ -57,5 +56,18 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                 .where(member.stdNum.like(id+"%"))
                 .orderBy(member.stdNum.asc())
                 .fetch();
+    }
+
+    @Override
+    public GetAboutPointDto findProfileByMember(Member memberEntity) {
+        return queryFactory.from(member)
+                .select(Projections.constructor(GetAboutPointDto.class,
+                        member.id,
+                        member.stdNum,
+                        member.username,
+                        member.point
+                ))
+                .where(member.eq(memberEntity))
+                .fetchOne();
     }
 }
