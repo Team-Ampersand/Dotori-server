@@ -21,7 +21,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     private final CurrentUserUtil currentUserUtil;
     private final MemberRepository memberRepository;
 
-    Integer count = 0;
+    int count = 0;
 
     @Override
     @Transactional
@@ -61,5 +61,10 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Transactional
     public void updateSelfStudyStatus() {
         memberRepository.updateSelfStudyStatus();
+    }
+
+    @Override
+    public int selfStudyCount() {
+        return count;
     }
 }

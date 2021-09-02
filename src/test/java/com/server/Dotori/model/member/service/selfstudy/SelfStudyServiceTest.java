@@ -8,9 +8,8 @@ import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.model.member.dto.selfstudy.SelfStudyStudentsDto;
 import com.server.Dotori.model.member.service.selfstudy.SelfStudyService;
 import com.server.Dotori.util.CurrentUserUtil;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,9 +26,11 @@ import java.util.List;
 import static com.server.Dotori.model.member.enumType.Music.CAN;
 import static com.server.Dotori.model.member.enumType.SelfStudy.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.MethodOrderer.*;
 
 @SpringBootTest
 @Transactional
+@TestMethodOrder(OrderAnnotation.class)
 class SelfStudyServiceTest {
 
     @Autowired private PasswordEncoder passwordEncoder;
@@ -153,5 +154,18 @@ class SelfStudyServiceTest {
         assertEquals(SelfStudy.CAN, memberRepository.findByUsername("qoxogus1").getSelfStudy());
         assertEquals(SelfStudy.CAN, memberRepository.findByUsername("qwer").getSelfStudy());
         assertEquals(SelfStudy.CAN, memberRepository.findByUsername("rewq").getSelfStudy()); //이 회원은 그대로 CAN
+    }
+
+    @Test
+    @Order(1)
+    @DisplayName("자습신청한 학생 수 카운트가 잘 세지나요?")
+    public void selfStudyCountTest() {
+        //given //when
+        selfStudyService.requestSelfStudy();
+
+        Integer selfStudyCount = selfStudyService.selfStudyCount();
+
+        //then
+        assertEquals(1, selfStudyCount);
     }
 }
