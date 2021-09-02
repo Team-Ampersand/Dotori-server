@@ -1,4 +1,4 @@
-package com.server.Dotori.model.member.dto.point;
+package com.server.Dotori.model.member.dto;
 
 import lombok.Builder;
 import lombok.Data;
