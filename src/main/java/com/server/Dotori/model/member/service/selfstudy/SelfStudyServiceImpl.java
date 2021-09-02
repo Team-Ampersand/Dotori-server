@@ -21,7 +21,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     private final CurrentUserUtil currentUserUtil;
     private final MemberRepository memberRepository;
 
-    Integer count = 0;
+    int count = 0;
 
     @Override
     @Transactional
