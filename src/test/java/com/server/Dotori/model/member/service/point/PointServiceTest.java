@@ -2,12 +2,11 @@ package com.server.Dotori.model.member.service.point;
 
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
-import com.server.Dotori.model.member.dto.point.GetPointDto;
+import com.server.Dotori.model.member.dto.GetAboutPointDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.enumType.SelfStudy;
 import com.server.Dotori.model.member.repository.MemberRepository;
-import com.server.Dotori.model.member.service.point.PointService;
-import com.server.Dotori.model.member.dto.point.PointDto;
+import com.server.Dotori.model.member.dto.PointDto;
 import com.server.Dotori.util.CurrentUserUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -136,7 +135,7 @@ class PointServiceTest {
         );
 
         //when
-        List<GetPointDto> allStudentPoint = pointService.getAllStudentPoint(11L);
+        List<GetAboutPointDto> allStudentPoint = pointService.getAllStudentPoint(11L);
 
         //then
         assertNotNull(allStudentPoint);

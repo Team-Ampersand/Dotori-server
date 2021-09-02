@@ -2,9 +2,9 @@ package com.server.Dotori.model.member.service.point;
 
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.Member;
-import com.server.Dotori.model.member.dto.point.GetPointDto;
+import com.server.Dotori.model.member.dto.GetAboutPointDto;
 import com.server.Dotori.model.member.repository.MemberRepository;
-import com.server.Dotori.model.member.dto.point.PointDto;
+import com.server.Dotori.model.member.dto.PointDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,8 +27,8 @@ public class PointServiceImpl implements PointService {
     }
 
     @Override
-    public List<GetPointDto> getAllStudentPoint(Long id) {
-        List<GetPointDto> studentPoint = memberRepository.findStudentPoint(id);
+    public List<GetAboutPointDto> getAllStudentPoint(Long id) {
+        List<GetAboutPointDto> studentPoint = memberRepository.findStudentPoint(id);
 
         if (studentPoint.isEmpty()) throw new IllegalArgumentException("해당 반에 해당하는 학생이 없습니다.");
 

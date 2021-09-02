@@ -1,6 +1,6 @@
 package com.server.Dotori.model.member.service.selfstudy;
 
-import com.server.Dotori.model.member.dto.selfstudy.SelfStudyStudentsDto;
+import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 
 import java.util.List;
 

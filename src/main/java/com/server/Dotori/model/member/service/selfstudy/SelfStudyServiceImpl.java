@@ -1,7 +1,7 @@
 package com.server.Dotori.model.member.service.selfstudy;
 
 import com.server.Dotori.model.member.Member;
-import com.server.Dotori.model.member.dto.selfstudy.SelfStudyStudentsDto;
+import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
