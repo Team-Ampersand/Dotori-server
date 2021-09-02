@@ -1,7 +1,8 @@
 package com.server.Dotori.model.member.repository;
 
-import com.server.Dotori.model.member.dto.point.GetPointDto;
-import com.server.Dotori.model.member.dto.selfstudy.SelfStudyStudentsDto;
+import com.server.Dotori.model.member.Member;
+import com.server.Dotori.model.member.dto.GetAboutPointDto;
+import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 
 import java.util.List;
 
@@ -11,5 +12,7 @@ public interface MemberRepositoryCustom {
 
     void updateSelfStudyStatus();
 
-    List<GetPointDto> findStudentPoint(Long id);
+    List<GetAboutPointDto> findStudentPoint(Long id);
+
+    GetAboutPointDto findProfileByMember(Member memberEntity);
 }
