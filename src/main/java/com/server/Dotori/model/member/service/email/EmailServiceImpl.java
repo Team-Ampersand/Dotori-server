@@ -5,6 +5,7 @@ import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.EmailDto;
 import com.server.Dotori.model.member.dto.MemberEmailKeyDto;
 import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.util.CurrentUserUtil;
 import com.server.Dotori.util.KeyUtil;
 import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
@@ -22,23 +23,23 @@ public class EmailServiceImpl implements EmailService {
     private final RedisUtil redisUtil;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CurrentUserUtil currentUserUtil;
 
     @Override
     public String authKey(EmailDto emailDto) {
         String key = keyUtil.keyIssuance();
-        redisUtil.setDataExpire(key, emailDto.getUserEmail(), 3 * 60 * 1000L);
+        redisUtil.setDataExpire(key, key, 3 * 60 * 1000L);
         emailSendService.sendEmail(emailDto.getUserEmail(),key);
         return key;
     }
 
     @Override
     public String authCheck(MemberEmailKeyDto memberEmailKeyDto) {
-        if(redisUtil.getData(memberEmailKeyDto.getKey()) != null && redisUtil.getData(memberEmailKeyDto.getKey()).equals(memberRepository.findByEmail(memberEmailKeyDto.getKey()).getEmail())){
-            String userEmail = redisUtil.getData(memberEmailKeyDto.getKey());
-            redisUtil.deleteData(memberEmailKeyDto.getKey());
-            return userEmail;
-        }else{
-            throw new UserNotFoundException();
+        if (memberEmailKeyDto.getKey().equals(redisUtil.getData(memberEmailKeyDto.getKey()))) { // memberEmailKeyDto Key값과 redis에 등록된 Key와 같다면
+            redisUtil.deleteData(memberEmailKeyDto.getKey()); // redis에 등록되어있는 Key를 삭제한다.
+            return memberEmailKeyDto.getKey(); // 테스트코드를 작성하기 위한 인증 key 반환
+        } else {
+            throw new IllegalArgumentException("인증번호가 일치하지 않습니다.");
         }
     }
 
