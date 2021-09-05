@@ -30,12 +30,12 @@ public class JwtTokenProvider {
     @Value("${security.jwt.token.secretKey}")
     private String secretKey;
 
-//    public final static long TOKEN_VALIDATION_SECOND = 1000L * 3600 * 24;  //하루를 accessToken 만료 기간으로 잡는다
-//    public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 3600 * 24 * 210; //7개월을 refreshToken 만료 기간으로 잡는다.
+//    public static long TOKEN_VALIDATION_SECOND = 1000L * 3600 * 24;  //하루를 accessToken 만료 기간으로 잡는다
+//    public static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 3600 * 24 * 210; //7개월을 refreshToken 만료 기간으로 잡는다.
 
     // *** Test Code *** //
-    public final static long TOKEN_VALIDATION_SECOND = 1000L * 60;  // 1분을 accessToken 만료 기간으로 잡는다
-    public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 120; // 1시간을 refreshToken 만료 기간으로 잡는다.
+    public static long TOKEN_VALIDATION_SECOND = 1000L * 60 * 60;  // 1시간을 accessToken 만료 기간으로 잡는다
+    public static long REFRESH_TOKEN_VALIDATION_SECOND = TOKEN_VALIDATION_SECOND * 24 * 180; // 1시간을 refreshToken 만료 기간으로 잡는다.
 
     private final MyUserDetails myUserDetails;
 
