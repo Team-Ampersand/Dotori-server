@@ -10,6 +10,8 @@ public interface MemberRepositoryCustom {
 
     List<SelfStudyStudentsDto> findBySelfStudyAPLLIED();
 
+    List<SelfStudyStudentsDto> findBySelfStudyCategory(Long id);
+
     void updateSelfStudyStatus();
 
     List<GetAboutPointDto> findStudentPoint(Long id);

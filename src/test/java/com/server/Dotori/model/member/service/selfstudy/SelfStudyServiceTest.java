@@ -98,6 +98,17 @@ class SelfStudyServiceTest {
     }
 
     @Test
+    @DisplayName("자습신청한 학생들의 목록이 학년반별 카테고리 목록으로 조회 되나요?")
+    public void getSelfStudyStudentsCategoryTest() {
+        //given //when
+        selfStudyService.requestSelfStudy();
+        List<SelfStudyStudentsDto> selfStudyStudentsByCategory = selfStudyService.getSelfStudyStudentsByCategory(24L);
+
+        //then
+        assertEquals(1, selfStudyStudentsByCategory.size());
+    }
+
+    @Test
     @DisplayName("학생들의 자습신청 상태가 잘 변경되나요?")
     public void updateSelfStudyStatus() {
         //given
