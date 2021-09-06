@@ -12,6 +12,8 @@ public interface SelfStudyService {
 
     List<SelfStudyStudentsDto> getSelfStudyStudents();
 
+    List<SelfStudyStudentsDto> getSelfStudyStudentsByCategory(Long id);
+
     void updateSelfStudyStatus();
 
     int selfStudyCount();

@@ -58,6 +58,15 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     }
 
     @Override
+    public List<SelfStudyStudentsDto> getSelfStudyStudentsByCategory(Long id) {
+        List<SelfStudyStudentsDto> selfStudyCategory = memberRepository.findBySelfStudyCategory(id);
+
+        if (selfStudyCategory.isEmpty()) throw new IllegalArgumentException("해당 반에 해당하는 학생이 없습니다.");
+
+        return selfStudyCategory;
+    }
+
+    @Override
     @Transactional
     public void updateSelfStudyStatus() {
         memberRepository.updateSelfStudyStatus();
