@@ -23,6 +23,12 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
     private final CurrentUserUtil currentUserUtil;
 
+    /**
+     * 공지사항을 생성하는 서비스로직 (기자위, 사감쌤, 개발자만 가능)
+     * @param boardDto boardDto
+     * @return board
+     * @author 배태현
+     */
     @Override
     public Board createBoard(BoardDto boardDto) {
         Member currentUser = currentUserUtil.getCurrentUser();
@@ -30,6 +36,12 @@ public class BoardServiceImpl implements BoardService {
         return boardRepository.save(boardDto.saveToEntity(currentUser));
     }
 
+    /**
+     * 공지사항 전체조회 서비스 로직 (로그인 되어있는 유저 사용가능)
+     * @param pageable pageble(7)
+     * @return Page-BoardGetDto (id, title, roles, createdDate)
+     * @author 배태현
+     */
     @Override
     public Page<BoardGetDto> getAllBoard(Pageable pageable) {
         Page<Board> boardPage = boardRepository.findAll(pageable);
@@ -43,6 +55,12 @@ public class BoardServiceImpl implements BoardService {
         });
     }
 
+    /**
+     * 공지사항 상세조회 서비스 로직
+     * @param boardId boardId
+     * @return BoardGetDto (id, title, content,  roles, createdDate, modifiedDate)
+     * @author 배태현
+     */
     @Override
     public BoardGetIdDto getBoardById(Long boardId) {
 
@@ -56,6 +74,13 @@ public class BoardServiceImpl implements BoardService {
         return map;
     }
 
+    /**
+     * 공지사항 수정 서비스 로직
+     * @param boardId boardId
+     * @param boardUpdateDto boardUpdateDto (title, content)
+     * @return Board
+     * @author 배태현
+     */
     @Override
     @Transactional
     public Board updateBoard(Long boardId, BoardDto boardUpdateDto) {
@@ -67,6 +92,11 @@ public class BoardServiceImpl implements BoardService {
         return board;
     }
 
+    /**
+     * 공지사항 삭제 서비스 로직
+     * @param boardId boardId
+     * @author 배태현
+     */
     @Override
     public void deleteBoard(Long boardId) {
         Board board = boardRepository.findById(boardId)
