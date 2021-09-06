@@ -56,7 +56,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     /**
-     * 공지사항 상세조회 서비스 로직
+     * 공지사항 상세조회 서비스 로직 (로그인 되어있을 시 사용가능)
      * @param boardId boardId
      * @return BoardGetDto (id, title, content,  roles, createdDate, modifiedDate)
      * @author 배태현
@@ -75,7 +75,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     /**
-     * 공지사항 수정 서비스 로직
+     * 공지사항 수정 서비스 로직 (기자위, 사감쌤, 개발자 권한 사용가능)
      * @param boardId boardId
      * @param boardUpdateDto boardUpdateDto (title, content)
      * @return Board
@@ -93,7 +93,7 @@ public class BoardServiceImpl implements BoardService {
     }
 
     /**
-     * 공지사항 삭제 서비스 로직
+     * 공지사항 삭제 서비스 로직 (기자위, 사감쌤, 개발자 권한 사용가능)
      * @param boardId boardId
      * @author 배태현
      */
