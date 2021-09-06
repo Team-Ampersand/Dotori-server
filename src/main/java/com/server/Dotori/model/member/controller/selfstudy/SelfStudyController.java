@@ -50,6 +50,16 @@ public class SelfStudyController {
         return responseService.getSingleResult(selfStudyService.getSelfStudyStudents());
     }
 
+    @GetMapping("/selfstudy/{classId}")
+    @ResponseStatus( HttpStatus.OK )
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public SingleResult getSelfStudyStudentsByCategory(@PathVariable("classId") Long id) {
+        return responseService.getSingleResult(selfStudyService.getSelfStudyStudentsByCategory(id));
+    }
+
     @PutMapping ("/selfstudy/status")
     @ResponseStatus( HttpStatus.OK )
     @ApiImplicitParams({

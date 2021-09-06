@@ -21,11 +21,27 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
     public List<SelfStudyStudentsDto> findBySelfStudyAPLLIED() {
 
         return queryFactory.from(member)
-                .select(Projections.constructor(SelfStudyStudentsDto.class,
+                .select(Projections.fields(SelfStudyStudentsDto.class,
+                        member.id,
                         member.stdNum,
                         member.username)
                 ).where(
                         member.selfStudy.eq(SelfStudy.APPLIED)
+                )
+                .orderBy(member.stdNum.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<SelfStudyStudentsDto> findBySelfStudyCategory(Long id) {
+        return queryFactory.from(member)
+                .select(Projections.fields(SelfStudyStudentsDto.class,
+                        member.id,
+                        member.stdNum,
+                        member.username))
+                .where(
+                        member.selfStudy.eq(SelfStudy.APPLIED)
+                        .and(member.stdNum.like(id+"%"))
                 )
                 .orderBy(member.stdNum.asc())
                 .fetch();

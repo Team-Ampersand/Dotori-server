@@ -58,7 +58,7 @@ public class EmailServiceTest {
 
         //then
         System.out.println("======================== " + key + " =========================");
-        assertThat(memberDto.getEmail()).isEqualTo(redisUtil.getData(key));
+        assertThat(key).isEqualTo(redisUtil.getData(key));
     }
 
     @Test
