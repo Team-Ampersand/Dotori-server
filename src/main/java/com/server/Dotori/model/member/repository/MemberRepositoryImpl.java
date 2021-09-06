@@ -35,7 +35,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
     @Override
     public List<SelfStudyStudentsDto> findBySelfStudyCategory(Long id) {
         return queryFactory.from(member)
-                .select(Projections.constructor(SelfStudyStudentsDto.class,
+                .select(Projections.fields(SelfStudyStudentsDto.class,
                         member.id,
                         member.stdNum,
                         member.username))
@@ -63,7 +63,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
     @Override
     public List<GetAboutPointDto> findStudentPoint(Long id) {
         return queryFactory.from(member)
-                .select(Projections.fields(GetAboutPointDto.class,
+                .select(Projections.constructor(GetAboutPointDto.class,
                         member.id,
                         member.stdNum,
                         member.username,
