@@ -22,6 +22,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
 
         return queryFactory.from(member)
                 .select(Projections.fields(SelfStudyStudentsDto.class,
+                        member.id,
                         member.stdNum,
                         member.username)
                 ).where(
@@ -35,6 +36,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
     public List<SelfStudyStudentsDto> findBySelfStudyCategory(Long id) {
         return queryFactory.from(member)
                 .select(Projections.constructor(SelfStudyStudentsDto.class,
+                        member.id,
                         member.stdNum,
                         member.username))
                 .where(
