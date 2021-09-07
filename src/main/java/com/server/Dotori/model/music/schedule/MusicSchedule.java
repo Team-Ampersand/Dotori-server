@@ -15,11 +15,17 @@ public class MusicSchedule {
     private final MusicRepository musicRepository;
     private final MusicService musicService;
 
+    /**
+     * "토요일 23시 59분"에 음악신청 목록을 자동으로 초기화해주는 Scheduled (repository -> service 로 변경할예정)
+     */
     @Scheduled(cron = "0 59 23 ? * SAT", zone = "GMT+9")
     public void saturdayMusicDeleteAll() {
         musicRepository.deleteAll();
     }
 
+    /**
+     * "월 ~ 금 자정"에 음악신청 상태를 자동으로 update 해주는 Scheduled
+     */
     @Scheduled(cron = "0 0 0 ? * MON-FRI", zone = "GMT+9")
     public void weekdayMusicStatusReset() {
         musicService.updateMemberMusicStatus();
