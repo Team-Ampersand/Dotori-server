@@ -46,7 +46,7 @@ public class MusicServiceImpl implements MusicService {
     /**
      * 신청된 모든 음악을 조회하는 서비스 로직 (로그인된 유저 사용가능)
      * @exception
-     * @return List-Music (dto로 반환하도록 변경해야할 것 같습니다 / entity 와 spec 이 동일한 dto)
+     * @return List-MusicResDto
      */
     @Override
     public List<MusicResDto> getAllMusic() {
@@ -58,11 +58,15 @@ public class MusicServiceImpl implements MusicService {
 
     /**
      * 신청된 음악을 개별삭제하는 서비스 로직 (기자위, 사감쌤 개발자만 가능)
+     * @exception 
      * @param musicId musicId
      */
     @Override
     public void deleteMusic(Long musicId) {
-        musicRepository.deleteById(musicId);
+        Music music = musicRepository.findById(musicId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 신청된 음악을 찾을 수 없습니다."));
+
+        musicRepository.deleteById(music.getId());
     }
 
     /**
