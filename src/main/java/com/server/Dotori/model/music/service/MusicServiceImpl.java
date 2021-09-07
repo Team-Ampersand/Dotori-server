@@ -71,4 +71,12 @@ public class MusicServiceImpl implements MusicService {
     public void updateMemberMusicStatus() {
         musicRepository.updateMusicStatusMemberByMember();
     }
+
+    /**
+     * 신청된 음악을 모두 지우는 서비스로직 (Scheduled)
+     */
+    @Override
+    public void saturdayMusicDeleteAll() {
+        musicRepository.deleteAll();
+    }
 }

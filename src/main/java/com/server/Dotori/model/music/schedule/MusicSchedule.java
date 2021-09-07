@@ -12,15 +12,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class MusicSchedule {
 
-    private final MusicRepository musicRepository;
     private final MusicService musicService;
 
     /**
-     * "토요일 23시 59분"에 음악신청 목록을 자동으로 초기화해주는 Scheduled (repository -> service 로 변경할예정)
+     * "토요일 23시 59분"에 음악신청 목록을 자동으로 초기화해주는 Scheduled
      */
     @Scheduled(cron = "0 59 23 ? * SAT", zone = "GMT+9")
     public void saturdayMusicDeleteAll() {
-        musicRepository.deleteAll();
+        musicService.saturdayMusicDeleteAll();
     }
 
     /**

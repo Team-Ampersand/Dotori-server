@@ -14,4 +14,6 @@ public interface MusicService {
     void deleteMusic(Long musicId);
   
     void updateMemberMusicStatus();
+
+    void saturdayMusicDeleteAll();
 }
