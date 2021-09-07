@@ -9,6 +9,7 @@ import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.model.member.service.MemberService;
 import com.server.Dotori.model.music.Music;
 import com.server.Dotori.model.music.dto.MusicApplicationDto;
+import com.server.Dotori.model.music.dto.MusicResDto;
 import com.server.Dotori.model.music.repository.MusicRepository;
 import com.server.Dotori.util.CurrentUserUtil;
 import org.assertj.core.api.Assertions;
@@ -108,7 +109,7 @@ class MusicServiceTest {
         musicRepository.saveAll(musicList);
 
         //when
-        List<Music> getAllMusic = musicService.getAllMusic();
+        List<MusicResDto> getAllMusic = musicService.getAllMusic();
 
         //then
         assertEquals(getAllMusic.size(), 30);
