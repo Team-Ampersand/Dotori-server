@@ -70,16 +70,15 @@ public class MemberServiceTest {
                 .stdNum("2206")
                 .password("1234")
                 .email("s20018@gsm.hs.kr")
-                .key("ABC1")
-                .answer("hello")
+                .answer("노갱")
                 .build();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 
         // when
-        memberService.signup(memberDto);
+        Long result = memberService.signup(memberDto);
 
         // then
-        assertThat(memberDto.getUsername()).isEqualTo(memberRepository.findByEmail(memberDto.getEmail()).getUsername());
+        assertThat(result).isEqualTo(memberRepository.findByEmail(memberDto.getEmail()).getId());
     }
 
 }
