@@ -1,17 +1,15 @@
 package com.server.Dotori.model.music.service;
 
-import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.member.Member;
-import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.model.music.Music;
 import com.server.Dotori.model.music.dto.MusicApplicationDto;
+import com.server.Dotori.model.music.dto.MusicResDto;
 import com.server.Dotori.model.music.repository.MusicRepository;
 import com.server.Dotori.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 
 import static com.server.Dotori.model.member.enumType.Music.*;
@@ -47,11 +45,15 @@ public class MusicServiceImpl implements MusicService {
 
     /**
      * 신청된 모든 음악을 조회하는 서비스 로직 (로그인된 유저 사용가능)
+     * @exception
      * @return List-Music (dto로 반환하도록 변경해야할 것 같습니다 / entity 와 spec 이 동일한 dto)
      */
     @Override
-    public List<Music> getAllMusic() {
-        return musicRepository.findAll();
+    public List<MusicResDto> getAllMusic() {
+        List<MusicResDto> allMusic = musicRepository.findAllMusic();
+
+        if (allMusic.isEmpty()) throw new IllegalArgumentException("신청된 음악이 없습니다.");
+        return allMusic;
     }
 
     /**
