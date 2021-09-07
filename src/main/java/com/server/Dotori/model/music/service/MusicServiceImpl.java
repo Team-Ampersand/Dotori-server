@@ -1,17 +1,15 @@
 package com.server.Dotori.model.music.service;
 
-import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.member.Member;
-import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.model.music.Music;
 import com.server.Dotori.model.music.dto.MusicApplicationDto;
+import com.server.Dotori.model.music.dto.MusicResDto;
 import com.server.Dotori.model.music.repository.MusicRepository;
 import com.server.Dotori.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 
 import static com.server.Dotori.model.member.enumType.Music.*;
@@ -22,8 +20,14 @@ public class MusicServiceImpl implements MusicService {
 
     private final MusicRepository musicRepository;
     private final CurrentUserUtil currentUserUtil;
-    private final MemberRepository memberRepository;
 
+    /**
+     * 음악을 신청하는 서비스 로직 (로그인된 유저 사용가능) <br>
+     * 이미 음악을 신청한 학생이라면?
+     * @exception
+     * @param musicApplicationDto musicApplicationDto (musicUrl)
+     * @return Music
+     */
     @Override
     @Transactional
     public Music musicApplication(MusicApplicationDto musicApplicationDto) {
@@ -39,19 +43,46 @@ public class MusicServiceImpl implements MusicService {
         }
     }
 
+    /**
+     * 신청된 모든 음악을 조회하는 서비스 로직 (로그인된 유저 사용가능)
+     * @exception
+     * @return List-MusicResDto
+     */
     @Override
-    public List<Music> getAllMusic() {
-        return musicRepository.findAll();
+    public List<MusicResDto> getAllMusic() {
+        List<MusicResDto> allMusic = musicRepository.findAllMusic();
+
+        if (allMusic.isEmpty()) throw new IllegalArgumentException("신청된 음악이 없습니다.");
+        return allMusic;
     }
 
+    /**
+     * 신청된 음악을 개별삭제하는 서비스 로직 (기자위, 사감쌤 개발자만 가능)
+     * @exception 
+     * @param musicId musicId
+     */
     @Override
     public void deleteMusic(Long musicId) {
-        musicRepository.deleteById(musicId);
+        Music music = musicRepository.findById(musicId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 신청된 음악을 찾을 수 없습니다."));
+
+        musicRepository.deleteById(music.getId());
     }
 
+    /**
+     * 음악신청된 회원의 음악신청 상태를 변경하는 서비스로직 (Scheduled)
+     */
     @Override
     @Transactional
     public void updateMemberMusicStatus() {
         musicRepository.updateMusicStatusMemberByMember();
+    }
+
+    /**
+     * 신청된 음악을 모두 지우는 서비스로직 (Scheduled)
+     */
+    @Override
+    public void saturdayMusicDeleteAll() {
+        musicRepository.deleteAll();
     }
 }
