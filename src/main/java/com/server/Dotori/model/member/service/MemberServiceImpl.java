@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.service;
 
+import com.server.Dotori.exception.user.exception.UserAlreadyException;
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
@@ -34,14 +35,23 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public Long signup(MemberDto memberDto){
-        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        Member result = memberRepository.save(memberDto.toEntity());
-        return result.getId();
+        if(memberRepository.findByEmail(memberDto.getEmail()) == null && memberRepository.findByStdNum(memberDto.getStdNum()) == null){
+            memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+            Member result = memberRepository.save(memberDto.toEntity());
+            return result.getId();
+        }else {
+            throw new UserAlreadyException();
+        }
     }
 
+    /**
+     * 로그인
+     * @param memberLoginDto memberLoginDto
+     * @return
+     */
     @Override
     public Map<String,String> signin(MemberLoginDto memberLoginDto) {
-        Member findUser = memberRepository.findByUsername(memberLoginDto.getUsername());
+        Member findUser = memberRepository.findByUsername(memberLoginDto.getEmail());
         if(findUser == null) throw new UserNotFoundException();
 
         boolean passwordCheck = passwordEncoder.matches(memberLoginDto.getPassword(),findUser.getPassword());
@@ -51,8 +61,8 @@ public class MemberServiceImpl implements MemberService {
         String accessToken = jwtTokenProvider.createToken(findUser.getUsername(), findUser.getRoles());
         String refreshToken = jwtTokenProvider.createRefreshToken();
 
-        redisUtil.deleteData(memberLoginDto.getUsername());
-        redisUtil.setDataExpire(memberLoginDto.getUsername(),refreshToken,jwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND);
+        redisUtil.deleteData(memberLoginDto.getEmail());
+        redisUtil.setDataExpire(memberLoginDto.getEmail(),refreshToken,jwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND);
 
         map.put("username",findUser.getUsername());
         map.put("accessToken","Bearer " + accessToken);
