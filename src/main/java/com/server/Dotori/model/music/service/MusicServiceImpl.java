@@ -27,6 +27,7 @@ public class MusicServiceImpl implements MusicService {
      * @exception
      * @param musicApplicationDto musicApplicationDto (musicUrl)
      * @return Music
+     * @author 배태현
      */
     @Override
     @Transactional
@@ -47,6 +48,7 @@ public class MusicServiceImpl implements MusicService {
      * 신청된 모든 음악을 조회하는 서비스 로직 (로그인된 유저 사용가능)
      * @exception
      * @return List-MusicResDto
+     * @author 배태현
      */
     @Override
     public List<MusicResDto> getAllMusic() {
@@ -60,6 +62,7 @@ public class MusicServiceImpl implements MusicService {
      * 신청된 음악을 개별삭제하는 서비스 로직 (기자위, 사감쌤 개발자만 가능)
      * @exception 
      * @param musicId musicId
+     * @author 배태현
      */
     @Override
     public void deleteMusic(Long musicId) {
@@ -71,6 +74,7 @@ public class MusicServiceImpl implements MusicService {
 
     /**
      * 음악신청된 회원의 음악신청 상태를 변경하는 서비스로직 (Scheduled)
+     * @author 배태현
      */
     @Override
     @Transactional
@@ -80,6 +84,7 @@ public class MusicServiceImpl implements MusicService {
 
     /**
      * 신청된 음악을 모두 지우는 서비스로직 (Scheduled)
+     * @author 배태현
      */
     @Override
     public void saturdayMusicDeleteAll() {
