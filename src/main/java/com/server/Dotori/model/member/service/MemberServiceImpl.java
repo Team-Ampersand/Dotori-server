@@ -5,9 +5,11 @@ import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.dto.MemberLoginDto;
+import com.server.Dotori.model.member.dto.MemberPasswordDto;
 import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.model.member.service.MemberService;
 import com.server.Dotori.security.jwt.JwtTokenProvider;
+import com.server.Dotori.util.CurrentUserUtil;
 import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +29,7 @@ public class MemberServiceImpl implements MemberService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisUtil redisUtil;
+    private final CurrentUserUtil currentUserUtil;
 
     /**
      * 회원가입
@@ -51,7 +54,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public Map<String,String> signin(MemberLoginDto memberLoginDto) {
-        Member findUser = memberRepository.findByUsername(memberLoginDto.getEmail());
+        Member findUser = memberRepository.findByEmail(memberLoginDto.getEmail());
         if(findUser == null) throw new UserNotFoundException();
 
         boolean passwordCheck = passwordEncoder.matches(memberLoginDto.getPassword(),findUser.getPassword());
