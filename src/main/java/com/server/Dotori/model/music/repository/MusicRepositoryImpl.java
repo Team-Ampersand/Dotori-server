@@ -22,6 +22,7 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
 
     /**
      * 음악 상태가 음악 "신청됨" 상태인 회원을 음악 "신청가능" 으로 update 하는 query
+     * @author 배태현
      */
     @Override
     public void updateMusicStatusMemberByMember() {
@@ -37,6 +38,7 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
     /**
      * 신청된 음악을 조회하는 query
      * @return List-MusicResDto (id, musicUrl, member.username)
+     * @author 배태현
      */
     @Override
     public List<MusicResDto> findAllMusic() {
