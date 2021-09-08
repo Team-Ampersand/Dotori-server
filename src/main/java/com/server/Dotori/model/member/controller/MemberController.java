@@ -29,11 +29,10 @@ public class MemberController {
     }
 
     @PostMapping("/signin")
+    @ApiOperation(value="로그인")
     public CommonResult signin(@RequestBody MemberLoginDto memberLoginDto){
         Map<String, String> data = memberService.signin(memberLoginDto);
         return responseService.getSingleResult(data);
     }
-
-
 
 }
