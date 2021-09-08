@@ -6,6 +6,8 @@ import com.server.Dotori.model.member.service.email.EmailService;
 import com.server.Dotori.model.member.service.MemberService;
 import com.server.Dotori.response.ResponseService;
 import com.server.Dotori.response.result.CommonResult;
+import io.swagger.annotations.*;
+import jdk.jfr.Event;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +20,9 @@ public class MemberController {
 
     private final MemberService memberService;
     private final ResponseService responseService;
-    private final EmailService emailService;
 
     @PostMapping("/signup")
+    @ApiOperation(value="회원가입")
     public CommonResult signup(@RequestBody MemberDto memberDto){
         memberService.signup(memberDto);
         return responseService.getSuccessResult();

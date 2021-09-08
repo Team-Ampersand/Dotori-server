@@ -8,5 +8,4 @@ import org.springframework.stereotype.Repository;
 public interface MemberRepository extends JpaRepository<Member,Long>, MemberRepositoryCustom {
     Member findByUsername(String username);
     Member findByEmail(String email);
-    boolean existsByUsername(String username);
 }

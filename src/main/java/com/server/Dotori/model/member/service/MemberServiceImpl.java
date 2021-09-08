@@ -27,36 +27,16 @@ public class MemberServiceImpl implements MemberService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisUtil redisUtil;
 
-    @Value("${authKey.adminKey}")
-    private String adminKey;
-    @Value("${authKey.councillorKey}")
-    private String councillorKey;
-    @Value("${authKey.memberKey}")
-    private String memberKey;
-    @Value("${authKey.developerKey}")
-    private String developerKey;
-
+    /**
+     * 회원가입
+     * @param memberDto memberDto
+     * @return result.getId()
+     */
     @Override
     public Long signup(MemberDto memberDto){
-        if(memberRepository.existsByUsername(memberDto.getUsername())){
-            throw new UserNotFoundException();
-        }
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        if(memberDto.getKey().equals(adminKey)){
-            Member userInfo = memberRepository.save(memberDto.toEntity(ROLE_ADMIN));
-            return userInfo.getId();
-        }else if(memberDto.getKey().equals(councillorKey)){
-            Member userInfo = memberRepository.save(memberDto.toEntity(ROLE_COUNCILLOR));
-            return userInfo.getId();
-        }else if(memberDto.getKey().equals(memberKey)){
-            Member userInfo = memberRepository.save(memberDto.toEntity(ROLE_MEMBER));
-            return userInfo.getId();
-        }else if(memberDto.getKey().equals(developerKey)){
-            Member userInfo = memberRepository.save(memberDto.toEntity(ROLE_DEVELOPER));
-            return userInfo.getId();
-        }
-        Member findUser = memberRepository.findByUsername(memberDto.getUsername());
-        return findUser.getId();
+        Member result = memberRepository.save(memberDto.toEntity());
+        return result.getId();
     }
 
     @Override
