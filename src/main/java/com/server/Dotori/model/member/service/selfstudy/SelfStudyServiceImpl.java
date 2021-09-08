@@ -68,6 +68,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     /**
      * 자습신청한 학생을 전체 조회하는 서비스로직 (로그인된 유저 사용가능)
      * @return List - SelfStudyStudentDto (id, stuNum, username)
+     * @exception 
      * @author 배태현
      */
     @Override
@@ -82,6 +83,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * 자습신청한 학생을 학년반별로 조회하는 서비스로직 (로그인된 유저 사용가능)
      * @param id classId
      * @return List - SelfStudyStudentDto (id, stuNum, username)
+     * @exception
      * @author 배태현
      */
     @Override
