@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,7 @@ import javax.validation.constraints.Size;
 public class MemberLoginDto {
     @NotBlank(message = "username should be valid")
     @Size(min = 1, max = 10)
-    private String username;
+    private String email;
 
     @NotBlank(message = "password should be valid")
     @Size(min = 4)
