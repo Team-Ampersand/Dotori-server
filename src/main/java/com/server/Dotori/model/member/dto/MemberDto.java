@@ -19,25 +19,20 @@ import java.util.Collections;
 public class MemberDto {
     @NotBlank(message = "username should be valid")
     @Size(min = 1, max = 10)
-    @ApiModelProperty(example = "노경준")
     private String username;
 
     @NotBlank(message = "stdNum should be valid")
     @Size(min = 4, max = 4)
-    @ApiModelProperty(example = "2206")
     private String stdNum;
 
     @NotBlank(message = "password should be valid")
     @Size(min = 4)
-    @ApiModelProperty(example = "1234")
     private String password;
 
     @NotBlank(message = "email should be valid")
-    @ApiModelProperty(example = "s20018@gsm.hs.kr")
     private String email;
 
     @NotBlank(message = "answer should be valid")
-    @ApiModelProperty(example = "노갱")
     private String answer;
 
     public Member toEntity(){
