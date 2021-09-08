@@ -75,6 +75,12 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                 .execute();
     }
 
+    /**
+     * 학년반별로 상벌점 목록을 조회하는 query (학번 오름차순)
+     * @param id classId
+     * @return List - GetAboutPointDto (id, stuNum, username, point)
+     * @author 배태현
+     */
     @Override
     public List<GetAboutPointDto> findStudentPoint(Long id) {
         return queryFactory.from(member)
