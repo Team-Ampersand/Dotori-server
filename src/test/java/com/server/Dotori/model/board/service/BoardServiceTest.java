@@ -59,7 +59,7 @@ class BoardServiceTest {
                 .answer("배털")
                 .build();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        memberRepository.save(memberDto.toEntity(Role.ROLE_ADMIN));
+        memberRepository.save(memberDto.toEntity());
         System.out.println("======== saved =========");
 
         // when login session 발급
