@@ -19,7 +19,6 @@ import javax.transaction.Transactional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-@Transactional
 public class EmailServiceTest {
 
     @Autowired
