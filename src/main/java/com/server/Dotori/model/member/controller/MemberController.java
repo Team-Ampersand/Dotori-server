@@ -2,6 +2,7 @@ package com.server.Dotori.model.member.controller;
 
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.dto.MemberLoginDto;
+import com.server.Dotori.model.member.dto.MemberPasswordDto;
 import com.server.Dotori.model.member.service.email.EmailService;
 import com.server.Dotori.model.member.service.MemberService;
 import com.server.Dotori.response.ResponseService;
@@ -32,6 +33,17 @@ public class MemberController {
     @ApiOperation(value="로그인")
     public CommonResult signin(@RequestBody MemberLoginDto memberLoginDto){
         Map<String, String> data = memberService.signin(memberLoginDto);
+        return responseService.getSingleResult(data);
+    }
+
+    @PostMapping("/change/password")
+    @ApiOperation(value="비밀번호 변경")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public CommonResult passwordChange(@RequestBody MemberPasswordDto memberPasswordDto){
+        Map<String,String> data = memberService.passwordChange(memberPasswordDto);
         return responseService.getSingleResult(data);
     }
 
