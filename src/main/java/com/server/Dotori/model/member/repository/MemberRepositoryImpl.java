@@ -98,7 +98,8 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
     /**
      * 현재 로그인된 유저의 프로필 정보(메인페이지)를 조회하는 query
      * @param memberEntity currentUser
-     * @return GetAboutPointDto id, username, stNum, point
+     * @return GetAboutPointDto (id, username, stNum, point)
+     * @author 배태현
      */
     @Override
     public GetAboutPointDto findProfileByMember(Member memberEntity) {
