@@ -23,9 +23,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class MyPageServiceTest {
+class MainPageServiceTest {
 
-    @Autowired private MyPageService myPageService;
+    @Autowired private MainPageService mainPageService;
     @Autowired private MemberRepository memberRepository;
     @Autowired private PasswordEncoder passwordEncoder;
 
@@ -62,7 +62,7 @@ class MyPageServiceTest {
     @Test
     public void getProfileTest() {
         //given //when
-        GetAboutPointDto myProfile = myPageService.getMyProfile();
+        GetAboutPointDto myProfile = mainPageService.getMyProfile();
 
         //then
         assertEquals("배태현", myProfile.getUsername());
