@@ -17,6 +17,12 @@ public class PointServiceImpl implements PointService {
 
     private final MemberRepository memberRepository;
 
+    /**
+     * 상점을 부여하는 서비스 로직 (사감쌤 사용가능)
+     * @exception
+     * @param pointDto pointDto (receiverId, point)
+     * @author 배태현
+     */
     @Override
     @Transactional
     public void point(PointDto pointDto) {
@@ -26,6 +32,12 @@ public class PointServiceImpl implements PointService {
         findReceiverMember.updatePoint(findReceiverMember.getPoint() + pointDto.getPoint());
     }
 
+    /**
+     * 학년반별로 학생 상벌점 목록을 조회하는 서비스로직 (사감쌤 사용가능)
+     * @param id classId
+     * @return List - GetAboutPointDto (id, stuNum, username, point)
+     * @author 배태현
+     */
     @Override
     public List<GetAboutPointDto> getAllStudentPoint(Long id) {
         List<GetAboutPointDto> studentPoint = memberRepository.findStudentPoint(id);
