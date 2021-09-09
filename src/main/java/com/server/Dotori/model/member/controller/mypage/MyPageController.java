@@ -1,6 +1,6 @@
 package com.server.Dotori.model.member.controller.mypage;
 
-import com.server.Dotori.model.member.service.mypage.MyPageService;
+import com.server.Dotori.model.member.service.mainpage.MainPageService;
 import com.server.Dotori.response.ResponseService;
 import com.server.Dotori.response.result.SingleResult;
 import io.swagger.annotations.ApiImplicitParam;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MyPageController {
 
     private final ResponseService responseService;
-    private final MyPageService myPageService;
+    private final MainPageService mainPageService;
 
     @GetMapping("/home")
     @ResponseStatus( HttpStatus.OK )
@@ -27,6 +27,6 @@ public class MyPageController {
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public SingleResult getProfile() {
-        return responseService.getSingleResult(myPageService.getMyProfile());
+        return responseService.getSingleResult(mainPageService.getMyProfile());
     }
 }

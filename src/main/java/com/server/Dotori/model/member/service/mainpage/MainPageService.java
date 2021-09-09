@@ -1,4 +1,4 @@
-package com.server.Dotori.model.member.service.mypage;
+package com.server.Dotori.model.member.service.mainpage;
 
 import com.server.Dotori.model.member.dto.GetAboutPointDto;
 
