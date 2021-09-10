@@ -113,4 +113,18 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom{
                 .where(member.eq(memberEntity))
                 .fetchOne();
     }
+
+    /**
+     * 학생정보를 조회하는 query
+     * @param id classId
+     * @return List - Member
+     */
+    @Override
+    public List<Member> findStudentInfo(Long id) {
+        return queryFactory.from(member)
+                .select(member)
+                .where(member.stdNum.like(id+"%"))
+                .orderBy(member.stdNum.asc())
+                .fetch();
+    }
 }
