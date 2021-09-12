@@ -17,4 +17,6 @@ public interface MemberRepositoryCustom {
     List<GetAboutPointDto> findStudentPoint(Long id);
 
     GetAboutPointDto findProfileByMember(Member memberEntity);
+
+    List<Member> findStudentInfo(Long id);
 }
