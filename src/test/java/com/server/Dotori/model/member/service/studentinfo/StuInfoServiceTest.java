@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,6 +31,8 @@ class StuInfoServiceTest {
     @Autowired private StuInfoService stuInfoService;
     @Autowired private MemberRepository memberRepository;
     @Autowired private PasswordEncoder passwordEncoder;
+    @Autowired private CurrentUserUtil currentUserUtil;
+    @Autowired private EntityManager em;
 
     @BeforeEach
     @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
@@ -77,10 +80,13 @@ class StuInfoServiceTest {
         //given //when
         stuInfoService.updateRole(
                 RoleUpdateDto.builder()
-                        .receiverId(1L)
+                        .receiverId(currentUserUtil.getCurrentUser().getId())
                         .roles(Collections.singletonList(Role.ROLE_COUNCILLOR))
                         .build()
         );
+
+        em.flush();
+        em.clear();
 
         //then
         assertEquals(memberRepository.findByUsername("배태현").getRoles().toString(), Collections.singletonList(Role.ROLE_COUNCILLOR).toString());
