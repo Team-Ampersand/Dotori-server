@@ -1,6 +1,7 @@
 package com.server.Dotori.model.member.service.studentinfo;
 
 import com.server.Dotori.model.member.dto.MemberDto;
+import com.server.Dotori.model.member.dto.RoleUpdateDto;
 import com.server.Dotori.model.member.dto.StudentInfoDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.MemberRepository;
@@ -17,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -67,5 +69,20 @@ class StuInfoServiceTest {
 
         //then
         assertEquals(1, studentInfo.size());
+    }
+
+    @Test
+    @DisplayName("권한이 제대로 변경되나요?")
+    public void updateRole() {
+        //given //when
+        stuInfoService.updateRole(
+                RoleUpdateDto.builder()
+                        .receiverId(1L)
+                        .roles(Collections.singletonList(Role.ROLE_COUNCILLOR))
+                        .build()
+        );
+
+        //then
+        assertEquals(memberRepository.findByUsername("배태현").getRoles().toString(), Collections.singletonList(Role.ROLE_COUNCILLOR).toString());
     }
 }
