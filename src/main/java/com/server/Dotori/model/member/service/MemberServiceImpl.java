@@ -58,7 +58,6 @@ public class MemberServiceImpl implements MemberService {
     public Map<String,String> signin(MemberLoginDto memberLoginDto) {
         Member findUser = memberRepository.findByEmail(memberLoginDto.getEmail()); // email로 유저정보를 가져옴
         if(findUser == null) throw new UserNotFoundException("유저가 존재하지 않습니다."); // 유저가 존재하는지 체크
-        System.out.println(findUser.getUsername());
 
         boolean passwordCheck = passwordEncoder.matches(memberLoginDto.getPassword(),findUser.getPassword()); // 비밀번호가 DB에 있는 비밀번호와 입력된 비밀번호가 같은지 체크
         if(!passwordCheck) throw new UserNotFoundException("유저가 존재하지 않습니다."); // 비밀번호가 DB에 있는 비밀번호와 입력된 비밀번호가 같은지 체크
@@ -70,7 +69,7 @@ public class MemberServiceImpl implements MemberService {
         redisUtil.deleteData(findUser.getUsername()); // redis에 넣기전 유저정보 삭제
         redisUtil.setDataExpire(findUser.getUsername(),refreshToken,jwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND); // redis에 key를 Username Value를 refresh입력
 
-        // map에 email, accessToken, refreshToken 정보 입력
+        // map에 username, accessToken, refreshToken 정보 입력
         map.put("username", findUser.getUsername());
         map.put("accessToken","Bearer " + accessToken);
         map.put("refreshToken","Bearer " + refreshToken);
@@ -79,7 +78,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 현재 비밀번호, 새로운 비밀번호를 받아서 비밀번호 변경
+     * 로그되어있을 때 사용가능
      * @param memberPasswordDto memberPasswordDto
      * @return
      */
@@ -90,8 +89,7 @@ public class MemberServiceImpl implements MemberService {
         if(!passwordEncoder.matches(memberPasswordDto.getOldPassword(),findMember.getPassword()))
             throw new UserPasswordNotMatchingException();
 
-        String encodePw = passwordEncoder.encode(memberPasswordDto.getNewPassword());
-        findMember.updatePassword(encodePw);
+        findMember.updatePassword(passwordEncoder.encode(memberPasswordDto.getNewPassword()));
 
         Map<String,String> map = new HashMap<>();
         map.put(findMember.getUsername(),findMember.getPassword());
