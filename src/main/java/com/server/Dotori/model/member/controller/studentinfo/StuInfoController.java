@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.controller.studentinfo;
 
+import com.server.Dotori.model.member.dto.RoleUpdateDto;
 import com.server.Dotori.model.member.dto.StudentInfoDto;
 import com.server.Dotori.model.member.service.studentinfo.StuInfoService;
 import com.server.Dotori.response.ResponseService;
@@ -29,5 +30,16 @@ public class StuInfoController {
     })
     public SingleResult getStudentInfo(@PathVariable("classId") Long id) {
         return responseService.getSingleResult(stuInfoService.getStudentInfo(id));
+    }
+
+    @PutMapping("/list/role")
+    @ResponseStatus( HttpStatus.OK )
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public CommonResult updateRole(@RequestBody RoleUpdateDto roleUpdateDto) {
+        stuInfoService.updateRole(roleUpdateDto);
+        return responseService.getSuccessResult();
     }
 }
