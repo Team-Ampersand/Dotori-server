@@ -57,10 +57,11 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Map<String,String> signin(MemberLoginDto memberLoginDto) {
         Member findUser = memberRepository.findByEmail(memberLoginDto.getEmail()); // email로 유저정보를 가져옴
-        if(findUser == null) throw new UserNotFoundException(); // 유저가 존재하는지 체크
+        if(findUser == null) throw new UserNotFoundException("유저가 존재하지 않습니다."); // 유저가 존재하는지 체크
+        System.out.println(findUser.getUsername());
 
         boolean passwordCheck = passwordEncoder.matches(memberLoginDto.getPassword(),findUser.getPassword()); // 비밀번호가 DB에 있는 비밀번호와 입력된 비밀번호가 같은지 체크
-        if(!passwordCheck) throw new UserNotFoundException(); // 비밀번호가 DB에 있는 비밀번호와 입력된 비밀번호가 같은지 체크
+        if(!passwordCheck) throw new UserNotFoundException("유저가 존재하지 않습니다."); // 비밀번호가 DB에 있는 비밀번호와 입력된 비밀번호가 같은지 체크
 
         Map<String,String> map = new HashMap<>(); // Token 을 담을수있는 Hashmap 선언
         String accessToken = jwtTokenProvider.createToken(findUser.getUsername(), findUser.getRoles()); // 유저정보에서 Username : 유저정보에서 Role (Key : Value)
@@ -70,7 +71,7 @@ public class MemberServiceImpl implements MemberService {
         redisUtil.setDataExpire(findUser.getUsername(),refreshToken,jwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND); // redis에 key를 Username Value를 refresh입력
 
         // map에 email, accessToken, refreshToken 정보 입력
-        map.put("userName", findUser.getUsername());
+        map.put("username", findUser.getUsername());
         map.put("accessToken","Bearer " + accessToken);
         map.put("refreshToken","Bearer " + refreshToken);
 
