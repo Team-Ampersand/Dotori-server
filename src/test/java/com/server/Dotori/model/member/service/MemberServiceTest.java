@@ -2,6 +2,7 @@ package com.server.Dotori.model.member.service;
 
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.dto.MemberLoginDto;
+import com.server.Dotori.model.member.dto.MemberPasswordDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.util.CurrentUserUtil;
@@ -96,13 +97,27 @@ public class MemberServiceTest {
                 .password("1234")
                 .build();
 
-        //when
+        // when
         Map<String,String> result = memberService.signin(memberLoginDto);
         System.out.println("================================ " + memberRepository.findByEmail(memberLoginDto.getEmail()).getUsername() +" ====================================");
 
         // then
         assertNotNull(result);
         assertThat(result.get("username")).isEqualTo(memberRepository.findByEmail(memberLoginDto.getEmail()).getUsername());
+    }
+
+    @Test
+    void passwordChange(){
+        // given
+        MemberPasswordDto memberPasswordDto = new MemberPasswordDto();
+        memberPasswordDto.setOldPassword("1234");
+        memberPasswordDto.setNewPassword("12345");
+
+        // when
+        Map<String, String> result = memberService.passwordChange(memberPasswordDto);
+
+        // then
+        assertEquals(true,passwordEncoder.matches(memberPasswordDto.getNewPassword(),result.get("노경준")));
     }
 
 }
