@@ -47,4 +47,15 @@ public class MemberController {
         return responseService.getSingleResult(data);
     }
 
+
+    @DeleteMapping("/v1/logout")
+    @ApiOperation(value="로그아웃")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+    })
+    public CommonResult logout(){
+        memberService.logout();
+        return responseService.getSuccessResult();
+    }
+
 }

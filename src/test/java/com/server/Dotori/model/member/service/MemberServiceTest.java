@@ -6,6 +6,7 @@ import com.server.Dotori.model.member.dto.MemberPasswordDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.util.CurrentUserUtil;
+import com.server.Dotori.util.redis.RedisUtil;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,8 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
@@ -39,6 +39,8 @@ public class MemberServiceTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Test
     void signup(){
@@ -120,4 +122,20 @@ public class MemberServiceTest {
         assertEquals(true,passwordEncoder.matches(memberPasswordDto.getNewPassword(),result.get("노경준")));
     }
 
+    @Test
+    @DisplayName("로그아웃")
+    void logout(){
+        // when
+        MemberLoginDto memberLoginDto = MemberLoginDto.builder()
+                .email("s20018@gsm.hs.kr")
+                .password("1234")
+                .build();
+
+        // given
+        memberService.signin(memberLoginDto);
+        memberService.logout();
+
+        // then
+        assertNull(redisUtil.getData(memberRepository.findByEmail(memberLoginDto.getEmail()).getUsername()));
+    }
 }

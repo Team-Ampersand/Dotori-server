@@ -10,4 +10,5 @@ public interface MemberService {
     Long signup(MemberDto memberDto);
     Map<String,String> signin(MemberLoginDto memberLoginDto);
     Map<String,String> passwordChange(MemberPasswordDto memberPasswordDto);
+    void logout();
 }

@@ -97,4 +97,9 @@ public class MemberServiceImpl implements MemberService {
         return map;
     }
 
+    @Override
+    public void logout() {
+        redisUtil.deleteData(currentUserUtil.getCurrentUser().getUsername());
+    }
+
 }
