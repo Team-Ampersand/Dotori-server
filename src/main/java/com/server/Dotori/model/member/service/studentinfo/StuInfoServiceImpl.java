@@ -73,6 +73,10 @@ public class StuInfoServiceImpl implements StuInfoService {
         redisUtil.deleteData(member.getEmail()); //다시 로그인을 시켜야하기 때문에 refreshtoken을 미리 지워둔다.
     }
 
+    /**
+     * 학번을 변경시키는 서비스로직 (사감쌤 개발자 사용가능)
+     * @param stuNumUpdateDto (receiverId, stuNum)
+     */
     @Override
     public void updateStuNum(StuNumUpdateDto stuNumUpdateDto) {
         Member findMember = memberRepository.findById(stuNumUpdateDto.getReceiverId())
