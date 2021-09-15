@@ -4,6 +4,7 @@ import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.enumType.Music;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.enumType.SelfStudy;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -31,19 +32,16 @@ public class MemberDto {
     @NotBlank(message = "email should be valid")
     private String email;
 
-    @NotBlank(message = "roles should be valid")
-    private String key;
-
     @NotBlank(message = "answer should be valid")
     private String answer;
 
-    public Member toEntity(Role roleAdmin){
+    public Member toEntity(){
         return Member.builder()
                 .username(username)
                 .stdNum(stdNum)
                 .password(password)
                 .email(email)
-                .roles(Collections.singletonList(roleAdmin))
+                .roles(Collections.singletonList(Role.ROLE_MEMBER))
                 .music(Music.CAN)
                 .selfStudy(SelfStudy.CAN)
                 .point(0L)

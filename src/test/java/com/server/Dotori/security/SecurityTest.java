@@ -29,7 +29,7 @@ public class SecurityTest {
         memberDto.setPassword("1234");
         memberDto.setEmail("shrudwns@naver.com");
 
-        String accessToken = jwtTokenProvider.createToken(memberDto.getUsername(), memberDto.toEntity(Role.ROLE_ADMIN).getRoles());
+        String accessToken = jwtTokenProvider.createToken(memberDto.getUsername(), memberDto.toEntity().getRoles());
         // 유효한 토큰인지 확인
         if (accessToken != null && jwtTokenProvider.validateToken(accessToken)){
             String nickname = jwtTokenProvider.getUsername(accessToken);

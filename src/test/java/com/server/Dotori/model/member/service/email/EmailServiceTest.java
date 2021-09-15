@@ -45,7 +45,6 @@ public class EmailServiceTest {
                 .stdNum("2206")
                 .password("1234")
                 .email("s20018@gsm.hs.kr")
-                .key("ABC1")
                 .answer("hello")
                 .build();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
@@ -69,7 +68,6 @@ public class EmailServiceTest {
                 .stdNum("2206")
                 .password("1234")
                 .email("s20018@gsm.hs.kr")
-                .key("ABC1")
                 .answer("hello")
                 .build();
 

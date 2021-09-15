@@ -13,6 +13,10 @@ public class SelfStudySchedule {
 
     private final SelfStudyService selfStudyService;
 
+    /**
+     * "월 ~ 금 새벽 2시"에 학생들 자습신청 상태를 자동으로 변경해주는 Schedule
+     * @author 배태현
+     */
     @Scheduled(cron = "0 0 2 ? * MON-FRI", zone = "GMT+9")
     public void weekdaySelfStudyStatusReset() {
         selfStudyService.updateSelfStudyStatus();
