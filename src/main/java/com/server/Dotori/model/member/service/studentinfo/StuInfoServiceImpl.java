@@ -87,6 +87,10 @@ public class StuInfoServiceImpl implements StuInfoService {
         findMember.updateStuNum(stuNumUpdateDto.getStuNum());
     }
 
+    /**
+     * 학생의 이름을 변경시키는 서비스로직 (사감쌤, 개발자 사용가능)
+     * @param usernameUpdateDto (receiverId, username)
+     */
     @Override
     @Transactional
     public void updateUsername(UsernameUpdateDto usernameUpdateDto) {
