@@ -25,6 +25,11 @@ public class EmailServiceImpl implements EmailService {
     private final PasswordEncoder passwordEncoder;
     private final CurrentUserUtil currentUserUtil;
 
+    /**
+     * 이메일로 인증하기 유저의 이메일을 받아서 받은 이메일 주소로 인증번호를 보내주는 기능
+     * @param emailDto
+     * @return 인증번호
+     */
     @Override
     public String authKey(EmailDto emailDto) {
         String key = keyUtil.keyIssuance();
@@ -33,6 +38,11 @@ public class EmailServiceImpl implements EmailService {
         return key;
     }
 
+    /**
+     * authKey 기능에서 받은 키를 확인(인증)하는 기능
+     * @param memberEmailKeyDto
+     * @return 입력된 키
+     */
     @Override
     public String authCheck(MemberEmailKeyDto memberEmailKeyDto) {
         if (memberEmailKeyDto.getKey().equals(redisUtil.getData(memberEmailKeyDto.getKey()))) { // memberEmailKeyDto Key값과 redis에 등록된 Key와 같다면
@@ -43,6 +53,11 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
+    /**
+     * 로그인 안했을때 사용할 수 있는 기능
+     * @param emailDto
+     * @return Member
+     */
     @Transactional
     @Override
     public Member authPassword(EmailDto emailDto) {
