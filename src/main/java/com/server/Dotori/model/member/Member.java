@@ -122,4 +122,8 @@ public class Member implements UserDetails {
     public void updateRole(List<Role> roles) {
         this.roles = roles != null ? roles : this.roles;
     }
+
+    public void updateStuNum(String stdNum) {
+        this.stdNum = stdNum != null ? stdNum : this.stdNum;
+    }
 }
