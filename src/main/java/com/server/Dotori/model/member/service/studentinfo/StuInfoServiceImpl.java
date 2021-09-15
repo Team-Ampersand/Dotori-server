@@ -3,6 +3,7 @@ package com.server.Dotori.model.member.service.studentinfo;
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.RoleUpdateDto;
+import com.server.Dotori.model.member.dto.StuNumUpdateDto;
 import com.server.Dotori.model.member.dto.StudentInfoDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.MemberRepository;
@@ -70,5 +71,13 @@ public class StuInfoServiceImpl implements StuInfoService {
 
         member.updateRole(roleUpdateDto.getRoles());
         redisUtil.deleteData(member.getEmail()); //다시 로그인을 시켜야하기 때문에 refreshtoken을 미리 지워둔다.
+    }
+
+    @Override
+    public void updateStuNum(StuNumUpdateDto stuNumUpdateDto) {
+        Member findMember = memberRepository.findById(stuNumUpdateDto.getReceiverId())
+                .orElseThrow(() -> new UserNotFoundException());
+
+        findMember.updateStuNum(stuNumUpdateDto.getStuNum());
     }
 }
