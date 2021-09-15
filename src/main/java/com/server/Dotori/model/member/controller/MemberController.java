@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.controller;
 
+import com.server.Dotori.model.member.dto.MemberDeleteDto;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.dto.MemberLoginDto;
 import com.server.Dotori.model.member.dto.MemberPasswordDto;
@@ -48,7 +49,7 @@ public class MemberController {
     }
 
 
-    @DeleteMapping("/v1/logout")
+    @DeleteMapping("/logout")
     @ApiOperation(value="로그아웃")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
@@ -58,4 +59,13 @@ public class MemberController {
         return responseService.getSuccessResult();
     }
 
+    @PostMapping("/delete")
+    @ApiOperation(value="회원탈퇴")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+    })
+    public CommonResult delete(@RequestBody MemberDeleteDto memberDeleteDto){
+        memberService.delete(memberDeleteDto);
+        return responseService.getSuccessResult();
+    }
 }

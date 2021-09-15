@@ -4,6 +4,7 @@ import com.server.Dotori.exception.user.exception.UserAlreadyException;
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.exception.user.exception.UserPasswordNotMatchingException;
 import com.server.Dotori.model.member.Member;
+import com.server.Dotori.model.member.dto.MemberDeleteDto;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.dto.MemberLoginDto;
 import com.server.Dotori.model.member.dto.MemberPasswordDto;
@@ -100,6 +101,16 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void logout() {
         redisUtil.deleteData(currentUserUtil.getCurrentUser().getUsername());
+    }
+
+    @Override
+    public void delete(MemberDeleteDto memberDeleteDto) {
+        Member findMember = memberRepository.findByUsername(memberDeleteDto.getUsername());
+        if(!passwordEncoder.matches(memberDeleteDto.getPassword(),findMember.getPassword()))
+            throw new UserPasswordNotMatchingException();
+
+        redisUtil.deleteData(currentUserUtil.getCurrentUser().getUsername());
+        memberRepository.delete(findMember);
     }
 
 }
