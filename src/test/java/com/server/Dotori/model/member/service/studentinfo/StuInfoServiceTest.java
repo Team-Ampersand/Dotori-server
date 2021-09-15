@@ -1,9 +1,6 @@
 package com.server.Dotori.model.member.service.studentinfo;
 
-import com.server.Dotori.model.member.dto.MemberDto;
-import com.server.Dotori.model.member.dto.RoleUpdateDto;
-import com.server.Dotori.model.member.dto.StuNumUpdateDto;
-import com.server.Dotori.model.member.dto.StudentInfoDto;
+import com.server.Dotori.model.member.dto.*;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.util.CurrentUserUtil;
@@ -106,5 +103,20 @@ class StuInfoServiceTest {
 
         //then
         assertEquals("1111", memberRepository.findById(currentUserUtil.getCurrentUser().getId()).get().getStdNum());
+    }
+
+    @Test
+    @DisplayName("이름이 잘 변경되나요?")
+    public void updateUsernameTest() {
+        //given //when
+        stuInfoService.updateUsername(
+                UsernameUpdateDto.builder()
+                        .receiverId(currentUserUtil.getCurrentUser().getId())
+                        .username("배털")
+                        .build()
+        );
+
+        //then
+        assertNotNull(memberRepository.findByUsername("배털"));
     }
 }

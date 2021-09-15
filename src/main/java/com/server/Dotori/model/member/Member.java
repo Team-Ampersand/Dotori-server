@@ -126,4 +126,8 @@ public class Member implements UserDetails {
     public void updateStuNum(String stdNum) {
         this.stdNum = stdNum != null ? stdNum : this.stdNum;
     }
+
+    public void updateUsername(String username) {
+        this.username = username != null ? username : this.username;
+    }
 }
