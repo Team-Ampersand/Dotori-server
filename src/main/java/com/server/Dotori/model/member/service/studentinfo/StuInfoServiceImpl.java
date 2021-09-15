@@ -5,6 +5,7 @@ import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.RoleUpdateDto;
 import com.server.Dotori.model.member.dto.StuNumUpdateDto;
 import com.server.Dotori.model.member.dto.StudentInfoDto;
+import com.server.Dotori.model.member.dto.UsernameUpdateDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.util.CurrentUserUtil;
@@ -78,10 +79,20 @@ public class StuInfoServiceImpl implements StuInfoService {
      * @param stuNumUpdateDto (receiverId, stuNum)
      */
     @Override
+    @Transactional
     public void updateStuNum(StuNumUpdateDto stuNumUpdateDto) {
         Member findMember = memberRepository.findById(stuNumUpdateDto.getReceiverId())
                 .orElseThrow(() -> new UserNotFoundException());
 
         findMember.updateStuNum(stuNumUpdateDto.getStuNum());
+    }
+
+    @Override
+    @Transactional
+    public void updateUsername(UsernameUpdateDto usernameUpdateDto) {
+        Member findMember = memberRepository.findById(usernameUpdateDto.getReceiverId())
+                .orElseThrow(() -> new UserNotFoundException());
+
+        findMember.updateUsername(usernameUpdateDto.getUsername());
     }
 }
