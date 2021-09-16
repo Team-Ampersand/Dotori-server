@@ -24,6 +24,7 @@ public class DeveloperPointController {
      * 반별 상벌점 조회 컨트롤러
      * @param id classId
      * @return SingleResult - 반별학생, 상벌점
+     * @author 배태현
      */
     @GetMapping("/point/{classId}")
     @ResponseStatus( HttpStatus.OK )
@@ -40,6 +41,7 @@ public class DeveloperPointController {
      * 상벌점 부여 컨트롤러
      * @param pointDto (receiverId, point)
      * @return CommonResult - SuccessResult
+     * @author 배태현
      */
     @PostMapping("/point")
     @ResponseStatus( HttpStatus.OK )
