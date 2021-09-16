@@ -14,14 +14,14 @@ public class EmailSendServiceImpl implements EmailSendService {
 
     /**
      * 인증 키 보내기
-     * @param userEmail 이메일
-     * @param key 인증키
+     * @param email email
+     * @param key key
      * @author 노경준
      */
     @Override
-    public void sendEmail(String userEmail, String key) {
+    public void sendEmail(String email, String key) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(userEmail);
+        message.setTo(email);
         message.setSubject("[DOTORI] 인증 키");
         message.setText("DOTORI 에서 보낸 인증 키 : " + key);
         mailSender.send(message);
@@ -29,14 +29,14 @@ public class EmailSendServiceImpl implements EmailSendService {
 
     /**
      * 임시 비밀번호 발급
-     * @param userEmail 이메일
-     * @param password 현재 비밀번호
+     * @param email email
+     * @param password password
      * @author 노경준
      */
     @Override
-    public void sendPasswordEmail(String userEmail, String password) {
+    public void sendPasswordEmail(String email, String password) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(userEmail);
+        message.setTo(email);
         message.setSubject("[DOTORI] 임시 비밀번호");
         message.setText("DOTORI 에서 보낸 임시 비밀번호 : " + password);
         mailSender.send(message);
