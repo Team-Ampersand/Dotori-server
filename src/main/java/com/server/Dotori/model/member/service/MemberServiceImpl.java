@@ -35,7 +35,7 @@ public class MemberServiceImpl implements MemberService {
     private final CurrentUserUtil currentUserUtil;
 
     /**
-     * 회원가입
+     * 회원가입하는 서비스 로직
      * @param memberDto username, stdNum, password, email, answer
      * @return result.getId()
      * @author 노경준
@@ -52,7 +52,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 로그인
+     * 로그인하는 서비스 로직
      * @param memberLoginDto email, password
      * @return map - username, accessToken, refreshToken
      * @author 노경준
@@ -81,7 +81,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 로그인 되어있을 때 비밀번호 변경
+     * 로그인 되어있을 때 비밀번호 변경하는 서비스 로직
      * @param memberPasswordDto oldPassword, newPassword
      * @return map - username
      * @author 노경준
@@ -102,7 +102,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 로그아웃
+     * 로그아웃 하는 서비스 로직
      * @author 노경준
      */
     @Override
@@ -111,7 +111,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 회원탈퇴
+     * 회원탈퇴 하는 서비스 로직
      * @param memberDeleteDto username, password
      * @author 노경준
      */
