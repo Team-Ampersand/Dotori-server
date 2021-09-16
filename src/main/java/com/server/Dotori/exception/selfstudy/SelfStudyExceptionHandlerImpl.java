@@ -1,6 +1,6 @@
 package com.server.Dotori.exception.selfstudy;
 
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyAlready;
+import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantApplied;
 import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantChange;
 import com.server.Dotori.exception.selfstudy.exception.SelfStudyNotFound;
 import com.server.Dotori.exception.selfstudy.exception.SelfStudyOverPersonal;
@@ -22,7 +22,7 @@ public class SelfStudyExceptionHandlerImpl implements SelfStudyExceptionHandler 
     @Override
     public CommonResult selfStudyNotFoundException(SelfStudyNotFound ex) {
         log.debug("=== SelfStudy NotFound Exception 발생 ===");
-        return exceptionResponseObjectUtil.getExceptionResponseObject(SELFSTUDY_NOT_FOUNT);
+        return exceptionResponseObjectUtil.getExceptionResponseObject(SELFSTUDY_NOT_FOUND);
     }
 
     @Override
@@ -32,9 +32,9 @@ public class SelfStudyExceptionHandlerImpl implements SelfStudyExceptionHandler 
     }
 
     @Override
-    public CommonResult selfStudyAlreadyException(SelfStudyAlready ex) {
-        log.debug("=== SelfStudy Already Exception 발생 ===");
-        return exceptionResponseObjectUtil.getExceptionResponseObject(SELFSTUDY_ALREADY);
+    public CommonResult selfStudyCantAppliedException(SelfStudyCantApplied ex) {
+        log.debug("=== SelfStudy Cant Applied Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(SELFSTUDY_CANT_APPLIED);
     }
 
     @Override

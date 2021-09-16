@@ -78,9 +78,9 @@ selfstudy-cant-change:
   code: "-610"
   msg: "cant cancel self study."
 
-selfstudy-already:
+selfstudy-cant-applied:
   code: "-620"
-  msg: "Already apply self study."
+  msg: "Cant applied"
 
 selfstudy-not-found:
   code: "-630"

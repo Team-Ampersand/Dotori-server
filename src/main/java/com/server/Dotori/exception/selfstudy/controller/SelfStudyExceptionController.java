@@ -1,6 +1,6 @@
 package com.server.Dotori.exception.selfstudy.controller;
 
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyAlready;
+import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantApplied;
 import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantChange;
 import com.server.Dotori.exception.selfstudy.exception.SelfStudyNotFound;
 import com.server.Dotori.exception.selfstudy.exception.SelfStudyOverPersonal;
@@ -15,7 +15,7 @@ public class SelfStudyExceptionController {
 
     @GetMapping("/selfstudy-already")
     public CommonResult selfStudyAlready() {
-        throw new SelfStudyAlready();
+        throw new SelfStudyCantApplied();
     }
 
     @GetMapping("/selfstudy-cant-change")
