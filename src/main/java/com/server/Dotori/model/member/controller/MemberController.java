@@ -39,7 +39,7 @@ public class MemberController {
     /**
      * 로그인 Controller
      * @param memberLoginDto email, password
-     * @return SingleResult(data)
+     * @return SingleResult
      * @author 노경준
      */
     @PostMapping("/signin")
@@ -52,7 +52,7 @@ public class MemberController {
     /**
      * 비밀번호 변경 Controller
      * @param memberPasswordDto oldPassword, newPassword
-     * @return SingleResult(data)
+     * @return SingleResult
      * @author 노경준
      */
     @PostMapping("/change/password")
