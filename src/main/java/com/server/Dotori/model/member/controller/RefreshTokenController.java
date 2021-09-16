@@ -22,6 +22,12 @@ public class RefreshTokenController {
     private final RefreshTokenService refreshTokenService;
     private final ResponseService responseService;
 
+    /**
+     * 토큰 재발급 Controller
+     * @param request accessToken, refreshToken
+     * @return SuccessResult
+     * @author 노경준
+     */
     @GetMapping("/refresh")
     @ResponseStatus( HttpStatus.OK )
     @ApiImplicitParams({
