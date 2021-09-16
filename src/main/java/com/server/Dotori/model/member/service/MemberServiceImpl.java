@@ -81,7 +81,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 로그인 되어있을 때 사용가능
+     * 로그인 되어있을 때 비밀번호 변경
      * @param memberPasswordDto oldPassword, newPassword
      * @return map - username
      * @author 노경준
