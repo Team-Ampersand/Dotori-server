@@ -13,7 +13,7 @@ public class EmailSendServiceImpl implements EmailSendService {
     private final MailSender mailSender;
 
     /**
-     * 인증 키 보내기
+     * 이메일로 인증키를 보내주는 서비스 로직
      * @param email email
      * @param key key
      * @author 노경준
@@ -28,7 +28,7 @@ public class EmailSendServiceImpl implements EmailSendService {
     }
 
     /**
-     * 임시 비밀번호 발급
+     * 이메일로 임시 비밀번호를 전송하는 서비스 로직
      * @param email email
      * @param password password
      * @author 노경준
