@@ -5,6 +5,7 @@ import com.server.Dotori.model.board.dto.BoardGetIdDto;
 import com.server.Dotori.model.board.service.BoardService;
 import com.server.Dotori.response.ResponseService;
 import com.server.Dotori.response.result.CommonResult;
+import com.server.Dotori.response.result.SingleResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -37,7 +38,7 @@ public class MemberBoardController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult getAllBoard(@PageableDefault(size = 7) Pageable pageable) {
+    public SingleResult<Page<BoardGetDto>> getAllBoard(@PageableDefault(size = 7) Pageable pageable) {
         Page<BoardGetDto> pageBoard = boardService.getAllBoard(pageable);
         return responseService.getSingleResult(pageBoard);
     }
@@ -55,7 +56,7 @@ public class MemberBoardController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult getBoardById(@PathVariable("id") Long boardId) {
+    public SingleResult<BoardGetIdDto> getBoardById(@PathVariable("id") Long boardId) {
         BoardGetIdDto findBoardById = boardService.getBoardById(boardId);
         return responseService.getSingleResult(findBoardById);
     }
