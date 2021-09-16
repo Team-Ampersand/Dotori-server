@@ -47,7 +47,7 @@ public class CouncillorBoardController {
     /**
      * 공지사항 전체 조회 컨트롤러
      * @param pageable 7
-     * @return CommonResult - SingleResult (Page-BoardGetDto)
+     * @return SingleResult (Page-BoardGetDto)
      * @author 배태현
      */
     @GetMapping("/board")
@@ -65,7 +65,7 @@ public class CouncillorBoardController {
     /**
      * 공지사항 상세조회 컨트롤러
      * @param boardId boardId
-     * @return CommonResult - SingleResult (BoardGetIdDto)
+     * @return SingleResult (BoardGetIdDto)
      * @author 배태현
      */
     @GetMapping("/board/{id}")
