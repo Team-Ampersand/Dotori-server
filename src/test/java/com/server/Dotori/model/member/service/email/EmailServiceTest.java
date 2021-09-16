@@ -62,7 +62,7 @@ public class EmailServiceTest {
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 
         EmailDto emailDto = new EmailDto();
-        emailDto.setUserEmail(memberDto.getEmail());
+        emailDto.setEmail(memberDto.getEmail());
 
         //when
         String key = emailService.authKey(emailDto);
