@@ -27,6 +27,12 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     private final MemberRepository memberRepository;
     private final RedisUtil redisUtil;
 
+    /**
+     * 토큰 재발급
+     * @param request accessToken
+     * @return map - username, accessToken, refreshToken
+     * @author 노경준
+     */
     @Override
     public Map<String, String> getRefreshToken(HttpServletRequest request) {
 
@@ -55,6 +61,6 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
             return map;
         }
 
-        return map;
+        throw new IllegalArgumentException("토큰 재발급에 실패했습니다.");
     }
 }
