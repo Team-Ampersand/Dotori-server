@@ -26,7 +26,7 @@ public class EmailServiceImpl implements EmailService {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * 이메일로 인증하기 유저의 이메일을 받아서 받은 이메일 주소로 인증번호를 보내주는 기능
+     * 유저의 이메일을 받아서 받은 이메일 주소로 인증번호를 보내주는 기능
      * @param emailDto email
      * @return 인증번호
      * @author 노경준
@@ -56,9 +56,9 @@ public class EmailServiceImpl implements EmailService {
     }
 
     /**
-     * 로그인 안했을때 사용할 수 있는 기능
+     * 로그인 안했을때 비밀번호를 변경하는 서비스 로직
      * @param authPasswordDto email, answer
-     * @return Member
+     * @return findMember
      * @author 노경준
      */
     @Transactional
