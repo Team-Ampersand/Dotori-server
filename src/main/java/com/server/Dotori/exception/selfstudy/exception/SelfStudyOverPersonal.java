@@ -1,13 +1,13 @@
 package com.server.Dotori.exception.selfstudy.exception;
 
-public class SelfStudyOverPersonalMaximum extends RuntimeException {
-    public SelfStudyOverPersonalMaximum(String msg, Throwable t) {
+public class SelfStudyOverPersonal extends RuntimeException {
+    public SelfStudyOverPersonal(String msg, Throwable t) {
         super(msg, t);
     }
-    public SelfStudyOverPersonalMaximum(String msg){
+    public SelfStudyOverPersonal(String msg){
         super(msg);
     }
-    public SelfStudyOverPersonalMaximum() {
+    public SelfStudyOverPersonal() {
         super();
     }
 }
