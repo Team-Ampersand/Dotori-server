@@ -6,6 +6,7 @@ import com.server.Dotori.model.board.dto.BoardGetIdDto;
 import com.server.Dotori.model.board.service.BoardService;
 import com.server.Dotori.response.ResponseService;
 import com.server.Dotori.response.result.CommonResult;
+import com.server.Dotori.response.result.SingleResult;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -43,7 +44,7 @@ public class AdminBoardController {
     /**
      * 공지사항 전체 조회 컨트롤러
      * @param pageable 7
-     * @return CommonResult - SingleResult (Page-BoardGetDto)
+     * @return SingleResult (Page-BoardGetDto)
      * @author 배태현
      */
     @GetMapping("/board")
@@ -53,7 +54,7 @@ public class AdminBoardController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult getAllBoard(@PageableDefault(size = 7) Pageable pageable) {
+    public SingleResult<Page<BoardGetDto>> getAllBoard(@PageableDefault(size = 7) Pageable pageable) {
         Page<BoardGetDto> pageBoard = boardService.getAllBoard(pageable);
         return responseService.getSingleResult(pageBoard);
     }
@@ -61,7 +62,7 @@ public class AdminBoardController {
     /**
      * 공지사항 상세조회 컨트롤러
      * @param boardId boardId
-     * @return CommonResult - SingleResult (BoardGetIdDto)
+     * @return SingleResult (BoardGetIdDto)
      * @author 배태현
      */
     @GetMapping("/board/{id}")
@@ -71,7 +72,7 @@ public class AdminBoardController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult getBoardById(@PathVariable("id") Long boardId) {
+    public SingleResult<BoardGetIdDto> getBoardById(@PathVariable("id") Long boardId) {
         BoardGetIdDto findBoardById = boardService.getBoardById(boardId);
         return responseService.getSingleResult(findBoardById);
     }
