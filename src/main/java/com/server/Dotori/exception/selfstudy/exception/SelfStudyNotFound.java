@@ -1,13 +1,13 @@
 package com.server.Dotori.exception.selfstudy.exception;
 
-public class SelfStudyNotFoundStudent extends RuntimeException {
-    public SelfStudyNotFoundStudent(String msg, Throwable t) {
+public class SelfStudyNotFound extends RuntimeException {
+    public SelfStudyNotFound(String msg, Throwable t) {
         super(msg, t);
     }
-    public SelfStudyNotFoundStudent(String msg) {
+    public SelfStudyNotFound(String msg) {
         super(msg);
     }
-    public SelfStudyNotFoundStudent() {
+    public SelfStudyNotFound() {
         super();
     }
 }
