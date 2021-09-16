@@ -1,4 +1,4 @@
-package com.server.Dotori.exception.selfstudy;
+package com.server.Dotori.exception.selfstudy.controller;
 
 import com.server.Dotori.exception.selfstudy.exception.SelfStudyAlready;
 import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantChange;
@@ -13,22 +13,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/exception")
 public class SelfStudyExceptionController {
 
-    @GetMapping("/SelfStudy-Already")
+    @GetMapping("/selfstudy-already")
     public CommonResult selfStudyAlready() {
         throw new SelfStudyAlready();
     }
 
-    @GetMapping("/SelfStudy-Cant-Change")
+    @GetMapping("/selfstudy-cant-change")
     public CommonResult selfStudyCantChange() {
         throw new SelfStudyCantChange();
     }
 
-    @GetMapping("/SelfStudy-Not-Found")
+    @GetMapping("/selfstudy-not-found")
     public CommonResult selfStudyNotFound() {
         throw new SelfStudyNotFound();
     }
 
-    @GetMapping("/SelfStudy-Over-Personal")
+    @GetMapping("/selfstudy-over-personal")
     public CommonResult selfStudyOverPersonal() {
         throw new SelfStudyOverPersonal();
     }
