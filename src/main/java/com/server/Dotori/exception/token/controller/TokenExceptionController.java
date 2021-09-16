@@ -1,4 +1,4 @@
-package com.server.Dotori.exception.token;
+package com.server.Dotori.exception.token.controller;
 
 import com.server.Dotori.exception.token.exception.AccessTokenExpiredException;
 import com.server.Dotori.exception.token.exception.InvalidTokenException;
