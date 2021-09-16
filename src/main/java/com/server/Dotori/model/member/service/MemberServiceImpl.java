@@ -35,9 +35,10 @@ public class MemberServiceImpl implements MemberService {
     private final CurrentUserUtil currentUserUtil;
 
     /**
-     * 회원가입
-     * @param memberDto memberDto
+     * 회원가입하는 서비스 로직
+     * @param memberDto username, stdNum, password, email, answer
      * @return result.getId()
+     * @author 노경준
      */
     @Override
     public Long signup(MemberDto memberDto){
@@ -51,9 +52,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 로그인
-     * @param memberLoginDto memberLoginDto
-     * @return
+     * 로그인하는 서비스 로직
+     * @param memberLoginDto email, password
+     * @return map - username, accessToken, refreshToken
+     * @author 노경준
      */
     @Override
     public Map<String,String> signin(MemberLoginDto memberLoginDto) {
@@ -79,9 +81,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 로그되어있을 때 사용가능
-     * @param memberPasswordDto memberPasswordDto
-     * @return
+     * 로그인 되어있을 때 비밀번호 변경하는 서비스 로직
+     * @param memberPasswordDto oldPassword, newPassword
+     * @return map - username
+     * @author 노경준
      */
     @Transactional
     @Override
@@ -98,11 +101,20 @@ public class MemberServiceImpl implements MemberService {
         return map;
     }
 
+    /**
+     * 로그아웃 하는 서비스 로직
+     * @author 노경준
+     */
     @Override
     public void logout() {
         redisUtil.deleteData(currentUserUtil.getCurrentUser().getUsername());
     }
 
+    /**
+     * 회원탈퇴 하는 서비스 로직
+     * @param memberDeleteDto username, password
+     * @author 노경준
+     */
     @Override
     public void delete(MemberDeleteDto memberDeleteDto) {
         Member findMember = memberRepository.findByUsername(memberDeleteDto.getUsername());

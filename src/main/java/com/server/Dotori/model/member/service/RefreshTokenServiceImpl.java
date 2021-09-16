@@ -27,14 +27,18 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     private final MemberRepository memberRepository;
     private final RedisUtil redisUtil;
 
+    /**
+     * RefreshToken으로 AccessToken과 RefreshToken을 재발급 시켜주는 서비스 로직
+     * @param username username
+     * @param refreshToken refreshToken
+     * @return map - username, accessToken, refreshToken
+     * @author 노경준
+     */
     @Override
-    public Map<String, String> getRefreshToken(HttpServletRequest request) {
+    public Map<String, String> getRefreshToken(String username, String refreshToken) {
+        Member findMember = memberRepository.findByUsername(username);
+        List<Role> roles = findMember.getRoles();
 
-        String accessToken = jwtTokenProvider.resolveToken(request);
-        String refreshToken = jwtTokenProvider.resolveRefreshToken(request);
-        String username = jwtTokenProvider.getUsername(accessToken);
-        Member memberInfo = memberRepository.findByUsername(username);
-        List<Role> roles = memberInfo.getRoles();
         Map<String,String> map = new HashMap<>();
         String newAccessToken = null;
         String newRefreshToken = null;
@@ -55,6 +59,6 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
             return map;
         }
 
-        return map;
+        throw new IllegalArgumentException("토큰 재발급에 실패했습니다.");
     }
 }
