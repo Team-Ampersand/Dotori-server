@@ -28,7 +28,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     private final RedisUtil redisUtil;
 
     /**
-     * 토큰 재발급
+     * RefreshToken으로 AccessToken과 RefreshToken을 재발급 시켜주는 서비스 로직
      * @param username username
      * @param refreshToken refreshToken
      * @return map - username, accessToken, refreshToken
