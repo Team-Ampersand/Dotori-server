@@ -1,4 +1,4 @@
-package com.server.Dotori.exception.user;
+package com.server.Dotori.exception.user.controller;
 
 import com.server.Dotori.exception.user.exception.*;
 import com.server.Dotori.response.result.CommonResult;
