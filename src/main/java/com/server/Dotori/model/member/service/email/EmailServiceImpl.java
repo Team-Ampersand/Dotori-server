@@ -2,6 +2,7 @@ package com.server.Dotori.model.member.service.email;
 
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.Member;
+import com.server.Dotori.model.member.dto.AuthPasswordDto;
 import com.server.Dotori.model.member.dto.EmailDto;
 import com.server.Dotori.model.member.dto.MemberEmailKeyDto;
 import com.server.Dotori.model.member.repository.MemberRepository;
@@ -55,18 +56,19 @@ public class EmailServiceImpl implements EmailService {
 
     /**
      * 로그인 안했을때 사용할 수 있는 기능
-     * @param emailDto
+     * @param authPasswordDto
      * @return Member
      */
     @Transactional
     @Override
-    public Member authPassword(EmailDto emailDto) {
-        String email = emailDto.getUserEmail();
+    public Member authPassword(AuthPasswordDto authPasswordDto) {
+        String email = authPasswordDto.getEmail();
+        Member findMember = memberRepository.findByEmail(authPasswordDto.getEmail());
+        if(findMember == null) throw new UserNotFoundException();
+        if(!findMember.getAnswer().equals(authPasswordDto.getAnswer())) throw new IllegalArgumentException("질문 답이 일치하지 않습니다.");
+
         String password = getTempPassword();
         emailSendService.sendPasswordEmail(email,password);
-
-        Member findMember = memberRepository.findByEmail(emailDto.getUserEmail());
-        if(findMember == null) throw new UserNotFoundException();
 
         findMember.updatePassword(passwordEncoder.encode(password));
 
