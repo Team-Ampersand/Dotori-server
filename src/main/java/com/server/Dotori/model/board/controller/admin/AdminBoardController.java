@@ -23,6 +23,12 @@ public class AdminBoardController {
     private final BoardService boardService;
     private final ResponseService responseService;
 
+    /**
+     * 공지사항 생성 컨트롤러
+     * @param boardDto (title, content)
+     * @return CommonResult - SuccessResult
+     * @author 배태현
+     */
     @PostMapping("/board")
     @ResponseStatus( HttpStatus.CREATED )
     @ApiImplicitParams({
@@ -34,17 +40,29 @@ public class AdminBoardController {
         return responseService.getSuccessResult();
     }
 
+    /**
+     * 공지사항 전체 조회 컨트롤러
+     * @param pageable 7
+     * @return CommonResult - SingleResult (Page-BoardGetDto)
+     * @author 배태현
+     */
     @GetMapping("/board")
     @ResponseStatus( HttpStatus.OK )
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult getAllBoard(@PageableDefault(size = 5) Pageable pageable) {
+    public CommonResult getAllBoard(@PageableDefault(size = 7) Pageable pageable) {
         Page<BoardGetDto> pageBoard = boardService.getAllBoard(pageable);
         return responseService.getSingleResult(pageBoard);
     }
 
+    /**
+     * 공지사항 상세조회 컨트롤러
+     * @param boardId boardId
+     * @return CommonResult - SingleResult (BoardGetIdDto)
+     * @author 배태현
+     */
     @GetMapping("/board/{id}")
     @ResponseStatus( HttpStatus.OK )
     @ApiImplicitParams({
@@ -56,6 +74,13 @@ public class AdminBoardController {
         return responseService.getSingleResult(findBoardById);
     }
 
+    /**
+     * 공지사항 수정 컨트롤러
+     * @param boardId boardId
+     * @param boardUpdateDto (title, content)
+     * @return CommonResult - SuccessResult
+     * @author 배태현
+     */
     @PutMapping("/board/{id}")
     @ResponseStatus( HttpStatus.OK )
     @ApiImplicitParams({
@@ -67,6 +92,12 @@ public class AdminBoardController {
         return responseService.getSuccessResult();
     }
 
+    /**
+     * 공지사항 삭제 컨트롤러
+     * @param boardId boardId
+     * @return CommonResult - SuccessResult
+     * @author 배태현
+     */
     @DeleteMapping("/board/{id}")
     @ResponseStatus( HttpStatus.NO_CONTENT )
     @ApiImplicitParams({
