@@ -1,4 +1,4 @@
-package com.server.Dotori.exception.board;
+package com.server.Dotori.exception.board.controller;
 
 import com.server.Dotori.exception.board.exception.*;
 import com.server.Dotori.response.result.CommonResult;
