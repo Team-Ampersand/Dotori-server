@@ -11,6 +11,13 @@ import org.springframework.stereotype.Service;
 public class EmailSendServiceImpl implements EmailSendService {
 
     private final MailSender mailSender;
+
+    /**
+     * 인증 키 보내기
+     * @param userEmail 이메일
+     * @param key 인증키
+     * @author 노경준
+     */
     @Override
     public void sendEmail(String userEmail, String key) {
         SimpleMailMessage message = new SimpleMailMessage();
@@ -20,6 +27,12 @@ public class EmailSendServiceImpl implements EmailSendService {
         mailSender.send(message);
     }
 
+    /**
+     * 임시 비밀번호 발급
+     * @param userEmail 이메일
+     * @param password 현재 비밀번호
+     * @author 노경준
+     */
     @Override
     public void sendPasswordEmail(String userEmail, String password) {
         SimpleMailMessage message = new SimpleMailMessage();
