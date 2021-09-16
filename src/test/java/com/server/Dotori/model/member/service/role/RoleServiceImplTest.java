@@ -1,6 +1,6 @@
-package com.server.Dotori.model.member.service.studentinfo;
+package com.server.Dotori.model.member.service.role;
 
-import com.server.Dotori.model.member.dto.*;
+import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.util.CurrentUserUtil;
@@ -24,13 +24,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-class StuInfoServiceTest {
+class RoleServiceImplTest {
 
-    @Autowired private StuInfoService stuInfoService;
     @Autowired private MemberRepository memberRepository;
     @Autowired private PasswordEncoder passwordEncoder;
-    @Autowired private CurrentUserUtil currentUserUtil;
-    @Autowired private EntityManager em;
+    @Autowired private RoleService roleService;
 
     @BeforeEach
     @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
@@ -63,60 +61,9 @@ class StuInfoServiceTest {
     }
 
     @Test
-    @DisplayName("학년반별로 학생의 정보가 잘 조회되나요?")
-    public void getStudentInfoTest() {
-        //given //when
-        List<StudentInfoDto> studentInfo = stuInfoService.getStudentInfo(24L);
-
-        //then
-        assertEquals(1, studentInfo.size());
-    }
-
-    @Test
-    @DisplayName("권한이 제대로 변경되나요?")
-    public void updateRole() {
-        //given //when
-        stuInfoService.updateRole(
-                RoleUpdateDto.builder()
-                        .receiverId(currentUserUtil.getCurrentUser().getId())
-                        .roles(Collections.singletonList(Role.ROLE_COUNCILLOR))
-                        .build()
-        );
-
-        em.flush();
-        em.clear();
-
-        //then
-        assertEquals(memberRepository.findByUsername("배태현").getRoles().toString(), Collections.singletonList(Role.ROLE_COUNCILLOR).toString());
-    }
-
-    @Test
-    @DisplayName("학번이 잘 변경되나요?")
-    public void updateStuNum() {
-        //given //when
-        stuInfoService.updateStuNum(
-                StuNumUpdateDto.builder()
-                        .receiverId(currentUserUtil.getCurrentUser().getId())
-                        .stuNum("1111")
-                        .build()
-        );
-
-        //then
-        assertEquals("1111", memberRepository.findById(currentUserUtil.getCurrentUser().getId()).get().getStdNum());
-    }
-
-    @Test
-    @DisplayName("이름이 잘 변경되나요?")
-    public void updateUsernameTest() {
-        //given //when
-        stuInfoService.updateUsername(
-                UsernameUpdateDto.builder()
-                        .receiverId(currentUserUtil.getCurrentUser().getId())
-                        .username("배털")
-                        .build()
-        );
-
-        //then
-        assertNotNull(memberRepository.findByUsername("배털"));
+    @DisplayName("현재 로그인한 유저의 권한이 잘 조회되나요?")
+    void getCurrentRoleTest() {
+        assertEquals(Collections.singletonList(Role.ROLE_MEMBER), roleService.getCurrentRole());
+        System.out.println(roleService.getCurrentRole());
     }
 }

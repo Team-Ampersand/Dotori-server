@@ -96,7 +96,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     }
 
     /**
-     * 음악신청 상태를 '신청가능'으로 변경하는 서비스로직 (Schedule)
+     * 자습신청 상태를 '신청가능'으로 변경하는 서비스로직 (Schedule)
      * @author 배태현
      */
     @Override

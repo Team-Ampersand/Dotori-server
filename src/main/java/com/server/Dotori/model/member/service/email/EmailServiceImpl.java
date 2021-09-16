@@ -2,6 +2,7 @@ package com.server.Dotori.model.member.service.email;
 
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.Member;
+import com.server.Dotori.model.member.dto.AuthPasswordDto;
 import com.server.Dotori.model.member.dto.EmailDto;
 import com.server.Dotori.model.member.dto.MemberEmailKeyDto;
 import com.server.Dotori.model.member.repository.MemberRepository;
@@ -23,25 +24,26 @@ public class EmailServiceImpl implements EmailService {
     private final RedisUtil redisUtil;
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
-    private final CurrentUserUtil currentUserUtil;
 
     /**
-     * 이메일로 인증하기 유저의 이메일을 받아서 받은 이메일 주소로 인증번호를 보내주는 기능
-     * @param emailDto
+     * 유저의 이메일을 받아서 받은 이메일 주소로 인증번호를 보내주는 기능
+     * @param emailDto email
      * @return 인증번호
+     * @author 노경준
      */
     @Override
     public String authKey(EmailDto emailDto) {
         String key = keyUtil.keyIssuance();
         redisUtil.setDataExpire(key, key, 3 * 60 * 1000L);
-        emailSendService.sendEmail(emailDto.getUserEmail(),key);
+        emailSendService.sendEmail(emailDto.getEmail(),key);
         return key;
     }
 
     /**
      * authKey 기능에서 받은 키를 확인(인증)하는 기능
-     * @param memberEmailKeyDto
+     * @param memberEmailKeyDto key
      * @return 입력된 키
+     * @author 노경준
      */
     @Override
     public String authCheck(MemberEmailKeyDto memberEmailKeyDto) {
@@ -54,19 +56,21 @@ public class EmailServiceImpl implements EmailService {
     }
 
     /**
-     * 로그인 안했을때 사용할 수 있는 기능
-     * @param emailDto
-     * @return Member
+     * 로그인 안했을때 비밀번호를 변경하는 서비스 로직
+     * @param authPasswordDto email, answer
+     * @return findMember
+     * @author 노경준
      */
     @Transactional
     @Override
-    public Member authPassword(EmailDto emailDto) {
-        String email = emailDto.getUserEmail();
+    public Member authPassword(AuthPasswordDto authPasswordDto) {
+        String email = authPasswordDto.getEmail();
+        Member findMember = memberRepository.findByEmail(authPasswordDto.getEmail());
+        if(findMember == null) throw new UserNotFoundException();
+        if(!findMember.getAnswer().equals(authPasswordDto.getAnswer())) throw new IllegalArgumentException("질문 답이 일치하지 않습니다.");
+
         String password = getTempPassword();
         emailSendService.sendPasswordEmail(email,password);
-
-        Member findMember = memberRepository.findByEmail(emailDto.getUserEmail());
-        if(findMember == null) throw new UserNotFoundException();
 
         findMember.updatePassword(passwordEncoder.encode(password));
 

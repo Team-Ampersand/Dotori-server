@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.service;
 
+import com.server.Dotori.model.member.dto.MemberDeleteDto;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.dto.MemberLoginDto;
 import com.server.Dotori.model.member.dto.MemberPasswordDto;
@@ -137,5 +138,26 @@ public class MemberServiceTest {
 
         // then
         assertNull(redisUtil.getData(memberRepository.findByEmail(memberLoginDto.getEmail()).getUsername()));
+    }
+
+    @Test
+    @DisplayName("회원탈퇴")
+    void delete(){
+        // when
+        MemberLoginDto memberLoginDto = MemberLoginDto.builder()
+                .email("s20018@gsm.hs.kr")
+                .password("1234")
+                .build();
+
+        MemberDeleteDto memberDeleteDto = new MemberDeleteDto();
+        memberDeleteDto.setUsername("노경준");
+        memberDeleteDto.setPassword("1234");
+
+        // given
+        memberService.signin(memberLoginDto);
+        memberService.delete(memberDeleteDto);
+
+        // then
+        assertNull(memberRepository.findByEmail(memberLoginDto.getEmail()));
     }
 }

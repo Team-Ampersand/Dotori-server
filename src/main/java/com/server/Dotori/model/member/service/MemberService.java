@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.service;
 
+import com.server.Dotori.model.member.dto.MemberDeleteDto;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.dto.MemberLoginDto;
 import com.server.Dotori.model.member.dto.MemberPasswordDto;
@@ -11,4 +12,5 @@ public interface MemberService {
     Map<String,String> signin(MemberLoginDto memberLoginDto);
     Map<String,String> passwordChange(MemberPasswordDto memberPasswordDto);
     void logout();
+    void delete(MemberDeleteDto memberDeleteDto);
 }
