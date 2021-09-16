@@ -1,47 +1,31 @@
-package com.server.Dotori.model.member.controller.selfstudy;
+package com.server.Dotori.model.member.controller.selfstudy.admin;
 
 import com.server.Dotori.model.member.service.selfstudy.SelfStudyService;
 import com.server.Dotori.response.ResponseService;
-import com.server.Dotori.response.result.CommonResult;
 import com.server.Dotori.response.result.SingleResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/member")
+@RequestMapping("/v1/admin")
 @RequiredArgsConstructor
-public class SelfStudyController {
+public class AdminSelfStudyController {
 
     private final ResponseService responseService;
     private final SelfStudyService selfStudyService;
 
-    @PutMapping("/selfstudy")
-    @ResponseStatus( HttpStatus.OK )
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
-            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
-    })
-    public CommonResult requestSelfStudy() {
-        selfStudyService.requestSelfStudy();
-        return responseService.getSuccessResult();
-    }
-
-    @PutMapping("/cancel/selfstudy")
-    @ResponseStatus( HttpStatus.OK )
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
-            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
-    })
-    public CommonResult cancelSelfStudy() {
-        selfStudyService.cancelSelfStudy();
-        return responseService.getSuccessResult();
-    }
-
+    /**
+     * 자습신청한 학생 전체 조회 컨트롤러
+     * @return SingleResult (id, stuNum, username)
+     * @author 배태현
+     */
     @GetMapping("/selfstudy")
     @ResponseStatus( HttpStatus.OK )
+    @ApiOperation(value = "자습신청한 학생 전체 조회", notes = "자습신청한 학생 전체 조회")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
@@ -50,8 +34,15 @@ public class SelfStudyController {
         return responseService.getSingleResult(selfStudyService.getSelfStudyStudents());
     }
 
+    /**
+     * 자습신청한 학생 반별 조회 컨트롤러
+     * @param id classId
+     * @return SingleResult (id, stuNum, username)
+     * @author 배태현
+     */
     @GetMapping("/selfstudy/{classId}")
     @ResponseStatus( HttpStatus.OK )
+    @ApiOperation(value = "자습신청한 학생 반별 조회", notes = "자습신청한 학생 반별 조회")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
@@ -60,19 +51,14 @@ public class SelfStudyController {
         return responseService.getSingleResult(selfStudyService.getSelfStudyStudentsByCategory(id));
     }
 
-    @PutMapping ("/selfstudy/status")
-    @ResponseStatus( HttpStatus.OK )
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
-            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
-    })
-    public CommonResult updateSelfStudyStatus() {
-        selfStudyService.updateSelfStudyStatus();
-        return responseService.getSuccessResult();
-    }
-
+    /**
+     * 자습신청한 학생 카운트 수 조회 컨트롤러
+     * @return SingleResult - count
+     * @author 배태현
+     */
     @GetMapping ("/selfstudy/count")
     @ResponseStatus( HttpStatus.OK )
+    @ApiOperation(value = "자습신청한 학생 카운트 조회", notes = "자습신청한 학생 카운트 조회")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
