@@ -1,8 +1,6 @@
-package com.server.Dotori.exception.user;
+package com.server.Dotori.exception.user.controller;
 
-import com.server.Dotori.exception.user.exception.UserAlreadyException;
-import com.server.Dotori.exception.user.exception.UserNotFoundException;
-import com.server.Dotori.exception.user.exception.UserPasswordNotMatchingException;
+import com.server.Dotori.exception.user.exception.*;
 import com.server.Dotori.response.result.CommonResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,4 +24,15 @@ public class UserExceptionController {
     public CommonResult userPasswordNotMatchingException(){
         throw new UserPasswordNotMatchingException();
     }
+
+    @GetMapping("/user-not-found-by-class")
+    public CommonResult userNotFoundByClassException(){
+        throw new UserNotFoundByClassException();
+    }
+
+    @GetMapping("/user-authentication-number-not-matching")
+    public CommonResult userAuthenticationNumberNotMatchingException() {
+        throw new UserAuthenticationNumberNotMatchingException();
+    }
+
 }
