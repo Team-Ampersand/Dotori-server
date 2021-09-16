@@ -1,4 +1,4 @@
-package com.server.Dotori.exception.customError;
+package com.server.Dotori.exception.basic_error;
 
 import com.server.Dotori.exception.response.CustomException;
 import lombok.RequiredArgsConstructor;
