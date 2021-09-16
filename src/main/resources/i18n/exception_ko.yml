@@ -26,6 +26,14 @@ user-password-not-matching:
   code: "-920"
   msg: "비밀번호가 올바르지 않습니다"
 
+user-not-found-by-class:
+  code: "-930"
+  msg: "해당반에 해당하는 학생들이 없습니다."
+
+user-authentication-number-not-matching:
+  code: "-940"
+  msg: "인증번호가 일치하지 않습니다."
+
 access-token-expired:
   code: "-800"
   msg: "액세스 토큰이 만료되었습니다."
@@ -38,18 +46,54 @@ logout-token:
   code: "-820"
   msg: "로그아웃 된 토큰입니다."
 
+refresh-token-fail:
+  code: "-830"
+  msg: "토큰 재발급이 실패했습니다."
+
 board-not-found:
   code: "-700"
   msg: "해당 게시물을 찾을 수 없습니다."
 
 board-not-have-permission-to-create:
-  code: "-720"
+  code: "-710"
   msg: "해당 게시물 생성 권한이 없습니다."
 
 board-not-have-permission-to-modify:
-  code: "-710"
+  code: "-720"
   msg: "해당 게시물 수정 권한이 없습니다."
 
 board-not-have-permission-to-delete:
   code: "-730"
   msg: "해당 게시물 삭제 권한이 없습니다."
+
+board-empty:
+  code: "-740"
+  msg: "공지사항이 비어있습니다."
+
+selfstudy-over-maximum-count:
+  code: "-600"
+  msg: "자습신청 인원이 50명을 초과 하였습니다."
+
+selfstudy-cant-change:
+  code: "-610"
+  msg: "자습신청을 취소할 수 있는 상태가 아닙니다."
+
+selfstudy-cant-applied:
+  code: "-620"
+  msg: "자습신청을 할 수 있는 상태가 아닙니다."
+
+selfstudy-not-found:
+  code: "-630"
+  msg: "자습신청한 학생이 없습니다."
+
+music-already:
+  code: "-500"
+  msg: "이미 음악을 신청하신 회원입니다."
+
+music-not-applied:
+  code: "-510"
+  msg: "신청된 음악이 없습니다."
+
+music-not-found:
+  code: "-520"
+  msg: "해당 신청된 음악을 찾을 수 없습니다."
