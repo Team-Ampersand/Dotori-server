@@ -6,5 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EmailDto {
-    private String userEmail;
+    private String email;
 }
