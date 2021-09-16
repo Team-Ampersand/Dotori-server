@@ -20,18 +20,36 @@ public class EmailController {
     private final EmailService emailService;
     private final ResponseService responseService;
 
+    /**
+     * 이메일 인증 Controller
+     * @param emailDto email
+     * @return SuccessResult
+     * @author 노경준
+     */
     @PostMapping("/auth")
     public CommonResult authKey(@RequestBody EmailDto emailDto){
         emailService.authKey(emailDto);
         return responseService.getSuccessResult();
     }
 
+    /**
+     * 이메일 인증 확인 Controller
+     * @param memberEmailKeyDto key
+     * @return SuccessResult
+     * @author 노경준
+     */
     @PostMapping("/auth/check")
     public CommonResult authCheck(@RequestBody MemberEmailKeyDto memberEmailKeyDto){
         emailService.authCheck(memberEmailKeyDto);
         return responseService.getSuccessResult();
     }
 
+    /**
+     * 이메일 임시 비밀번호 Controller
+     * @param authPasswordDto email, password
+     * @return SuccessResult
+     * @author 노경준
+     */
     @PostMapping("/auth/password")
     public CommonResult authPassword(@RequestBody AuthPasswordDto authPasswordDto){
         emailService.authPassword(authPasswordDto);
