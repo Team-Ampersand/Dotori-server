@@ -35,7 +35,7 @@ public class DeveloperMusicController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult music(@RequestBody MusicApplicationDto musicApplicationDto) {
+    public CommonResult musicDeveloper(@RequestBody MusicApplicationDto musicApplicationDto) {
         musicService.musicApplication(musicApplicationDto);
         return responseService.getSuccessResult();
     }
@@ -51,7 +51,7 @@ public class DeveloperMusicController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult<List<MusicResDto>> getAllMusics() {
+    public SingleResult<List<MusicResDto>> getAllMusicsDeveloper() {
         return responseService.getSingleResult(musicService.getAllMusic());
     }
 
@@ -67,7 +67,7 @@ public class DeveloperMusicController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult deleteMusic(@PathVariable("id") Long id) {
+    public CommonResult deleteMusicDeveloper(@PathVariable("id") Long id) {
         musicService.deleteMusic(id);
         return responseService.getSuccessResult();
     }

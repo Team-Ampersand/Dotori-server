@@ -48,7 +48,7 @@ public class MemberSelfStudyController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult cancelSelfStudy() {
+    public CommonResult cancelSelfStudyMember() {
         selfStudyService.cancelSelfStudy();
         return responseService.getSuccessResult();
     }
@@ -65,7 +65,7 @@ public class MemberSelfStudyController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult getSelfStudyStudents() {
+    public SingleResult getSelfStudyStudentsMember() {
         return responseService.getSingleResult(selfStudyService.getSelfStudyStudents());
     }
 
@@ -82,7 +82,7 @@ public class MemberSelfStudyController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult getSelfStudyStudentsByCategory(@PathVariable("classId") Long id) {
+    public SingleResult getSelfStudyStudentsByCategoryMember(@PathVariable("classId") Long id) {
         return responseService.getSingleResult(selfStudyService.getSelfStudyStudentsByCategory(id));
     }
 
@@ -98,7 +98,7 @@ public class MemberSelfStudyController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult selfStudyTotalCount() {
+    public SingleResult selfStudyTotalCountMember() {
         return responseService.getSingleResult(selfStudyService.selfStudyCount());
     }
 }
