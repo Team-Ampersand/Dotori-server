@@ -1,5 +1,8 @@
 package com.server.Dotori.exception.music;
 
+import com.server.Dotori.exception.music.exception.MusicAlreadyException;
+import com.server.Dotori.exception.music.exception.MusicNotAppliedException;
+import com.server.Dotori.exception.music.exception.MusicNotFoundException;
 import com.server.Dotori.exception.token.exception.InvalidTokenException;
 import com.server.Dotori.exception.token.exception.LogoutTokenException;
 import com.server.Dotori.exception.token.exception.RefreshTokenFailException;
@@ -21,19 +24,19 @@ public class MusicExceptionHandlerImpl implements MusicExceptionHandler {
     private final ExceptionResponseObjectUtil exceptionResponseObjectUtil;
 
     @Override
-    public CommonResult musicAlreadyException(InvalidTokenException ex) {
+    public CommonResult musicAlreadyException(MusicAlreadyException ex) {
         log.debug("=== Music Already Exception 발생 ===");
         return exceptionResponseObjectUtil.getExceptionResponseObject(MUSIC_ALREADY);
     }
 
     @Override
-    public CommonResult musicNotAppliedException(LogoutTokenException ex) {
+    public CommonResult musicNotAppliedException(MusicNotAppliedException ex) {
         log.debug("=== Music Not Applied Exception 발생 ===");
         return exceptionResponseObjectUtil.getExceptionResponseObject(MUSIC_NOT_APPLIED);
     }
 
     @Override
-    public CommonResult musicNotFoundException(RefreshTokenFailException ex) {
+    public CommonResult musicNotFoundException(MusicNotFoundException ex) {
         log.debug("=== Music Not Found Exception 발생 ===");
         return exceptionResponseObjectUtil.getExceptionResponseObject(MUSIC_NOT_FOUND);
     }
