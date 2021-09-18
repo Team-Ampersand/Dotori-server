@@ -84,6 +84,9 @@ public class StuInfoServiceImpl implements StuInfoService {
         Member findMember = memberRepository.findById(stuNumUpdateDto.getReceiverId())
                 .orElseThrow(() -> new UserNotFoundException());
 
+        if (memberRepository.existsByStdNum(stuNumUpdateDto.getStuNum()))
+            throw new IllegalArgumentException("이미 존재하는 학번입니다!");
+
         findMember.updateStuNum(stuNumUpdateDto.getStuNum());
     }
 
@@ -96,6 +99,10 @@ public class StuInfoServiceImpl implements StuInfoService {
     public void updateUsername(UsernameUpdateDto usernameUpdateDto) {
         Member findMember = memberRepository.findById(usernameUpdateDto.getReceiverId())
                 .orElseThrow(() -> new UserNotFoundException());
+
+        // 동일한 이름으로 회원가입/로그인 하여 서비스 사용이 가능하다면 없어질 코드
+        if (memberRepository.existsByUsername(usernameUpdateDto.getUsername()))
+            throw new IllegalArgumentException("이미 존재하는 이름입니다!");
 
         findMember.updateUsername(usernameUpdateDto.getUsername());
     }
