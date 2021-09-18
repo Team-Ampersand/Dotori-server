@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RequiredArgsConstructor
 public class UnknownExceptionHandler {
 
-    public final String DEFAULT_EXCEPTION = "unknown";
+    public static String DEFAULT_EXCEPTION = "unknown";
 
     private final ExceptionResponseObjectUtil exceptionResponseObjectUtil;
 
