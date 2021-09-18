@@ -3,9 +3,6 @@ package com.server.Dotori.exception.music;
 import com.server.Dotori.exception.music.exception.MusicAlreadyException;
 import com.server.Dotori.exception.music.exception.MusicNotAppliedException;
 import com.server.Dotori.exception.music.exception.MusicNotFoundException;
-import com.server.Dotori.exception.token.exception.InvalidTokenException;
-import com.server.Dotori.exception.token.exception.LogoutTokenException;
-import com.server.Dotori.exception.token.exception.RefreshTokenFailException;
 import com.server.Dotori.response.result.CommonResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,13 +16,13 @@ public interface MusicExceptionHandler {
 
     @ExceptionHandler(MusicAlreadyException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    CommonResult musicAlreadyException(InvalidTokenException ex);
+    CommonResult musicAlreadyException(MusicAlreadyException ex);
 
     @ExceptionHandler(MusicNotAppliedException.class)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    CommonResult musicNotAppliedException(LogoutTokenException ex);
+    CommonResult musicNotAppliedException(MusicNotAppliedException ex);
 
     @ExceptionHandler(MusicNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    CommonResult musicNotFoundException(RefreshTokenFailException ex);
+    CommonResult musicNotFoundException(MusicNotFoundException ex);
 }

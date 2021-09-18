@@ -35,4 +35,14 @@ public class UserExceptionController {
         throw new UserAuthenticationNumberNotMatchingException();
     }
 
+    @GetMapping("/user-already-join-this-name")
+    public CommonResult userAlreadyJoinThisNameException() {
+        throw new UserAlreadyJoinThisNameException();
+    }
+
+    @GetMapping("/user-already-join-this-stunum")
+    public CommonResult userAlreadyJoinThisStunumException() {
+        throw new UserAlreadyJoinThisStunumException();
+    }
+
 }

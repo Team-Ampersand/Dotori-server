@@ -46,4 +46,16 @@ public class UserExceptionHandlerImpl implements UserExceptionHandler {
         log.debug("=== User Authentication Number Not Matching Exception 발생 ===");
         return exceptionResponseObjectUtil.getExceptionResponseObject(USER_AUTHENTICATION_NUMBER_NOT_MATCHING);
     }
+
+    @Override
+    public CommonResult userAlreadyJoinThisNameException(UserAlreadyJoinThisNameException ex) {
+        log.debug("=== User Already Join This Name Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(USER_ALREADY_JOIN_THIS_NAME);
+    }
+
+    @Override
+    public CommonResult userAlreadyJoinThisStunumException(UserAlreadyJoinThisStunumException ex) {
+        log.debug("=== User Already Join This Stunum Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(USER_ALREADY_JOIN_THIS_STUNUM);
+    }
 }
