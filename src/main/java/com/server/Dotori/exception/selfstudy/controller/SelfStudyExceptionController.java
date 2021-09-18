@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class SelfStudyExceptionController {
 
     @GetMapping("/selfstudy-already")
-    public CommonResult selfStudyAlready() {
+    public CommonResult selfStudyCantApplied() {
         throw new SelfStudyCantApplied();
     }
 
