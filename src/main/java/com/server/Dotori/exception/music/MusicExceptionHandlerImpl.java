@@ -3,16 +3,12 @@ package com.server.Dotori.exception.music;
 import com.server.Dotori.exception.music.exception.MusicAlreadyException;
 import com.server.Dotori.exception.music.exception.MusicNotAppliedException;
 import com.server.Dotori.exception.music.exception.MusicNotFoundException;
-import com.server.Dotori.exception.token.exception.InvalidTokenException;
-import com.server.Dotori.exception.token.exception.LogoutTokenException;
-import com.server.Dotori.exception.token.exception.RefreshTokenFailException;
 import com.server.Dotori.response.result.CommonResult;
 import com.server.Dotori.util.ExceptionResponseObjectUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j

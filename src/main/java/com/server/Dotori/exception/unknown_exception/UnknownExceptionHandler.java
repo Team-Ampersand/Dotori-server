@@ -1,6 +1,5 @@
 package com.server.Dotori.exception.unknown_exception;
 
-import com.server.Dotori.response.ResponseService;
 import com.server.Dotori.response.result.CommonResult;
 import com.server.Dotori.util.ExceptionResponseObjectUtil;
 import lombok.RequiredArgsConstructor;
