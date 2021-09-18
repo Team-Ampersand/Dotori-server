@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import static org.springframework.http.HttpStatus.*;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
+@RestControllerAdvice
 public class BasicErrorHandler implements ErrorController {
 
     public final static String BASIC_ERROR_BASE_URL = "/error/";

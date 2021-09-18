@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
 @RequiredArgsConstructor
+@RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
-@Service
 public class MusicExceptionHandlerImpl implements MusicExceptionHandler {
 
-    private ExceptionResponseObjectUtil exceptionResponseObjectUtil;
+    private final ExceptionResponseObjectUtil exceptionResponseObjectUtil;
 
     @Override
     public CommonResult musicAlreadyException(InvalidTokenException ex) {

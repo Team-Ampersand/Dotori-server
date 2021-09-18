@@ -7,14 +7,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@Service
-@Slf4j @Order(Ordered.HIGHEST_PRECEDENCE)
+@Slf4j
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
+@RestControllerAdvice
 public class UserExceptionHandlerImpl implements UserExceptionHandler {
 
-    private ExceptionResponseObjectUtil exceptionResponseObjectUtil;
+    private final ExceptionResponseObjectUtil exceptionResponseObjectUtil;
 
     @Override
     public CommonResult userNotFoundException(UserNotFoundException ex) {
