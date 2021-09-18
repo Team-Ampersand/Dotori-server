@@ -38,7 +38,7 @@ public class MemberBoardController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult<Page<BoardGetDto>> getAllBoard(@PageableDefault(size = 7) Pageable pageable) {
+    public SingleResult<Page<BoardGetDto>> getAllBoardMember(@PageableDefault(size = 7) Pageable pageable) {
         Page<BoardGetDto> pageBoard = boardService.getAllBoard(pageable);
         return responseService.getSingleResult(pageBoard);
     }
@@ -56,7 +56,7 @@ public class MemberBoardController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult<BoardGetIdDto> getBoardById(@PathVariable("id") Long boardId) {
+    public SingleResult<BoardGetIdDto> getBoardByIdMember(@PathVariable("id") Long boardId) {
         BoardGetIdDto findBoardById = boardService.getBoardById(boardId);
         return responseService.getSingleResult(findBoardById);
     }
