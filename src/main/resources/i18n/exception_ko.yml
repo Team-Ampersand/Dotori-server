@@ -32,7 +32,7 @@ user-not-found-by-class:
 
 user-authentication-answer-not-matching:
   code: "-940"
-  msg: "인증 답변가 일치하지 않습니다."
+  msg: "인증 답변이 일치하지 않습니다."
 
 user-already-join-this-name:
   code: "-950"
