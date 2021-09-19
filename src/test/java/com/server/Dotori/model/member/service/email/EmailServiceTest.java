@@ -13,6 +13,7 @@ import com.server.Dotori.util.redis.RedisUtil;
 
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,7 @@ public class EmailServiceTest {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Disabled
     @Test
     void authKey(){
         //given
@@ -72,6 +74,7 @@ public class EmailServiceTest {
         assertThat(key).isEqualTo(redisUtil.getData(key));
     }
 
+    @Disabled
     @Test
     void authPassword(){
         // given
