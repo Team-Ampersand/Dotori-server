@@ -36,11 +36,11 @@ public interface UserExceptionHandler {
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     CommonResult userAuthenticationNumberNotMatchingException(UserAuthenticationNumberNotMatchingException ex);
 
-    @ExceptionHandler(UserAuthenticationNumberNotMatchingException.class)
+    @ExceptionHandler(UserAlreadyJoinThisNameException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     CommonResult userAlreadyJoinThisNameException(UserAlreadyJoinThisNameException ex);
 
-    @ExceptionHandler(UserAuthenticationNumberNotMatchingException.class)
+    @ExceptionHandler(UserAlreadyJoinThisStunumException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     CommonResult userAlreadyJoinThisStunumException(UserAlreadyJoinThisStunumException ex);
 }
