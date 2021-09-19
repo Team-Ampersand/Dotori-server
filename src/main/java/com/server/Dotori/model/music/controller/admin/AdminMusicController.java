@@ -43,7 +43,7 @@ public class AdminMusicController {
      * @return CommonResult - SuccessResult
      */
     @DeleteMapping("/music/{id}")
-    @ResponseStatus (HttpStatus.NO_CONTENT )
+    @ResponseStatus (HttpStatus.OK )
     @ApiOperation(value = "음악 신청목록 개별 삭제", notes = "음악 신청목록 개별 삭제")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
