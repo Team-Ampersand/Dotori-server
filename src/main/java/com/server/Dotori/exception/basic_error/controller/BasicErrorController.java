@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(BasicErrorHandler.BASIC_ERROR_BASE_URL)
-public class BasicErrorController implements ErrorController {
+@RequiredArgsConstructor
+public class BasicErrorController {
 
     private final ExceptionResponseObjectUtil exceptionResponseObjectUtil;
 
