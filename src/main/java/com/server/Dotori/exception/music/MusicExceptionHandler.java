@@ -19,10 +19,10 @@ public interface MusicExceptionHandler {
     CommonResult musicAlreadyException(MusicAlreadyException ex);
 
     @ExceptionHandler(MusicNotAppliedException.class)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     CommonResult musicNotAppliedException(MusicNotAppliedException ex);
 
     @ExceptionHandler(MusicNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.OK)
     CommonResult musicNotFoundException(MusicNotFoundException ex);
 }
