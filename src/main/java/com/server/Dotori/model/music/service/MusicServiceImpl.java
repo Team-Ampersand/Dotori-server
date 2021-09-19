@@ -1,5 +1,8 @@
 package com.server.Dotori.model.music.service;
 
+import com.server.Dotori.exception.music.exception.MusicAlreadyException;
+import com.server.Dotori.exception.music.exception.MusicNotAppliedException;
+import com.server.Dotori.exception.music.exception.MusicNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.music.Music;
 import com.server.Dotori.model.music.dto.MusicApplicationDto;
@@ -40,7 +43,7 @@ public class MusicServiceImpl implements MusicService {
             return music;
 
         } else {
-            throw new IllegalArgumentException("이미 음악을 신청하신 회원입니다"); //Exception생성하여 예외처리하기
+            throw new MusicAlreadyException();
         }
     }
 
@@ -54,8 +57,8 @@ public class MusicServiceImpl implements MusicService {
     public List<MusicResDto> getAllMusic() {
         List<MusicResDto> allMusic = musicRepository.findAllMusic();
 
-        if (allMusic.isEmpty()) throw new IllegalArgumentException("신청된 음악이 없습니다.");
-        return allMusic;
+        if (allMusic.isEmpty()) throw new MusicNotAppliedException();
+        else return allMusic;
     }
 
     /**
@@ -67,7 +70,7 @@ public class MusicServiceImpl implements MusicService {
     @Override
     public void deleteMusic(Long musicId) {
         Music music = musicRepository.findById(musicId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 신청된 음악을 찾을 수 없습니다."));
+                .orElseThrow(() -> new MusicNotFoundException());
 
         musicRepository.deleteById(music.getId());
     }
