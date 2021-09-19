@@ -1,6 +1,7 @@
 package com.server.Dotori.model.member.service;
 
 import com.server.Dotori.exception.token.exception.LogoutTokenException;
+import com.server.Dotori.exception.token.exception.RefreshTokenFailException;
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
@@ -59,6 +60,6 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
             return map;
         }
 
-        throw new IllegalArgumentException("토큰 재발급에 실패했습니다.");
+        throw new RefreshTokenFailException();
     }
 }
