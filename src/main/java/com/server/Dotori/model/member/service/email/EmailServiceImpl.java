@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.service.email;
 
+import com.server.Dotori.exception.user.exception.UserAuthenticationAnswerNotMatchingException;
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.AuthPasswordDto;
@@ -67,7 +68,7 @@ public class EmailServiceImpl implements EmailService {
         String email = authPasswordDto.getEmail();
         Member findMember = memberRepository.findByEmail(authPasswordDto.getEmail());
         if(findMember == null) throw new UserNotFoundException();
-        if(!findMember.getAnswer().equals(authPasswordDto.getAnswer())) throw new IllegalArgumentException("질문 답이 일치하지 않습니다.");
+        if(!findMember.getAnswer().equals(authPasswordDto.getAnswer())) throw new UserAuthenticationAnswerNotMatchingException();
 
         String password = getTempPassword();
         emailSendService.sendPasswordEmail(email,password);
