@@ -30,9 +30,9 @@ user-not-found-by-class:
   code: "-930"
   msg: "해당반에 해당하는 학생들이 없습니다."
 
-user-authentication-number-not-matching:
+user-authentication-answer-not-matching:
   code: "-940"
-  msg: "인증번호가 일치하지 않습니다."
+  msg: "인증 답변가 일치하지 않습니다."
 
 user-already-join-this-name:
   code: "-950"

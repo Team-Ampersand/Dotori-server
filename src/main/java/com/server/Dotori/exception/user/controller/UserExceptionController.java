@@ -30,9 +30,9 @@ public class UserExceptionController {
         throw new UserNotFoundByClassException();
     }
 
-    @GetMapping("/user-authentication-number-not-matching")
-    public CommonResult userAuthenticationNumberNotMatchingException() {
-        throw new UserAuthenticationNumberNotMatchingException();
+    @GetMapping("/user-authentication-answer-not-matching")
+    public CommonResult userAuthenticationAnswerNotMatchingException() {
+        throw new UserAuthenticationAnswerNotMatchingException();
     }
 
     @GetMapping("/user-already-join-this-name")

@@ -32,9 +32,9 @@ public interface UserExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     CommonResult userNotFoundByClassException(UserNotFoundByClassException ex);
 
-    @ExceptionHandler(UserAuthenticationNumberNotMatchingException.class)
+    @ExceptionHandler(UserAuthenticationAnswerNotMatchingException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    CommonResult userAuthenticationNumberNotMatchingException(UserAuthenticationNumberNotMatchingException ex);
+    CommonResult userAuthenticationAnswerNotMatchingException(UserAuthenticationAnswerNotMatchingException ex);
 
     @ExceptionHandler(UserAlreadyJoinThisNameException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
