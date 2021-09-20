@@ -51,23 +51,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests() // 권한 처리를 할 메서드
 
                 // 회원 관리
-                .antMatchers("/v1/signin").permitAll()
-                .antMatchers("/v1/signup").permitAll()
-                .antMatchers("/v1/refreshtoken").permitAll()
-                .antMatchers("/v1/auth").permitAll()
-                .antMatchers("/v1/auth/check").permitAll()
-                .antMatchers("/v1/change/password").permitAll()
-                .antMatchers("/v1/auth/password").permitAll()
-                .antMatchers("/v1/member/logout").permitAll()
-                .antMatchers("/v1/member/delete").permitAll()
+//                .antMatchers("/v1/signin").permitAll()
+//                .antMatchers("/v1/signup").permitAll()
+//                .antMatchers("/v1/refreshtoken").permitAll()
+//                .antMatchers("/v1/auth").permitAll()
+//                .antMatchers("/v1/auth/check").permitAll()
+//                .antMatchers("/v1/change/password").permitAll()
+//                .antMatchers("/v1/auth/password").permitAll()
+//                .antMatchers("/v1/member/logout").authenticated()
+//                .antMatchers("/v1/member/delete").authenticated()
 
                 // 권한 별 url 접근
-                .antMatchers("/v1/admin/**").hasRole("ADMIN")
-                .antMatchers("/v1/councillor/**").hasRole("COUNCILLOR")
-                .antMatchers("/v1/member/**").hasRole("MEMBER")
-                .antMatchers("/v1/developer/**").hasRole("DEVELOPER")
+//                .antMatchers("/v1/admin/**").hasRole("ADMIN")
+//                .antMatchers("/v1/councillor/**").hasRole("COUNCILLOR")
+//                .antMatchers("/v1/member/**").hasRole("MEMBER")
+//                .antMatchers("/v1/developer/**").hasRole("DEVELOPER")
 
                 // exception 메세지, h2-console 모두 접근 가능
+                .antMatchers("/**").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/exception/**").permitAll()
                 .antMatchers("/h2-console").permitAll()
