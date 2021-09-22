@@ -24,9 +24,9 @@ public class BoardExceptionHandlerImpl implements BoardExceptionHandler {
     }
 
     @Override
-    public CommonResult boardNotSearchException(BoardNotSearchException ex) {
+    public CommonResult boardNotFoundException(BoardNotFoundException ex) {
         log.debug("=== Board Not Found Exception 발생 ===");
-        return exceptionResponseObjectUtil.getExceptionResponseObject(BOARD_NOT_SEARCH);
+        return exceptionResponseObjectUtil.getExceptionResponseObject(BOARD_NOT_FOUND);
     }
 
     @Override

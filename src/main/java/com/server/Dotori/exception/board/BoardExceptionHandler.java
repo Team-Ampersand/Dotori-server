@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 public interface BoardExceptionHandler {
 
-    String BOARD_NOT_SEARCH = "board-not-search";
+    String BOARD_NOT_FOUND = "board-not-found";
     String BOARD_NOT_HAVE_PERMISSION_TO_CREATE = "board-not-have-permission-to-create";
     String BOARD_NOT_HAVE_PERMISSION_TO_MODIFY = "board-not-have-permission-to-modify";
     String BOARD_NOT_HAVE_PERMISSION_TO_DELETE = "board-not-have-permission-to-delete";
@@ -18,9 +18,9 @@ public interface BoardExceptionHandler {
     @ResponseStatus(HttpStatus.FORBIDDEN)
     CommonResult boardNotHavePermissionToCreate(BoardNotHavePermissionToCreate ex);
 
-    @ExceptionHandler(BoardNotSearchException.class)
+    @ExceptionHandler(BoardNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    CommonResult boardNotSearchException(BoardNotSearchException ex);
+    CommonResult boardNotFoundException(BoardNotFoundException ex);
 
     @ExceptionHandler(BoardNotHavePermissionToModify.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
