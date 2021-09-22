@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-@Slf4j
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     private JwtTokenProvider jwtTokenProvider;
@@ -27,7 +26,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtTokenProvider.resolveToken(request);
-        log.info(token);
+
         try {
             if(token != null && jwtTokenProvider.validateToken(token)){
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
