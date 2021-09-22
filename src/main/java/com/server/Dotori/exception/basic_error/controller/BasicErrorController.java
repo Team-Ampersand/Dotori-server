@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(BasicErrorHandler.BASIC_ERROR_BASE_URL) @Order(Ordered.HIGHEST_PRECEDENCE)
+@RequestMapping(BasicErrorHandler.BASIC_ERROR_BASE_URL)
 @RequiredArgsConstructor
 public class BasicErrorController {
 
