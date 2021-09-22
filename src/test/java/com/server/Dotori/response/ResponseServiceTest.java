@@ -51,7 +51,7 @@ class ResponseServiceTest {
     @Test @DisplayName("getSingleResult 테스트")
     void getSingleResult_테스트(){
         //Given
-        String givenData = "정시원";
+        String givenData = "김태민";
 
         //When
         SingleResult<String> singleResult = responseService.getSingleResult(givenData);
