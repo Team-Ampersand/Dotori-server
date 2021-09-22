@@ -29,7 +29,7 @@ public class CouncillorMusicController {
      * @return CommonResult - SuccessResult
      */
     @PostMapping("/music")
-    @ResponseStatus( HttpStatus.OK )
+    @ResponseStatus( HttpStatus.CREATED )
     @ApiOperation(value = "음악 신청", notes = "음악 신청")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
