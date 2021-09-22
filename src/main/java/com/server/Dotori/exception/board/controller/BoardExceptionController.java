@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/exception")
 public class BoardExceptionController {
 
-    @GetMapping("/board-not-found")
-    public CommonResult boardNotFoundException() {throw new BoardNotFoundException();}
+    @GetMapping("/board-not-search")
+    public CommonResult boardNotSearchException() {throw new BoardNotSearchException();}
 
     @GetMapping("/board-not-have-permission-to-create")
     public CommonResult boardNotHavePermissionToCreate() {throw new BoardNotHavePermissionToCreate();}

@@ -58,7 +58,7 @@ refresh-token-fail:
   code: "-830"
   msg: "Fail to refresh the token"
 
-board-not-found:
+board-not-search:
   code: "-700"
   msg: "Board could not be found."
 
