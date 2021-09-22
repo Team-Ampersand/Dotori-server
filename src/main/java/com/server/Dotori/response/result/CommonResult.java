@@ -1,13 +1,10 @@
 package com.server.Dotori.response.result;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-@NoArgsConstructor @AllArgsConstructor
-@Getter @Setter
+@Getter @Builder
+@NoArgsConstructor(access = AccessLevel.PRIVATE) @AllArgsConstructor
 public class CommonResult {
 
     @ApiModelProperty("응답 성공여부")
@@ -18,6 +15,10 @@ public class CommonResult {
 
     @ApiModelProperty("응답 메시지")
     private String massage;
+
+    public void updateMassage(String massage){
+        this.massage = massage;
+    }
 
     public CommonResult(CommonResult commonResult){
         this.success = commonResult.success;

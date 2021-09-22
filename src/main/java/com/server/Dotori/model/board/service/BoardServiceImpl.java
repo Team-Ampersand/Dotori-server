@@ -1,6 +1,5 @@
 package com.server.Dotori.model.board.service;
 
-import com.querydsl.core.Tuple;
 import com.server.Dotori.exception.board.exception.BoardEmptyException;
 import com.server.Dotori.exception.board.exception.BoardNotFoundException;
 import com.server.Dotori.model.board.Board;

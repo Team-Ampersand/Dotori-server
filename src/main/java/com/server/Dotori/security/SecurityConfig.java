@@ -4,6 +4,7 @@ import com.server.Dotori.security.jwt.JwtTokenFilter;
 import com.server.Dotori.security.jwt.JwtTokenFilterConfigurer;
 import com.server.Dotori.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,10 +19,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity(debug = true)
 @Configuration
-@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     @Override // 접근 가능
     public void configure(WebSecurity web) throws Exception {
@@ -75,13 +80,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**/**").permitAll()
 
                 // Disallow everything else..
-                .anyRequest().authenticated()
-                .and()
-                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class); // 모든 기능이 동작하기전 권한을 체크해줌
-
+                .anyRequest().authenticated();
 
         // If a user try to access a resource without having enough permissions
         http.exceptionHandling().accessDeniedPage("/login");
+        http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider)); // apply jwt
     }
 
     //===========================================================//
