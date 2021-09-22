@@ -68,7 +68,7 @@ class ResponseServiceTest {
     @Test @DisplayName("getListResult 테스트")
     void getListResult_테스트(){
         //Given
-        List<String> givenData = List.of(new String[]{"배태현, 전지환, 정시원"});
+        List<String> givenData = List.of(new String[]{"배태현, 김태민, 노경준"});
 
         //When
         ListResult<String> listResult = responseService.getListResult(givenData);
