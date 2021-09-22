@@ -103,7 +103,7 @@ public class AdminBoardController {
      * @author 배태현
      */
     @DeleteMapping("/board/{id}")
-    @ResponseStatus( HttpStatus.NO_CONTENT )
+    @ResponseStatus( HttpStatus.OK )
     @ApiOperation(value = "공지사항 삭제", notes = "공지사항 삭제")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
