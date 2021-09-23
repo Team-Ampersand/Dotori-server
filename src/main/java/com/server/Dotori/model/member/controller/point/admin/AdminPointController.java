@@ -43,7 +43,7 @@ public class AdminPointController {
      * @return CommonResult - SuccessResult
      * @author 배태현
      */
-    @PostMapping("/point")
+    @PutMapping("/point")
     @ResponseStatus( HttpStatus.OK )
     @ApiOperation(value = "상벌점 부여", notes = "상벌점 부여")
     @ApiImplicitParams({
