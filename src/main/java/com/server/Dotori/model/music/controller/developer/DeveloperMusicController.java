@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -35,7 +36,7 @@ public class DeveloperMusicController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult musicDeveloper(@RequestBody MusicApplicationDto musicApplicationDto) {
+    public CommonResult musicDeveloper(@Valid @RequestBody MusicApplicationDto musicApplicationDto) {
         musicService.musicApplication(musicApplicationDto);
         return responseService.getSuccessResult();
     }

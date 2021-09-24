@@ -18,6 +18,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/v1/councillor")
 @RequiredArgsConstructor
@@ -39,7 +41,7 @@ public class CouncillorBoardController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult createBoardCouncillor(@RequestBody BoardDto boardDto) {
+    public CommonResult createBoardCouncillor(@Valid @RequestBody BoardDto boardDto) {
         boardService.createBoard(boardDto);
         return responseService.getSuccessResult();
     }
@@ -94,7 +96,7 @@ public class CouncillorBoardController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateBoardCouncillor(@PathVariable("id") Long boardId, @RequestBody BoardDto boardUpdateDto) {
+    public CommonResult updateBoardCouncillor(@Valid @PathVariable("id") Long boardId, @RequestBody BoardDto boardUpdateDto) {
         boardService.updateBoard(boardId, boardUpdateDto);
         return responseService.getSuccessResult();
     }

@@ -7,17 +7,17 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 @Getter @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class BoardDto {
 
-    @NotNull
+    @NotBlank
     private String title;
 
-    @NotNull
+    @NotBlank
     private String content;
 
     public Board saveToEntity(Member member) {
