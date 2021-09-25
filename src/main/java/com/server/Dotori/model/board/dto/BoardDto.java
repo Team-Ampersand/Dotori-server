@@ -15,9 +15,11 @@ import javax.validation.constraints.*;
 public class BoardDto {
 
     @NotBlank
+    @Size(min = 1, max = 45)
     private String title;
 
     @NotBlank
+    @Size(min = 1, max = 500)
     private String content;
 
     public Board saveToEntity(Member member) {
