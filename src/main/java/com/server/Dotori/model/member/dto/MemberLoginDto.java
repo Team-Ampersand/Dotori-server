@@ -17,7 +17,6 @@ import javax.validation.constraints.Size;
 public class MemberLoginDto {
     @NotBlank
     @Pattern(regexp = "^[a-zA-Z0-9]+@gsm.hs.kr$")
-    @Size(min = 1, max = 16)
     private String email;
 
     @NotBlank
