@@ -8,17 +8,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Getter
 @Setter
 @NoArgsConstructor
 public class MemberLoginDto {
-    @NotBlank(message = "email should be valid")
+    @NotBlank
+    @Pattern(regexp = "^[a-zA-Z0-9]+@(g)(s)(m)(.)(h)(s)(.)(k)(r)$")
     @Size(min = 1, max = 16)
     private String email;
 
-    @NotBlank(message = "password should be valid")
+    @NotBlank
     @Size(min = 4)
     private String password;
 
