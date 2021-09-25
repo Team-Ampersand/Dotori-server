@@ -71,6 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/v1/councillor/**").hasRole("COUNCILLOR")
 //                .antMatchers("/v1/member/**").hasRole("MEMBER")
 //                .antMatchers("/v1/developer/**").hasRole("DEVELOPER")
+//                .antMatchers("/v1/home").authenticated()
 
                 // exception 메세지, h2-console 모두 접근 가능
                 .antMatchers("/**").permitAll()
