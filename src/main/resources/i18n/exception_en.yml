@@ -30,9 +30,17 @@ user-not-found-by-class:
   code: "-930"
   msg: "There class not found student."
 
-user-authentication-number-not-matching:
+user-authentication-answer-not-matching:
   code: "-940"
-  msg: "Not matched authentication number."
+  msg: "Not matched authentication answer."
+
+user-already-join-this-name:
+  code: "-950"
+  msg: "Already join this name."
+
+user-already-join-this-stunum:
+  code: "-960"
+  msg: "Already join this stunum."
 
 access-token-expired:
   code: "-800"

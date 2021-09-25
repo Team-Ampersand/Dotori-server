@@ -33,7 +33,7 @@ public class Member implements UserDetails {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "member_username", nullable = false)
+    @Column(name = "member_username", nullable = false, unique = true)
     private String username;
 
     @Column(name = "member_stdnum", nullable = false, unique = true)

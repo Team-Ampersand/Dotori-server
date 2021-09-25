@@ -33,7 +33,7 @@ public class AdminPointController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult getAllStudentsPoint(@PathVariable("classId") Long id) {
+    public SingleResult getAllStudentsPointAdmin(@PathVariable("classId") Long id) {
         return responseService.getSingleResult(pointService.getAllStudentPoint(id));
     }
 
@@ -43,14 +43,14 @@ public class AdminPointController {
      * @return CommonResult - SuccessResult
      * @author 배태현
      */
-    @PostMapping("/point")
+    @PutMapping("/point")
     @ResponseStatus( HttpStatus.OK )
     @ApiOperation(value = "상벌점 부여", notes = "상벌점 부여")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult givePoint(@RequestBody PointDto pointDto) {
+    public CommonResult givePointAdmin(@RequestBody PointDto pointDto) {
         pointService.point(pointDto);
         return responseService.getSuccessResult();
     }

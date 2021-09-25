@@ -1,10 +1,11 @@
-package com.server.Dotori.model.member.controller.mypage;
+package com.server.Dotori.model.member.controller.role;
 
-import com.server.Dotori.model.member.service.mainpage.MainPageService;
+import com.server.Dotori.model.member.service.role.RoleService;
 import com.server.Dotori.response.ResponseService;
 import com.server.Dotori.response.result.SingleResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,18 +16,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1")
-public class MyPageController {
+public class RoleController {
 
     private final ResponseService responseService;
-    private final MainPageService mainPageService;
+    private final RoleService roleService;
 
-    @GetMapping("/home")
+    /**
+     * 현재 로그인된 권한을 조회하는 컨트롤러
+     * @return SingleResult - List (Role)
+     */
+    @GetMapping("/current/role")
     @ResponseStatus( HttpStatus.OK )
+    @ApiOperation(value = "현재 로그인된 유저 권한 조회", notes = "현재 로그인된 유저 권한 조회")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult getProfile() {
-        return responseService.getSingleResult(mainPageService.getMyProfile());
+    public SingleResult getCurrentRole() {
+        return responseService.getSingleResult(roleService.getCurrentRole());
     }
 }

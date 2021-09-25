@@ -10,14 +10,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
-@RequiredArgsConstructor @Order(Ordered.HIGHEST_PRECEDENCE)
-@Service
+@RequiredArgsConstructor
+@RestControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class SelfStudyExceptionHandlerImpl implements SelfStudyExceptionHandler {
 
-    private ExceptionResponseObjectUtil exceptionResponseObjectUtil;
+    private final ExceptionResponseObjectUtil exceptionResponseObjectUtil;
 
     @Override
     public CommonResult selfStudyNotFoundException(SelfStudyNotFound ex) {

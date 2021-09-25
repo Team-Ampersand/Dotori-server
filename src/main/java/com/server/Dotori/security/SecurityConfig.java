@@ -1,6 +1,10 @@
 package com.server.Dotori.security;
 
+import com.server.Dotori.security.jwt.JwtTokenFilter;
+import com.server.Dotori.security.jwt.JwtTokenFilterConfigurer;
+import com.server.Dotori.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,12 +15,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity(debug = true)
 @Configuration
-@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Override
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
+
+    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
+
+    @Override // 접근 가능
     public void configure(WebSecurity web) throws Exception {
 
         web.ignoring().antMatchers("/v2/api-docs")//
@@ -41,21 +53,40 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         // Entry points
-        http.authorizeRequests()
+        http.authorizeRequests() // 권한 처리를 할 메서드
+
+                // 회원 관리
+//                .antMatchers("/v1/signin").permitAll()
+//                .antMatchers("/v1/signup").permitAll()
+//                .antMatchers("/v1/refreshtoken").permitAll()
+//                .antMatchers("/v1/auth").permitAll()
+//                .antMatchers("/v1/auth/check").permitAll()
+//                .antMatchers("/v1/change/password").authenticated()
+//                .antMatchers("/v1/auth/password").permitAll()
+//                .antMatchers("/v1/logout").authenticated()
+//                .antMatchers("/v1/delete").authenticated()
+
+                // 권한 별 url 접근
+//                .antMatchers("/v1/admin/**").hasRole("ADMIN")
+//                .antMatchers("/v1/councillor/**").hasRole("COUNCILLOR")
+//                .antMatchers("/v1/member/**").hasRole("MEMBER")
+//                .antMatchers("/v1/developer/**").hasRole("DEVELOPER")
+//                .antMatchers("/v1/home").authenticated()
+//                .antMatchers("/v1/current/role").authenticated()
+
+                // exception 메세지, h2-console 모두 접근 가능
+                .antMatchers("/**").permitAll()
                 .antMatchers("/").permitAll()
-                .antMatchers("/v1/admin/test").hasRole("ADMIN")
-                .antMatchers("/v1/member/test").hasRole("MEMBER")
-                .antMatchers("/v1/councillor/test").hasRole("COUNCILLOR")
-                .antMatchers("/v1/developer/test").hasRole("DEVELOPER")
                 .antMatchers("/exception/**").permitAll()
                 .antMatchers("/h2-console").permitAll()
                 .antMatchers("/h2-console/**/**").permitAll()
-                .antMatchers("/**").permitAll()
+
                 // Disallow everything else..
                 .anyRequest().authenticated();
 
         // If a user try to access a resource without having enough permissions
         http.exceptionHandling().accessDeniedPage("/login");
+        http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider)); // apply jwt
     }
 
     //===========================================================//

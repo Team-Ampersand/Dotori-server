@@ -1,6 +1,5 @@
 package com.server.Dotori.exception.unknown_exception;
 
-import com.server.Dotori.response.ResponseService;
 import com.server.Dotori.response.result.CommonResult;
 import com.server.Dotori.util.ExceptionResponseObjectUtil;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +13,13 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
 @Slf4j
-@RestControllerAdvice @Order(Ordered.HIGHEST_PRECEDENCE)
+@RestControllerAdvice @Order(Ordered.LOWEST_PRECEDENCE)
 @RequiredArgsConstructor
 public class UnknownExceptionHandler {
 
-    public String DEFAULT_EXCEPTION = "unknown";
+    public static String DEFAULT_EXCEPTION = "unknown";
 
-    private ExceptionResponseObjectUtil exceptionResponseObjectUtil;
+    private final ExceptionResponseObjectUtil exceptionResponseObjectUtil;
 
     // 알수없는 에러
     @ExceptionHandler(Exception.class)

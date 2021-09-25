@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,12 @@ public class BasicErrorHandler implements ErrorController {
     public final static String FORBIDDEN_403_CODE_NAME = "forbidden";
     public final static String NOT_FOUND_404_CODE_NAME = "not-found";
 
+    /**
+     * BasicError(WhiteLabel) Error가 발생하면
+     * BasicError에 대한 Response객체를 반환하는 CustomErrorController에 정의되어있는 url로 리다이렉트 합니다.
+     * @param request HttpServletRequest
+     * @return BasicErrorController에 정의해놓은 url주소
+     */
     @GetMapping("/error")
     public String handleError(HttpServletRequest request)  {
 
@@ -47,5 +54,4 @@ public class BasicErrorHandler implements ErrorController {
 
         throw new CustomException("basic error처리중 알 수 없는 에러가 발생해 error handling을 하지 못했습니다", INTERNAL_SERVER_ERROR);
     }
-
 }

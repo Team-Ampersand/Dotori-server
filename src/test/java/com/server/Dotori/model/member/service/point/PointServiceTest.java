@@ -122,7 +122,7 @@ class PointServiceTest {
 
         memberRepository.save(
                 Member.builder()
-                        .username("qoxoqoxo")
+                        .username("qoxoqoxoqoxo")
                         .stdNum("1119")
                         .password("1234")
                         .email("s20083@gsm.hs.kr")

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RequiredArgsConstructor
 @RequestMapping("/v1")
 @RestController
@@ -27,7 +29,7 @@ public class EmailController {
      * @author 노경준
      */
     @PostMapping("/auth")
-    public CommonResult authKey(@RequestBody EmailDto emailDto){
+    public CommonResult authKey(@Valid @RequestBody EmailDto emailDto){
         emailService.authKey(emailDto);
         return responseService.getSuccessResult();
     }
@@ -39,7 +41,7 @@ public class EmailController {
      * @author 노경준
      */
     @PostMapping("/auth/check")
-    public CommonResult authCheck(@RequestBody MemberEmailKeyDto memberEmailKeyDto){
+    public CommonResult authCheck(@Valid @RequestBody MemberEmailKeyDto memberEmailKeyDto){
         emailService.authCheck(memberEmailKeyDto);
         return responseService.getSuccessResult();
     }
@@ -51,7 +53,7 @@ public class EmailController {
      * @author 노경준
      */
     @PostMapping("/auth/password")
-    public CommonResult authPassword(@RequestBody AuthPasswordDto authPasswordDto){
+    public CommonResult authPassword(@Valid @RequestBody AuthPasswordDto authPasswordDto){
         emailService.authPassword(authPasswordDto);
         return responseService.getSuccessResult();
     }

@@ -5,14 +5,16 @@ import com.server.Dotori.response.result.CommonResult;
 import com.server.Dotori.util.ExceptionResponseObjectUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(BasicErrorHandler.BASIC_ERROR_BASE_URL)
-public class BasicErrorController implements ErrorController {
+@RequiredArgsConstructor
+public class BasicErrorController {
 
     private final ExceptionResponseObjectUtil exceptionResponseObjectUtil;
 

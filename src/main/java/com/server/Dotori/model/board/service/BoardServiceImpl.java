@@ -1,6 +1,6 @@
 package com.server.Dotori.model.board.service;
 
-import com.querydsl.core.Tuple;
+import com.server.Dotori.exception.board.exception.BoardEmptyException;
 import com.server.Dotori.exception.board.exception.BoardNotFoundException;
 import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.board.dto.BoardGetDto;
@@ -45,6 +45,8 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Page<BoardGetDto> getAllBoard(Pageable pageable) {
         Page<Board> boardPage = boardRepository.findAll(pageable);
+
+        if (boardPage.isEmpty()) throw new BoardEmptyException();
 
         return boardPage.map(board -> {
             ModelMapper mapper = new ModelMapper();

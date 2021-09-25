@@ -30,7 +30,7 @@ public class AdminSelfStudyController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult getSelfStudyStudents() {
+    public SingleResult getSelfStudyStudentsAdmin() {
         return responseService.getSingleResult(selfStudyService.getSelfStudyStudents());
     }
 
@@ -47,7 +47,7 @@ public class AdminSelfStudyController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult getSelfStudyStudentsByCategory(@PathVariable("classId") Long id) {
+    public SingleResult getSelfStudyStudentsByCategoryAdmin(@PathVariable("classId") Long id) {
         return responseService.getSingleResult(selfStudyService.getSelfStudyStudentsByCategory(id));
     }
 
@@ -63,7 +63,7 @@ public class AdminSelfStudyController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult selfStudyTotalCount() {
+    public SingleResult selfStudyTotalCountAdmin() {
         return responseService.getSingleResult(selfStudyService.selfStudyCount());
     }
 }

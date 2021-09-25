@@ -13,11 +13,11 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Slf4j
 @SpringBootTest
-public class ResponseServiceTest {
+class ResponseServiceTest {
 
-    @Autowired
-    private ResponseService responseService;
+    @Autowired ResponseService responseService;
 
     final String SUCCESS_MSG = ResponseService.CommonResponse.SUCCESS.massage;
     final int SUCCESS_CODE = ResponseService.CommonResponse.SUCCESS.code;
@@ -25,74 +25,60 @@ public class ResponseServiceTest {
     final String FAIL_MSG = ResponseService.CommonResponse.FAIL.massage;
     final int FAIL_CODE = ResponseService.CommonResponse.FAIL.code;
 
-    @Test
-    @DisplayName("CommonResponse success message, code verification")
-    void CommonResponse_success_message_code_verification(){
+    @Test @DisplayName("ResponseService.CommonResponse 성공시 message, code 검증")
+    void CommonResponse_성공_message_code_검증(){
         assertEquals("성공하였습니다.", SUCCESS_MSG);
         assertEquals(1, SUCCESS_CODE);
     }
 
-    @Test
-    @DisplayName("CommonResponse failed message, code verification")
-    void CommonResponse_failed_message_code_verification(){
+    @Test @DisplayName("\"ResponseService.CommonResponse 실패시 message, code 검증")
+    void CommonResponse_실패_message_code_검증(){
         assertEquals("실패하였습니다.", FAIL_MSG);
         assertEquals(-1, FAIL_CODE);
     }
 
-    @Test
-    @DisplayName("getSuccessResult Test")
-    void getSuccessResult_test(){
-        //given, when
+    @Test @DisplayName("getSuccessResult 테스트")
+    void getSuccessResult_테스트(){
+        // Given When
         CommonResult successResult = responseService.getSuccessResult();
 
-        //then
+        // Then
         assertEquals(true, successResult.isSuccess());
         assertEquals(SUCCESS_MSG, successResult.getMassage());
         assertEquals(SUCCESS_CODE, successResult.getCode());
     }
 
-    @Test
-    @DisplayName("getFailResult Test")
-    void getFailResult_test(){
-        //given, when
-        CommonResult successResult = responseService.getFailResult();
+    @Test @DisplayName("getSingleResult 테스트")
+    void getSingleResult_테스트(){
+        //Given
+        String givenData = "김태민";
 
-        //then
-        assertEquals(false, successResult.isSuccess());
-        assertEquals(FAIL_MSG, successResult.getMassage());
-        assertEquals(FAIL_CODE, successResult.getCode());
-    }
-
-    @Test
-    @DisplayName("getSingleResult Test")
-    void getSingleResult_test(){
-        //given
-        String givenData = "배태현";
-
-        //when
+        //When
         SingleResult<String> singleResult = responseService.getSingleResult(givenData);
 
-        //then
+        //Then
         assertEquals(true, singleResult.isSuccess());
         assertEquals(SUCCESS_CODE, singleResult.getCode());
         assertEquals(SUCCESS_MSG, singleResult.getMassage());
         assertEquals(givenData, singleResult.getData());
+
+        log.debug("SingleResult = {}", singleResult.getData());
     }
 
-    @Test
-    @DisplayName("getListResult Test")
-    void getListResult_test(){
-        //given
-        List<String> givenData = List.of(new String[]{"배태현, 노경준, 김태민"});
+    @Test @DisplayName("getListResult 테스트")
+    void getListResult_테스트(){
+        //Given
+        List<String> givenData = List.of(new String[]{"배태현, 김태민, 노경준"});
 
-        //when
+        //When
         ListResult<String> listResult = responseService.getListResult(givenData);
 
-        //then
+        //Then
         assertEquals(true, listResult.isSuccess());
         assertEquals(SUCCESS_CODE, listResult.getCode());
         assertEquals(SUCCESS_MSG, listResult.getMassage());
         assertEquals(givenData, listResult.getList());
-    }
 
+        log.debug("ListResult = {}", listResult.getList());
+    }
 }

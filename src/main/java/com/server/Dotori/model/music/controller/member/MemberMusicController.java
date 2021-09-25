@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -29,13 +30,13 @@ public class MemberMusicController {
      * @return CommonResult - SuccessResult
      */
     @PostMapping("/music")
-    @ResponseStatus( HttpStatus.OK )
+    @ResponseStatus( HttpStatus.CREATED )
     @ApiOperation(value = "음악 신청", notes = "음악 신청")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult music(@RequestBody MusicApplicationDto musicApplicationDto) {
+    public CommonResult musicMember(@Valid @RequestBody MusicApplicationDto musicApplicationDto) {
         musicService.musicApplication(musicApplicationDto);
         return responseService.getSuccessResult();
     }
@@ -51,7 +52,7 @@ public class MemberMusicController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult<List<MusicResDto>> getAllMusics() {
+    public SingleResult<List<MusicResDto>> getAllMusicsMember() {
         return responseService.getSingleResult(musicService.getAllMusic());
     }
 }

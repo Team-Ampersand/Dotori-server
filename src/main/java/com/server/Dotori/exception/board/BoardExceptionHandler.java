@@ -31,6 +31,6 @@ public interface BoardExceptionHandler {
     CommonResult boardNotHavePermissionToDelete(BoardNotHavePermissionToDelete ex);
 
     @ExceptionHandler(BoardEmptyException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.OK)
     CommonResult boardEmptyException(BoardEmptyException ex);
 }

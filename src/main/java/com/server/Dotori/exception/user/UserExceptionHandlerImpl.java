@@ -7,14 +7,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@Service
-@Slf4j @Order(Ordered.HIGHEST_PRECEDENCE)
+@Slf4j
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
+@RestControllerAdvice
 public class UserExceptionHandlerImpl implements UserExceptionHandler {
 
-    private ExceptionResponseObjectUtil exceptionResponseObjectUtil;
+    private final ExceptionResponseObjectUtil exceptionResponseObjectUtil;
 
     @Override
     public CommonResult userNotFoundException(UserNotFoundException ex) {
@@ -41,8 +42,20 @@ public class UserExceptionHandlerImpl implements UserExceptionHandler {
     }
 
     @Override
-    public CommonResult userAuthenticationNumberNotMatchingException(UserAuthenticationNumberNotMatchingException ex) {
+    public CommonResult userAuthenticationAnswerNotMatchingException(UserAuthenticationAnswerNotMatchingException ex) {
         log.debug("=== User Authentication Number Not Matching Exception 발생 ===");
         return exceptionResponseObjectUtil.getExceptionResponseObject(USER_AUTHENTICATION_NUMBER_NOT_MATCHING);
+    }
+
+    @Override
+    public CommonResult userAlreadyJoinThisNameException(UserAlreadyJoinThisNameException ex) {
+        log.debug("=== User Already Join This Name Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(USER_ALREADY_JOIN_THIS_NAME);
+    }
+
+    @Override
+    public CommonResult userAlreadyJoinThisStunumException(UserAlreadyJoinThisStunumException ex) {
+        log.debug("=== User Already Join This Stunum Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(USER_ALREADY_JOIN_THIS_STUNUM);
     }
 }

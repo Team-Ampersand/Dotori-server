@@ -18,6 +18,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/v1/councillor")
 @RequiredArgsConstructor
@@ -39,7 +41,7 @@ public class CouncillorBoardController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult createBoard(@RequestBody BoardDto boardDto) {
+    public CommonResult createBoardCouncillor(@Valid @RequestBody BoardDto boardDto) {
         boardService.createBoard(boardDto);
         return responseService.getSuccessResult();
     }
@@ -57,7 +59,7 @@ public class CouncillorBoardController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult<Page<BoardGetDto>> getAllBoard(@PageableDefault(size = 7) Pageable pageable) {
+    public SingleResult<Page<BoardGetDto>> getAllBoardCouncillor(@PageableDefault(size = 7) Pageable pageable) {
         Page<BoardGetDto> pageBoard = boardService.getAllBoard(pageable);
         return responseService.getSingleResult(pageBoard);
     }
@@ -75,7 +77,7 @@ public class CouncillorBoardController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult<BoardGetIdDto> getBoardById(@PathVariable("id") Long boardId) {
+    public SingleResult<BoardGetIdDto> getBoardByIdCouncillor(@PathVariable("id") Long boardId) {
         BoardGetIdDto findBoardById = boardService.getBoardById(boardId);
         return responseService.getSingleResult(findBoardById);
     }
@@ -94,7 +96,7 @@ public class CouncillorBoardController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateBoard(@PathVariable("id") Long boardId, @RequestBody BoardDto boardUpdateDto) {
+    public CommonResult updateBoardCouncillor(@Valid @PathVariable("id") Long boardId, @RequestBody BoardDto boardUpdateDto) {
         boardService.updateBoard(boardId, boardUpdateDto);
         return responseService.getSuccessResult();
     }
@@ -106,13 +108,13 @@ public class CouncillorBoardController {
      * @author 배태현
      */
     @DeleteMapping("/board/{id}")
-    @ResponseStatus( HttpStatus.NO_CONTENT )
+    @ResponseStatus( HttpStatus.OK )
     @ApiOperation(value = "공지사항 삭제", notes = "공지사항 삭제")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult deleteBoard(@PathVariable("id") Long boardId) {
+    public CommonResult deleteBoardCouncillor(@PathVariable("id") Long boardId) {
         boardService.deleteBoard(boardId);
         return responseService.getSuccessResult();
     }

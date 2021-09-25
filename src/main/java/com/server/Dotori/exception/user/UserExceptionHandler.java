@@ -13,6 +13,8 @@ public interface UserExceptionHandler {
     String USER_PASSWORD_NOT_MATCHING = "user-password-not-matching";
     String USER_NOT_FOUND_BY_CLASS = "user-not-found-by-class";
     String USER_AUTHENTICATION_NUMBER_NOT_MATCHING = "user-authentication-number-not-matching";
+    String USER_ALREADY_JOIN_THIS_STUNUM = "user-already-join-this-stunum";
+    String USER_ALREADY_JOIN_THIS_NAME = "user-already-join-this-name";
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -30,7 +32,15 @@ public interface UserExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     CommonResult userNotFoundByClassException(UserNotFoundByClassException ex);
 
-    @ExceptionHandler(UserAuthenticationNumberNotMatchingException.class)
+    @ExceptionHandler(UserAuthenticationAnswerNotMatchingException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    CommonResult userAuthenticationNumberNotMatchingException(UserAuthenticationNumberNotMatchingException ex);
+    CommonResult userAuthenticationAnswerNotMatchingException(UserAuthenticationAnswerNotMatchingException ex);
+
+    @ExceptionHandler(UserAlreadyJoinThisNameException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    CommonResult userAlreadyJoinThisNameException(UserAlreadyJoinThisNameException ex);
+
+    @ExceptionHandler(UserAlreadyJoinThisStunumException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    CommonResult userAlreadyJoinThisStunumException(UserAlreadyJoinThisStunumException ex);
 }
