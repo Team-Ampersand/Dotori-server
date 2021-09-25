@@ -61,16 +61,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/v1/refreshtoken").permitAll()
 //                .antMatchers("/v1/auth").permitAll()
 //                .antMatchers("/v1/auth/check").permitAll()
-//                .antMatchers("/v1/change/password").permitAll()
+//                .antMatchers("/v1/change/password").authenticated()
 //                .antMatchers("/v1/auth/password").permitAll()
-//                .antMatchers("/v1/member/logout").authenticated()
-//                .antMatchers("/v1/member/delete").authenticated()
+//                .antMatchers("/v1/logout").authenticated()
+//                .antMatchers("/v1/delete").authenticated()
 
                 // 권한 별 url 접근
 //                .antMatchers("/v1/admin/**").hasRole("ADMIN")
 //                .antMatchers("/v1/councillor/**").hasRole("COUNCILLOR")
 //                .antMatchers("/v1/member/**").hasRole("MEMBER")
 //                .antMatchers("/v1/developer/**").hasRole("DEVELOPER")
+//                .antMatchers("/v1/home").authenticated()
+//                .antMatchers("/v1/current/role").authenticated()
 
                 // exception 메세지, h2-console 모두 접근 가능
                 .antMatchers("/**").permitAll()

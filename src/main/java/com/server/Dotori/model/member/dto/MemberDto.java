@@ -7,7 +7,9 @@ import com.server.Dotori.model.member.enumType.SelfStudy;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Collections;
 
@@ -17,22 +19,23 @@ import java.util.Collections;
 @NoArgsConstructor
 @Builder
 public class MemberDto {
-    @NotBlank(message = "username should be valid")
+    @NotBlank
     @Size(min = 1, max = 10)
     private String username;
 
-    @NotBlank(message = "stdNum should be valid")
+    @NotBlank
     @Size(min = 4, max = 4)
     private String stdNum;
 
-    @NotBlank(message = "password should be valid")
+    @NotBlank
     @Size(min = 4)
     private String password;
 
-    @NotBlank(message = "email should be valid")
+    @NotBlank
+    @Pattern(regexp = "^[a-zA-Z0-9]+@gsm.hs.kr$")
     private String email;
 
-    @NotBlank(message = "answer should be valid")
+    @NotBlank
     private String answer;
 
     public Member toEntity(){
