@@ -14,6 +14,7 @@ import jdk.jfr.Event;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -32,7 +33,7 @@ public class MemberController {
      */
     @PostMapping("/signup")
     @ApiOperation(value="회원가입")
-    public CommonResult signup(@RequestBody MemberDto memberDto){
+    public CommonResult signup(@Valid @RequestBody MemberDto memberDto){
         memberService.signup(memberDto);
         return responseService.getSuccessResult();
     }
@@ -45,7 +46,7 @@ public class MemberController {
      */
     @PostMapping("/signin")
     @ApiOperation(value="로그인")
-    public SingleResult<Map<String, String>> signin(@RequestBody MemberLoginDto memberLoginDto){
+    public SingleResult<Map<String, String>> signin(@Valid @RequestBody MemberLoginDto memberLoginDto){
         Map<String, String> data = memberService.signin(memberLoginDto);
         return responseService.getSingleResult(data);
     }
@@ -62,7 +63,7 @@ public class MemberController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult<Map<String, String>> passwordChange(@RequestBody MemberPasswordDto memberPasswordDto){
+    public SingleResult<Map<String, String>> passwordChange(@Valid @RequestBody MemberPasswordDto memberPasswordDto){
         Map<String,String> data = memberService.passwordChange(memberPasswordDto);
         return responseService.getSingleResult(data);
     }
