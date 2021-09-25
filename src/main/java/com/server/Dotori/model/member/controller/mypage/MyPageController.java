@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/member")
+@RequestMapping("/v1")
 public class MyPageController {
 
     private final ResponseService responseService;
