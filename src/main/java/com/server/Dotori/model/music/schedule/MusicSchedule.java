@@ -1,6 +1,5 @@
 package com.server.Dotori.model.music.schedule;
 
-import com.server.Dotori.model.music.repository.MusicRepository;
 import com.server.Dotori.model.music.service.MusicService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
