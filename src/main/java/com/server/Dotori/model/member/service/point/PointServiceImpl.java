@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.service.point;
 
+import com.server.Dotori.exception.user.exception.UserNotFoundByClassException;
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.GetAboutPointDto;
@@ -42,7 +43,7 @@ public class PointServiceImpl implements PointService {
     public List<GetAboutPointDto> getAllStudentPoint(Long id) {
         List<GetAboutPointDto> studentPoint = memberRepository.findStudentPoint(id);
 
-        if (studentPoint.isEmpty()) throw new IllegalArgumentException("해당 반에 해당하는 학생이 없습니다.");
+        if (studentPoint.isEmpty()) throw new UserNotFoundByClassException();
 
         return studentPoint;
     }
