@@ -1,18 +1,18 @@
 package com.server.Dotori.model.member.service.studentinfo;
 
+import com.server.Dotori.exception.user.exception.UserAlreadyJoinThisNameException;
+import com.server.Dotori.exception.user.exception.UserAlreadyJoinThisStunumException;
+import com.server.Dotori.exception.user.exception.UserNotFoundByClassException;
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.RoleUpdateDto;
 import com.server.Dotori.model.member.dto.StuNumUpdateDto;
 import com.server.Dotori.model.member.dto.StudentInfoDto;
 import com.server.Dotori.model.member.dto.UsernameUpdateDto;
-import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.MemberRepository;
-import com.server.Dotori.util.CurrentUserUtil;
 import com.server.Dotori.util.ObjectMapperUtils;
 import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,10 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +40,7 @@ public class StuInfoServiceImpl implements StuInfoService {
     public List<StudentInfoDto> getStudentInfo(Long id) {
         List<Member> studentInfo = memberRepository.findStudentInfo(id);
 
-        if (studentInfo.isEmpty()) throw new IllegalArgumentException("해당 반에 해당하는 학생이 없습니다.");
+        if (studentInfo.isEmpty()) throw new UserNotFoundByClassException();
 
         return ObjectMapperUtils.mapAll(studentInfo, StudentInfoDto.class);
     }
@@ -85,7 +82,7 @@ public class StuInfoServiceImpl implements StuInfoService {
                 .orElseThrow(() -> new UserNotFoundException());
 
         if (memberRepository.existsByStdNum(stuNumUpdateDto.getStuNum()))
-            throw new IllegalArgumentException("이미 존재하는 학번입니다!");
+            throw new UserAlreadyJoinThisStunumException();
 
         findMember.updateStuNum(stuNumUpdateDto.getStuNum());
     }
@@ -102,7 +99,7 @@ public class StuInfoServiceImpl implements StuInfoService {
 
         // 동일한 이름으로 회원가입/로그인 하여 서비스 사용이 가능하다면 없어질 코드
         if (memberRepository.existsByUsername(usernameUpdateDto.getUsername()))
-            throw new IllegalArgumentException("이미 존재하는 이름입니다!");
+            throw new UserAlreadyJoinThisNameException();
 
         findMember.updateUsername(usernameUpdateDto.getUsername());
     }
