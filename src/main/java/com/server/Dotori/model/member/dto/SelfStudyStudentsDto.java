@@ -1,6 +1,5 @@
 package com.server.Dotori.model.member.dto;
 
-import com.server.Dotori.model.member.enumType.SelfStudy;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

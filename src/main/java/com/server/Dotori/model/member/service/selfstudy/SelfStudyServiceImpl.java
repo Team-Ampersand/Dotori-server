@@ -1,5 +1,10 @@
 package com.server.Dotori.model.member.service.selfstudy;
 
+import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantApplied;
+import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantChange;
+import com.server.Dotori.exception.selfstudy.exception.SelfStudyNotFound;
+import com.server.Dotori.exception.selfstudy.exception.SelfStudyOverPersonal;
+import com.server.Dotori.exception.user.exception.UserNotFoundByClassException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 import com.server.Dotori.model.member.repository.MemberRepository;
@@ -41,9 +46,9 @@ public class SelfStudyServiceImpl implements SelfStudyService {
                 count += 1;
                 log.info(String.valueOf(count));
             } else
-                throw new IllegalArgumentException("이미 자습을 신청한 학생입니다");
+                throw new SelfStudyCantApplied();
         } else
-            throw new IllegalArgumentException("자습신청 인원이 모두 찼습니다.");
+            throw new SelfStudyOverPersonal();
     }
 
     /**
@@ -62,7 +67,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
             count -= 1;
             log.info(String.valueOf(count));
         } else
-            throw new IllegalArgumentException("자습신청을 취소할 수 있는 상태가 아닙니다.");
+            throw new SelfStudyCantChange();
     }
 
     /**
@@ -75,7 +80,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     public List<SelfStudyStudentsDto> getSelfStudyStudents() {
         List<SelfStudyStudentsDto> selfStudyAPLLIED = memberRepository.findBySelfStudyAPLLIED();
 
-        if (selfStudyAPLLIED.isEmpty()) throw new IllegalArgumentException("자습신청한 학생이 없습니다.");
+        if (selfStudyAPLLIED.isEmpty()) throw new SelfStudyNotFound();
         return selfStudyAPLLIED;
     }
 
@@ -90,7 +95,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     public List<SelfStudyStudentsDto> getSelfStudyStudentsByCategory(Long id) {
         List<SelfStudyStudentsDto> selfStudyCategory = memberRepository.findBySelfStudyCategory(id);
 
-        if (selfStudyCategory.isEmpty()) throw new IllegalArgumentException("해당 반에 해당하는 학생이 없습니다.");
+        if (selfStudyCategory.isEmpty()) throw new UserNotFoundByClassException();
 
         return selfStudyCategory;
     }
