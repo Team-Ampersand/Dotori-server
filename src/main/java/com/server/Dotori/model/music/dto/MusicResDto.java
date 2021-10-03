@@ -1,6 +1,5 @@
 package com.server.Dotori.model.music.dto;
 
-import com.server.Dotori.model.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
