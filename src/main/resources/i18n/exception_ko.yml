@@ -88,7 +88,7 @@ selfstudy-cant-change:
 
 selfstudy-cant-applied:
   code: "-620"
-  msg: "자습신청을 할 수 있는 상태가 아닙니다."
+  msg: "이미 자습신청을 하신 상태입니다."
 
 selfstudy-not-found:
   code: "-630"
