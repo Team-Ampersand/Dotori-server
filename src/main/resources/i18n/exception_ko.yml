@@ -78,7 +78,7 @@ board-empty:
   code: "-740"
   msg: "공지사항이 비어있습니다."
 
-selfstudy-over-maximum-count:
+selfstudy-over-personal:
   code: "-600"
   msg: "자습신청 인원이 50명을 초과 하였습니다."
 
