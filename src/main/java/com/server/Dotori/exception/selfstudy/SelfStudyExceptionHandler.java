@@ -21,14 +21,14 @@ public interface SelfStudyExceptionHandler {
     CommonResult selfStudyCantAppliedException(SelfStudyCantApplied ex);
 
     @ExceptionHandler(SelfStudyCantChange.class)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     CommonResult selfStudyCantChangeException(SelfStudyCantChange ex);
 
     @ExceptionHandler(SelfStudyNotFound.class)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     CommonResult selfStudyNotFoundException(SelfStudyNotFound ex);
 
     @ExceptionHandler(SelfStudyOverPersonal.class)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     CommonResult selfStudyOverPersonalException(SelfStudyOverPersonal ex);
 }
