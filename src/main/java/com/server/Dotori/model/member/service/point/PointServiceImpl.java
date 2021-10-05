@@ -20,7 +20,7 @@ public class PointServiceImpl implements PointService {
 
     /**
      * 상점을 부여하는 서비스 로직 (사감쌤 사용가능)
-     * @exception
+     * @exception UserNotFoundException 해당 Id의 유저를 찾을 수 없을 때
      * @param pointDto pointDto (receiverId, point)
      * @author 배태현
      */
@@ -36,6 +36,7 @@ public class PointServiceImpl implements PointService {
     /**
      * 학년반별로 학생 상벌점 목록을 조회하는 서비스로직 (사감쌤 사용가능)
      * @param id classId
+     * @exception UserNotFoundByClassException 해당 반에 해당하는 학생들이 없을 때
      * @return List - GetAboutPointDto (id, stuNum, username, point)
      * @author 배태현
      */
