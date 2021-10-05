@@ -62,6 +62,10 @@ refresh-token-fail:
   code: "-830"
   msg: "토큰 재발급이 실패했습니다."
 
+token-is-empty:
+  code: "-840"
+  msg: "토큰이 비어있습니다."
+
 board-not-found:
   code: "-700"
   msg: "해당 게시물을 찾을 수 없습니다."
