@@ -1,18 +1,18 @@
 package com.server.Dotori.model.member.service.studentinfo;
 
+import com.server.Dotori.exception.user.exception.UserAlreadyJoinThisNameException;
+import com.server.Dotori.exception.user.exception.UserAlreadyJoinThisStunumException;
+import com.server.Dotori.exception.user.exception.UserNotFoundByClassException;
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.RoleUpdateDto;
 import com.server.Dotori.model.member.dto.StuNumUpdateDto;
 import com.server.Dotori.model.member.dto.StudentInfoDto;
 import com.server.Dotori.model.member.dto.UsernameUpdateDto;
-import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.MemberRepository;
-import com.server.Dotori.util.CurrentUserUtil;
 import com.server.Dotori.util.ObjectMapperUtils;
 import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,10 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -37,13 +34,14 @@ public class StuInfoServiceImpl implements StuInfoService {
     /**
      * 학년반별로 조회한 학생들 List를 List Dto로 변경후 반환하는 서비스로직 (사감쌤, 개발자 사용가능)
      * @param id classId
+     * @exception UserNotFoundByClassException 해당 반에 해당하는 학생들이 없을 때
      * @return List - StudentInfoDto (id, stuNum, username, roles)
      */
     @Override
     public List<StudentInfoDto> getStudentInfo(Long id) {
         List<Member> studentInfo = memberRepository.findStudentInfo(id);
 
-        if (studentInfo.isEmpty()) throw new IllegalArgumentException("해당 반에 해당하는 학생이 없습니다.");
+        if (studentInfo.isEmpty()) throw new UserNotFoundByClassException();
 
         return ObjectMapperUtils.mapAll(studentInfo, StudentInfoDto.class);
     }
@@ -52,6 +50,7 @@ public class StuInfoServiceImpl implements StuInfoService {
      * 권한을 업데이트하는 서비스로직 (사감쌤, 개발자 사용가능)
      * 권한이 업데이트된 사용자는 로그인을 다시 해야한다. (공지를 해야할듯)
      * @param roleUpdateDto (receiverId, roles)
+     * @exception UserNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
      */
     @Override
     @Transactional
@@ -77,6 +76,8 @@ public class StuInfoServiceImpl implements StuInfoService {
     /**
      * 학번을 변경시키는 서비스로직 (사감쌤 개발자 사용가능)
      * @param stuNumUpdateDto (receiverId, stuNum)
+     * @exception UserNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
+     * @exception UserAlreadyJoinThisStunumException 해당 학번으로 이미 가입된 유저가 있을 때
      */
     @Override
     @Transactional
@@ -85,7 +86,7 @@ public class StuInfoServiceImpl implements StuInfoService {
                 .orElseThrow(() -> new UserNotFoundException());
 
         if (memberRepository.existsByStdNum(stuNumUpdateDto.getStuNum()))
-            throw new IllegalArgumentException("이미 존재하는 학번입니다!");
+            throw new UserAlreadyJoinThisStunumException();
 
         findMember.updateStuNum(stuNumUpdateDto.getStuNum());
     }
@@ -93,6 +94,8 @@ public class StuInfoServiceImpl implements StuInfoService {
     /**
      * 학생의 이름을 변경시키는 서비스로직 (사감쌤, 개발자 사용가능)
      * @param usernameUpdateDto (receiverId, username)
+     * @exception UserNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
+     * @exception UserAlreadyJoinThisNameException 해당 이름으로 이미 가입된 유저가 있을 때
      */
     @Override
     @Transactional
@@ -102,7 +105,7 @@ public class StuInfoServiceImpl implements StuInfoService {
 
         // 동일한 이름으로 회원가입/로그인 하여 서비스 사용이 가능하다면 없어질 코드
         if (memberRepository.existsByUsername(usernameUpdateDto.getUsername()))
-            throw new IllegalArgumentException("이미 존재하는 이름입니다!");
+            throw new UserAlreadyJoinThisNameException();
 
         findMember.updateUsername(usernameUpdateDto.getUsername());
     }

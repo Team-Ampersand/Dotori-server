@@ -1,5 +1,10 @@
 package com.server.Dotori.model.member.service.selfstudy;
 
+import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantApplied;
+import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantChange;
+import com.server.Dotori.exception.selfstudy.exception.SelfStudyNotFound;
+import com.server.Dotori.exception.selfstudy.exception.SelfStudyOverPersonal;
+import com.server.Dotori.exception.user.exception.UserNotFoundByClassException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 import com.server.Dotori.model.member.repository.MemberRepository;
@@ -27,7 +32,8 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * 자습 신청 서비스로직 (로그인 된 유저 사용가능) <br>
      * 50명까지 신청 가능, 자습신청 상태가 '가능'인 사람만 신청가능 <br>
      * 자습신청 할 시 '신청함'으로 상태변경
-     * @exception
+     * @exception SelfStudyCantApplied 자습신청 상태가 CAN(가능)이 아닐 때 (자습신청을 할 수 없는 상태)
+     * @exception SelfStudyOverPersonal 자습신청 인원이 50명이 넘었을 때
      * @author 배태현
      */
     @Override
@@ -41,15 +47,15 @@ public class SelfStudyServiceImpl implements SelfStudyService {
                 count += 1;
                 log.info(String.valueOf(count));
             } else
-                throw new IllegalArgumentException("이미 자습을 신청한 학생입니다");
+                throw new SelfStudyCantApplied();
         } else
-            throw new IllegalArgumentException("자습신청 인원이 모두 찼습니다.");
+            throw new SelfStudyOverPersonal();
     }
 
     /**
      * 자습신청 서비스 로직 (로그인 된 유저 사용가능) <br>
      * 자습신청을 취소할 시 그 날 자습신청 불가능
-     * @exception
+     * @exception SelfStudyCantChange 자습신청 상태가 APPLIED(신청됨)가 아닐 때 (자습신청 취소를 할 수 없는 상태)
      * @author 배태현
      */
     @Override
@@ -62,20 +68,20 @@ public class SelfStudyServiceImpl implements SelfStudyService {
             count -= 1;
             log.info(String.valueOf(count));
         } else
-            throw new IllegalArgumentException("자습신청을 취소할 수 있는 상태가 아닙니다.");
+            throw new SelfStudyCantChange();
     }
 
     /**
      * 자습신청한 학생을 전체 조회하는 서비스로직 (로그인된 유저 사용가능)
      * @return List - SelfStudyStudentDto (id, stuNum, username)
-     * @exception 
+     * @exception SelfStudyNotFound 자습신청한 학생이 없을 때
      * @author 배태현
      */
     @Override
     public List<SelfStudyStudentsDto> getSelfStudyStudents() {
         List<SelfStudyStudentsDto> selfStudyAPLLIED = memberRepository.findBySelfStudyAPLLIED();
 
-        if (selfStudyAPLLIED.isEmpty()) throw new IllegalArgumentException("자습신청한 학생이 없습니다.");
+        if (selfStudyAPLLIED.isEmpty()) throw new SelfStudyNotFound();
         return selfStudyAPLLIED;
     }
 
@@ -83,14 +89,14 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * 자습신청한 학생을 학년반별로 조회하는 서비스로직 (로그인된 유저 사용가능)
      * @param id classId
      * @return List - SelfStudyStudentDto (id, stuNum, username)
-     * @exception
+     * @exception UserNotFoundByClassException 해당 반에 해당하는 학생이 없을 때
      * @author 배태현
      */
     @Override
     public List<SelfStudyStudentsDto> getSelfStudyStudentsByCategory(Long id) {
         List<SelfStudyStudentsDto> selfStudyCategory = memberRepository.findBySelfStudyCategory(id);
 
-        if (selfStudyCategory.isEmpty()) throw new IllegalArgumentException("해당 반에 해당하는 학생이 없습니다.");
+        if (selfStudyCategory.isEmpty()) throw new UserNotFoundByClassException();
 
         return selfStudyCategory;
     }

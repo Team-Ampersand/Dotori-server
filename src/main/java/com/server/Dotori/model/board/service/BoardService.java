@@ -1,6 +1,5 @@
 package com.server.Dotori.model.board.service;
 
-import com.querydsl.core.Tuple;
 import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.board.dto.BoardGetDto;
 import com.server.Dotori.model.board.dto.BoardDto;

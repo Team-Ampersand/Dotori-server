@@ -29,6 +29,7 @@ public class MusicServiceImpl implements MusicService {
      * 이미 음악을 신청한 학생이라면?
      * @exception
      * @param musicApplicationDto musicApplicationDto (musicUrl)
+     * @exception MusicAlreadyException 음악신청 상태가 CAN이 아닐 때
      * @return Music
      * @author 배태현
      */
@@ -49,7 +50,7 @@ public class MusicServiceImpl implements MusicService {
 
     /**
      * 신청된 모든 음악을 조회하는 서비스 로직 (로그인된 유저 사용가능)
-     * @exception
+     * @exception MusicNotAppliedException 신청된 음악이 없을 때
      * @return List-MusicResDto
      * @author 배태현
      */
@@ -63,7 +64,7 @@ public class MusicServiceImpl implements MusicService {
 
     /**
      * 신청된 음악을 개별삭제하는 서비스 로직 (기자위, 사감쌤 개발자만 가능)
-     * @exception 
+     * @exception MusicNotFoundException 해당 Id의 음악을 찾을 수 없을 때
      * @param musicId musicId
      * @author 배태현
      */
