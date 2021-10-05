@@ -43,8 +43,14 @@ public class UserExceptionHandlerImpl implements UserExceptionHandler {
 
     @Override
     public CommonResult userAuthenticationAnswerNotMatchingException(UserAuthenticationAnswerNotMatchingException ex) {
-        log.debug("=== User Authentication Number Not Matching Exception 발생 ===");
-        return exceptionResponseObjectUtil.getExceptionResponseObject(USER_AUTHENTICATION_NUMBER_NOT_MATCHING);
+        log.debug("=== User Authentication Answer Not Matching Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(USER_AUTHENTICATION_ANSWER_NOT_MATCHING);
+    }
+
+    @Override
+    public CommonResult userAuthenticationKeyNotMatchingException(UserAuthenticationKeyNotMatchingException ex) {
+        log.debug("=== User Authentication Key Not Matching Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(USER_AUTHENTICATION_KEY_NOT_MATCHING);
     }
 
     @Override

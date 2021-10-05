@@ -1,9 +1,6 @@
 package com.server.Dotori.exception.token;
 
-import com.server.Dotori.exception.token.exception.AccessTokenExpiredException;
-import com.server.Dotori.exception.token.exception.InvalidTokenException;
-import com.server.Dotori.exception.token.exception.LogoutTokenException;
-import com.server.Dotori.exception.token.exception.RefreshTokenFailException;
+import com.server.Dotori.exception.token.exception.*;
 import com.server.Dotori.response.result.CommonResult;
 import com.server.Dotori.util.ExceptionResponseObjectUtil;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +39,11 @@ public class TokenExceptionHandlerImpl implements TokenExceptionHandler {
     public CommonResult refreshTokenFailException(RefreshTokenFailException ex) {
         log.debug("=== Refresh Token Fail Exception 발생 ===");
         return exceptionResponseObjectUtil.getExceptionResponseObject(REFRESH_TOKEN_FAIL);
+    }
+
+    @Override
+    public CommonResult tokenIsEmptyException(TokenIsEmptyException ex) {
+        log.debug("=== Token Is Empty Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(TOKEN_IS_EMPTY);
     }
 }

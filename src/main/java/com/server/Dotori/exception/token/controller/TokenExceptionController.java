@@ -1,9 +1,6 @@
 package com.server.Dotori.exception.token.controller;
 
-import com.server.Dotori.exception.token.exception.AccessTokenExpiredException;
-import com.server.Dotori.exception.token.exception.InvalidTokenException;
-import com.server.Dotori.exception.token.exception.LogoutTokenException;
-import com.server.Dotori.exception.token.exception.RefreshTokenFailException;
+import com.server.Dotori.exception.token.exception.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,5 +27,10 @@ public class TokenExceptionController {
     @GetMapping("/refresh-token-fail")
     public void refreshTokenFailException() {
         throw new RefreshTokenFailException();
+    }
+
+    @GetMapping("/token-is-empty")
+    public void tokenIsEmptyException() {
+        throw new TokenIsEmptyException();
     }
 }

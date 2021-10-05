@@ -12,7 +12,8 @@ public interface UserExceptionHandler {
     String USER_ALREADY = "user-already";
     String USER_PASSWORD_NOT_MATCHING = "user-password-not-matching";
     String USER_NOT_FOUND_BY_CLASS = "user-not-found-by-class";
-    String USER_AUTHENTICATION_NUMBER_NOT_MATCHING = "user-authentication-number-not-matching";
+    String USER_AUTHENTICATION_ANSWER_NOT_MATCHING = "user-authentication-answer-not-matching";
+    String USER_AUTHENTICATION_KEY_NOT_MATCHING = "user-authentication-key-not-matching";
     String USER_ALREADY_JOIN_THIS_STUNUM = "user-already-join-this-stunum";
     String USER_ALREADY_JOIN_THIS_NAME = "user-already-join-this-name";
 
@@ -25,7 +26,7 @@ public interface UserExceptionHandler {
     CommonResult userAlreadyException(UserAlreadyException ex);
 
     @ExceptionHandler(UserPasswordNotMatchingException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.CONFLICT)
     CommonResult userPasswordNotMatchingException(UserPasswordNotMatchingException ex);
 
     @ExceptionHandler(UserNotFoundByClassException.class)
@@ -33,8 +34,12 @@ public interface UserExceptionHandler {
     CommonResult userNotFoundByClassException(UserNotFoundByClassException ex);
 
     @ExceptionHandler(UserAuthenticationAnswerNotMatchingException.class)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseStatus(HttpStatus.CONFLICT)
     CommonResult userAuthenticationAnswerNotMatchingException(UserAuthenticationAnswerNotMatchingException ex);
+
+    @ExceptionHandler(UserAuthenticationKeyNotMatchingException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    CommonResult userAuthenticationKeyNotMatchingException(UserAuthenticationKeyNotMatchingException ex);
 
     @ExceptionHandler(UserAlreadyJoinThisNameException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -43,4 +48,5 @@ public interface UserExceptionHandler {
     @ExceptionHandler(UserAlreadyJoinThisStunumException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     CommonResult userAlreadyJoinThisStunumException(UserAlreadyJoinThisStunumException ex);
+
 }
