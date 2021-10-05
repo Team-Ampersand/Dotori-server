@@ -13,7 +13,7 @@ public interface UserExceptionHandler {
     String USER_PASSWORD_NOT_MATCHING = "user-password-not-matching";
     String USER_NOT_FOUND_BY_CLASS = "user-not-found-by-class";
     String USER_AUTHENTICATION_ANSWER_NOT_MATCHING = "user-authentication-answer-not-matching";
-    String USER_AUTHENTICATION_KEY_NOT_MATCHING = "user-authentication-key-not-matching"
+    String USER_AUTHENTICATION_KEY_NOT_MATCHING = "user-authentication-key-not-matching";
     String USER_ALREADY_JOIN_THIS_STUNUM = "user-already-join-this-stunum";
     String USER_ALREADY_JOIN_THIS_NAME = "user-already-join-this-name";
 
