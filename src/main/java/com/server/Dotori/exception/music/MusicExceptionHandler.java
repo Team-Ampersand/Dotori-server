@@ -23,6 +23,6 @@ public interface MusicExceptionHandler {
     CommonResult musicNotAppliedException(MusicNotAppliedException ex);
 
     @ExceptionHandler(MusicNotFoundException.class)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     CommonResult musicNotFoundException(MusicNotFoundException ex);
 }
