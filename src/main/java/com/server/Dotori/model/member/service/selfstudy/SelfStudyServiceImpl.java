@@ -32,7 +32,8 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * 자습 신청 서비스로직 (로그인 된 유저 사용가능) <br>
      * 50명까지 신청 가능, 자습신청 상태가 '가능'인 사람만 신청가능 <br>
      * 자습신청 할 시 '신청함'으로 상태변경
-     * @exception
+     * @exception SelfStudyCantApplied 자습신청 상태가 CAN(가능)이 아닐 때 (자습신청을 할 수 없는 상태)
+     * @exception SelfStudyOverPersonal 자습신청 인원이 50명이 넘었을 때
      * @author 배태현
      */
     @Override
@@ -54,7 +55,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     /**
      * 자습신청 서비스 로직 (로그인 된 유저 사용가능) <br>
      * 자습신청을 취소할 시 그 날 자습신청 불가능
-     * @exception
+     * @exception SelfStudyCantChange 자습신청 상태가 APPLIED(신청됨)가 아닐 때 (자습신청 취소를 할 수 없는 상태)
      * @author 배태현
      */
     @Override
@@ -73,7 +74,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     /**
      * 자습신청한 학생을 전체 조회하는 서비스로직 (로그인된 유저 사용가능)
      * @return List - SelfStudyStudentDto (id, stuNum, username)
-     * @exception 
+     * @exception SelfStudyNotFound 자습신청한 학생이 없을 때
      * @author 배태현
      */
     @Override
@@ -88,7 +89,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * 자습신청한 학생을 학년반별로 조회하는 서비스로직 (로그인된 유저 사용가능)
      * @param id classId
      * @return List - SelfStudyStudentDto (id, stuNum, username)
-     * @exception
+     * @exception UserNotFoundByClassException 해당 반에 해당하는 학생이 없을 때
      * @author 배태현
      */
     @Override
