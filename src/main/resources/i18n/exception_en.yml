@@ -34,6 +34,10 @@ user-authentication-answer-not-matching:
   code: "-940"
   msg: "Not matched authentication answer."
 
+user-authentication-key-not-matching:
+  code: "-970"
+  msg: "Not matched authentication key."
+
 user-already-join-this-name:
   code: "-950"
   msg: "Already join this name."

@@ -34,6 +34,10 @@ user-authentication-answer-not-matching:
   code: "-940"
   msg: "인증 답변이 일치하지 않습니다."
 
+user-authentication-key-not-matching:
+  code: "-970"
+  msg: "인증 키가 일치하지 않습니다."
+
 user-already-join-this-name:
   code: "-950"
   msg: "이미 존재하는 이름입니다."

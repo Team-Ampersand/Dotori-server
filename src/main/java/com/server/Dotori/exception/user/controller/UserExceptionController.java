@@ -35,6 +35,11 @@ public class UserExceptionController {
         throw new UserAuthenticationAnswerNotMatchingException();
     }
 
+    @GetMapping("/user-authentication-key-not-matching")
+    public CommonResult userAuthenticationKeyNotMatchingException() {
+        throw new UserAuthenticationKeyNotMatchingException();
+    }
+
     @GetMapping("/user-already-join-this-name")
     public CommonResult userAlreadyJoinThisNameException() {
         throw new UserAlreadyJoinThisNameException();
