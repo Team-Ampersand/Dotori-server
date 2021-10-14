@@ -35,9 +35,6 @@ public class MemberDto {
     @Pattern(regexp = "^[a-zA-Z0-9]+@gsm.hs.kr$")
     private String email;
 
-    @NotBlank
-    private String answer;
-
     public Member toEntity(){
         return Member.builder()
                 .username(username)
@@ -48,7 +45,6 @@ public class MemberDto {
                 .music(Music.CAN)
                 .selfStudy(SelfStudy.CAN)
                 .point(0L)
-                .answer(answer)
                 .build();
     }
 }
