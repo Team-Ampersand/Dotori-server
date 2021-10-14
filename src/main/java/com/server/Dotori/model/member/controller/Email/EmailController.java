@@ -45,4 +45,16 @@ public class EmailController {
         emailService.authCheck(memberEmailKeyDto);
         return responseService.getSuccessResult();
     }
+
+    /**
+     * 이메일로 임시 비밀번호을 발급해주는 Controller
+     * @param authPasswordDto email, password
+     * @return SuccessResult
+     * @author 노경준
+     */
+    @PostMapping("/auth/password")
+    public CommonResult authPassword(@Valid @RequestBody AuthPasswordDto authPasswordDto){
+        emailService.authPassword(authPasswordDto);
+        return responseService.getSuccessResult();
+    }
 }
