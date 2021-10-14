@@ -1,9 +1,6 @@
 package com.server.Dotori.model.member.controller;
 
-import com.server.Dotori.model.member.dto.MemberDeleteDto;
-import com.server.Dotori.model.member.dto.MemberDto;
-import com.server.Dotori.model.member.dto.MemberLoginDto;
-import com.server.Dotori.model.member.dto.MemberPasswordDto;
+import com.server.Dotori.model.member.dto.*;
 import com.server.Dotori.model.member.service.email.EmailService;
 import com.server.Dotori.model.member.service.MemberService;
 import com.server.Dotori.response.ResponseService;
@@ -12,6 +9,7 @@ import com.server.Dotori.response.result.SingleResult;
 import io.swagger.annotations.*;
 import jdk.jfr.Event;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -66,6 +64,20 @@ public class MemberController {
     public SingleResult<Map<String, String>> passwordChange(@Valid @RequestBody MemberPasswordDto memberPasswordDto){
         Map<String,String> data = memberService.passwordChange(memberPasswordDto);
         return responseService.getSingleResult(data);
+    }
+
+    @ApiOperation(value="비밀번호 찾기 전 이메일로 인증번호 보내기")
+    @PostMapping("/auth/password")
+    public CommonResult BeforeLoginPasswordChange(@RequestParam String email){
+        memberService.BeforeLoginPasswordChange(email);
+        return responseService.getSuccessResult();
+    }
+
+    @ApiOperation(value="비밀번호 찾을 때 필요한 인증번호 검증")
+    @PostMapping("/auth/passwordCheck")
+    public CommonResult BeforeLoginPasswordChangeCheck(@Valid @RequestBody BeforeLoginPasswordChangeCheckDto beforeLoginPasswordChangeCheckDto){
+        memberService.BeforeLoginPasswordChangeCheck(beforeLoginPasswordChangeCheckDto);
+        return responseService.getSuccessResult();
     }
 
     /**
