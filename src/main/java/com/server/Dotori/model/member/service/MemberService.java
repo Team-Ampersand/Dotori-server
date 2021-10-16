@@ -7,9 +7,9 @@ import java.util.Map;
 public interface MemberService {
     Long signup(MemberDto memberDto);
     Map<String,String> signin(MemberLoginDto memberLoginDto);
-    Map<String,String> passwordChange(MemberPasswordDto memberPasswordDto);
-    void BeforeLoginPasswordChange(String email);
-    void BeforeLoginPasswordChangeCheck(BeforeLoginPasswordChangeCheckDto beforeLoginPasswordChangeCheckDto);
+    String passwordChange(MemberPasswordDto memberPasswordDto);
+    void sendAuthKeyForChangePassword(SendAuthKeyForChangePasswordDto sendAuthKeyForChangePasswordDto);
+    void sendAuthKeyForChangePasswordCheck(SendAuthKeyForChangePasswordCheckDto sendAuthKeyForChangePasswordCheckDto);
     void logout();
     void delete(MemberDeleteDto memberDeleteDto);
 }

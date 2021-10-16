@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.server.Dotori.model.member.enumType.Role.*;
 
@@ -35,6 +36,8 @@ public class MemberServiceImpl implements MemberService {
     private final CurrentUserUtil currentUserUtil;
     private final EmailSendService emailSendService;
     private final KeyUtil keyUtil;
+
+    Long EXPIRY_TIME = 1000L * 60 * 30; // 3분
 
     /**
      * 회원가입하는 서비스 로직
@@ -88,45 +91,46 @@ public class MemberServiceImpl implements MemberService {
      */
     @Transactional
     @Override
-    public Map<String,String> passwordChange(MemberPasswordDto memberPasswordDto) {
+    public String passwordChange(MemberPasswordDto memberPasswordDto) {
         Member findMember = currentUserUtil.getCurrentUser();
         if (!passwordEncoder.matches(memberPasswordDto.getCurrentPassword(), findMember.getPassword())) throw new UserPasswordNotMatchingException();
-
         findMember.updatePassword(passwordEncoder.encode(memberPasswordDto.getNewPassword()));
 
-        Map<String, String> map = new HashMap<>();
-        map.put(findMember.getUsername(), findMember.getPassword());
-
-        return map;
+        return findMember.getPassword();
     }
 
     /**
      * 로그인 안했을때 비밀번호 찾기 전에 이메일로 인증번호를 보내는 서비스 로직
-     * @param email
+     * @param sendAuthKeyForChangePasswordDto email
      * @author 노경준
      */
     @Override
-    public void BeforeLoginPasswordChange(String email) {
+    public void sendAuthKeyForChangePassword(SendAuthKeyForChangePasswordDto sendAuthKeyForChangePasswordDto) {
+        String email = sendAuthKeyForChangePasswordDto.getEmail();
         memberRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
         String key = keyUtil.keyIssuance();
-        redisUtil.setDataExpire(key,email,1000L * 60 * 30);
-        emailSendService.sendEmail(email,key);
+        redisUtil.setDataExpire(email, key, EXPIRY_TIME);
+        emailSendService.sendEmail(email, key);
     }
 
     /**
      * 로그인 안했을때 비밀번호 찾기(변경)를 할때 BeforeLoginPasswordChange 메소드에서 보낸 인증번호가 일치한지 검증하는 서비스 로직
-     * @param beforeLoginPasswordChangeCheckDto key, newPassword
+     * @param sendAuthKeyForChangePasswordCheckDto email, key, newPassword
      * @author 노경준
      */
     @Override
     @Transactional
-    public void BeforeLoginPasswordChangeCheck(BeforeLoginPasswordChangeCheckDto beforeLoginPasswordChangeCheckDto) {
-        String email = redisUtil.getData(beforeLoginPasswordChangeCheckDto.getKey());
-        if(email == null) throw new UserAuthenticationKeyNotMatchingException();
-        Member member = memberRepository.findByEmail(email).orElseThrow(()-> new UserNotFoundException());
+    public void sendAuthKeyForChangePasswordCheck(SendAuthKeyForChangePasswordCheckDto sendAuthKeyForChangePasswordCheckDto) {
+        String authKey = sendAuthKeyForChangePasswordCheckDto.getKey();
+        String redisAuthKey = redisUtil.getData(sendAuthKeyForChangePasswordCheckDto.getEmail());
+        Member member = memberRepository.findByEmail(sendAuthKeyForChangePasswordCheckDto.getEmail()).orElseThrow(() -> new UserNotFoundException());
 
-        member.updatePassword(passwordEncoder.encode(beforeLoginPasswordChangeCheckDto.getNewPassword()));
-        redisUtil.deleteData(beforeLoginPasswordChangeCheckDto.getKey());
+        if(authKey.equals(redisAuthKey)){
+            member.updatePassword(passwordEncoder.encode(sendAuthKeyForChangePasswordCheckDto.getNewPassword()));
+            redisUtil.deleteData(sendAuthKeyForChangePasswordCheckDto.getKey());
+        } else {
+            throw new IllegalArgumentException("인증 키가 일치하지 않습니다.");
+        }
     }
 
     /**
