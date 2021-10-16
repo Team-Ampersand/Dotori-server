@@ -5,7 +5,7 @@ import lombok.Getter;
 import javax.validation.constraints.Size;
 
 @Getter
-public class BeforeLoginPasswordChangeCheckDto {
+public class SendAuthKeyForChangePasswordCheckDto {
     @Size(min = 0, max = 6)
     String key;
 

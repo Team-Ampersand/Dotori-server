@@ -61,22 +61,34 @@ public class MemberController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult<Map<String, String>> passwordChange(@Valid @RequestBody MemberPasswordDto memberPasswordDto){
-        Map<String,String> data = memberService.passwordChange(memberPasswordDto);
-        return responseService.getSingleResult(data);
-    }
-
-    @ApiOperation(value="비밀번호 찾기 전 이메일로 인증번호 보내기")
-    @PostMapping("/auth/password")
-    public CommonResult BeforeLoginPasswordChange(@RequestParam String email){
-        memberService.BeforeLoginPasswordChange(email);
+    public CommonResult passwordChange(@Valid @RequestBody MemberPasswordDto memberPasswordDto){
+        memberService.passwordChange(memberPasswordDto);
         return responseService.getSuccessResult();
     }
 
-    @ApiOperation(value="비밀번호 찾을 때 필요한 인증번호 검증")
-    @PostMapping("/auth/passwordCheck")
-    public CommonResult BeforeLoginPasswordChangeCheck(@Valid @RequestBody BeforeLoginPasswordChangeCheckDto beforeLoginPasswordChangeCheckDto){
-        memberService.BeforeLoginPasswordChangeCheck(beforeLoginPasswordChangeCheckDto);
+    /**
+     * 비밀번호 찾기(재설정)를 위한 이메일로 인증번호 보내는 Controller
+     * @param sendAuthKeyForChangePasswordDto email
+     * @return SuccessResult
+     * @author 노경준
+     */
+    @ApiOperation(value="비밀번호 찾기 전 이메일로 인증번호 보내기", notes = "비밀번호 찾기 전 이메일로 인증번호 보내기")
+    @PostMapping("/send/change/password/authkey")
+    public CommonResult sendAuthKeyForChangePassword(@Valid @RequestBody SendAuthKeyForChangePasswordDto sendAuthKeyForChangePasswordDto){
+        memberService.sendAuthKeyForChangePassword(sendAuthKeyForChangePasswordDto);
+        return responseService.getSuccessResult();
+    }
+
+    /**
+     * 비밀번호 찾기(재설정) 전 인증번호 검증 Controller
+     * @param sendAuthKeyForChangePasswordCheckDto email, key, newPassword
+     * @return SuccessResult
+     * @author 노경준
+     */
+    @ApiOperation(value="비밀번호 찾을 때 인증번호 검증 후 해당 회원 비밀번호 업데이트", notes = "비밀번호 찾을 때 인증번호 검증 후 해당 회원 비밀번호 업데이트")
+    @PostMapping("/verified/auth/change/password")
+    public CommonResult sendAuthKeyForChangePasswordCheck(@Valid @RequestBody SendAuthKeyForChangePasswordCheckDto sendAuthKeyForChangePasswordCheckDto){
+        memberService.sendAuthKeyForChangePasswordCheck(sendAuthKeyForChangePasswordCheckDto);
         return responseService.getSuccessResult();
     }
 
