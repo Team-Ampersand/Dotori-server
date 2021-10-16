@@ -115,10 +115,10 @@ public class MemberServiceTest {
         memberPasswordDto.setNewPassword("12345");
 
         // when
-        Map<String, String> result = memberService.passwordChange(memberPasswordDto);
+        String result = memberService.passwordChange(memberPasswordDto);
 
         // then
-        assertEquals(true,passwordEncoder.matches(memberPasswordDto.getNewPassword(),result.get("노경준")));
+        assertEquals(true,passwordEncoder.matches(memberPasswordDto.getNewPassword(),result));
     }
 
     @Test
