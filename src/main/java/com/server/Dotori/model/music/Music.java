@@ -11,6 +11,7 @@ import javax.persistence.*;
 
 import java.time.LocalDateTime;
 
+import static javax.persistence.FetchType.*;
 import static javax.persistence.GenerationType.*;
 
 @Entity
@@ -27,7 +28,7 @@ public class Music extends BaseTimeEntity {
     @Column(name = "music_url", nullable = false)
     private String url;
 
-    @OneToOne
+    @OneToOne(fetch = LAZY)
     @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
