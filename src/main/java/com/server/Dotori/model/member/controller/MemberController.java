@@ -81,14 +81,14 @@ public class MemberController {
 
     /**
      * 비밀번호 찾기(재설정) 전 인증번호 검증 Controller
-     * @param sendAuthKeyForChangePasswordCheckDto email, key, newPassword
+     * @param verifiedAuthKeyAndChangePasswordDto email, key, newPassword
      * @return SuccessResult
      * @author 노경준
      */
-    @ApiOperation(value="비밀번호 찾을 때 인증번호 검증 후 해당 회원 비밀번호 업데이트", notes = "비밀번호 찾을 때 인증번호 검증 후 해당 회원 비밀번호 업데이트")
+    @ApiOperation(value="비밀번호 찾기(인증번호 검증, 비밀번호 변경)", notes = "비밀번호 찾기(인증번호 검증, 비밀번호 변경)")
     @PostMapping("/verified/auth/change/password")
-    public CommonResult sendAuthKeyForChangePasswordCheck(@Valid @RequestBody SendAuthKeyForChangePasswordCheckDto sendAuthKeyForChangePasswordCheckDto){
-        memberService.sendAuthKeyForChangePasswordCheck(sendAuthKeyForChangePasswordCheckDto);
+    public CommonResult verifiedAuthKeyAndChangePassword(@Valid @RequestBody VerifiedAuthKeyAndChangePasswordDto verifiedAuthKeyAndChangePasswordDto){
+        memberService.verifiedAuthKeyAndChangePassword(verifiedAuthKeyAndChangePasswordDto);
         return responseService.getSuccessResult();
     }
 
