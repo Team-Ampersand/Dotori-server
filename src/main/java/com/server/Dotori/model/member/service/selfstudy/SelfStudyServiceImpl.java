@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.server.Dotori.model.member.enumType.SelfStudy.*;
@@ -31,14 +33,24 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     /**
      * 자습 신청 서비스로직 (로그인 된 유저 사용가능) <br>
      * 50명까지 신청 가능, 자습신청 상태가 '가능'인 사람만 신청가능 <br>
-     * 자습신청 할 시 '신청함'으로 상태변경
+     * 금요일, 토요일, 일요일에는 자습신청 불가능 <br>
+     * 위 요일을 제외한 나머지 요일에는 오후 8시부터 오후 10시까지만 자습신청 가능 <br>
+     * 자습신청 할 시 '신청함'으로 상태변경 <br>
      * @exception SelfStudyCantApplied 자습신청 상태가 CAN(가능)이 아닐 때 (자습신청을 할 수 없는 상태)
      * @exception SelfStudyOverPersonal 자습신청 인원이 50명이 넘었을 때
+     * @exception
+     * @exception
      * @author 배태현
      */
     @Override
     @Transactional
     public void requestSelfStudy() {
+        DayOfWeek dayOfWeek = LocalDateTime.now().getDayOfWeek();
+        int hour = LocalDateTime.now().getHour();
+
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new IllegalArgumentException("자습신청이 가능한 요일이 아닙니다.");
+        if (!(hour >= 20 && hour < 23)) throw new IllegalArgumentException("8시부터 10시까지만 자습신청이 가능합니다."); // 20시(8시)부터 22시(10시) 사이가 아니라면 자습신청 불가능
+
         Member currentUser = currentUserUtil.getCurrentUser();
 
         if (count <= 50){
