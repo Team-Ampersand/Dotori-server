@@ -1,6 +1,5 @@
 package com.server.Dotori.model.music.service;
 
-import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
@@ -12,7 +11,6 @@ import com.server.Dotori.model.music.dto.MusicApplicationDto;
 import com.server.Dotori.model.music.dto.MusicResDto;
 import com.server.Dotori.model.music.repository.MusicRepository;
 import com.server.Dotori.util.CurrentUserUtil;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,10 +19,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.DayOfWeek;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,7 +34,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-//@Commit
 class MusicServiceTest {
 
     @Autowired private MusicService musicService;
@@ -85,7 +82,8 @@ class MusicServiceTest {
         Music music = musicService.musicApplication(
                 MusicApplicationDto.builder()
                         .musicUrl("https://www.youtube.com/watch?v=6h9qmKWK6Io")
-                        .build()
+                        .build(),
+                DayOfWeek.MONDAY // 월요일
         );
 
         //then

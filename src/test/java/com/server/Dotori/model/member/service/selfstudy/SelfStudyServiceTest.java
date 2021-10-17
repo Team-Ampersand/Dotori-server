@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.DayOfWeek;
 import java.util.Collections;
 import java.util.List;
 
@@ -72,7 +73,7 @@ class SelfStudyServiceTest {
     @Test
     @DisplayName("자습신청이 제대로 되나요?")
     public void requestSelfStudyTest() {
-        selfStudyService.requestSelfStudy();
+        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 21); // 월요일 9시
 
         assertEquals(SelfStudy.APPLIED, currentUserUtil.getCurrentUser().getSelfStudy());
     }
@@ -80,8 +81,8 @@ class SelfStudyServiceTest {
     @Test
     @DisplayName("자습신청 취소가 제대로 되나요?")
     public void cancelSelfStudy() {
-        selfStudyService.requestSelfStudy();
-        selfStudyService.cancelSelfStudy();
+        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 21);
+        selfStudyService.cancelSelfStudy(DayOfWeek.MONDAY, 21);
 
         assertEquals(CANT, currentUserUtil.getCurrentUser().getSelfStudy());
     }
@@ -90,7 +91,7 @@ class SelfStudyServiceTest {
     @DisplayName("자습 신청한 학생들 목록이 잘 조회 되나요?")
     public void getSelfStudyStudents() {
         //given //when
-        selfStudyService.requestSelfStudy();
+        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 21);
         List<SelfStudyStudentsDto> selfStudyStudents = selfStudyService.getSelfStudyStudents();
 
         //then
@@ -101,7 +102,7 @@ class SelfStudyServiceTest {
     @DisplayName("자습신청한 학생들의 목록이 학년반별 카테고리 목록으로 조회 되나요?")
     public void getSelfStudyStudentsCategoryTest() {
         //given //when
-        selfStudyService.requestSelfStudy();
+        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 21);
         List<SelfStudyStudentsDto> selfStudyStudentsByCategory = selfStudyService.getSelfStudyStudentsByCategory(24L);
 
         //then
@@ -171,7 +172,7 @@ class SelfStudyServiceTest {
     @DisplayName("자습신청한 학생 수 카운트가 잘 세지나요?")
     public void selfStudyCountTest() {
         //given //when
-        selfStudyService.requestSelfStudy();
+        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 21);
 
         Integer selfStudyCount = selfStudyService.selfStudyCount();
 

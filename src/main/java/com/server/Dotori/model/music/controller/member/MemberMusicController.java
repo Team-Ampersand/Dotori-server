@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -37,7 +38,7 @@ public class MemberMusicController {
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult musicMember(@Valid @RequestBody MusicApplicationDto musicApplicationDto) {
-        musicService.musicApplication(musicApplicationDto);
+        musicService.musicApplication(musicApplicationDto, LocalDateTime.now().getDayOfWeek());
         return responseService.getSuccessResult();
     }
 
