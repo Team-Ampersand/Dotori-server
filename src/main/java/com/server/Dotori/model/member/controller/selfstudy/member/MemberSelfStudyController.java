@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @RestController
 @RequestMapping("/v1/member")
 @RequiredArgsConstructor
@@ -32,7 +34,8 @@ public class MemberSelfStudyController {
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult requestSelfStudy() {
-        selfStudyService.requestSelfStudy();
+        LocalDateTime currentTime = LocalDateTime.now();
+        selfStudyService.requestSelfStudy(currentTime.getDayOfWeek(), currentTime.getHour());
         return responseService.getSuccessResult();
     }
 
@@ -49,7 +52,8 @@ public class MemberSelfStudyController {
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult cancelSelfStudyMember() {
-        selfStudyService.cancelSelfStudy();
+        LocalDateTime currentTime = LocalDateTime.now();
+        selfStudyService.cancelSelfStudy(currentTime.getDayOfWeek(), currentTime.getHour());
         return responseService.getSuccessResult();
     }
 
