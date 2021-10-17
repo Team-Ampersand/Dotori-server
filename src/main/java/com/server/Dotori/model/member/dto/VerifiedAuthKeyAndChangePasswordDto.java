@@ -6,12 +6,12 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Getter
-public class SendAuthKeyForChangePasswordCheckDto {
+public class VerifiedAuthKeyAndChangePasswordDto {
 
     @Pattern(regexp = "^[a-zA-Z0-9]+@gsm.hs.kr$")
     String email;
 
-    @Size(min = 0, max = 6)
+    @Size(min = 6, max = 6)
     String key;
 
     @Size(min = 4)
