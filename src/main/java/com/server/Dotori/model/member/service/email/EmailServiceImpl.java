@@ -41,7 +41,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     /**
-     * 회원가입할때 authKey에서 보내준 키가 일치한지 인증하는 기능
+     * 회원가입할때 authKey에서 보내준 키와 일치한지 인증하는 기능
      * @param memberEmailKeyDto key
      * @return 입력된 키
      * @author 노경준
