@@ -1,6 +1,5 @@
 package com.server.Dotori.model.board.service;
 
-import com.querydsl.core.Tuple;
 import com.server.Dotori.model.board.Board;
 import com.server.Dotori.model.board.dto.BoardGetDto;
 import com.server.Dotori.model.board.dto.BoardDto;
@@ -10,7 +9,6 @@ import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.util.CurrentUserUtil;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +21,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -35,7 +32,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-//@Commit
 class BoardServiceTest {
 
     @Autowired
@@ -56,7 +52,6 @@ class BoardServiceTest {
                 .stdNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
-                .answer("배털")
                 .build();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
         memberRepository.save(memberDto.toEntity());

@@ -11,8 +11,6 @@ import org.springframework.scheduling.config.ScheduledTaskHolder;
 
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 class MusicScheduleTest {
 

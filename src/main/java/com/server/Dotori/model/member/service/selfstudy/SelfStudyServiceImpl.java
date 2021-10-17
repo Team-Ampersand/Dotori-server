@@ -55,7 +55,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
             if (currentUser.getSelfStudy() == CAN) {
                 currentUser.updateSelfStudy(APPLIED);
                 count += 1;
-                log.info(String.valueOf(count));
+                log.info("Current Self Study Student Count is {}", count);
             } else
                 throw new SelfStudyCantApplied();
         } else
@@ -83,7 +83,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         if (currentUser.getSelfStudy() == APPLIED) {
             currentUser.updateSelfStudy(CANT);
             count -= 1;
-            log.info(String.valueOf(count));
+            log.info("Current Self Study Student Count is {}", count);
         } else
             throw new SelfStudyCantChange();
     }

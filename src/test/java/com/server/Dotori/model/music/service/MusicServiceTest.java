@@ -5,7 +5,6 @@ import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.enumType.SelfStudy;
 import com.server.Dotori.model.member.repository.MemberRepository;
-import com.server.Dotori.model.member.service.MemberService;
 import com.server.Dotori.model.music.Music;
 import com.server.Dotori.model.music.dto.MusicApplicationDto;
 import com.server.Dotori.model.music.dto.MusicResDto;
@@ -41,7 +40,6 @@ class MusicServiceTest {
     @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private MemberRepository memberRepository;
     @Autowired private CurrentUserUtil currentUserUtil;
-    @Autowired private MemberService memberService;
     @Autowired
     EntityManager em;
 
@@ -54,7 +52,6 @@ class MusicServiceTest {
                 .stdNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
-                .answer("배털")
                 .build();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
         memberRepository.save(memberDto.toEntity());
@@ -149,7 +146,6 @@ class MusicServiceTest {
                         .music(APPLIED)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
-                        .answer("배털")
                         .build()
         );
 
@@ -163,7 +159,6 @@ class MusicServiceTest {
                         .music(APPLIED)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
-                        .answer("배털")
                         .build()
         );
 
@@ -177,7 +172,6 @@ class MusicServiceTest {
                         .music(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
-                        .answer("배털")
                         .build()
         );
 
