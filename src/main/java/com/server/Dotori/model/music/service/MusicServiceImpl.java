@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 import static com.server.Dotori.model.member.enumType.Music.*;
@@ -26,16 +27,19 @@ public class MusicServiceImpl implements MusicService {
 
     /**
      * 음악을 신청하는 서비스 로직 (로그인된 유저 사용가능) <br>
-     * 이미 음악을 신청한 학생이라면?
-     * @exception
+     * 금요일, 토요일에는 음악신청 불가능
      * @param musicApplicationDto musicApplicationDto (musicUrl)
+     * @param dayOfWeek 현재 요일
      * @exception MusicAlreadyException 음악신청 상태가 CAN이 아닐 때
+     * @exception
      * @return Music
      * @author 배태현
      */
     @Override
     @Transactional
-    public Music musicApplication(MusicApplicationDto musicApplicationDto) {
+    public Music musicApplication(MusicApplicationDto musicApplicationDto, DayOfWeek dayOfWeek) {
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY) throw new IllegalArgumentException("음악신청을 하실 수 없는 요일입니다.");
+
         Member currentUser = currentUserUtil.getCurrentUser();
 
         if (currentUser.getMusic() == CAN) {
