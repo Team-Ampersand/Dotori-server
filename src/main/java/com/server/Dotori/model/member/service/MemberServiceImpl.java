@@ -15,6 +15,7 @@ import com.server.Dotori.util.KeyUtil;
 import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -47,11 +48,13 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public Long signup(MemberDto memberDto){
-        if(!memberRepository.findByEmail(memberDto.getEmail()).isPresent() && memberRepository.findByStdNum(memberDto.getStdNum()) == null){
-            memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-            Member result = memberRepository.save(memberDto.toEntity());
-            return result.getId();
-        }else {
+        try {
+            if (!memberRepository.existsByEmailAndStdNum(memberDto.getEmail(), memberDto.getStdNum())) {
+                memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+                Member result = memberRepository.save(memberDto.toEntity());
+                return result.getId();
+            } else throw new UserAlreadyException();
+        } catch (DataIntegrityViolationException e) {
             throw new UserAlreadyException();
         }
     }
