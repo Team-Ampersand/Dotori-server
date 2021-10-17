@@ -59,7 +59,6 @@ public class EmailServiceTest {
                 .stdNum("2206")
                 .password("1234")
                 .email("s20018@gsm.hs.kr")
-                .answer("노갱")
                 .build();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 
@@ -74,28 +73,5 @@ public class EmailServiceTest {
         assertThat(key).isEqualTo(redisUtil.getData(key));
     }
 
-    @Disabled
-    @Test
-    void authPassword(){
-        // given
-        MemberDto memberDto = MemberDto.builder()
-                .username("노경준")
-                .stdNum("2206")
-                .password("1234")
-                .email("s20018@gsm.hs.kr")
-                .answer("노갱")
-                .build();
-
-        AuthPasswordDto authPasswordDto = new AuthPasswordDto();
-        authPasswordDto.setEmail("s20018@gsm.hs.kr");
-        authPasswordDto.setAnswer("노갱");
-
-        // when
-        memberService.signup(memberDto);
-        Member result = emailService.authPassword(authPasswordDto);
-
-        // then
-        assertThat(result.getPassword()).isEqualTo(memberRepository.findByEmail(memberDto.getEmail()).getPassword());
-    }
 
 }

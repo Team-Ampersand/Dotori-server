@@ -48,8 +48,6 @@ public class Member implements UserDetails {
     @Column(name = "member_point", columnDefinition = "Long default 0")
     private Long point;
 
-    @Column(name = "member_answer", nullable = false, updatable = false)
-    private String answer;
 
     @Enumerated(STRING) @Column(name = "Role")
     @ElementCollection(fetch = FetchType.EAGER)

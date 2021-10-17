@@ -27,7 +27,7 @@ public class EmailServiceImpl implements EmailService {
     private final PasswordEncoder passwordEncoder;
 
     /**
-     * 유저의 이메일을 받아서 받은 이메일 주소로 인증번호를 보내주는 기능
+     * 회원가입할때 이메일로 인증번호를 전송하는 기능
      * @param emailDto email
      * @return 인증번호
      * @author 노경준
@@ -41,7 +41,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     /**
-     * authKey 기능에서 받은 키를 확인(인증)하는 기능
+     * 회원가입할때 authKey에서 보내준 키와 일치한지 인증하는 기능
      * @param memberEmailKeyDto key
      * @return 입력된 키
      * @author 노경준
@@ -54,28 +54,6 @@ public class EmailServiceImpl implements EmailService {
         } else {
             throw new IllegalArgumentException("인증번호가 일치하지 않습니다.");
         }
-    }
-
-    /**
-     * 로그인 안했을때 비밀번호를 변경하는 서비스 로직
-     * @param authPasswordDto email, answer
-     * @return findMember
-     * @author 노경준
-     */
-    @Transactional
-    @Override
-    public Member authPassword(AuthPasswordDto authPasswordDto) {
-        String email = authPasswordDto.getEmail();
-        Member findMember = memberRepository.findByEmail(authPasswordDto.getEmail());
-        if(findMember == null) throw new UserNotFoundException();
-        if(!findMember.getAnswer().equals(authPasswordDto.getAnswer())) throw new UserAuthenticationAnswerNotMatchingException();
-
-        String password = getTempPassword();
-        emailSendService.sendPasswordEmail(email,password);
-
-        findMember.updatePassword(passwordEncoder.encode(password));
-
-        return findMember;
     }
 
     // 난수를 호출하는 메소드
