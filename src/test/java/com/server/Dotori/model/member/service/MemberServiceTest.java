@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.service;
 
+import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.dto.MemberDeleteDto;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.dto.MemberLoginDto;
@@ -23,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -148,7 +150,7 @@ public class MemberServiceTest {
                 .build();
 
         MemberDeleteDto memberDeleteDto = new MemberDeleteDto();
-        memberDeleteDto.setUsername("노경준");
+        memberDeleteDto.setEmail("s20018@gsm.hs.kr");
         memberDeleteDto.setPassword("1234");
 
         // given
@@ -156,6 +158,6 @@ public class MemberServiceTest {
         memberService.delete(memberDeleteDto);
 
         // then
-        assertNull(memberRepository.findByEmail(memberLoginDto.getEmail()));
+        assertThat(memberRepository.findByEmail(memberDeleteDto.getEmail())).isEqualTo(Optional.empty());
     }
 }
