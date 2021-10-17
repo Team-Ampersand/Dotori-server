@@ -37,7 +37,7 @@ public class MemberServiceImpl implements MemberService {
     private final EmailSendService emailSendService;
     private final KeyUtil keyUtil;
 
-    Long EXPIRY_TIME = 1000L * 60 * 30; // 3분
+    private final Long KEY_EXPIRATION_TIME = 1000L * 60 * 30; // 3분
 
     /**
      * 회원가입하는 서비스 로직
@@ -106,28 +106,28 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public void sendAuthKeyForChangePassword(SendAuthKeyForChangePasswordDto sendAuthKeyForChangePasswordDto) {
-        String email = sendAuthKeyForChangePasswordDto.getEmail();
-        memberRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
+        Member findMember = memberRepository.findByEmail(sendAuthKeyForChangePasswordDto.getEmail()).orElseThrow(() -> new UserNotFoundException());
+        String email = findMember.getEmail();
         String key = keyUtil.keyIssuance();
-        redisUtil.setDataExpire(email, key, EXPIRY_TIME);
+        redisUtil.setDataExpire(email, key, KEY_EXPIRATION_TIME);
         emailSendService.sendEmail(email, key);
     }
 
     /**
-     * 로그인 안했을때 비밀번호 찾기(변경)를 할때 BeforeLoginPasswordChange 메소드에서 보낸 인증번호가 일치한지 검증하는 서비스 로직
-     * @param sendAuthKeyForChangePasswordCheckDto email, key, newPassword
+     * 비밀번호 찾기(변경)를 할때 BeforeLoginPasswordChange 메소드에서 보낸 인증번호가 일치한지 검증하고, 일치 하다면 새로운 비밀번호로 변경
+     * @param verifiedAuthKeyAndChangePasswordDto email, key, newPassword
      * @author 노경준
      */
     @Override
     @Transactional
-    public void sendAuthKeyForChangePasswordCheck(SendAuthKeyForChangePasswordCheckDto sendAuthKeyForChangePasswordCheckDto) {
-        String authKey = sendAuthKeyForChangePasswordCheckDto.getKey();
-        String redisAuthKey = redisUtil.getData(sendAuthKeyForChangePasswordCheckDto.getEmail());
-        Member member = memberRepository.findByEmail(sendAuthKeyForChangePasswordCheckDto.getEmail()).orElseThrow(() -> new UserNotFoundException());
+    public void verifiedAuthKeyAndChangePassword(VerifiedAuthKeyAndChangePasswordDto verifiedAuthKeyAndChangePasswordDto) {
+        String authKey = verifiedAuthKeyAndChangePasswordDto.getKey();
+        String redisAuthKey = redisUtil.getData(verifiedAuthKeyAndChangePasswordDto.getEmail());
+        Member member = memberRepository.findByEmail(verifiedAuthKeyAndChangePasswordDto.getEmail()).orElseThrow(() -> new UserNotFoundException());
 
         if(authKey.equals(redisAuthKey)){
-            member.updatePassword(passwordEncoder.encode(sendAuthKeyForChangePasswordCheckDto.getNewPassword()));
-            redisUtil.deleteData(sendAuthKeyForChangePasswordCheckDto.getKey());
+            member.updatePassword(passwordEncoder.encode(verifiedAuthKeyAndChangePasswordDto.getNewPassword()));
+            redisUtil.deleteData(authKey);
         } else {
             throw new IllegalArgumentException("인증 키가 일치하지 않습니다.");
         }

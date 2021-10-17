@@ -9,7 +9,7 @@ public interface MemberService {
     Map<String,String> signin(MemberLoginDto memberLoginDto);
     String passwordChange(MemberPasswordDto memberPasswordDto);
     void sendAuthKeyForChangePassword(SendAuthKeyForChangePasswordDto sendAuthKeyForChangePasswordDto);
-    void sendAuthKeyForChangePasswordCheck(SendAuthKeyForChangePasswordCheckDto sendAuthKeyForChangePasswordCheckDto);
+    void verifiedAuthKeyAndChangePassword(VerifiedAuthKeyAndChangePasswordDto verifiedAuthKeyAndChangePasswordDto);
     void logout();
     void delete(MemberDeleteDto memberDeleteDto);
 }
