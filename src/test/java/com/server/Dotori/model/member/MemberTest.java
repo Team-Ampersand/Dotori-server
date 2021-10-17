@@ -36,7 +36,6 @@ public class MemberTest {
                         .music(Music.CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
-                        .answer("때밀이")
                         .build()
         );
 

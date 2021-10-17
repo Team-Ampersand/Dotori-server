@@ -49,7 +49,6 @@ class SelfStudyServiceTest {
                 .stdNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
-                .answer("배털")
                 .build();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
         memberRepository.save(memberDto.toEntity());
@@ -123,7 +122,6 @@ class SelfStudyServiceTest {
                         .music(CAN)
                         .selfStudy(SelfStudy.APPLIED)
                         .point(0L)
-                        .answer("배털")
                         .build()
         );
 
@@ -137,7 +135,6 @@ class SelfStudyServiceTest {
                         .music(CAN)
                         .selfStudy(CANT)
                         .point(0L)
-                        .answer("배털")
                         .build()
         );
 
@@ -151,7 +148,6 @@ class SelfStudyServiceTest {
                         .music(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
-                        .answer("배털")
                         .build()
         );
 
