@@ -102,6 +102,22 @@ selfstudy-not-found:
   code: "-630"
   msg: "자습신청한 학생이 없습니다."
 
+selfstudy-cant-cancel-date:
+  code: "-640"
+  msg: "자습신청을 취소 하실 수 없는 요일입니다."
+
+selfstudy-cant-cancel-time:
+  code: "-650"
+  msg: "자습신청은 오후 8시부터 오후 10시까지만 취소가 가능합니다."
+
+selfstudy-cant-request-date:
+  code: "-650"
+  msg: "자습신청을 하실 수 없는 요일입니다."
+
+selfstudy-cant-request-time:
+  code: "-660"
+  msg: "자습신청은 오후 8시부터 오후 10시까지만 가능합니다."
+
 music-already:
   code: "-500"
   msg: "이미 음악을 신청하신 회원입니다."
@@ -113,3 +129,7 @@ music-not-applied:
 music-not-found:
   code: "-520"
   msg: "해당 신청된 음악을 찾을 수 없습니다."
+
+music-cant-request-date:
+  code: "-530"
+  msg: "음악신청을 하실 수 없는 요일입니다."

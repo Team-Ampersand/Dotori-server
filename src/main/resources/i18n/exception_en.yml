@@ -102,6 +102,22 @@ selfstudy-not-found:
   code: "-630"
   msg: "Nobody apply self study."
 
+selfstudy-cant-cancel-date:
+  code: "-640"
+  msg: "You can't cancel selfstudy in this date."
+
+selfstudy-cant-cancel-time:
+  code: "-650"
+  msg: "You can't cancel selfstudy in this time."
+
+selfstudy-cant-request-date:
+  code: "-650"
+  msg: "You can't request selfstudy in this date."
+
+selfstudy-cant-request-time:
+  code: "-660"
+  msg: "You can't request selfstudy in this time."
+
 music-already:
   code: "-500"
   msg: "You already apply music."
@@ -113,3 +129,7 @@ music-not-applied:
 music-not-found:
   code: "-520"
   msg: "Cant find the music."
+
+music-cant-request-date:
+  code: "-530"
+  msg: "You can't request music this date."
