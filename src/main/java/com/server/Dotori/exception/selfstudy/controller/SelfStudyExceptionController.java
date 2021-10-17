@@ -1,9 +1,6 @@
 package com.server.Dotori.exception.selfstudy.controller;
 
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantApplied;
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantChange;
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyNotFound;
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyOverPersonal;
+import com.server.Dotori.exception.selfstudy.exception.*;
 import com.server.Dotori.response.result.CommonResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,4 +29,25 @@ public class SelfStudyExceptionController {
     public CommonResult selfStudyOverPersonal() {
         throw new SelfStudyOverPersonal();
     }
+
+    @GetMapping("/selfstudy-cant-cancel-date")
+    public CommonResult selfStudyCantCancelDate() {
+        throw new SelfStudyCantCancelDate();
+    }
+
+    @GetMapping("/selfstudy-cant-cancel-time")
+    public CommonResult selfStudyCantCancelTime() {
+        throw new SelfStudyCantCancelTime();
+    }
+
+    @GetMapping("/selfstudy-cant-request-date")
+    public CommonResult selfStudyCantRequestDate() {
+        throw new SelfStudyCantRequestDate();
+    }
+
+    @GetMapping("/selfstudy-cant-request-time")
+    public CommonResult selfStudyCantRequestTime() {
+        throw new SelfStudyCantRequestTime();
+    }
+
 }
