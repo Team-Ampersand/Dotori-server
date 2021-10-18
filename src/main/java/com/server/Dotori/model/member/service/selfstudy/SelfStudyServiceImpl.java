@@ -125,6 +125,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Override
     @Transactional
     public void updateSelfStudyStatus() {
+        count = 0;
         memberRepository.updateSelfStudyStatus();
     }
 
