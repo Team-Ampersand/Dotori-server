@@ -1,5 +1,9 @@
 package com.server.Dotori.model.member.service.selfstudy;
 
+import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantCancelDateException;
+import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantCancelTimeException;
+import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantRequestDateException;
+import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantRequestTimeException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
@@ -78,12 +82,40 @@ class SelfStudyServiceTest {
     }
 
     @Test
+    @DisplayName("적절한 날짜 혹은 시간이 아닐 때 자습신청을 하면 예외가 제대로 터지나요?")
+    public void requestSelfStudyExceptionTest() {
+        assertThrows(
+                SelfStudyCantRequestDateException.class,
+                () -> selfStudyService.requestSelfStudy(DayOfWeek.FRIDAY, 21)
+        );
+
+        assertThrows(
+                SelfStudyCantRequestTimeException.class,
+                () -> selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 19)
+        );
+    }
+
+    @Test
     @DisplayName("자습신청 취소가 제대로 되나요?")
     public void cancelSelfStudy() {
         selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 21);
         selfStudyService.cancelSelfStudy(DayOfWeek.MONDAY, 21);
 
         assertEquals(CANT, currentUserUtil.getCurrentUser().getSelfStudy());
+    }
+
+    @Test
+    @DisplayName("적절한 날짜 혹은 시간이 아닐 때 자습신청 취소를 하면 예외가 제대로 터지나요?")
+    public void cancelSelfStudyExceptionTest() {
+        assertThrows(
+                SelfStudyCantCancelDateException.class,
+                () -> selfStudyService.cancelSelfStudy(DayOfWeek.FRIDAY, 21)
+        );
+
+        assertThrows(
+                SelfStudyCantCancelTimeException.class,
+                () -> selfStudyService.cancelSelfStudy(DayOfWeek.MONDAY, 19)
+        );
     }
 
     @Test

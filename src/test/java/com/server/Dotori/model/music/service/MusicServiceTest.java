@@ -1,5 +1,6 @@
 package com.server.Dotori.model.music.service;
 
+import com.server.Dotori.exception.music.exception.MusicCantRequestDateException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
@@ -86,6 +87,20 @@ class MusicServiceTest {
         //then
         assertThat(music.getMember().getMusic()).isEqualTo(APPLIED);
         assertThat(music.getUrl()).isEqualTo("https://www.youtube.com/watch?v=6h9qmKWK6Io");
+    }
+
+    @Test
+    @DisplayName("음악을 신청할 수 없는 요일에 신청했을 때 예외가 터지나요?")
+    public void musicApplicationExceptionTest() {
+        assertThrows(
+                MusicCantRequestDateException.class,
+                () -> musicService.musicApplication(
+                        MusicApplicationDto.builder()
+                                .musicUrl("https://www.youtube.com/watch?v=6h9qmKWK6Io")
+                                .build(),
+                        DayOfWeek.FRIDAY // 금요일
+                )
+        );
     }
 
     @Test
