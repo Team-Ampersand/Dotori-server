@@ -1,9 +1,6 @@
 package com.server.Dotori.exception.selfstudy;
 
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantApplied;
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantChange;
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyNotFound;
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyOverPersonal;
+import com.server.Dotori.exception.selfstudy.exception.*;
 import com.server.Dotori.response.result.CommonResult;
 import com.server.Dotori.util.ExceptionResponseObjectUtil;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +39,29 @@ public class SelfStudyExceptionHandlerImpl implements SelfStudyExceptionHandler 
     public CommonResult selfStudyOverPersonalException(SelfStudyOverPersonal ex) {
         log.debug("=== SelfStudy Over Personal Exception 발생 ===");
         return exceptionResponseObjectUtil.getExceptionResponseObject(SELFSTUDY_OVER_PERSONAL);
+    }
+
+    @Override
+    public CommonResult selfStudyCantCancelDate(SelfStudyCantCancelDate ex) {
+        log.debug("=== SelfStudy Cant Cancel Date Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(SELFSTUDY_CANT_CANCEL_DATE);
+    }
+
+    @Override
+    public CommonResult selfStudyCantCancelTime(SelfStudyCantCancelTime ex) {
+        log.debug("=== SelfStudy Cant Cancel Time Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(SELFSTUDY_CANT_CANCEL_TIME);
+    }
+
+    @Override
+    public CommonResult selfStudyCantRequestDate(SelfStudyCantRequestDate ex) {
+        log.debug("=== SelfStudy Cant Request Date Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(SELFSTUDY_CANT_REQUEST_DATE);
+    }
+
+    @Override
+    public CommonResult SelfStudyCantRequestTime(SelfStudyCantRequestTime ex) {
+        log.debug("=== SelfStudy Cant Request Time Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(SELFSTUDY_CANT_REQUEST_TIME);
     }
 }
