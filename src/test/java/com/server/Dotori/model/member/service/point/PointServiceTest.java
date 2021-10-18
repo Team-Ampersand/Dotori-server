@@ -49,7 +49,6 @@ class PointServiceTest {
                 .stdNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
-                .answer("배털")
                 .build();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
         memberRepository.save(memberDto.toEntity());
@@ -84,7 +83,6 @@ class PointServiceTest {
                         .music(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
-                        .answer("배털")
                         .build()
         );
 
@@ -116,7 +114,6 @@ class PointServiceTest {
                         .music(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(-2L)
-                        .answer("배털")
                         .build()
         );
 
@@ -130,7 +127,6 @@ class PointServiceTest {
                         .music(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(-13L)
-                        .answer("배털")
                         .build()
         );
 

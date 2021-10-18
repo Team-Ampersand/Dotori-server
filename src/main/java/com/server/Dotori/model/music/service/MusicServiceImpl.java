@@ -1,6 +1,7 @@
 package com.server.Dotori.model.music.service;
 
 import com.server.Dotori.exception.music.exception.MusicAlreadyException;
+import com.server.Dotori.exception.music.exception.MusicCantRequestDateException;
 import com.server.Dotori.exception.music.exception.MusicNotAppliedException;
 import com.server.Dotori.exception.music.exception.MusicNotFoundException;
 import com.server.Dotori.model.member.Member;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.util.List;
 
 import static com.server.Dotori.model.member.enumType.Music.*;
@@ -26,15 +28,19 @@ public class MusicServiceImpl implements MusicService {
 
     /**
      * 음악을 신청하는 서비스 로직 (로그인된 유저 사용가능) <br>
-     * 이미 음악을 신청한 학생이라면?
-     * @exception
+     * 금요일, 토요일에는 음악신청 불가능
      * @param musicApplicationDto musicApplicationDto (musicUrl)
+     * @param dayOfWeek 현재 요일
+     * @exception MusicCantRequestDateException 금요일, 토요일에 음악신청을 했을 때
+     * @exception MusicAlreadyException 음악신청 상태가 CAN이 아닐 때
      * @return Music
      * @author 배태현
      */
     @Override
     @Transactional
-    public Music musicApplication(MusicApplicationDto musicApplicationDto) {
+    public Music musicApplication(MusicApplicationDto musicApplicationDto, DayOfWeek dayOfWeek) {
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY) throw new MusicCantRequestDateException();
+
         Member currentUser = currentUserUtil.getCurrentUser();
 
         if (currentUser.getMusic() == CAN) {
@@ -49,7 +55,7 @@ public class MusicServiceImpl implements MusicService {
 
     /**
      * 신청된 모든 음악을 조회하는 서비스 로직 (로그인된 유저 사용가능)
-     * @exception
+     * @exception MusicNotAppliedException 신청된 음악이 없을 때
      * @return List-MusicResDto
      * @author 배태현
      */
@@ -63,7 +69,7 @@ public class MusicServiceImpl implements MusicService {
 
     /**
      * 신청된 음악을 개별삭제하는 서비스 로직 (기자위, 사감쌤 개발자만 가능)
-     * @exception 
+     * @exception MusicNotFoundException 해당 Id의 음악을 찾을 수 없을 때
      * @param musicId musicId
      * @author 배태현
      */

@@ -34,6 +34,10 @@ user-authentication-answer-not-matching:
   code: "-940"
   msg: "인증 답변이 일치하지 않습니다."
 
+user-authentication-key-not-matching:
+  code: "-970"
+  msg: "인증 키가 일치하지 않습니다."
+
 user-already-join-this-name:
   code: "-950"
   msg: "이미 존재하는 이름입니다."
@@ -58,6 +62,10 @@ refresh-token-fail:
   code: "-830"
   msg: "토큰 재발급이 실패했습니다."
 
+token-is-empty:
+  code: "-840"
+  msg: "토큰이 비어있습니다."
+
 board-not-found:
   code: "-700"
   msg: "해당 게시물을 찾을 수 없습니다."
@@ -78,7 +86,7 @@ board-empty:
   code: "-740"
   msg: "공지사항이 비어있습니다."
 
-selfstudy-over-maximum-count:
+selfstudy-over-personal:
   code: "-600"
   msg: "자습신청 인원이 50명을 초과 하였습니다."
 
@@ -88,11 +96,27 @@ selfstudy-cant-change:
 
 selfstudy-cant-applied:
   code: "-620"
-  msg: "자습신청을 할 수 있는 상태가 아닙니다."
+  msg: "이미 자습신청을 하신 상태입니다."
 
 selfstudy-not-found:
   code: "-630"
   msg: "자습신청한 학생이 없습니다."
+
+selfstudy-cant-cancel-date:
+  code: "-640"
+  msg: "자습신청을 취소 하실 수 없는 요일입니다."
+
+selfstudy-cant-cancel-time:
+  code: "-650"
+  msg: "자습신청은 오후 8시부터 오후 10시까지만 취소가 가능합니다."
+
+selfstudy-cant-request-date:
+  code: "-650"
+  msg: "자습신청을 하실 수 없는 요일입니다."
+
+selfstudy-cant-request-time:
+  code: "-660"
+  msg: "자습신청은 오후 8시부터 오후 10시까지만 가능합니다."
 
 music-already:
   code: "-500"
@@ -105,3 +129,7 @@ music-not-applied:
 music-not-found:
   code: "-520"
   msg: "해당 신청된 음악을 찾을 수 없습니다."
+
+music-cant-request-date:
+  code: "-530"
+  msg: "음악신청을 하실 수 없는 요일입니다."

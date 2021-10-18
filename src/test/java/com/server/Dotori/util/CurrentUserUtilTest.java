@@ -40,7 +40,6 @@ class CurrentUserUtilTest {
                 .stdNum("2206")
                 .password("1234")
                 .email("s20018@gmail.com")
-                .answer("hello")
                 .build();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
         memberService.signup(memberDto);
@@ -68,7 +67,6 @@ class CurrentUserUtilTest {
                 .stdNum("2206")
                 .password("1234")
                 .email("s20018@gmail.com")
-                .answer("hello")
                 .build();
         memberService.signup(memberDto);
         System.out.println("======== saved =========");

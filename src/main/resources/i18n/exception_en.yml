@@ -34,6 +34,10 @@ user-authentication-answer-not-matching:
   code: "-940"
   msg: "Not matched authentication answer."
 
+user-authentication-key-not-matching:
+  code: "-970"
+  msg: "Not matched authentication key."
+
 user-already-join-this-name:
   code: "-950"
   msg: "Already join this name."
@@ -57,6 +61,10 @@ logout-token:
 refresh-token-fail:
   code: "-830"
   msg: "Fail to refresh the token"
+
+token-is-empty:
+  code: "-840"
+  msg: "Token is empty."
 
 board-not-found:
   code: "-700"
@@ -94,6 +102,22 @@ selfstudy-not-found:
   code: "-630"
   msg: "Nobody apply self study."
 
+selfstudy-cant-cancel-date:
+  code: "-640"
+  msg: "You can't cancel selfstudy in this date."
+
+selfstudy-cant-cancel-time:
+  code: "-650"
+  msg: "You can't cancel selfstudy in this time."
+
+selfstudy-cant-request-date:
+  code: "-650"
+  msg: "You can't request selfstudy in this date."
+
+selfstudy-cant-request-time:
+  code: "-660"
+  msg: "You can't request selfstudy in this time."
+
 music-already:
   code: "-500"
   msg: "You already apply music."
@@ -105,3 +129,7 @@ music-not-applied:
 music-not-found:
   code: "-520"
   msg: "Cant find the music."
+
+music-cant-request-date:
+  code: "-530"
+  msg: "You can't request music this date."

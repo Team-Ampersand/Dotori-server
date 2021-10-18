@@ -1,16 +1,15 @@
 package com.server.Dotori.model.member.service;
 
-import com.server.Dotori.model.member.dto.MemberDeleteDto;
-import com.server.Dotori.model.member.dto.MemberDto;
-import com.server.Dotori.model.member.dto.MemberLoginDto;
-import com.server.Dotori.model.member.dto.MemberPasswordDto;
+import com.server.Dotori.model.member.dto.*;
 
 import java.util.Map;
 
 public interface MemberService {
     Long signup(MemberDto memberDto);
     Map<String,String> signin(MemberLoginDto memberLoginDto);
-    Map<String,String> passwordChange(MemberPasswordDto memberPasswordDto);
+    String passwordChange(MemberPasswordDto memberPasswordDto);
+    void sendAuthKeyForChangePassword(SendAuthKeyForChangePasswordDto sendAuthKeyForChangePasswordDto);
+    void verifiedAuthKeyAndChangePassword(VerifiedAuthKeyAndChangePasswordDto verifiedAuthKeyAndChangePasswordDto);
     void logout();
     void delete(MemberDeleteDto memberDeleteDto);
 }

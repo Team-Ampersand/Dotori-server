@@ -1,18 +1,16 @@
 package com.server.Dotori.model.music.service;
 
-import com.server.Dotori.model.board.Board;
+import com.server.Dotori.exception.music.exception.MusicCantRequestDateException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.enumType.SelfStudy;
 import com.server.Dotori.model.member.repository.MemberRepository;
-import com.server.Dotori.model.member.service.MemberService;
 import com.server.Dotori.model.music.Music;
 import com.server.Dotori.model.music.dto.MusicApplicationDto;
 import com.server.Dotori.model.music.dto.MusicResDto;
 import com.server.Dotori.model.music.repository.MusicRepository;
 import com.server.Dotori.util.CurrentUserUtil;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,10 +19,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.annotation.Commit;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.DayOfWeek;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,7 +34,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
-//@Commit
 class MusicServiceTest {
 
     @Autowired private MusicService musicService;
@@ -44,7 +41,6 @@ class MusicServiceTest {
     @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private MemberRepository memberRepository;
     @Autowired private CurrentUserUtil currentUserUtil;
-    @Autowired private MemberService memberService;
     @Autowired
     EntityManager em;
 
@@ -57,7 +53,6 @@ class MusicServiceTest {
                 .stdNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
-                .answer("배털")
                 .build();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
         memberRepository.save(memberDto.toEntity());
@@ -85,12 +80,27 @@ class MusicServiceTest {
         Music music = musicService.musicApplication(
                 MusicApplicationDto.builder()
                         .musicUrl("https://www.youtube.com/watch?v=6h9qmKWK6Io")
-                        .build()
+                        .build(),
+                DayOfWeek.MONDAY // 월요일
         );
 
         //then
         assertThat(music.getMember().getMusic()).isEqualTo(APPLIED);
         assertThat(music.getUrl()).isEqualTo("https://www.youtube.com/watch?v=6h9qmKWK6Io");
+    }
+
+    @Test
+    @DisplayName("음악을 신청할 수 없는 요일에 신청했을 때 예외가 터지나요?")
+    public void musicApplicationExceptionTest() {
+        assertThrows(
+                MusicCantRequestDateException.class,
+                () -> musicService.musicApplication(
+                        MusicApplicationDto.builder()
+                                .musicUrl("https://www.youtube.com/watch?v=6h9qmKWK6Io")
+                                .build(),
+                        DayOfWeek.FRIDAY // 금요일
+                )
+        );
     }
 
     @Test
@@ -151,7 +161,6 @@ class MusicServiceTest {
                         .music(APPLIED)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
-                        .answer("배털")
                         .build()
         );
 
@@ -165,7 +174,6 @@ class MusicServiceTest {
                         .music(APPLIED)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
-                        .answer("배털")
                         .build()
         );
 
@@ -179,7 +187,6 @@ class MusicServiceTest {
                         .music(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
-                        .answer("배털")
                         .build()
         );
 

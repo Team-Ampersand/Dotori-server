@@ -8,5 +8,4 @@ import com.server.Dotori.model.member.dto.MemberEmailKeyDto;
 public interface EmailService {
     String authKey(EmailDto emailDto);
     String authCheck(MemberEmailKeyDto memberEmailKeyDto);
-    Member authPassword(AuthPasswordDto authPasswordDto);
 }

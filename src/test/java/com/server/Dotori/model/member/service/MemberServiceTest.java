@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.service;
 
+import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.dto.MemberDeleteDto;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.dto.MemberLoginDto;
@@ -23,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,7 +53,6 @@ public class MemberServiceTest {
                 .stdNum("1111")
                 .password("1234")
                 .email("s20000@gsm.hs.kr")
-                .answer("root")
                 .build();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
 
@@ -59,7 +60,7 @@ public class MemberServiceTest {
         Long result = memberService.signup(memberDto);
 
         // then
-        assertThat(result).isEqualTo(memberRepository.findByEmail(memberDto.getEmail()).getId());
+        assertThat(result).isEqualTo(memberRepository.findByEmail(memberDto.getEmail()).orElseThrow().getId());
     }
 
     @BeforeEach
@@ -71,7 +72,6 @@ public class MemberServiceTest {
                 .stdNum("2206")
                 .password("1234")
                 .email("s20018@gsm.hs.kr")
-                .answer("노갱")
                 .build();
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
         memberRepository.save(memberDto.toEntity());
@@ -102,25 +102,25 @@ public class MemberServiceTest {
 
         // when
         Map<String,String> result = memberService.signin(memberLoginDto);
-        System.out.println("================================ " + memberRepository.findByEmail(memberLoginDto.getEmail()).getUsername() +" ====================================");
+        System.out.println("================================ " + memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow().getUsername() +" ====================================");
 
         // then
         assertNotNull(result);
-        assertThat(result.get("username")).isEqualTo(memberRepository.findByEmail(memberLoginDto.getEmail()).getUsername());
+        assertThat(result.get("username")).isEqualTo(memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow().getUsername());
     }
 
     @Test
     void passwordChange(){
         // given
         MemberPasswordDto memberPasswordDto = new MemberPasswordDto();
-        memberPasswordDto.setOldPassword("1234");
+        memberPasswordDto.setCurrentPassword("1234");
         memberPasswordDto.setNewPassword("12345");
 
         // when
-        Map<String, String> result = memberService.passwordChange(memberPasswordDto);
+        String result = memberService.passwordChange(memberPasswordDto);
 
         // then
-        assertEquals(true,passwordEncoder.matches(memberPasswordDto.getNewPassword(),result.get("노경준")));
+        assertEquals(true,passwordEncoder.matches(memberPasswordDto.getNewPassword(),result));
     }
 
     @Test
@@ -137,7 +137,7 @@ public class MemberServiceTest {
         memberService.logout();
 
         // then
-        assertNull(redisUtil.getData(memberRepository.findByEmail(memberLoginDto.getEmail()).getUsername()));
+        assertNull(redisUtil.getData(memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow().getUsername()));
     }
 
     @Test
@@ -150,7 +150,7 @@ public class MemberServiceTest {
                 .build();
 
         MemberDeleteDto memberDeleteDto = new MemberDeleteDto();
-        memberDeleteDto.setUsername("노경준");
+        memberDeleteDto.setEmail("s20018@gsm.hs.kr");
         memberDeleteDto.setPassword("1234");
 
         // given
@@ -158,6 +158,6 @@ public class MemberServiceTest {
         memberService.delete(memberDeleteDto);
 
         // then
-        assertNull(memberRepository.findByEmail(memberLoginDto.getEmail()));
+        assertThat(memberRepository.findByEmail(memberDeleteDto.getEmail())).isEqualTo(Optional.empty());
     }
 }

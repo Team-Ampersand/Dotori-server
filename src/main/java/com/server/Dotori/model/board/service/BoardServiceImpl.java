@@ -39,6 +39,7 @@ public class BoardServiceImpl implements BoardService {
     /**
      * 공지사항 전체조회 서비스 로직 (로그인 되어있는 유저 사용가능)
      * @param pageable pageble(7)
+     * @exception BoardEmptyException 작성된 공지사항이 없을 때
      * @return Page-BoardGetDto (id, title, roles, createdDate)
      * @author 배태현
      */
@@ -60,6 +61,7 @@ public class BoardServiceImpl implements BoardService {
     /**
      * 공지사항 상세조회 서비스 로직 (로그인 되어있을 시 사용가능)
      * @param boardId boardId
+     * @exception BoardNotFoundException 해당 Id의 공지사항을 찾을 수 없을 때
      * @return BoardGetDto (id, title, content,  roles, createdDate, modifiedDate)
      * @author 배태현
      */
@@ -80,6 +82,7 @@ public class BoardServiceImpl implements BoardService {
      * 공지사항 수정 서비스 로직 (기자위, 사감쌤, 개발자 권한 사용가능)
      * @param boardId boardId
      * @param boardUpdateDto boardUpdateDto (title, content)
+     * @exception BoardNotFoundException 해당 Id의 공지사항을 찾을 수 없을 때
      * @return Board
      * @author 배태현
      */
@@ -97,6 +100,7 @@ public class BoardServiceImpl implements BoardService {
     /**
      * 공지사항 삭제 서비스 로직 (기자위, 사감쌤, 개발자 권한 사용가능)
      * @param boardId boardId
+     * @exception BoardNotFoundException 해당 Id의 공지사항을 찾을 수 없을 때
      * @author 배태현
      */
     @Override

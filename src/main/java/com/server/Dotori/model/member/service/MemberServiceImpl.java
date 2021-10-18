@@ -1,26 +1,28 @@
 package com.server.Dotori.model.member.service;
 
 import com.server.Dotori.exception.user.exception.UserAlreadyException;
+import com.server.Dotori.exception.user.exception.UserAuthenticationKeyNotMatchingException;
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.exception.user.exception.UserPasswordNotMatchingException;
 import com.server.Dotori.model.member.Member;
-import com.server.Dotori.model.member.dto.MemberDeleteDto;
-import com.server.Dotori.model.member.dto.MemberDto;
-import com.server.Dotori.model.member.dto.MemberLoginDto;
-import com.server.Dotori.model.member.dto.MemberPasswordDto;
+import com.server.Dotori.model.member.dto.*;
 import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.model.member.service.MemberService;
+import com.server.Dotori.model.member.service.email.EmailSendService;
 import com.server.Dotori.security.jwt.JwtTokenProvider;
 import com.server.Dotori.util.CurrentUserUtil;
+import com.server.Dotori.util.KeyUtil;
 import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.server.Dotori.model.member.enumType.Role.*;
 
@@ -33,6 +35,10 @@ public class MemberServiceImpl implements MemberService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisUtil redisUtil;
     private final CurrentUserUtil currentUserUtil;
+    private final EmailSendService emailSendService;
+    private final KeyUtil keyUtil;
+
+    private final Long KEY_EXPIRATION_TIME = 1000L * 60 * 30; // 3분
 
     /**
      * 회원가입하는 서비스 로직
@@ -42,11 +48,13 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public Long signup(MemberDto memberDto){
-        if(memberRepository.findByEmail(memberDto.getEmail()) == null && memberRepository.findByStdNum(memberDto.getStdNum()) == null){
-            memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-            Member result = memberRepository.save(memberDto.toEntity());
-            return result.getId();
-        }else {
+        try {
+            if (!memberRepository.existsByEmailAndStdNum(memberDto.getEmail(), memberDto.getStdNum())) {
+                memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+                Member result = memberRepository.save(memberDto.toEntity());
+                return result.getId();
+            } else throw new UserAlreadyException();
+        } catch (DataIntegrityViolationException e) {
             throw new UserAlreadyException();
         }
     }
@@ -59,11 +67,9 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public Map<String,String> signin(MemberLoginDto memberLoginDto) {
-        Member findUser = memberRepository.findByEmail(memberLoginDto.getEmail()); // email로 유저정보를 가져옴
-        if(findUser == null) throw new UserNotFoundException("유저가 존재하지 않습니다."); // 유저가 존재하는지 체크
+        Member findUser = memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow(() -> new UserNotFoundException()); // email로 유저정보를 가져옴
 
-        boolean passwordCheck = passwordEncoder.matches(memberLoginDto.getPassword(),findUser.getPassword()); // 비밀번호가 DB에 있는 비밀번호와 입력된 비밀번호가 같은지 체크
-        if(!passwordCheck) throw new UserNotFoundException("유저가 존재하지 않습니다."); // 비밀번호가 DB에 있는 비밀번호와 입력된 비밀번호가 같은지 체크
+        if(!passwordEncoder.matches(memberLoginDto.getPassword(),findUser.getPassword())) throw new UserPasswordNotMatchingException(); // 비밀번호가 DB에 있는 비밀번호와 입력된 비밀번호가 같은지 체크
 
         Map<String,String> map = new HashMap<>(); // Token 을 담을수있는 Hashmap 선언
         String accessToken = jwtTokenProvider.createToken(findUser.getUsername(), findUser.getRoles()); // 유저정보에서 Username : 유저정보에서 Role (Key : Value)
@@ -88,17 +94,46 @@ public class MemberServiceImpl implements MemberService {
      */
     @Transactional
     @Override
-    public Map<String,String> passwordChange(MemberPasswordDto memberPasswordDto) {
+    public String passwordChange(MemberPasswordDto memberPasswordDto) {
         Member findMember = currentUserUtil.getCurrentUser();
-        if(!passwordEncoder.matches(memberPasswordDto.getOldPassword(),findMember.getPassword()))
-            throw new UserPasswordNotMatchingException();
-
+        if (!passwordEncoder.matches(memberPasswordDto.getCurrentPassword(), findMember.getPassword())) throw new UserPasswordNotMatchingException();
         findMember.updatePassword(passwordEncoder.encode(memberPasswordDto.getNewPassword()));
 
-        Map<String,String> map = new HashMap<>();
-        map.put(findMember.getUsername(),findMember.getPassword());
+        return findMember.getPassword();
+    }
 
-        return map;
+    /**
+     * 로그인 안했을때 비밀번호 찾기 전에 이메일로 인증번호를 보내는 서비스 로직
+     * @param sendAuthKeyForChangePasswordDto email
+     * @author 노경준
+     */
+    @Override
+    public void sendAuthKeyForChangePassword(SendAuthKeyForChangePasswordDto sendAuthKeyForChangePasswordDto) {
+        Member findMember = memberRepository.findByEmail(sendAuthKeyForChangePasswordDto.getEmail()).orElseThrow(() -> new UserNotFoundException());
+        String email = findMember.getEmail();
+        String key = keyUtil.keyIssuance();
+        redisUtil.setDataExpire(email, key, KEY_EXPIRATION_TIME);
+        emailSendService.sendEmail(email, key);
+    }
+
+    /**
+     * 비밀번호 찾기(변경)를 할때 BeforeLoginPasswordChange 메소드에서 보낸 인증번호가 일치한지 검증하고, 일치 하다면 새로운 비밀번호로 변경
+     * @param verifiedAuthKeyAndChangePasswordDto email, key, newPassword
+     * @author 노경준
+     */
+    @Override
+    @Transactional
+    public void verifiedAuthKeyAndChangePassword(VerifiedAuthKeyAndChangePasswordDto verifiedAuthKeyAndChangePasswordDto) {
+        String authKey = verifiedAuthKeyAndChangePasswordDto.getKey();
+        String redisAuthKey = redisUtil.getData(verifiedAuthKeyAndChangePasswordDto.getEmail());
+        Member member = memberRepository.findByEmail(verifiedAuthKeyAndChangePasswordDto.getEmail()).orElseThrow(() -> new UserNotFoundException());
+
+        if(authKey.equals(redisAuthKey)){
+            member.updatePassword(passwordEncoder.encode(verifiedAuthKeyAndChangePasswordDto.getNewPassword()));
+            redisUtil.deleteData(authKey);
+        } else {
+            throw new IllegalArgumentException("인증 키가 일치하지 않습니다.");
+        }
     }
 
     /**
@@ -112,12 +147,12 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 회원탈퇴 하는 서비스 로직
-     * @param memberDeleteDto username, password
+     * @param memberDeleteDto email, password
      * @author 노경준
      */
     @Override
     public void delete(MemberDeleteDto memberDeleteDto) {
-        Member findMember = memberRepository.findByUsername(memberDeleteDto.getUsername());
+        Member findMember = memberRepository.findByEmail(memberDeleteDto.getEmail()).orElseThrow(() -> new UserNotFoundException());
         if(!passwordEncoder.matches(memberDeleteDto.getPassword(),findMember.getPassword()))
             throw new UserPasswordNotMatchingException();
 
