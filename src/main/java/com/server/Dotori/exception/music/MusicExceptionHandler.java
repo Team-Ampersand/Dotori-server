@@ -1,7 +1,7 @@
 package com.server.Dotori.exception.music;
 
 import com.server.Dotori.exception.music.exception.MusicAlreadyException;
-import com.server.Dotori.exception.music.exception.MusicCantRequestDate;
+import com.server.Dotori.exception.music.exception.MusicCantRequestDateException;
 import com.server.Dotori.exception.music.exception.MusicNotAppliedException;
 import com.server.Dotori.exception.music.exception.MusicNotFoundException;
 import com.server.Dotori.response.result.CommonResult;
@@ -28,7 +28,7 @@ public interface MusicExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     CommonResult musicNotFoundException(MusicNotFoundException ex);
 
-    @ExceptionHandler(MusicCantRequestDate.class)
+    @ExceptionHandler(MusicCantRequestDateException.class)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    CommonResult musicCantRequestDate(MusicCantRequestDate ex);
+    CommonResult musicCantRequestDateException(MusicCantRequestDateException ex);
 }
