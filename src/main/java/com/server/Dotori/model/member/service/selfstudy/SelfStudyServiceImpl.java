@@ -1,9 +1,6 @@
 package com.server.Dotori.model.member.service.selfstudy;
 
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantAppliedException;
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantChangeException;
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyNotFoundException;
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyOverPersonalException;
+import com.server.Dotori.exception.selfstudy.exception.*;
 import com.server.Dotori.exception.user.exception.UserNotFoundByClassException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
@@ -37,17 +34,17 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * 자습신청 할 시 '신청함'으로 상태변경 <br>
      * @param dayOfWeek 현재 요일
      * @param hour 현재 시
+     * @exception SelfStudyCantRequestDateException 금요일, 토요일, 일요일에 자습신청을 했을 때
+     * @exception SelfStudyCantRequestTimeException 오후 8시에서 오후 10시 사이가 아닌 시간에 자습신청을 했을 때
      * @exception SelfStudyCantAppliedException 자습신청 상태가 CAN(가능)이 아닐 때 (자습신청을 할 수 없는 상태)
      * @exception SelfStudyOverPersonalException 자습신청 인원이 50명이 넘었을 때
-     * @exception
-     * @exception
      * @author 배태현
      */
     @Override
     @Transactional
     public void requestSelfStudy(DayOfWeek dayOfWeek, int hour) {
-//        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new IllegalArgumentException("자습신청이 가능한 요일이 아닙니다.");
-//        if (!(hour >= 20 && hour < 23)) throw new IllegalArgumentException("오후 8시부터 오후 10시까지만 자습신청이 가능합니다."); // 20시(8시)부터 22시(10시) 사이가 아니라면 자습신청 불가능
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new SelfStudyCantRequestDateException();
+        if (!(hour >= 20 && hour < 23)) throw new SelfStudyCantRequestTimeException(); // 20시(8시)부터 22시(10시) 사이가 아니라면 자습신청 불가능
 
         Member currentUser = currentUserUtil.getCurrentUser();
 
@@ -69,14 +66,16 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * 자습신청을 취소할 시 그 날 자습신청 불가능
      * @param dayOfWeek 현재 요일
      * @param hour 현재 시
+     * @exception SelfStudyCantCancelDateException 금요일, 토요일, 일요일에 자습신청 취소를 했을 때
+     * @exception SelfStudyCantCancelTimeException 오후 8시에서 오후 10시 사이가 아닌 시간에 자습신청 취소를 했을 때
      * @exception SelfStudyCantChangeException 자습신청 상태가 APPLIED(신청됨)가 아닐 때 (자습신청 취소를 할 수 없는 상태)
      * @author 배태현
      */
     @Override
     @Transactional
     public void cancelSelfStudy(DayOfWeek dayOfWeek, int hour) {
-//        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new IllegalArgumentException("자습신청 취소가 가능한 요일이 아닙니다.");
-//        if (!(hour >= 20 && hour < 23)) throw new IllegalArgumentException("오후 8시부터 오후 10시까지만 자습신청 취소가 가능합니다."); // 20시(8시)부터 22시(10시) 사이가 아니라면 자습신청 취소 불가능
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new SelfStudyCantCancelDateException();
+        if (!(hour >= 20 && hour < 23)) throw new SelfStudyCantCancelTimeException(); // 20시(8시)부터 22시(10시) 사이가 아니라면 자습신청 취소 불가능
 
         Member currentUser = currentUserUtil.getCurrentUser();
 
