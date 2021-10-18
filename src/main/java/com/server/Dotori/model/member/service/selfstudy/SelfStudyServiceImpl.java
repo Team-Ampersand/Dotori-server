@@ -1,9 +1,9 @@
 package com.server.Dotori.model.member.service.selfstudy;
 
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantApplied;
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantChange;
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyNotFound;
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyOverPersonal;
+import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantAppliedException;
+import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantChangeException;
+import com.server.Dotori.exception.selfstudy.exception.SelfStudyNotFoundException;
+import com.server.Dotori.exception.selfstudy.exception.SelfStudyOverPersonalException;
 import com.server.Dotori.exception.user.exception.UserNotFoundByClassException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
@@ -37,8 +37,8 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * 자습신청 할 시 '신청함'으로 상태변경 <br>
      * @param dayOfWeek 현재 요일
      * @param hour 현재 시
-     * @exception SelfStudyCantApplied 자습신청 상태가 CAN(가능)이 아닐 때 (자습신청을 할 수 없는 상태)
-     * @exception SelfStudyOverPersonal 자습신청 인원이 50명이 넘었을 때
+     * @exception SelfStudyCantAppliedException 자습신청 상태가 CAN(가능)이 아닐 때 (자습신청을 할 수 없는 상태)
+     * @exception SelfStudyOverPersonalException 자습신청 인원이 50명이 넘었을 때
      * @exception
      * @exception
      * @author 배태현
@@ -46,8 +46,8 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Override
     @Transactional
     public void requestSelfStudy(DayOfWeek dayOfWeek, int hour) {
-        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new IllegalArgumentException("자습신청이 가능한 요일이 아닙니다.");
-        if (!(hour >= 20 && hour < 23)) throw new IllegalArgumentException("오후 8시부터 오후 10시까지만 자습신청이 가능합니다."); // 20시(8시)부터 22시(10시) 사이가 아니라면 자습신청 불가능
+//        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new IllegalArgumentException("자습신청이 가능한 요일이 아닙니다.");
+//        if (!(hour >= 20 && hour < 23)) throw new IllegalArgumentException("오후 8시부터 오후 10시까지만 자습신청이 가능합니다."); // 20시(8시)부터 22시(10시) 사이가 아니라면 자습신청 불가능
 
         Member currentUser = currentUserUtil.getCurrentUser();
 
@@ -57,9 +57,9 @@ public class SelfStudyServiceImpl implements SelfStudyService {
                 count += 1;
                 log.info("Current Self Study Student Count is {}", count);
             } else
-                throw new SelfStudyCantApplied();
+                throw new SelfStudyCantAppliedException();
         } else
-            throw new SelfStudyOverPersonal();
+            throw new SelfStudyOverPersonalException();
     }
 
     /**
@@ -69,14 +69,14 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * 자습신청을 취소할 시 그 날 자습신청 불가능
      * @param dayOfWeek 현재 요일
      * @param hour 현재 시
-     * @exception SelfStudyCantChange 자습신청 상태가 APPLIED(신청됨)가 아닐 때 (자습신청 취소를 할 수 없는 상태)
+     * @exception SelfStudyCantChangeException 자습신청 상태가 APPLIED(신청됨)가 아닐 때 (자습신청 취소를 할 수 없는 상태)
      * @author 배태현
      */
     @Override
     @Transactional
     public void cancelSelfStudy(DayOfWeek dayOfWeek, int hour) {
-        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new IllegalArgumentException("자습신청 취소가 가능한 요일이 아닙니다.");
-        if (!(hour >= 20 && hour < 23)) throw new IllegalArgumentException("오후 8시부터 오후 10시까지만 자습신청 취소가 가능합니다."); // 20시(8시)부터 22시(10시) 사이가 아니라면 자습신청 취소 불가능
+//        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new IllegalArgumentException("자습신청 취소가 가능한 요일이 아닙니다.");
+//        if (!(hour >= 20 && hour < 23)) throw new IllegalArgumentException("오후 8시부터 오후 10시까지만 자습신청 취소가 가능합니다."); // 20시(8시)부터 22시(10시) 사이가 아니라면 자습신청 취소 불가능
 
         Member currentUser = currentUserUtil.getCurrentUser();
 
@@ -85,20 +85,20 @@ public class SelfStudyServiceImpl implements SelfStudyService {
             count -= 1;
             log.info("Current Self Study Student Count is {}", count);
         } else
-            throw new SelfStudyCantChange();
+            throw new SelfStudyCantChangeException();
     }
 
     /**
      * 자습신청한 학생을 전체 조회하는 서비스로직 (로그인된 유저 사용가능)
      * @return List - SelfStudyStudentDto (id, stuNum, username)
-     * @exception SelfStudyNotFound 자습신청한 학생이 없을 때
+     * @exception SelfStudyNotFoundException 자습신청한 학생이 없을 때
      * @author 배태현
      */
     @Override
     public List<SelfStudyStudentsDto> getSelfStudyStudents() {
         List<SelfStudyStudentsDto> selfStudyAPLLIED = memberRepository.findBySelfStudyAPLLIED();
 
-        if (selfStudyAPLLIED.isEmpty()) throw new SelfStudyNotFound();
+        if (selfStudyAPLLIED.isEmpty()) throw new SelfStudyNotFoundException();
         return selfStudyAPLLIED;
     }
 
