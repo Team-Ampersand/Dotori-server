@@ -1,7 +1,7 @@
 package com.server.Dotori.exception.music;
 
 import com.server.Dotori.exception.music.exception.MusicAlreadyException;
-import com.server.Dotori.exception.music.exception.MusicCantRequestDate;
+import com.server.Dotori.exception.music.exception.MusicCantRequestDateException;
 import com.server.Dotori.exception.music.exception.MusicNotAppliedException;
 import com.server.Dotori.exception.music.exception.MusicNotFoundException;
 import com.server.Dotori.response.result.CommonResult;
@@ -39,7 +39,7 @@ public class MusicExceptionHandlerImpl implements MusicExceptionHandler {
     }
 
     @Override
-    public CommonResult musicCantRequestDate(MusicCantRequestDate ex) {
+    public CommonResult musicCantRequestDateException(MusicCantRequestDateException ex) {
         log.debug("=== Music Cant Request Date Exception 발생 ===");
         return exceptionResponseObjectUtil.getExceptionResponseObject(MUSIC_CANT_REQUEST_DATE);
     }

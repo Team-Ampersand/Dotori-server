@@ -1,7 +1,7 @@
 package com.server.Dotori.exception.music.controller;
 
 import com.server.Dotori.exception.music.exception.MusicAlreadyException;
-import com.server.Dotori.exception.music.exception.MusicCantRequestDate;
+import com.server.Dotori.exception.music.exception.MusicCantRequestDateException;
 import com.server.Dotori.exception.music.exception.MusicNotAppliedException;
 import com.server.Dotori.exception.music.exception.MusicNotFoundException;
 import com.server.Dotori.response.result.CommonResult;
@@ -30,6 +30,6 @@ public class MusicExceptionController {
 
     @GetMapping("/music-cant-request-date")
     public CommonResult musicCantRequestDate() {
-        throw new MusicCantRequestDate();
+        throw new MusicCantRequestDateException();
     }
 }

@@ -12,42 +12,42 @@ public class SelfStudyExceptionController {
 
     @GetMapping("/selfstudy-cant-applied")
     public CommonResult selfStudyCantApplied() {
-        throw new SelfStudyCantApplied();
+        throw new SelfStudyCantAppliedException();
     }
 
     @GetMapping("/selfstudy-cant-change")
     public CommonResult selfStudyCantChange() {
-        throw new SelfStudyCantChange();
+        throw new SelfStudyCantChangeException();
     }
 
     @GetMapping("/selfstudy-not-found")
     public CommonResult selfStudyNotFound() {
-        throw new SelfStudyNotFound();
+        throw new SelfStudyNotFoundException();
     }
 
     @GetMapping("/selfstudy-over-personal")
     public CommonResult selfStudyOverPersonal() {
-        throw new SelfStudyOverPersonal();
+        throw new SelfStudyOverPersonalException();
     }
 
     @GetMapping("/selfstudy-cant-cancel-date")
     public CommonResult selfStudyCantCancelDate() {
-        throw new SelfStudyCantCancelDate();
+        throw new SelfStudyCantCancelDateException();
     }
 
     @GetMapping("/selfstudy-cant-cancel-time")
     public CommonResult selfStudyCantCancelTime() {
-        throw new SelfStudyCantCancelTime();
+        throw new SelfStudyCantCancelTimeException();
     }
 
     @GetMapping("/selfstudy-cant-request-date")
     public CommonResult selfStudyCantRequestDate() {
-        throw new SelfStudyCantRequestDate();
+        throw new SelfStudyCantRequestDateException();
     }
 
     @GetMapping("/selfstudy-cant-request-time")
     public CommonResult selfStudyCantRequestTime() {
-        throw new SelfStudyCantRequestTime();
+        throw new SelfStudyCantRequestTimeException();
     }
 
 }

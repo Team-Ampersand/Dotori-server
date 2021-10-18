@@ -18,35 +18,35 @@ public interface SelfStudyExceptionHandler {
     String SELFSTUDY_CANT_REQUEST_TIME = "selfstudy-cant-request-time";
 
 
-    @ExceptionHandler(SelfStudyCantApplied.class)
+    @ExceptionHandler(SelfStudyCantAppliedException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    CommonResult selfStudyCantAppliedException(SelfStudyCantApplied ex);
+    CommonResult selfStudyCantAppliedException(SelfStudyCantAppliedException ex);
 
-    @ExceptionHandler(SelfStudyCantChange.class)
+    @ExceptionHandler(SelfStudyCantChangeException.class)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    CommonResult selfStudyCantChangeException(SelfStudyCantChange ex);
+    CommonResult selfStudyCantChangeException(SelfStudyCantChangeException ex);
 
-    @ExceptionHandler(SelfStudyNotFound.class)
+    @ExceptionHandler(SelfStudyNotFoundException.class)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    CommonResult selfStudyNotFoundException(SelfStudyNotFound ex);
+    CommonResult selfStudyNotFoundException(SelfStudyNotFoundException ex);
 
-    @ExceptionHandler(SelfStudyOverPersonal.class)
+    @ExceptionHandler(SelfStudyOverPersonalException.class)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    CommonResult selfStudyOverPersonalException(SelfStudyOverPersonal ex);
+    CommonResult selfStudyOverPersonalException(SelfStudyOverPersonalException ex);
 
-    @ExceptionHandler(SelfStudyCantCancelDate.class)
+    @ExceptionHandler(SelfStudyCantCancelDateException.class)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    CommonResult selfStudyCantCancelDate(SelfStudyCantCancelDate ex);
+    CommonResult selfStudyCantCancelDateException(SelfStudyCantCancelDateException ex);
 
-    @ExceptionHandler(SelfStudyCantCancelTime.class)
+    @ExceptionHandler(SelfStudyCantCancelTimeException.class)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    CommonResult selfStudyCantCancelTime(SelfStudyCantCancelTime ex);
+    CommonResult selfStudyCantCancelTimeException(SelfStudyCantCancelTimeException ex);
 
-    @ExceptionHandler(SelfStudyCantRequestDate.class)
+    @ExceptionHandler(SelfStudyCantRequestDateException.class)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    CommonResult selfStudyCantRequestDate(SelfStudyCantRequestDate ex);
+    CommonResult selfStudyCantRequestDateException(SelfStudyCantRequestDateException ex);
 
-    @ExceptionHandler(SelfStudyCantRequestTime.class)
+    @ExceptionHandler(SelfStudyCantRequestTimeException.class)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    CommonResult SelfStudyCantRequestTime(SelfStudyCantRequestTime ex);
+    CommonResult SelfStudyCantRequestTimeException(SelfStudyCantRequestTimeException ex);
 }
