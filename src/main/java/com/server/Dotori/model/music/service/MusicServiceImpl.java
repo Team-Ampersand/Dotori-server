@@ -1,6 +1,7 @@
 package com.server.Dotori.model.music.service;
 
 import com.server.Dotori.exception.music.exception.MusicAlreadyException;
+import com.server.Dotori.exception.music.exception.MusicCantRequestDateException;
 import com.server.Dotori.exception.music.exception.MusicNotAppliedException;
 import com.server.Dotori.exception.music.exception.MusicNotFoundException;
 import com.server.Dotori.model.member.Member;
@@ -30,15 +31,15 @@ public class MusicServiceImpl implements MusicService {
      * 금요일, 토요일에는 음악신청 불가능
      * @param musicApplicationDto musicApplicationDto (musicUrl)
      * @param dayOfWeek 현재 요일
+     * @exception MusicCantRequestDateException 금요일, 토요일에 음악신청을 했을 때
      * @exception MusicAlreadyException 음악신청 상태가 CAN이 아닐 때
-     * @exception
      * @return Music
      * @author 배태현
      */
     @Override
     @Transactional
     public Music musicApplication(MusicApplicationDto musicApplicationDto, DayOfWeek dayOfWeek) {
-        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY) throw new IllegalArgumentException("음악신청을 하실 수 없는 요일입니다.");
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY) throw new MusicCantRequestDateException();
 
         Member currentUser = currentUserUtil.getCurrentUser();
 
