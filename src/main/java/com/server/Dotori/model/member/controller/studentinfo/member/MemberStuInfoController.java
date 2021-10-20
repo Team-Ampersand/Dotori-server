@@ -1,4 +1,4 @@
-package com.server.Dotori.model.member.controller.studentinfo;
+package com.server.Dotori.model.member.controller.studentinfo.member;
 
 import com.server.Dotori.model.member.dto.RoleUpdateDto;
 import com.server.Dotori.model.member.dto.StudentInfoDto;
@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/member")
 @RequiredArgsConstructor
-public class StuInfoController {
+public class MemberStuInfoController {
 
     private final ResponseService responseService;
     private final StuInfoService stuInfoService;
