@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.List;
 
 @Data
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class StudentInfoDto {
 
     private Long id;
