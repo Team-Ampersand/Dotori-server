@@ -18,21 +18,21 @@ node {
         ./gradlew clean build
         '''
      }
-//
-//      stage('Build image') {
-//         app = docker.build("${REPOSITORY_NAME}/${CONTAINER_NAME}:latest")
-//      }
-//
-//      stage('Push image') {
-//         docker.withRegistry('https://registry.hub.docker.com', 'docker-hub') {
-//             app.push()
-//         }
-//      }
-//
-//      stage('docker-compose'){
-//         sh '''docker-compose up -d'''
-//      }
-//
+
+     stage('Build image') {
+        app = docker.build("${REPOSITORY_NAME}/${CONTAINER_NAME}:latest")
+     }
+
+     stage('Push image') {
+        docker.withRegistry('https://registry.hub.docker.com', 'Dotori-docker-hub') {
+            app.push()
+        }
+     }
+
+     stage('docker-compose'){
+        sh '''docker-compose up -d'''
+     }
+
 // //      stage('Code Deploy') {
 // //          sh '''docker stop ${CONTAINER_NAME}1 || true && docker rm ${CONTAINER_NAME}1 || true''' // 컨테이너1 rm
 // //          sh '''docker stop ${CONTAINER_NAME}2 || true && docker rm ${CONTAINER_NAME}2 || true''' // 컨테이너2 rm
