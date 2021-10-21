@@ -1,7 +1,7 @@
 version: '2'
 services:
   app:
-    build: .
+    build: /
     ports:
       - "8081:8080"
     links:
