@@ -15,7 +15,7 @@ node {
 
      stage('Build BackEnd') {
         sh'''
-        ./gradlew clean build
+        ./gradlew clean build --exclude-task test
         '''
      }
 
