@@ -35,12 +35,15 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             filterChain.doFilter(request,response);
         }
         catch (ExpiredJwtException ex){
+            log.debug("================= [ ExceptionHandlerFilter ] 에서 ExpiredJwtException 발생 ===================");
             setErrorResponse(HttpStatus.UNAUTHORIZED,response,tokenExceptionHandler.expiredJwtException(ex));
         }
         catch (JwtException | IllegalArgumentException ex) {
+            log.debug("================= [ ExceptionHandlerFilter ] 에서 JwtException 발생 ===================");
             setErrorResponse(HttpStatus.UNAUTHORIZED,response,tokenExceptionHandler.invalidTokenException(new InvalidTokenException()));
         }
         catch (Exception ex){
+            log.debug("================= [ ExceptionHandlerFilter ] 에서 Exception 발생 ===================");
             setErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR,response,unknownExceptionHandler.defaultException(ex));
         }
     }
