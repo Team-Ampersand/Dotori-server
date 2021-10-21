@@ -3,6 +3,7 @@ package com.server.Dotori.exception.token;
 import com.server.Dotori.exception.token.exception.*;
 import com.server.Dotori.response.result.CommonResult;
 import com.server.Dotori.util.ExceptionResponseObjectUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
@@ -18,7 +19,7 @@ public class TokenExceptionHandlerImpl implements TokenExceptionHandler {
     private final ExceptionResponseObjectUtil exceptionResponseObjectUtil;
 
     @Override
-    public CommonResult accessTokenExpiredException(AccessTokenExpiredException ex) {
+    public CommonResult expiredJwtException(ExpiredJwtException ex) {
         log.debug("=== Access Token Expired Exception 발생 ===");
         return exceptionResponseObjectUtil.getExceptionResponseObject(ACCESS_TOKEN_EXPIRED);
     }

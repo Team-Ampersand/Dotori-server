@@ -1,8 +1,8 @@
 package com.server.Dotori.security.jwt;
 
-import com.server.Dotori.exception.response.CustomException;
-import lombok.RequiredArgsConstructor;
+import com.server.Dotori.security.authentication.MyUserDetails;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+
+@Slf4j
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
@@ -25,17 +27,12 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
         String token = jwtTokenProvider.resolveToken(request);
 
-        try {
-            if(token != null && jwtTokenProvider.validateToken(token)){
-                Authentication authentication = jwtTokenProvider.getAuthentication(token);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            }
-        } catch (CustomException e){
-            SecurityContextHolder.clearContext();
-            response.sendError(e.getHttpStatus().value(), e.getMessage());
-            return;
+        if (token != null && jwtTokenProvider.validateToken(token)) {
+            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
         filterChain.doFilter(request, response);
