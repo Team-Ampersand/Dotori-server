@@ -2,15 +2,12 @@ package com.server.Dotori.model.music.dto;
 
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.music.Music;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 
 @Getter @Builder
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class MusicApplicationDto {
 
     @NotBlank
