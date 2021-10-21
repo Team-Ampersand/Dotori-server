@@ -9,6 +9,10 @@ node {
         '''
      }
 
+     stage('Application_Config'){
+        sh '''cp /home/ngj/DotoriConfig/application.yml /var/lib/jenkins/workspace/Dotori-test-server/src/main/resources'''
+     }
+
      stage('Build BackEnd') {
         sh'''
         ./gradlew clean build
