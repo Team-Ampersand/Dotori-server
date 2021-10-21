@@ -1,6 +1,7 @@
 package com.server.Dotori.security;
 
 import com.server.Dotori.security.exception.ExceptionHandlerFilter;
+import com.server.Dotori.security.exception.ExceptionHandlerFilterConfig;
 import com.server.Dotori.security.jwt.JwtTokenFilter;
 import com.server.Dotori.security.jwt.JwtTokenFilterConfigurer;
 import com.server.Dotori.security.jwt.JwtTokenProvider;
@@ -84,10 +85,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // Disallow everything else..
                 .anyRequest().authenticated();
 
-        http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(exceptionHandlerFilter, JwtTokenFilter.class);
-        http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider)); // apply jwt
-
+        http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
+        http.apply(new ExceptionHandlerFilterConfig(exceptionHandlerFilter));
     }
 
 
