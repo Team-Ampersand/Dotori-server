@@ -30,7 +30,7 @@ node {
      }
 
      stage('docker-compose'){
-        sh '''nohup docker-compose-env &'''
+        sh '''nohup ./docker-compose-env &'''
      }
 
 // //      stage('Code Deploy') {
