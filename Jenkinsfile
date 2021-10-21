@@ -8,12 +8,12 @@ node {
         pwd
         '''
      }
-//
-//      stage('Build BackEnd') {
-//         sh'''
-//         ./gradlew clean build
-//         '''
-//      }
+
+     stage('Build BackEnd') {
+        sh'''
+        ./gradlew clean build
+        '''
+     }
 //
 //      stage('Build image') {
 //         app = docker.build("${REPOSITORY_NAME}/${CONTAINER_NAME}:latest")
