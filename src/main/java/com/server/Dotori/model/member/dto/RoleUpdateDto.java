@@ -5,8 +5,8 @@ import lombok.*;
 
 import java.util.List;
 
-@Getter @Setter @Builder
-@AllArgsConstructor @NoArgsConstructor
+@Getter @Builder
+@AllArgsConstructor(access = AccessLevel.PROTECTED) @NoArgsConstructor
 public class RoleUpdateDto {
 
     private Long receiverId;

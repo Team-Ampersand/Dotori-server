@@ -8,8 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter @Setter @Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class BoardGetDto {
 
     private Long id;
