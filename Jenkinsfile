@@ -28,9 +28,6 @@ node {
             app.push()
         }
      }
-     stage('image-rm'){
-        sh '''docker rmi -f `docker images | awk '$1 ~ /dotori-test-server/ {print $3}'`''' // image 삭제
-     }
 
      stage('docker-compose'){
         sh '''docker-compose up -d'''
