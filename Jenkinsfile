@@ -13,15 +13,15 @@ node {
         '''
      }
 
-     stage('Build image') {
-        app = docker.build("${REPOSITORY_NAME}/${CONTAINER_NAME}:latest")
-     }
-
-     stage('Push image') {
-        docker.withRegistry('https://registry.hub.docker.com', 'Dotori-docker-hub') {
-            app.push()
-        }
-     }
+//      stage('Build image') {
+//         app = docker.build("${REPOSITORY_NAME}/${CONTAINER_NAME}:latest")
+//      }
+//
+//      stage('Push image') {
+//         docker.withRegistry('https://registry.hub.docker.com', 'Dotori-docker-hub') {
+//             app.push()
+//         }
+//      }
 
      stage('docker-compose'){
         sh '''docker-compose up -d'''
