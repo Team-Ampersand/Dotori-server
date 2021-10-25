@@ -1,7 +1,7 @@
 version: '2'
 services:
   app:
-    build: .
+    image: hippo911911/dotori-test-server:latest
     ports:
       - "8081:8080"
     links:

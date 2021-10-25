@@ -3,12 +3,6 @@ node {
          checkout scm
      }
 
-     stage('pwd'){
-        sh'''
-        pwd
-        '''
-     }
-
      stage('Application_Config'){
         sh '''cp /home/ngj/DotoriConfig/application.yml /var/lib/jenkins/workspace/Dotori-test-server/src/main/resources'''
      }
