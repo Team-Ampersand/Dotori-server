@@ -2,7 +2,6 @@ package com.server.Dotori.model.member.controller;
 
 import com.server.Dotori.model.member.service.RefreshTokenService;
 import com.server.Dotori.response.ResponseService;
-import com.server.Dotori.response.result.CommonResult;
 import com.server.Dotori.response.result.SingleResult;
 import com.server.Dotori.security.jwt.JwtTokenProvider;
 import io.swagger.annotations.ApiImplicitParam;

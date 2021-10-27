@@ -1,15 +1,12 @@
 package com.server.Dotori.model.member.controller;
 
 import com.server.Dotori.model.member.dto.*;
-import com.server.Dotori.model.member.service.email.EmailService;
 import com.server.Dotori.model.member.service.MemberService;
 import com.server.Dotori.response.ResponseService;
 import com.server.Dotori.response.result.CommonResult;
 import com.server.Dotori.response.result.SingleResult;
 import io.swagger.annotations.*;
-import jdk.jfr.Event;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

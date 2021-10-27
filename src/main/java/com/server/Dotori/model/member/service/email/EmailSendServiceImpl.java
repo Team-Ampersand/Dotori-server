@@ -1,6 +1,5 @@
 package com.server.Dotori.model.member.service.email;
 
-import com.server.Dotori.model.member.service.email.EmailSendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
