@@ -1,6 +1,5 @@
 package com.server.Dotori.security.jwt;
 
-import com.server.Dotori.exception.token.exception.AccessTokenExpiredException;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.security.authentication.MyUserDetails;
 import io.jsonwebtoken.*;
@@ -9,10 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
