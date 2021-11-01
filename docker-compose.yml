@@ -5,8 +5,9 @@ services:
     ports:
       - "8082:8082"
     links:
-      - "redis"
+      - "redis:redis"
   redis:
     image: redis:latest
+    hostname: redis
     ports:
       - "6379:6379"
