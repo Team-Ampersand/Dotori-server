@@ -7,14 +7,12 @@ import com.server.Dotori.exception.user.exception.UserPasswordNotMatchingExcepti
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.*;
 import com.server.Dotori.model.member.repository.MemberRepository;
-import com.server.Dotori.model.member.service.MemberService;
 import com.server.Dotori.model.member.service.email.EmailSendService;
 import com.server.Dotori.security.jwt.JwtTokenProvider;
 import com.server.Dotori.util.CurrentUserUtil;
 import com.server.Dotori.util.KeyUtil;
 import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,9 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
-import static com.server.Dotori.model.member.enumType.Role.*;
 
 @RequiredArgsConstructor
 @Service
@@ -132,7 +128,7 @@ public class MemberServiceImpl implements MemberService {
             member.updatePassword(passwordEncoder.encode(verifiedAuthKeyAndChangePasswordDto.getNewPassword()));
             redisUtil.deleteData(authKey);
         } else {
-            throw new IllegalArgumentException("인증 키가 일치하지 않습니다.");
+            throw new UserAuthenticationKeyNotMatchingException();
         }
     }
 

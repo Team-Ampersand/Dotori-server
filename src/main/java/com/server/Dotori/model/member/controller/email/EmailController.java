@@ -1,6 +1,5 @@
-package com.server.Dotori.model.member.controller.Email;
+package com.server.Dotori.model.member.controller.email;
 
-import com.server.Dotori.model.member.dto.AuthPasswordDto;
 import com.server.Dotori.model.member.dto.EmailDto;
 import com.server.Dotori.model.member.dto.MemberEmailKeyDto;
 import com.server.Dotori.model.member.service.email.EmailService;

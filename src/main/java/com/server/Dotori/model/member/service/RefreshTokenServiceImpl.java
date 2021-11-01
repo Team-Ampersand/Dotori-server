@@ -2,20 +2,14 @@ package com.server.Dotori.model.member.service;
 
 import com.server.Dotori.exception.token.exception.LogoutTokenException;
 import com.server.Dotori.exception.token.exception.RefreshTokenFailException;
-import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.Member;
-import com.server.Dotori.model.member.dto.MemberDto;
-import com.server.Dotori.model.member.dto.MemberLoginDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.MemberRepository;
-import com.server.Dotori.model.member.service.RefreshTokenService;
 import com.server.Dotori.security.jwt.JwtTokenProvider;
 import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -2,8 +2,8 @@ package com.server.Dotori.model.member.dto;
 
 import lombok.*;
 
-@Getter @Setter @Builder
-@NoArgsConstructor @AllArgsConstructor
+@Getter @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class GetAboutPointDto {
 
     private Long id;

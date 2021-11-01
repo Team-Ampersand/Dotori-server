@@ -2,8 +2,8 @@ package com.server.Dotori.model.member.dto;
 
 import lombok.*;
 
-@Getter @Setter @Builder
-@AllArgsConstructor @NoArgsConstructor
+@Getter @Builder
+@AllArgsConstructor @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StuNumUpdateDto {
 
     private Long receiverId;

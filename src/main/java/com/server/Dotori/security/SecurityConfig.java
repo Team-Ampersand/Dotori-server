@@ -1,10 +1,13 @@
 package com.server.Dotori.security;
 
+import com.server.Dotori.security.exception.ExceptionHandlerFilter;
+import com.server.Dotori.security.exception.ExceptionHandlerFilterConfig;
+import com.server.Dotori.security.handler.CustomAccessDeniedHandler;
+import com.server.Dotori.security.handler.CustomAuthenticationEntryPointHandler;
 import com.server.Dotori.security.jwt.JwtTokenFilter;
 import com.server.Dotori.security.jwt.JwtTokenFilterConfigurer;
 import com.server.Dotori.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,18 +18,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@RequiredArgsConstructor
 @EnableWebSecurity(debug = true)
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-
-    public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+    private final JwtTokenProvider jwtTokenProvider;
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
+    private final JwtTokenFilter jwtTokenFilter;
 
     @Override // 접근 가능
     public void configure(WebSecurity web) throws Exception {
@@ -47,7 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // Disable CSRF (cross site request forgery)
-        http.csrf().disable();
+        http
+                .cors().and()
+                .csrf().disable()
+                .httpBasic().disable();
 
         // No session will be created or used by spring security
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
@@ -56,27 +59,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests() // 권한 처리를 할 메서드
 
                 // 회원 관리
-//                .antMatchers("/v1/signin").permitAll()
-//                .antMatchers("/v1/signup").permitAll()
-//                .antMatchers("/v1/refreshtoken").permitAll()
-//                .antMatchers("/v1/auth").permitAll()
-//                .antMatchers("/v1/auth/check").permitAll()
-//                .antMatchers("/v1/change/password").authenticated()
-//                .antMatchers("/v1/auth/password").permitAll()
-//                .antMatchers("/v1/logout").authenticated()
-//                .antMatchers("/v1/delete").authenticated()
+                .antMatchers("/v1/signup").permitAll()
+                .antMatchers("/v1/signin").permitAll()
+                .antMatchers("/v1/auth").permitAll()
+                .antMatchers("/v1/auth/check").permitAll()
+                .antMatchers("/v1/send/change/password/authkey").permitAll()
+                .antMatchers("/v1/verified/auth/change/password").permitAll()
 
                 // 권한 별 url 접근
-//                .antMatchers("/v1/admin/**").hasRole("ADMIN")
-//                .antMatchers("/v1/councillor/**").hasRole("COUNCILLOR")
-//                .antMatchers("/v1/member/**").hasRole("MEMBER")
-//                .antMatchers("/v1/developer/**").hasRole("DEVELOPER")
-//                .antMatchers("/v1/home").authenticated()
-//                .antMatchers("/v1/current/role").authenticated()
+                .antMatchers("/v1/admin/**").hasRole("ADMIN")
+                .antMatchers("/v1/councillor/**").hasRole("COUNCILLOR")
+                .antMatchers("/v1/member/**").hasRole("MEMBER")
+                .antMatchers("/v1/developer/**").hasRole("DEVELOPER")
 
-                // exception 메세지, h2-console 모두 접근 가능
-                .antMatchers("/**").permitAll()
-                .antMatchers("/").permitAll()
                 .antMatchers("/exception/**").permitAll()
                 .antMatchers("/h2-console").permitAll()
                 .antMatchers("/h2-console/**/**").permitAll()
@@ -84,12 +79,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // Disallow everything else..
                 .anyRequest().authenticated();
 
-        // If a user try to access a resource without having enough permissions
-        http.exceptionHandling().accessDeniedPage("/login");
-        http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider)); // apply jwt
+        http.exceptionHandling()
+                .accessDeniedHandler(new CustomAccessDeniedHandler())
+                .authenticationEntryPoint(new CustomAuthenticationEntryPointHandler());
+
+        http.apply(new JwtTokenFilterConfigurer(jwtTokenProvider));
+        http.apply(new ExceptionHandlerFilterConfig(exceptionHandlerFilter));
     }
 
-    //===========================================================//
 
     @Bean
     public PasswordEncoder passwordEncoder() {

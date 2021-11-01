@@ -2,18 +2,13 @@ package com.server.Dotori.security.jwt;
 
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.security.authentication.MyUserDetails;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -30,24 +25,23 @@ public class JwtTokenProvider {
     @Value("${security.jwt.token.secretKey}")
     private String secretKey;
 
-//    public static long TOKEN_VALIDATION_SECOND = 1000L * 3600 * 24;  //하루를 accessToken 만료 기간으로 잡는다
-//    public static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 3600 * 24 * 210; //7개월을 refreshToken 만료 기간으로 잡는다.
-
-    // *** Test Code *** //
-    public static long TOKEN_VALIDATION_SECOND = 1000L * 60 * 60;  // 1시간을 accessToken 만료 기간으로 잡는다
-    public static long REFRESH_TOKEN_VALIDATION_SECOND = TOKEN_VALIDATION_SECOND * 24 * 180; // 1시간을 refreshToken 만료 기간으로 잡는다.
+    // 토큰 만료 시간
+    public static long TOKEN_VALIDATION_SECOND = 1000L * 60 * 60 ;  // 1시간을 accessToken 만료 기간으로 잡는다
+    public static long REFRESH_TOKEN_VALIDATION_SECOND = TOKEN_VALIDATION_SECOND * 24 * 180; // 6달을 refreshToken 만료 기간으로 잡는다.
 
     private final MyUserDetails myUserDetails;
 
+    // seceretKey 인코딩
     @PostConstruct
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
+    //
     public String createToken(String username, List<Role> roles) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("auth", roles.stream().
-                map(s -> new SimpleGrantedAuthority(s.getAuthority())).
+                map(GrantedAuthority::getAuthority).
                 filter(Objects::nonNull).collect(Collectors.toList()));
 
         Date now = new Date();
@@ -81,7 +75,7 @@ public class JwtTokenProvider {
     }
 
     public String getUsername(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        return extractAllClaims(token).getSubject();
     }
 
     public String resolveToken(HttpServletRequest req) {
@@ -95,20 +89,27 @@ public class JwtTokenProvider {
 
     public String resolveRefreshToken(HttpServletRequest req){
         String refreshToken = req.getHeader("RefreshToken");
-        if(refreshToken != null){
+        if(refreshToken != null && refreshToken.startsWith("Bearer ")){
             return refreshToken.substring(7);
         } else {
             return null;
         }
     }
 
+    public Claims extractAllClaims(String token) throws ExpiredJwtException, IllegalArgumentException, MalformedJwtException, SignatureException, UnsupportedJwtException, PrematureJwtException {
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public boolean isTokenExpired(String token) {
+        final Date expiration = extractAllClaims(token).getExpiration();
+        return expiration.before(new Date());
+    }
+
     public boolean validateToken(String token) {
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return !claims.getBody().getExpiration().before(new Date()); //
-        } catch (Exception e) {
-            SecurityContextHolder.clearContext();
-            return false;
-        }
+        return !isTokenExpired(token);
     }
 }
