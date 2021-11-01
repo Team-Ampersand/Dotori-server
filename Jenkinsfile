@@ -14,9 +14,11 @@ node {
      }
 
      stage('reset'){
-        sh'''docker stop dotori-test-server_app_1 '''
-        sh'''docker rm dotori-test-server_app_1'''
-        sh'''docker rmi dotori-test-server_app:latest'''
+        sh'''docker stop dotori-test-server_app_1 || true'''
+        sh'''docker rm dotori-test-server_app_1 || true'''
+        sh'''docker rmi dotori-test-server_app:latest || true'''
+        sh'''docker stop dotori-test-server_redis_1 || true'''
+        sh'''docker rm dotori-test-server_redis_1 || true'''
      }
 
      stage('docker-compose'){
