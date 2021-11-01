@@ -9,7 +9,7 @@ node {
 
      stage('Build BackEnd') {
         sh'''
-        sudo ./gradlew clean build --exclude-task test
+        sudo ./gradlew clean build
         '''
      }
 
