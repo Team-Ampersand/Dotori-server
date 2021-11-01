@@ -1,17 +1,12 @@
-version: '3'
+version: '2'
 services:
   app:
     build: .
     ports:
       - "8082:8082"
-    networks:
-      - spring
+    links:
+      - redis
   redis:
     image: redis:latest
     ports:
       - "6379:6379"
-    networks:
-      - spring
-networks:
-  spring:
-    external: true
