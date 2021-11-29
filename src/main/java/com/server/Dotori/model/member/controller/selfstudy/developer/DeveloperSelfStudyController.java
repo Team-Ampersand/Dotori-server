@@ -105,4 +105,20 @@ public class DeveloperSelfStudyController {
     public SingleResult selfStudyTotalCountDeveloper() {
         return responseService.getSingleResult(selfStudyService.selfStudyCount());
     }
+
+    /**
+     * 자습신청 상태 조회 컨트롤러
+     * @return SingleResult - SelfStudy
+     * @author 배태현
+     */
+    @GetMapping("/selfstudy/status")
+    @ResponseStatus( HttpStatus.OK )
+    @ApiOperation(value = "현재 자습신청 상태 조회", notes = "현재 자습신청 상태 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public SingleResult selfStudyStatus() {
+        return responseService.getSingleResult(selfStudyService.getCurrentSelfStudyStatus());
+    }
 }

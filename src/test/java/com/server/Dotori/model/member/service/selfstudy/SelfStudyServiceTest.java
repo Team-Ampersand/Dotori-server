@@ -209,4 +209,14 @@ class SelfStudyServiceTest {
         //then
         assertEquals(1, selfStudyCount);
     }
+
+    @Test
+    @DisplayName("자습신청 상태가 잘 조회되나요?")
+    public void selfStudyStatusTest() {
+        //given //when
+        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 21); // 자습신청
+
+        //then
+        assertEquals(APPLIED, selfStudyService.getCurrentSelfStudyStatus()); // 자습신청 상태조회
+    }
 }
