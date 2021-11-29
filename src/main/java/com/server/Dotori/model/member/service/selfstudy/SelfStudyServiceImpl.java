@@ -4,6 +4,7 @@ import com.server.Dotori.exception.selfstudy.exception.*;
 import com.server.Dotori.exception.user.exception.UserNotFoundByClassException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
+import com.server.Dotori.model.member.enumType.SelfStudy;
 import com.server.Dotori.model.member.repository.MemberRepository;
 import com.server.Dotori.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
@@ -115,6 +116,11 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         if (selfStudyCategory.isEmpty()) throw new UserNotFoundByClassException();
 
         return selfStudyCategory;
+    }
+
+    @Override
+    public SelfStudy getCurrentSelfStudyStatus() {
+        return  currentUserUtil.getCurrentUser().getSelfStudy();
     }
 
     /**
