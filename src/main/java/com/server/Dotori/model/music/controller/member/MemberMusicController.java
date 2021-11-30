@@ -17,6 +17,10 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * @since 1.0.0
+ * @author 배태현
+ */
 @RestController
 @RequestMapping("/v1/member")
 @RequiredArgsConstructor
@@ -29,6 +33,7 @@ public class MemberMusicController {
      * 음악 신청 컨트롤러
      * @param musicApplicationDto (url)
      * @return CommonResult - SuccessResult
+     * @author 배태현
      */
     @PostMapping("/music")
     @ResponseStatus( HttpStatus.CREATED )
@@ -45,6 +50,7 @@ public class MemberMusicController {
     /**
      * 음악 신청목록 조회 컨트롤러
      * @return SingleResult - List - MusicResDto
+     * @author 배태현
      */
     @GetMapping("/music")
     @ResponseStatus( HttpStatus.OK )
@@ -57,6 +63,11 @@ public class MemberMusicController {
         return responseService.getSingleResult(musicService.getAllMusic());
     }
 
+    /**
+     * 오늘 신청된 음악목록을 조회하는 컨트롤러
+     * @return SingleResult - List - MusicResDto
+     * @author 배태현
+     */
     @GetMapping("/music/current")
     @ResponseStatus( HttpStatus.OK )
     @ApiOperation(value = "오늘 신청된 음악목록 조회", notes = "오늘 신청된 음악목록 조회")

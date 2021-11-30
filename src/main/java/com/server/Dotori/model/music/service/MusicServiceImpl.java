@@ -18,6 +18,10 @@ import java.util.List;
 
 import static com.server.Dotori.model.member.enumType.Music.*;
 
+/**
+ * @since 1.0.0
+ * @author 배태현
+ */
 @Service
 @RequiredArgsConstructor
 public class MusicServiceImpl implements MusicService {
@@ -66,6 +70,12 @@ public class MusicServiceImpl implements MusicService {
         else return allMusic;
     }
 
+    /**
+     * 오늘 신청된 음악 목록들을 조회하는 서비스 로직 (로그인 된 유저 사용가능)
+     * @exception MusicTodayNotRequestedException 오늘 신청 된 음악이 없을 때
+     * @return List-MusicResDto
+     * @author 배태현
+     */
     @Override
     public List<MusicResDto> getCurrentDateMusic() {
         List<MusicResDto> currentDateMusics = musicRepository.findCurrentDateMusic(LocalDate.now());

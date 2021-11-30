@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * @since 1.0.0
+ * @author 배태현
+ */
 @RestController
 @RequestMapping("/v1/admin")
 @RequiredArgsConstructor
@@ -54,6 +58,11 @@ public class AdminMusicController {
         return responseService.getSuccessResult();
     }
 
+    /**
+     * 오늘 신청된 음악목록을 조회하는 컨트롤러
+     * @return SingleResult - List - MusicResDto
+     * @author 배태현
+     */
     @GetMapping("/music/current")
     @ResponseStatus( HttpStatus.OK )
     @ApiOperation(value = "오늘 신청된 음악목록 조회", notes = "오늘 신청된 음악목록 조회")
