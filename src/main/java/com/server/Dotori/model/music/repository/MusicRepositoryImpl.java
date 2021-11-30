@@ -18,6 +18,10 @@ import java.util.List;
 import static com.server.Dotori.model.member.QMember.member;
 import static com.server.Dotori.model.music.QMusic.*;
 
+/**
+ * @since 1.0.0
+ * @author 배태현
+ */
 @RequiredArgsConstructor
 public class MusicRepositoryImpl implements MusicRepositoryCustom {
 
@@ -57,6 +61,12 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
                 .fetch();
     }
 
+    /**
+     * 오늘 신청된 음악을 조회하는 query
+     * @param localDate localDate
+     * @return List-MusicResDto (id, musicUrl, member.username)
+     * @author 배태현
+     */
     @Override
     public List<MusicResDto> findCurrentDateMusic(LocalDate localDate) {
         return queryFactory
