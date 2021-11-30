@@ -56,7 +56,7 @@ public class AdminMusicController {
 
     @GetMapping("/music/current")
     @ResponseStatus( HttpStatus.OK )
-    @ApiOperation(value = "오늘 음악 신청목록 조회", notes = "오늘 음악 신청목록 조회")
+    @ApiOperation(value = "오늘 신청된 음악목록 조회", notes = "오늘 신청된 음악목록 조회")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
