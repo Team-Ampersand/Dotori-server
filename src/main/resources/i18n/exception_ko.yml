@@ -133,3 +133,7 @@ music-not-found:
 music-cant-request-date:
   code: "-530"
   msg: "음악신청을 하실 수 없는 요일입니다."
+
+music-today-not-requested:
+  code: "-540"
+  msg: "오늘 신청된 음악이 없습니다."
