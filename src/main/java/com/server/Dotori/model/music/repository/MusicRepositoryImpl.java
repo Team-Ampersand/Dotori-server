@@ -10,6 +10,9 @@ import com.server.Dotori.model.music.dto.MusicResDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static com.server.Dotori.model.member.QMember.member;
@@ -50,6 +53,24 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
                         music.createdDate
                         ))
                 .from(music)
+                .orderBy(music.createdDate.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<MusicResDto> findCurrentDateMusic(LocalDate localDate) {
+        return queryFactory
+                .select(Projections.fields(MusicResDto.class,
+                        music.id,
+                        music.url,
+                        music.member.username,
+                        music.createdDate
+                        ))
+                .from(music)
+                .where(music.createdDate.between(
+                        localDate.atStartOfDay(),
+                        LocalDateTime.of(LocalDate.now(), LocalTime.MAX).withNano(0)
+                ))
                 .orderBy(music.createdDate.asc())
                 .fetch();
     }
