@@ -1,9 +1,6 @@
 package com.server.Dotori.model.music.service;
 
-import com.server.Dotori.exception.music.exception.MusicAlreadyException;
-import com.server.Dotori.exception.music.exception.MusicCantRequestDateException;
-import com.server.Dotori.exception.music.exception.MusicNotAppliedException;
-import com.server.Dotori.exception.music.exception.MusicNotFoundException;
+import com.server.Dotori.exception.music.exception.*;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.music.Music;
 import com.server.Dotori.model.music.dto.MusicApplicationDto;
@@ -73,7 +70,7 @@ public class MusicServiceImpl implements MusicService {
     public List<MusicResDto> getCurrentDateMusic() {
         List<MusicResDto> currentDateMusics = musicRepository.findCurrentDateMusic(LocalDate.now());
 
-        if (currentDateMusics.isEmpty()) throw new IllegalStateException("오늘 신청 된 음악이 없습니다.");
+        if (currentDateMusics.isEmpty()) throw new MusicTodayNotRequestedException();
         else return currentDateMusics;
     }
 
