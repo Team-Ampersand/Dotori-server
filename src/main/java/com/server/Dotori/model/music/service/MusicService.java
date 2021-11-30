@@ -14,6 +14,8 @@ public interface MusicService {
 
     List<MusicResDto> getAllMusic();
 
+    List<MusicResDto> getCurrentDateMusic();
+
     void deleteMusic(Long musicId);
   
     void updateMemberMusicStatus();
