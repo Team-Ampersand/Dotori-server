@@ -48,12 +48,23 @@ public class MemberMusicController {
      */
     @GetMapping("/music")
     @ResponseStatus( HttpStatus.OK )
-    @ApiOperation(value = "음악 신청목록 조회", notes = "음악 신청목록 조회")
+    @ApiOperation(value = "음악 신청목록 전체 조회", notes = "음악 신청목록 전체 조회")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public SingleResult<List<MusicResDto>> getAllMusicsMember() {
         return responseService.getSingleResult(musicService.getAllMusic());
+    }
+
+    @GetMapping("/music/current")
+    @ResponseStatus( HttpStatus.OK )
+    @ApiOperation(value = "오늘 신청된 음악목록 조회", notes = "오늘 신청된 음악목록 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public SingleResult<List<MusicResDto>> findCurrentDateMusicMember() {
+        return responseService.getSingleResult(musicService.getCurrentDateMusic());
     }
 }

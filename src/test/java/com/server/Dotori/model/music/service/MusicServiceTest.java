@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -201,5 +202,23 @@ class MusicServiceTest {
         assertEquals(CAN, memberRepository.findByUsername("qoxogus1").getMusic());
         assertEquals(CAN, memberRepository.findByUsername("qwer").getMusic());
         assertEquals(CAN, memberRepository.findByUsername("rewq").getMusic()); //이 회원은 그대로 CAN
+    }
+
+    @Test
+    @DisplayName("오늘 신청된 음악이 잘 조회 되나요 ?")
+    public void findCurrentDateMusic() {
+        //given //when
+        String localDate = LocalDate.now().toString();
+
+        Music music = musicService.musicApplication(
+                MusicApplicationDto.builder()
+                        .musicUrl("https://www.youtube.com/watch?v=6h9qmKWK6Io")
+                        .build(),
+                DayOfWeek.MONDAY // 월요일
+        );
+
+        //then
+        List<MusicResDto> currentDateMusic = musicService.getCurrentDateMusic();
+        assertEquals(localDate, currentDateMusic.get(0).getCreatedDate().toString().substring(0, 10));
     }
 }

@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.server.Dotori.model.member.enumType.Music.*;
@@ -65,6 +67,14 @@ public class MusicServiceImpl implements MusicService {
 
         if (allMusic.isEmpty()) throw new MusicNotAppliedException();
         else return allMusic;
+    }
+
+    @Override
+    public List<MusicResDto> getCurrentDateMusic() {
+        List<MusicResDto> currentDateMusics = musicRepository.findCurrentDateMusic(LocalDate.now());
+
+        if (currentDateMusics.isEmpty()) throw new IllegalStateException("오늘 신청 된 음악이 없습니다.");
+        else return currentDateMusics;
     }
 
     /**
