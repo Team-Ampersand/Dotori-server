@@ -133,3 +133,7 @@ music-not-found:
 music-cant-request-date:
   code: "-530"
   msg: "You can't request music this date."
+
+music-today-not-requested:
+  code: "-540"
+  msg: "There's no music requested today."

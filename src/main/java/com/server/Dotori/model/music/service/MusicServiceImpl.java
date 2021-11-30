@@ -1,9 +1,6 @@
 package com.server.Dotori.model.music.service;
 
-import com.server.Dotori.exception.music.exception.MusicAlreadyException;
-import com.server.Dotori.exception.music.exception.MusicCantRequestDateException;
-import com.server.Dotori.exception.music.exception.MusicNotAppliedException;
-import com.server.Dotori.exception.music.exception.MusicNotFoundException;
+import com.server.Dotori.exception.music.exception.*;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.music.Music;
 import com.server.Dotori.model.music.dto.MusicApplicationDto;
@@ -15,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.server.Dotori.model.member.enumType.Music.*;
@@ -65,6 +64,14 @@ public class MusicServiceImpl implements MusicService {
 
         if (allMusic.isEmpty()) throw new MusicNotAppliedException();
         else return allMusic;
+    }
+
+    @Override
+    public List<MusicResDto> getCurrentDateMusic() {
+        List<MusicResDto> currentDateMusics = musicRepository.findCurrentDateMusic(LocalDate.now());
+
+        if (currentDateMusics.isEmpty()) throw new MusicTodayNotRequestedException();
+        else return currentDateMusics;
     }
 
     /**

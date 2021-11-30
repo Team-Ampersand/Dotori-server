@@ -1,9 +1,6 @@
 package com.server.Dotori.exception.music;
 
-import com.server.Dotori.exception.music.exception.MusicAlreadyException;
-import com.server.Dotori.exception.music.exception.MusicCantRequestDateException;
-import com.server.Dotori.exception.music.exception.MusicNotAppliedException;
-import com.server.Dotori.exception.music.exception.MusicNotFoundException;
+import com.server.Dotori.exception.music.exception.*;
 import com.server.Dotori.response.result.CommonResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +12,7 @@ public interface MusicExceptionHandler {
     String MUSIC_NOT_APPLIED = "music-not-applied";
     String MUSIC_NOT_FOUND = "music-not-found";
     String MUSIC_CANT_REQUEST_DATE = "music-cant-request-date";
+    String MUSIC_TODAY_NOT_REQUESTED = "music-today-not-requested";
 
     @ExceptionHandler(MusicAlreadyException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -31,4 +29,8 @@ public interface MusicExceptionHandler {
     @ExceptionHandler(MusicCantRequestDateException.class)
     @ResponseStatus(HttpStatus.ACCEPTED)
     CommonResult musicCantRequestDateException(MusicCantRequestDateException ex);
+
+    @ExceptionHandler(MusicTodayNotRequestedException.class)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    CommonResult musicTodayNotRequestedException(MusicTodayNotRequestedException ex);
 }
