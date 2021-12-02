@@ -25,7 +25,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     private final CurrentUserUtil currentUserUtil;
     private final MemberRepository memberRepository;
 
-    int count = 0;
+    static int count = 0;
 
     /**
      * 자습 신청 서비스로직 (로그인 된 유저 사용가능) <br>
@@ -52,7 +52,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         if (count <= 50){
             if (currentUser.getSelfStudy() == CAN) {
                 currentUser.updateSelfStudy(APPLIED);
-                count += 1;
+                count++;
                 log.info("Current Self Study Student Count is {}", count);
             } else
                 throw new SelfStudyCantAppliedException();
@@ -82,7 +82,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
 
         if (currentUser.getSelfStudy() == APPLIED) {
             currentUser.updateSelfStudy(CANT);
-            count -= 1;
+            count--;
             log.info("Current Self Study Student Count is {}", count);
         } else
             throw new SelfStudyCantChangeException();
