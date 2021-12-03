@@ -1,10 +1,6 @@
 pipeline{
     agent any
 
-    environment {
-        PATH = "$PATH:/usr/bin"
-    }
-
     stages {
 
         stage('Clone repository') {
@@ -12,7 +8,6 @@ pipeline{
                 checkout scm
             }
         }
-
 
         stage('Application_Config'){
             steps{
@@ -42,5 +37,4 @@ pipeline{
             }
         }
     }
-
 }
