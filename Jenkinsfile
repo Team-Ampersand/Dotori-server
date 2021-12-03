@@ -16,7 +16,6 @@ pipeline{
 
         stage('Application_Config'){
             steps{
-//                 sh '''sudo rm -rf ${DELETE_APPLICATION}'''
                 sh '''sudo cp ${APPLICATION} ${APPLICATION_CONFIG}'''
             }
         }
@@ -39,6 +38,7 @@ pipeline{
 
         stage('docker-compose'){
             steps {
+                sh'''pwd'''
                 sh'''/usr/bin/docker-compose up --build -d'''
             }
         }
