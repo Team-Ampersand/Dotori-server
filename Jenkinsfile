@@ -3,14 +3,15 @@ pipeline{
 
 
     post {
-        cleanup{
-            deleteDir()
-
+        always {
+            cleanWs()
             dir("${workspace}@tmp") {
                 deleteDir()
             }
-
             dir("${workspace}@script") {
+                deleteDir()
+            }
+            dir("${workspace}@script@tmp") {
                 deleteDir()
             }
         }
