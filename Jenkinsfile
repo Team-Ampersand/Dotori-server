@@ -4,7 +4,7 @@ node {
      }
 
      stage('Application_Config'){
-        sh '''cp ${APPLICATION} ${APPLICATION_CONFIG}'''
+        sh '''sudo cp ${APPLICATION} ${APPLICATION_CONFIG}'''
      }
 
      stage('Build BackEnd') {
