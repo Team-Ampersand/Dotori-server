@@ -1,27 +1,40 @@
-node {
-     stage('Clone repository') {
-         checkout scm
-     }
+pipeline{
+    agent any
 
-     stage('Application_Config'){
-        sh '''cp /home/ngj/DotoriConfig/application.yml /var/lib/jenkins/workspace/Dotori-test-server/src/main/resources'''
-     }
+    stages {
 
-     stage('Build BackEnd') {
-        sh'''
-        sudo ./gradlew clean build --exclude-task test
-        '''
-     }
+        stage('Clone repository') {
+            steps{
+                checkout scm
+            }
+        }
 
-     stage('reset'){
-        sh'''docker stop dotori-test-server_app_1 || true'''
-        sh'''docker rm dotori-test-server_app_1 || true'''
-        sh'''docker rmi dotori-test-server_app:latest || true'''
-        sh'''docker stop dotori-test-server_redis_1 || true'''
-        sh'''docker rm dotori-test-server_redis_1 || true'''
-     }
+        stage('Application_Config'){
+            steps{
+                sh '''sudo cp ${APPLICATION} ${APPLICATION_CONFIG}'''
+            }
+        }
 
-     stage('docker-compose'){
-        sh '''docker-compose up -d'''
-     }
+        stage('Build BackEnd') {
+            steps{
+                sh '''sudo ./gradlew clean build --exclude-task test'''
+            }
+        }
+
+        stage('reset'){
+            steps{
+                sh'''docker stop ${DOTORI_APP}_1 || true'''
+                sh'''docker rm ${DOTORI_APP}_1 || true'''
+                sh'''docker rmi ${DOTORI_APP}:latest || true'''
+                sh'''docker stop ${DOTORI_REDIS}_1 || true'''
+                sh'''docker rm ${DOTORI_REDIS}_1 || true'''
+            }
+        }
+
+        stage('docker-compose'){
+            steps {
+                sh'''docker-compose up -d'''
+            }
+        }
+    }
 }
