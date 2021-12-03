@@ -1,6 +1,21 @@
 pipeline{
     agent any
 
+
+    post {
+        cleanup{
+            deleteDir()
+
+            dir("${workspace}@tmp") {
+                deleteDir()
+            }
+
+            dir("${workspace}@script") {
+                deleteDir()
+            }
+        }
+    }
+
     stages {
 
         stage('Clone repository') {
@@ -31,29 +46,12 @@ pipeline{
                 sh'''docker rm ${DOTORI_REDIS}_1 || true'''
             }
         }
-    }
 
-    post {
-        cleanup{
-            deleteDir()
-
-            dir("${workspace}@tmp") {
-                deleteDir()
-            }
-
-            dir("${workspace}@script") {
-                deleteDir()
+        stage('docker-compose'){
+            steps{
+                sh'''docker-compose up --build -d'''
             }
         }
     }
-
-//     stages{
-//         stage('docker-compose'){
-//             steps{
-//                 sh'''docker-compose up --build -d'''
-//             }
-//         }
-//     }
-
 
 }
