@@ -47,13 +47,13 @@ pipeline{
         }
     }
 
-    stages{
-        stage('docker-compose'){
-            steps{
-                sh'''docker-compose up --build -d'''
-            }
-        }
-    }
+//     stages{
+//         stage('docker-compose'){
+//             steps{
+//                 sh'''docker-compose up --build -d'''
+//             }
+//         }
+//     }
 
 
 }
