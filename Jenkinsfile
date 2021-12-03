@@ -38,8 +38,8 @@ pipeline{
 
         stage('docker-compose'){
             steps {
-                sh'''pwd'''
-                sh'''/usr/bin/docker-compose up --build -d'''
+                sh'''cd Dotori-Server'''
+                sh'''docker-compose up --build -d'''
             }
         }
     }
