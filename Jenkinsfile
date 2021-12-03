@@ -16,8 +16,6 @@ pipeline{
 
         stage('Application_Config'){
             steps{
-                sh '''sudo rm -rf ${DELETE_APPLICATION1}'''
-                sh '''sudo rm -rf ${DELETE_APPLICATION2}'''
                 sh '''sudo cp ${APPLICATION} ${APPLICATION_CONFIG}'''
             }
         }
@@ -39,7 +37,8 @@ pipeline{
         }
 
         stage('docker-compose'){
-            steps{
+            steps {
+                sh '''sudo rm -rf ${DELETE_APPLICATION}'''
                 sh'''/usr/bin/docker-compos up --build -d'''
             }
         }
