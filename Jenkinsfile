@@ -21,18 +21,21 @@ node {
         sh'''docker rm ${DOTORI_REDIS}_1 || true'''
      }
 
-     cleanup{
-            /* clean up our workspace */
-            deleteDir()
-            /* clean up tmp directory */
-            dir("${workspace}@tmp") {
-                deleteDir()
-            }
-            /* clean up script directory */
-            dir("${workspace}@script") {
-                deleteDir()
-            }
+     post{
+         cleanup{
+             /* clean up our workspace */
+             deleteDir()
+             /* clean up tmp directory */
+             dir("${workspace}@tmp") {
+                 deleteDir()
+             }
+             /* clean up script directory */
+             dir("${workspace}@script") {
+                 deleteDir()
+             }
+         }
      }
+
 
      stage('docker-compose'){
         sh'''docker-compose up --build -d'''
