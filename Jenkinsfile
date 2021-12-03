@@ -1,21 +1,24 @@
 pipeline{
     agent any
 
-
-    post {
-        always {
-            cleanWs()
-            dir("${workspace}@tmp") {
-                deleteDir()
-            }
-            dir("${workspace}@script") {
-                deleteDir()
-            }
-            dir("${workspace}@script@tmp") {
-                deleteDir()
-            }
-        }
+    environment {
+        PATH = "$PATH:/usr/bin"
     }
+
+//     post {
+//         always {
+//             cleanWs()
+//             dir("${workspace}@tmp") {
+//                 deleteDir()
+//             }
+//             dir("${workspace}@script") {
+//                 deleteDir()
+//             }
+//             dir("${workspace}@script@tmp") {
+//                 deleteDir()
+//             }
+//         }
+//     }
 
     stages {
 
@@ -50,7 +53,7 @@ pipeline{
 
         stage('docker-compose'){
             steps{
-                sh'''docker-compose up --build -d'''
+                sh'''/usr/bin/docker-compos up --build -d'''
             }
         }
     }
