@@ -1,6 +1,6 @@
 pipeline{
 
-    node {
+    stages {
         stage('Clone repository') {
             checkout scm
         }
@@ -39,10 +39,9 @@ pipeline{
      }
 
 
-    node{
-        stage('docker-compose'){
-            sh'''docker-compose up --build -d'''
-        }
+
+    stage('docker-compose'){
+        sh'''docker-compose up --build -d'''
     }
 
 
