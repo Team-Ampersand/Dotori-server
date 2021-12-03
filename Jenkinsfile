@@ -5,21 +5,6 @@ pipeline{
         PATH = "$PATH:/usr/bin"
     }
 
-//     post {
-//         always {
-//             cleanWs()
-//             dir("${workspace}@tmp") {
-//                 deleteDir()
-//             }
-//             dir("${workspace}@script") {
-//                 deleteDir()
-//             }
-//             dir("${workspace}@script@tmp") {
-//                 deleteDir()
-//             }
-//         }
-//     }
-
     stages {
 
         stage('Clone repository') {
@@ -31,6 +16,8 @@ pipeline{
 
         stage('Application_Config'){
             steps{
+                sh '''sudo rm -rf ${DELETE_APPLICATION1}'''
+                sh '''sudo rm -rf ${DELETE_APPLICATION2}'''
                 sh '''sudo cp ${APPLICATION} ${APPLICATION_CONFIG}'''
             }
         }
