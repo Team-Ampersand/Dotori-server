@@ -16,7 +16,7 @@ pipeline{
 
         stage('Application_Config'){
             steps{
-                sh '''sudo rm -rf ${DELETE_APPLICATION}'''
+//                 sh '''sudo rm -rf ${DELETE_APPLICATION}'''
                 sh '''sudo cp ${APPLICATION} ${APPLICATION_CONFIG}'''
             }
         }
