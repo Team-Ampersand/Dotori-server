@@ -51,5 +51,5 @@ pipeline{
 //      stage('docker-compose'){
 //          sh'''docker-compose up --build -d'''
 //      }
-
+    }
 }
