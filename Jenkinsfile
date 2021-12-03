@@ -4,7 +4,7 @@ node {
      }
 
      stage('Application_Config'){
-        sh '''cp /home/ngj/DotoriConfig/application.yml /var/lib/jenkins/workspace/Dotori-test-server/src/main/resources'''
+        sh '''cp ${APPLICATION} ${APPLICATION_CONFIG}'''
      }
 
      stage('Build BackEnd') {
@@ -14,11 +14,11 @@ node {
      }
 
      stage('reset'){
-        sh'''docker stop dotori-test-server_app_1 || true'''
-        sh'''docker rm dotori-test-server_app_1 || true'''
-        sh'''docker rmi dotori-test-server_app:latest || true'''
-        sh'''docker stop dotori-test-server_redis_1 || true'''
-        sh'''docker rm dotori-test-server_redis_1 || true'''
+        sh'''docker stop ${DOTORI_APP}_1 || true'''
+        sh'''docker rm ${DOTORI_APP}_1 || true'''
+        sh'''docker rmi ${DOTORI_APP}:latest || true'''
+        sh'''docker stop ${DOTORI_REDIS}_1 || true'''
+        sh'''docker rm ${DOTORI_REDIS}_1 || true'''
      }
 
      stage('docker-compose'){
