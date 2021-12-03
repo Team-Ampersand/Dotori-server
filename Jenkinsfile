@@ -38,8 +38,8 @@ pipeline{
 
         stage('docker-compose'){
             steps {
-                sh'''cd ..'''
-                sh'''docker-compose up --build -d'''
+                sh'''sudo chmod +x start.sh'''
+                sh'''./start.sh'''
             }
         }
     }
