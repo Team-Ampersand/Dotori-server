@@ -31,7 +31,6 @@ pipeline{
                 sh'''docker rm ${DOTORI_REDIS}_1 || true'''
             }
         }
-
     }
 
     post {
@@ -48,10 +47,13 @@ pipeline{
         }
     }
 
-    stage('docker-compose'){
-        steps{
-            sh'''docker-compose up --build -d'''
+    stages{
+        stage('docker-compose'){
+            steps{
+                sh'''docker-compose up --build -d'''
+            }
         }
     }
+
 
 }
