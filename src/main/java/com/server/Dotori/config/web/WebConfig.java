@@ -22,8 +22,8 @@ public class WebConfig implements WebMvcConfigurer {
     @Override //CORS 설정
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8080", "http://localhost:5000", "http://localhost:3000",
-                        "https://localhost:8080", "https://localhost:5000", "https://localhost:3000", "https://master.d2jnecneigsgm7.amplifyapp.com") // local, docker, dev-client
+                .allowedOrigins("http://localhost:8080", "http://localhost:3000",
+                        "https://www.dotori-gsm.com", "https://dotori-gsm.com", "https://server.dotori-gsm.com") // local, docker, dotori-domain
                 .allowedMethods(
                         HttpMethod.GET.name(),
                         HttpMethod.HEAD.name(),
