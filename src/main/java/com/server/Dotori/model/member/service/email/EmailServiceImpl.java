@@ -3,7 +3,9 @@ package com.server.Dotori.model.member.service.email;
 import com.server.Dotori.exception.user.exception.UserAuthenticationKeyNotMatchingException;
 import com.server.Dotori.model.member.dto.EmailDto;
 import com.server.Dotori.model.member.dto.MemberEmailKeyDto;
+import com.server.Dotori.model.member.dto.SendAuthKeyForChangePasswordDto;
 import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.util.EmailSender;
 import com.server.Dotori.util.KeyUtil;
 import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class EmailServiceImpl implements EmailService {
 
     private final KeyUtil keyUtil;
-    private final EmailSendService emailSendService;
+    private final EmailSender emailSender;
     private final RedisUtil redisUtil;
 
     /**
@@ -29,7 +31,7 @@ public class EmailServiceImpl implements EmailService {
     public String authKey(EmailDto emailDto) {
         String key = keyUtil.keyIssuance();
         redisUtil.setDataExpire(key, key, 3 * 60 * 1000L);
-        emailSendService.sendEmail(emailDto.getEmail(),key);
+        emailSender.send(emailDto.getEmail(),key);
         return key;
     }
 
