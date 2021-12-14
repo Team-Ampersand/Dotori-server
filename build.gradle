@@ -68,9 +68,12 @@ dependencies {
 	// *** QueryDsl *** //
 	implementation 'com.querydsl:querydsl-jpa'
 
-	//*** XSS 처리를 위한 dependency ***//
+	// *** XSS 처리를 위한 dependency *** //
 	implementation 'org.apache.commons:commons-lang3'
 	implementation 'org.apache.commons:commons-text:1.9'
+
+	// *** AWS SES *** ///
+	implementation group: 'com.amazonaws', name: 'aws-java-sdk-ses', version: '1.11.227'
 }
 
 test {
