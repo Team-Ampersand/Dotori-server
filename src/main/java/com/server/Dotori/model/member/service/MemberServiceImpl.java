@@ -7,9 +7,9 @@ import com.server.Dotori.exception.user.exception.UserPasswordNotMatchingExcepti
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.*;
 import com.server.Dotori.model.member.repository.MemberRepository;
-import com.server.Dotori.model.member.service.email.EmailSendService;
 import com.server.Dotori.security.jwt.JwtTokenProvider;
 import com.server.Dotori.util.CurrentUserUtil;
+import com.server.Dotori.util.EmailSender;
 import com.server.Dotori.util.KeyUtil;
 import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
@@ -31,8 +31,8 @@ public class MemberServiceImpl implements MemberService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RedisUtil redisUtil;
     private final CurrentUserUtil currentUserUtil;
-    private final EmailSendService emailSendService;
     private final KeyUtil keyUtil;
+    private final EmailSender emailSender;
 
     private final Long KEY_EXPIRATION_TIME = 1000L * 60 * 30; // 3분
 
@@ -109,7 +109,7 @@ public class MemberServiceImpl implements MemberService {
         String email = findMember.getEmail();
         String key = keyUtil.keyIssuance();
         redisUtil.setDataExpire(email, key, KEY_EXPIRATION_TIME);
-        emailSendService.sendEmail(email, key);
+        emailSender.send(email,key);
     }
 
     /**
@@ -120,13 +120,15 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void verifiedAuthKeyAndChangePassword(VerifiedAuthKeyAndChangePasswordDto verifiedAuthKeyAndChangePasswordDto) {
+        String email = verifiedAuthKeyAndChangePasswordDto.getEmail();
         String authKey = verifiedAuthKeyAndChangePasswordDto.getKey();
-        String redisAuthKey = redisUtil.getData(verifiedAuthKeyAndChangePasswordDto.getEmail());
-        Member member = memberRepository.findByEmail(verifiedAuthKeyAndChangePasswordDto.getEmail()).orElseThrow(() -> new UserNotFoundException());
+        String redisAuthKey = redisUtil.getData(email);
+        System.out.println("redisAuthKey = " + redisAuthKey);
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
 
         if(authKey.equals(redisAuthKey)){
             member.updatePassword(passwordEncoder.encode(verifiedAuthKeyAndChangePasswordDto.getNewPassword()));
-            redisUtil.deleteData(authKey);
+            redisUtil.deleteData(email);
         } else {
             throw new UserAuthenticationKeyNotMatchingException();
         }
