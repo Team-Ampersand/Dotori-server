@@ -38,3 +38,5 @@ out/
 
 ### application.yml
 /src/main/resources/application.yml
+### application.yml - test
+/src/test/resources/application.yml
