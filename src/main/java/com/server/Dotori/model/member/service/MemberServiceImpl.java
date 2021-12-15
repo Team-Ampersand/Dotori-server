@@ -123,7 +123,6 @@ public class MemberServiceImpl implements MemberService {
         String email = verifiedAuthKeyAndChangePasswordDto.getEmail();
         String authKey = verifiedAuthKeyAndChangePasswordDto.getKey();
         String redisAuthKey = redisUtil.getData(email);
-        System.out.println("redisAuthKey = " + redisAuthKey);
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
 
         if(authKey.equals(redisAuthKey)){
