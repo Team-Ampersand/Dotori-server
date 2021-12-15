@@ -48,7 +48,7 @@ public class Member implements UserDetails {
     @Column(name = "member_point", columnDefinition = "Long default 0")
     private Long point;
 
-    @Column(name = "member_refreshToken", nullable = false)
+    @Column(name = "member_refreshToken")
     private String refreshToken;
 
     @Enumerated(STRING) @Column(name = "Role")
