@@ -41,6 +41,7 @@ public class MemberDto {
                 .stdNum(stdNum)
                 .password(password)
                 .email(email)
+                .refreshToken(null)
                 .roles(Collections.singletonList(Role.ROLE_MEMBER))
                 .music(Music.CAN)
                 .selfStudy(SelfStudy.CAN)
