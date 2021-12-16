@@ -1,32 +1,20 @@
 package com.server.Dotori.model.member.service.email;
 
-import com.server.Dotori.model.member.Member;
-import com.server.Dotori.model.member.dto.AuthPasswordDto;
 import com.server.Dotori.model.member.dto.EmailDto;
 import com.server.Dotori.model.member.dto.MemberDto;
-import com.server.Dotori.model.member.enumType.Role;
-import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.model.member.repository.email.EmailCertificateRepository;
+import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.model.member.service.MemberService;
-import com.server.Dotori.model.member.service.email.EmailService;
-import com.server.Dotori.util.CurrentUserUtil;
 import com.server.Dotori.util.redis.RedisUtil;
 
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.transaction.Transactional;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,10 +33,7 @@ public class EmailServiceTest {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private MemberService memberService;
-
-    @Autowired
-    private MemberRepository memberRepository;
+    private EmailCertificateRepository emailCertificateRepository;
 
     @Disabled
     @Test
@@ -69,8 +54,7 @@ public class EmailServiceTest {
         String key = emailService.authKey(emailDto);
 
         //then
-        System.out.println("======================== " + key + " =========================");
-        assertThat(key).isEqualTo(redisUtil.getData(key));
+        assertThat(key).isEqualTo(emailCertificateRepository.findByKey(key).getKey());
     }
 
 
