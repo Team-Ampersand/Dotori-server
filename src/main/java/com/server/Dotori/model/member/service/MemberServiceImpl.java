@@ -156,7 +156,6 @@ public class MemberServiceImpl implements MemberService {
         if(!passwordEncoder.matches(memberDeleteDto.getPassword(),findMember.getPassword()))
             throw new UserPasswordNotMatchingException();
 
-        currentUserUtil.getCurrentUser().updateRefreshToken(null);
         memberRepository.delete(findMember);
     }
 
