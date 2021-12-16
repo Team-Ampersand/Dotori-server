@@ -1,4 +1,4 @@
-package com.server.Dotori.model.member.repository;
+package com.server.Dotori.model.member.repository.member;
 
 import com.server.Dotori.model.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +13,6 @@ public interface MemberRepository extends JpaRepository<Member,Long>, MemberRepo
     Member findByStdNum(String stdNum);
     boolean existsByUsername(String username);
     boolean existsByStdNum(String stuNum);
+    boolean existsByEmail(String Eamil);
     boolean existsByEmailAndStdNum(String email, String stuNum);
 }

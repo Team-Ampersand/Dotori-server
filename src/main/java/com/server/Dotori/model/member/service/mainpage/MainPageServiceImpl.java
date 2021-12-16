@@ -1,7 +1,7 @@
 package com.server.Dotori.model.member.service.mainpage;
 
 import com.server.Dotori.model.member.dto.GetAboutPointDto;
-import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
