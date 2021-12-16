@@ -3,7 +3,7 @@ package com.server.Dotori.model.member;
 import com.server.Dotori.model.member.enumType.Music;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.enumType.SelfStudy;
-import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.model.member.repository.member.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
