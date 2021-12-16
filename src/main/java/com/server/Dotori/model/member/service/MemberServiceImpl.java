@@ -6,7 +6,8 @@ import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.exception.user.exception.UserPasswordNotMatchingException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.*;
-import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.model.member.repository.email.EmailCertificateRepository;
+import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.security.jwt.JwtTokenProvider;
 import com.server.Dotori.util.CurrentUserUtil;
 import com.server.Dotori.util.EmailSender;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +35,7 @@ public class MemberServiceImpl implements MemberService {
     private final CurrentUserUtil currentUserUtil;
     private final KeyUtil keyUtil;
     private final EmailSender emailSender;
+    private final EmailCertificateRepository emailCertificateRepository;
 
     private final Long KEY_EXPIRATION_TIME = 1000L * 60 * 30; // 3분
 
@@ -61,6 +64,7 @@ public class MemberServiceImpl implements MemberService {
      * @return map - username, accessToken, refreshToken
      * @author 노경준
      */
+    @Transactional
     @Override
     public Map<String,String> signin(MemberLoginDto memberLoginDto) {
         Member findUser = memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow(() -> new UserNotFoundException()); // email로 유저정보를 가져옴
@@ -71,8 +75,7 @@ public class MemberServiceImpl implements MemberService {
         String accessToken = jwtTokenProvider.createToken(findUser.getUsername(), findUser.getRoles()); // 유저정보에서 Username : 유저정보에서 Role (Key : Value)
         String refreshToken = jwtTokenProvider.createRefreshToken();
 
-        redisUtil.deleteData(findUser.getUsername()); // redis에 넣기전 유저정보 삭제
-        redisUtil.setDataExpire(findUser.getUsername(),refreshToken,jwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND); // redis에 key를 Username Value를 refresh입력
+        findUser.updateRefreshToken(refreshToken);
 
         // map에 username, accessToken, refreshToken 정보 입력
         map.put("username", findUser.getUsername());
@@ -108,7 +111,7 @@ public class MemberServiceImpl implements MemberService {
         Member findMember = memberRepository.findByEmail(sendAuthKeyForChangePasswordDto.getEmail()).orElseThrow(() -> new UserNotFoundException());
         String email = findMember.getEmail();
         String key = keyUtil.keyIssuance();
-        redisUtil.setDataExpire(email, key, KEY_EXPIRATION_TIME);
+
         emailSender.send(email,key);
     }
 
@@ -139,7 +142,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public void logout() {
-        redisUtil.deleteData(currentUserUtil.getCurrentUser().getUsername());
+        currentUserUtil.getCurrentUser().updateRefreshToken(null);
     }
 
     /**
@@ -153,7 +156,7 @@ public class MemberServiceImpl implements MemberService {
         if(!passwordEncoder.matches(memberDeleteDto.getPassword(),findMember.getPassword()))
             throw new UserPasswordNotMatchingException();
 
-        redisUtil.deleteData(currentUserUtil.getCurrentUser().getUsername());
+        currentUserUtil.getCurrentUser().updateRefreshToken(null);
         memberRepository.delete(findMember);
     }
 
