@@ -19,10 +19,10 @@ class ResponseServiceTest {
 
     @Autowired ResponseService responseService;
 
-    final String SUCCESS_MSG = ResponseService.CommonResponse.SUCCESS.massage;
+    final String SUCCESS_MSG = ResponseService.CommonResponse.SUCCESS.message;
     final int SUCCESS_CODE = ResponseService.CommonResponse.SUCCESS.code;
 
-    final String FAIL_MSG = ResponseService.CommonResponse.FAIL.massage;
+    final String FAIL_MSG = ResponseService.CommonResponse.FAIL.message;
     final int FAIL_CODE = ResponseService.CommonResponse.FAIL.code;
 
     @Test @DisplayName("ResponseService.CommonResponse 성공시 message, code 검증")
@@ -44,7 +44,7 @@ class ResponseServiceTest {
 
         // Then
         assertEquals(true, successResult.isSuccess());
-        assertEquals(SUCCESS_MSG, successResult.getMassage());
+        assertEquals(SUCCESS_MSG, successResult.getMessage());
         assertEquals(SUCCESS_CODE, successResult.getCode());
     }
 
@@ -59,7 +59,7 @@ class ResponseServiceTest {
         //Then
         assertEquals(true, singleResult.isSuccess());
         assertEquals(SUCCESS_CODE, singleResult.getCode());
-        assertEquals(SUCCESS_MSG, singleResult.getMassage());
+        assertEquals(SUCCESS_MSG, singleResult.getMessage());
         assertEquals(givenData, singleResult.getData());
 
         log.debug("SingleResult = {}", singleResult.getData());
@@ -76,7 +76,7 @@ class ResponseServiceTest {
         //Then
         assertEquals(true, listResult.isSuccess());
         assertEquals(SUCCESS_CODE, listResult.getCode());
-        assertEquals(SUCCESS_MSG, listResult.getMassage());
+        assertEquals(SUCCESS_MSG, listResult.getMessage());
         assertEquals(givenData, listResult.getList());
 
         log.debug("ListResult = {}", listResult.getList());
