@@ -3,7 +3,6 @@ package com.server.Dotori.model.member.service.email;
 import com.server.Dotori.exception.user.exception.UserAlreadyException;
 import com.server.Dotori.exception.user.exception.UserAuthenticationKeyNotMatchingException;
 import com.server.Dotori.model.member.EmailCertificate;
-import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.EmailCertificateDto;
 import com.server.Dotori.model.member.dto.EmailDto;
 import com.server.Dotori.model.member.dto.MemberEmailKeyDto;
@@ -12,12 +11,9 @@ import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.util.EmailSender;
 import com.server.Dotori.util.KeyUtil;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
-
 
 @RequiredArgsConstructor
 @Service

@@ -3,9 +3,6 @@ package com.server.Dotori.model.member.service.email;
 import com.server.Dotori.model.member.dto.EmailDto;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.repository.email.EmailCertificateRepository;
-import com.server.Dotori.model.member.repository.member.MemberRepository;
-import com.server.Dotori.model.member.service.MemberService;
-
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -16,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.transaction.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional

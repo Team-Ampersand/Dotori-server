@@ -4,10 +4,8 @@ import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.enumType.Music;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.enumType.SelfStudy;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
