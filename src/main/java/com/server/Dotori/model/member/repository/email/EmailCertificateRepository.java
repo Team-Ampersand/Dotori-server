@@ -8,5 +8,4 @@ import org.springframework.stereotype.Repository;
 public interface EmailCertificateRepository extends JpaRepository<EmailCertificate,Long> {
     EmailCertificate findByKey(String key);
     void deleteEmailCertificateByKey(String key);
-    boolean existsByKey(String key);
 }

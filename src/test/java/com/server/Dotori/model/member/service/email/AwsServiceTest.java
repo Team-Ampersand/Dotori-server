@@ -1,16 +1,11 @@
 package com.server.Dotori.model.member.service.email;
 
-import com.google.common.base.Verify;
-import com.server.Dotori.model.member.dto.SenderDto;
 import com.server.Dotori.util.EmailSender;
-import org.assertj.core.api.Assertions;
-import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 
 @SpringBootTest
 public class AwsServiceTest {
