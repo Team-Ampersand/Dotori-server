@@ -14,15 +14,15 @@ public class CommonResult {
     private int code;
 
     @ApiModelProperty("응답 메시지")
-    private String massage;
+    private String message;
 
-    public void updateMassage(String massage){
-        this.massage = massage;
+    public void updateMessage(String message){
+        this.message = message;
     }
 
     public CommonResult(CommonResult commonResult){
         this.success = commonResult.success;
         this.code = commonResult.code;
-        this.massage = commonResult.massage;
+        this.message = commonResult.message;
     }
 }

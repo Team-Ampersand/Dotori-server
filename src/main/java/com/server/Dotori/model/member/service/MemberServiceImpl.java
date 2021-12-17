@@ -1,23 +1,22 @@
 package com.server.Dotori.model.member.service;
 
-import com.server.Dotori.exception.user.exception.UserAlreadyException;
-import com.server.Dotori.exception.user.exception.UserAuthenticationKeyNotMatchingException;
-import com.server.Dotori.exception.user.exception.UserNotFoundException;
-import com.server.Dotori.exception.user.exception.UserPasswordNotMatchingException;
+import com.server.Dotori.exception.user.exception.*;
+import com.server.Dotori.model.member.EmailCertificate;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.*;
-import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.model.member.repository.email.EmailCertificateRepository;
+import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.security.jwt.JwtTokenProvider;
 import com.server.Dotori.util.CurrentUserUtil;
 import com.server.Dotori.util.EmailSender;
 import com.server.Dotori.util.KeyUtil;
-import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,12 +28,10 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-    private final RedisUtil redisUtil;
     private final CurrentUserUtil currentUserUtil;
     private final KeyUtil keyUtil;
     private final EmailSender emailSender;
-
-    private final Long KEY_EXPIRATION_TIME = 1000L * 60 * 30; // 3분
+    private final EmailCertificateRepository emailCertificateRepository;
 
     /**
      * 회원가입하는 서비스 로직
@@ -61,6 +58,7 @@ public class MemberServiceImpl implements MemberService {
      * @return map - username, accessToken, refreshToken
      * @author 노경준
      */
+    @Transactional
     @Override
     public Map<String,String> signin(MemberLoginDto memberLoginDto) {
         Member findUser = memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow(() -> new UserNotFoundException()); // email로 유저정보를 가져옴
@@ -71,8 +69,7 @@ public class MemberServiceImpl implements MemberService {
         String accessToken = jwtTokenProvider.createToken(findUser.getUsername(), findUser.getRoles()); // 유저정보에서 Username : 유저정보에서 Role (Key : Value)
         String refreshToken = jwtTokenProvider.createRefreshToken();
 
-        redisUtil.deleteData(findUser.getUsername()); // redis에 넣기전 유저정보 삭제
-        redisUtil.setDataExpire(findUser.getUsername(),refreshToken,jwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND); // redis에 key를 Username Value를 refresh입력
+        findUser.updateRefreshToken(refreshToken);
 
         // map에 username, accessToken, refreshToken 정보 입력
         map.put("username", findUser.getUsername());
@@ -108,28 +105,35 @@ public class MemberServiceImpl implements MemberService {
         Member findMember = memberRepository.findByEmail(sendAuthKeyForChangePasswordDto.getEmail()).orElseThrow(() -> new UserNotFoundException());
         String email = findMember.getEmail();
         String key = keyUtil.keyIssuance();
-        redisUtil.setDataExpire(email, key, KEY_EXPIRATION_TIME);
+
+        EmailCertificateDto emailCertificateDto = new EmailCertificateDto();
+        EmailCertificate emailCertificate = emailCertificateDto.toEntity(sendAuthKeyForChangePasswordDto.getEmail(), key);
+
+        emailCertificateRepository.deleteEmailCertificateByEmail(email);
+        emailCertificateRepository.save(emailCertificate);
         emailSender.send(email,key);
     }
 
     /**
      * 비밀번호 찾기(변경)를 할때 BeforeLoginPasswordChange 메소드에서 보낸 인증번호가 일치한지 검증하고, 일치 하다면 새로운 비밀번호로 변경
-     * @param verifiedAuthKeyAndChangePasswordDto email, key, newPassword
+     * @param verifiedAuthKeyAndChangePasswordDto key, newPassword
      * @author 노경준
      */
     @Override
     @Transactional
     public void verifiedAuthKeyAndChangePassword(VerifiedAuthKeyAndChangePasswordDto verifiedAuthKeyAndChangePasswordDto) {
-        String email = verifiedAuthKeyAndChangePasswordDto.getEmail();
-        String authKey = verifiedAuthKeyAndChangePasswordDto.getKey();
-        String redisAuthKey = redisUtil.getData(email);
+        String dtoKey = verifiedAuthKeyAndChangePasswordDto.getKey();
+        EmailCertificate emailCertificate = emailCertificateRepository.findByKey(dtoKey).orElseThrow(UserAuthenticationAnswerNotMatchingException::new);
+        String authKey = emailCertificate.getKey();
+        String email = emailCertificate.getEmail();
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
 
-        if(authKey.equals(redisAuthKey)){
+        if(emailCertificate.getExpiredTime().isAfter(LocalDateTime.now())){
             member.updatePassword(passwordEncoder.encode(verifiedAuthKeyAndChangePasswordDto.getNewPassword()));
-            redisUtil.deleteData(email);
+            emailCertificateRepository.deleteEmailCertificateByKey(authKey);
         } else {
-            throw new UserAuthenticationKeyNotMatchingException();
+            emailCertificateRepository.deleteEmailCertificateByKey(authKey);
+            throw new OverCertificateTimeException();
         }
     }
 
@@ -139,7 +143,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public void logout() {
-        redisUtil.deleteData(currentUserUtil.getCurrentUser().getUsername());
+        currentUserUtil.getCurrentUser().updateRefreshToken(null);
     }
 
     /**
@@ -153,7 +157,6 @@ public class MemberServiceImpl implements MemberService {
         if(!passwordEncoder.matches(memberDeleteDto.getPassword(),findMember.getPassword()))
             throw new UserPasswordNotMatchingException();
 
-        redisUtil.deleteData(currentUserUtil.getCurrentUser().getUsername());
         memberRepository.delete(findMember);
     }
 

@@ -1,4 +1,4 @@
-package com.server.Dotori.model.member.repository;
+package com.server.Dotori.model.member.repository.member;
 
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.GetAboutPointDto;

@@ -1,17 +1,20 @@
 package com.server.Dotori.model.member.service.email;
 
+import com.server.Dotori.exception.user.exception.OverCertificateTimeException;
+import com.server.Dotori.exception.user.exception.UserAlreadyException;
 import com.server.Dotori.exception.user.exception.UserAuthenticationKeyNotMatchingException;
+import com.server.Dotori.model.member.EmailCertificate;
+import com.server.Dotori.model.member.dto.EmailCertificateDto;
 import com.server.Dotori.model.member.dto.EmailDto;
 import com.server.Dotori.model.member.dto.MemberEmailKeyDto;
-import com.server.Dotori.model.member.dto.SendAuthKeyForChangePasswordDto;
-import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.model.member.repository.email.EmailCertificateRepository;
+import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.util.EmailSender;
 import com.server.Dotori.util.KeyUtil;
-import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Service
@@ -19,7 +22,8 @@ public class EmailServiceImpl implements EmailService {
 
     private final KeyUtil keyUtil;
     private final EmailSender emailSender;
-    private final RedisUtil redisUtil;
+    private final MemberRepository memberRepository;
+    private final EmailCertificateRepository emailCertificateRepository;
 
     /**
      * 회원가입할때 이메일로 인증번호를 전송하는 기능
@@ -29,10 +33,21 @@ public class EmailServiceImpl implements EmailService {
      */
     @Override
     public String authKey(EmailDto emailDto) {
-        String key = keyUtil.keyIssuance();
-        redisUtil.setDataExpire(key, key, 3 * 60 * 1000L);
-        emailSender.send(emailDto.getEmail(),key);
-        return key;
+        String email = emailDto.getEmail();
+
+        if(!memberRepository.existsByEmail(email)){
+            String key = keyUtil.keyIssuance();
+
+            EmailCertificateDto emailCertificateDto = new EmailCertificateDto();
+            EmailCertificate emailCertificate = emailCertificateDto.toEntity(email, key);
+
+            emailCertificateRepository.deleteEmailCertificateByEmail(email);
+            emailCertificateRepository.save(emailCertificate);
+            emailSender.send(email,key);
+            return key;
+        }else{
+            throw new UserAlreadyException();
+        }
     }
 
     /**
@@ -43,11 +58,15 @@ public class EmailServiceImpl implements EmailService {
      */
     @Override
     public String authCheck(MemberEmailKeyDto memberEmailKeyDto) {
-        if (memberEmailKeyDto.getKey().equals(redisUtil.getData(memberEmailKeyDto.getKey()))) { // memberEmailKeyDto Key값과 redis에 등록된 Key와 같다면
-            redisUtil.deleteData(memberEmailKeyDto.getKey()); // redis에 등록되어있는 Key를 삭제한다.
-            return memberEmailKeyDto.getKey(); // 테스트코드를 작성하기 위한 인증 key 반환
-        } else {
-            throw new UserAuthenticationKeyNotMatchingException();
+        String key = memberEmailKeyDto.getKey();
+        EmailCertificate emailCertificate = emailCertificateRepository.findByKey(key).orElseThrow(UserAuthenticationKeyNotMatchingException::new);
+
+        if(emailCertificate.getExpiredTime().isAfter(LocalDateTime.now())){
+            emailCertificateRepository.deleteEmailCertificateByKey(key);
+            return key;
+        }else{
+            emailCertificateRepository.deleteEmailCertificateByKey(key);
+            throw new OverCertificateTimeException();
         }
     }
 }

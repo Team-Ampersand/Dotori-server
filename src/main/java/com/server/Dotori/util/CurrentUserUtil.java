@@ -1,7 +1,7 @@
 package com.server.Dotori.util;
 
 import com.server.Dotori.model.member.Member;
-import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.model.member.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

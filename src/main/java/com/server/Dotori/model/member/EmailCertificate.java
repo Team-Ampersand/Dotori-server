@@ -25,14 +25,14 @@ public class EmailCertificate extends BaseTimeEntity {
     private Long id;
 
     @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id")
     private Member member;
+
+    @Column(name = "certificate_email", nullable = false)
+    private String email;
 
     @Column(name = "certificate_key", nullable = false)
     private String key;
-
-    @Column(name = "certificate_expired", nullable = false)
-    private Boolean expired;
 
     @Column(name = "certificate_expiredTime", nullable = false)
     private LocalDateTime expiredTime;

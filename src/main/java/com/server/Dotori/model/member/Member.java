@@ -130,4 +130,8 @@ public class Member implements UserDetails {
     public void updateUsername(String username) {
         this.username = username != null ? username : this.username;
     }
+
+    public void updateRefreshToken(String refreshToken){
+        this.refreshToken = refreshToken;
+    }
 }

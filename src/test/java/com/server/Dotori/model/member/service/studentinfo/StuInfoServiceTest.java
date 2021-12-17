@@ -2,7 +2,7 @@ package com.server.Dotori.model.member.service.studentinfo;
 
 import com.server.Dotori.model.member.dto.*;
 import com.server.Dotori.model.member.enumType.Role;
-import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.util.CurrentUserUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
