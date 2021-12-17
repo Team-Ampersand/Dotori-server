@@ -4,7 +4,7 @@ import com.server.Dotori.exception.user.exception.UserNotFoundByClassException;
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.GetAboutPointDto;
-import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.model.member.dto.PointDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

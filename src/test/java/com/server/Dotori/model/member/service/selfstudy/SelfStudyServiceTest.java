@@ -8,7 +8,7 @@ import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.enumType.SelfStudy;
-import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 import com.server.Dotori.util.CurrentUserUtil;
 import org.junit.jupiter.api.*;

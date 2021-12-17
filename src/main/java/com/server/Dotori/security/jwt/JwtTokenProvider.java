@@ -106,7 +106,7 @@ public class JwtTokenProvider {
 
     public boolean isTokenExpired(String token) {
         final Date expiration = extractAllClaims(token).getExpiration();
-        return expiration.before(new Date());
+        return expiration.before(new Date()); // 유효하면 true 아니면 false
     }
 
     public boolean validateToken(String token) {

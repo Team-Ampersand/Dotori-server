@@ -1,15 +1,13 @@
 package com.server.Dotori.model.member.service;
 
-import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.dto.MemberDeleteDto;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.dto.MemberLoginDto;
 import com.server.Dotori.model.member.dto.MemberPasswordDto;
 import com.server.Dotori.model.member.enumType.Role;
-import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.util.CurrentUserUtil;
 import com.server.Dotori.util.redis.RedisUtil;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -137,7 +135,7 @@ public class MemberServiceTest {
         memberService.logout();
 
         // then
-        assertNull(redisUtil.getData(memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow().getUsername()));
+        assertNull(memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow().getRefreshToken());
     }
 
     @Test

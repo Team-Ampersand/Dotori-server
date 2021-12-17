@@ -1,4 +1,4 @@
-package com.server.Dotori.model.member.repository;
+package com.server.Dotori.model.member.repository.member;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -6,6 +6,7 @@ import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.GetAboutPointDto;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 import com.server.Dotori.model.member.enumType.SelfStudy;
+import com.server.Dotori.model.member.repository.member.MemberRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 import static com.server.Dotori.model.member.QMember.member;
 
 @RequiredArgsConstructor
-public class MemberRepositoryImpl implements MemberRepositoryCustom{
+public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
 

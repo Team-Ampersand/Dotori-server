@@ -9,7 +9,7 @@ import com.server.Dotori.model.member.dto.RoleUpdateDto;
 import com.server.Dotori.model.member.dto.StuNumUpdateDto;
 import com.server.Dotori.model.member.dto.StudentInfoDto;
 import com.server.Dotori.model.member.dto.UsernameUpdateDto;
-import com.server.Dotori.model.member.repository.MemberRepository;
+import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.util.ObjectMapperUtils;
 import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;

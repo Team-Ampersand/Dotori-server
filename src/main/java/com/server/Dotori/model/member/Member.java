@@ -1,6 +1,7 @@
 package com.server.Dotori.model.member;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.server.Dotori.model.BaseTimeEntity;
 import com.server.Dotori.model.member.enumType.Music;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.enumType.SelfStudy;
@@ -129,5 +130,9 @@ public class Member implements UserDetails {
 
     public void updateUsername(String username) {
         this.username = username != null ? username : this.username;
+    }
+
+    public void updateRefreshToken(String refreshToken){
+        this.refreshToken = refreshToken;
     }
 }
