@@ -50,6 +50,10 @@ user-no-information:
   code: "-970"
   msg: "회원 정보가 없습니다."
 
+over-certificate-time:
+  code: "-980"
+  msg: "인증 시간이 초과되었습니다."
+
 access-token-expired:
   code: "-800"
   msg: "액세스 토큰이 만료되었습니다."

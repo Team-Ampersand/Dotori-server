@@ -50,6 +50,10 @@ user-no-information:
   code: "-970"
   msg: "Can't find information in this user."
 
+over-certificate-time:
+  code: "-980"
+  msg: "Over the certificate time."
+
 access-token-expired:
   code: "-800"
   msg: "The access token has expired."
