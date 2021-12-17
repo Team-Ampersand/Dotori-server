@@ -6,7 +6,6 @@ import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.security.jwt.JwtTokenProvider;
-import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +20,6 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberRepository memberRepository;
-    private final RedisUtil redisUtil;
 
     /**
      * RefreshToken으로 AccessToken과 RefreshToken을 재발급 시켜주는 서비스 로직

@@ -5,7 +5,6 @@ import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.repository.email.EmailCertificateRepository;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.model.member.service.MemberService;
-import com.server.Dotori.util.redis.RedisUtil;
 
 
 import org.junit.jupiter.api.Disabled;
@@ -25,9 +24,6 @@ public class EmailServiceTest {
 
     @Autowired
     private EmailService emailService;
-
-    @Autowired
-    private RedisUtil redisUtil;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
