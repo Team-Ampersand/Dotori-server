@@ -6,7 +6,6 @@ import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.GetAboutPointDto;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 import com.server.Dotori.model.member.enumType.SelfStudy;
-import com.server.Dotori.model.member.repository.member.MemberRepositoryCustom;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
