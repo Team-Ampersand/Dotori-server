@@ -4,6 +4,7 @@ import com.server.Dotori.exception.user.exception.UserAlreadyException;
 import com.server.Dotori.exception.user.exception.UserAuthenticationKeyNotMatchingException;
 import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.exception.user.exception.UserPasswordNotMatchingException;
+import com.server.Dotori.model.member.EmailCertificate;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.*;
 import com.server.Dotori.model.member.repository.email.EmailCertificateRepository;
@@ -112,25 +113,29 @@ public class MemberServiceImpl implements MemberService {
         String email = findMember.getEmail();
         String key = keyUtil.keyIssuance();
 
+        EmailCertificateDto emailCertificateDto = new EmailCertificateDto();
+        EmailCertificate emailCertificate = emailCertificateDto.toEntity(sendAuthKeyForChangePasswordDto.getEmail(), key);
+
+        emailCertificateRepository.save(emailCertificate);
         emailSender.send(email,key);
     }
 
     /**
      * 비밀번호 찾기(변경)를 할때 BeforeLoginPasswordChange 메소드에서 보낸 인증번호가 일치한지 검증하고, 일치 하다면 새로운 비밀번호로 변경
-     * @param verifiedAuthKeyAndChangePasswordDto email, key, newPassword
+     * @param verifiedAuthKeyAndChangePasswordDto key, newPassword
      * @author 노경준
      */
     @Override
     @Transactional
     public void verifiedAuthKeyAndChangePassword(VerifiedAuthKeyAndChangePasswordDto verifiedAuthKeyAndChangePasswordDto) {
-        String email = verifiedAuthKeyAndChangePasswordDto.getEmail();
         String authKey = verifiedAuthKeyAndChangePasswordDto.getKey();
-        String redisAuthKey = redisUtil.getData(email);
+        String dtoKey = emailCertificateRepository.findByKey(authKey).getKey();
+        String email = emailCertificateRepository.findByKey(authKey).getEmail();
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
 
-        if(authKey.equals(redisAuthKey)){
+        if(dtoKey.equals(authKey)){
             member.updatePassword(passwordEncoder.encode(verifiedAuthKeyAndChangePasswordDto.getNewPassword()));
-            redisUtil.deleteData(email);
+            emailCertificateRepository.deleteEmailCertificateByKey(authKey);
         } else {
             throw new UserAuthenticationKeyNotMatchingException();
         }
