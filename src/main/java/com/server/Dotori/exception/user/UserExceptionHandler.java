@@ -55,4 +55,8 @@ public interface UserExceptionHandler {
     @ResponseStatus(HttpStatus.ACCEPTED)
     CommonResult userNoInformationException(UserNoInformationException ex);
 
+    @ExceptionHandler(OverCertificateTimeException.class)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    CommonResult overCertificateTimeException(OverCertificateTimeException ex);
+
 }

@@ -71,4 +71,10 @@ public class UserExceptionHandlerImpl implements UserExceptionHandler {
         return exceptionResponseObjectUtil.getExceptionResponseObject(USER_NO_INFORMATION);
     }
 
+    @Override
+    public CommonResult overCertificateTimeException(OverCertificateTimeException ex) {
+        log.debug("=== Over Certificate Time Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(OVER_CERTIFICATE_TIME);
+    }
+
 }
