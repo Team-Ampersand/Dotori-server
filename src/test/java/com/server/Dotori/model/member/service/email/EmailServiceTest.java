@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.service.email;
 
+import com.server.Dotori.exception.user.exception.UserAuthenticationAnswerNotMatchingException;
 import com.server.Dotori.model.member.dto.EmailDto;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.repository.email.EmailCertificateRepository;
@@ -46,7 +47,7 @@ public class EmailServiceTest {
         String key = emailService.authKey(emailDto);
 
         //then
-        assertThat(key).isEqualTo(emailCertificateRepository.findByKey(key).getKey());
+        assertThat(key).isEqualTo(emailCertificateRepository.findByKey(key).orElseThrow(UserAuthenticationAnswerNotMatchingException::new).getKey());
     }
 
 
