@@ -34,9 +34,6 @@ public class EmailCertificate extends BaseTimeEntity {
     @Column(name = "certificate_key", nullable = false)
     private String key;
 
-    @Column(name = "certificate_expired", nullable = false)
-    private Boolean expired;
-
     @Column(name = "certificate_expiredTime", nullable = false)
     private LocalDateTime expiredTime;
 }
