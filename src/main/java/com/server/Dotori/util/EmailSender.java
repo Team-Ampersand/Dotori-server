@@ -24,7 +24,7 @@ public class EmailSender {
      */
     public void send(String receivers, String key) {
         String subject = "[DOTORI] 인증 키";
-        String message = "도토리 인증 키 : " + key;
+        String message = "도토리 인증 키 : " + key + "<br> 이 인증키를 외부에 노출하지 마세오.";
         if(receivers == null) {
             log.error("메일을 전송할 대상이 없습니다: [{}]", subject);
             return;
