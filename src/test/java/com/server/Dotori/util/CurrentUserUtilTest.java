@@ -26,8 +26,6 @@ class CurrentUserUtilTest {
     @Autowired
     private CurrentUserUtil currentUserUtil;
     @Autowired
-    private MemberRepository memberRepository;
-    @Autowired
     private MemberService memberService;
     @Autowired
     private PasswordEncoder passwordEncoder;

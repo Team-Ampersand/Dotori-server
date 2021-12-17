@@ -1,9 +1,6 @@
 package com.server.Dotori.model.member.service;
 
-import com.server.Dotori.exception.user.exception.UserAlreadyException;
-import com.server.Dotori.exception.user.exception.UserAuthenticationKeyNotMatchingException;
-import com.server.Dotori.exception.user.exception.UserNotFoundException;
-import com.server.Dotori.exception.user.exception.UserPasswordNotMatchingException;
+import com.server.Dotori.exception.user.exception.*;
 import com.server.Dotori.model.member.EmailCertificate;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.*;
@@ -19,7 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,8 +32,6 @@ public class MemberServiceImpl implements MemberService {
     private final KeyUtil keyUtil;
     private final EmailSender emailSender;
     private final EmailCertificateRepository emailCertificateRepository;
-
-    private final Long KEY_EXPIRATION_TIME = 1000L * 60 * 30; // 3분
 
     /**
      * 회원가입하는 서비스 로직
@@ -132,8 +127,12 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
 
         if(dtoKey.equals(authKey)){
-            member.updatePassword(passwordEncoder.encode(verifiedAuthKeyAndChangePasswordDto.getNewPassword()));
-            emailCertificateRepository.deleteEmailCertificateByKey(authKey);
+            if(emailCertificateRepository.findByKey(authKey).getExpiredTime().isAfter(LocalDateTime.now())){
+                member.updatePassword(passwordEncoder.encode(verifiedAuthKeyAndChangePasswordDto.getNewPassword()));
+                emailCertificateRepository.deleteEmailCertificateByKey(authKey);
+            } else {
+                throw new OverCertificateTimeException();
+            }
         } else {
             throw new UserAuthenticationKeyNotMatchingException();
         }
