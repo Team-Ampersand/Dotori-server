@@ -109,6 +109,7 @@ public class MemberServiceImpl implements MemberService {
         EmailCertificateDto emailCertificateDto = new EmailCertificateDto();
         EmailCertificate emailCertificate = emailCertificateDto.toEntity(sendAuthKeyForChangePasswordDto.getEmail(), key);
 
+        emailCertificateRepository.deleteEmailCertificateByEmail(email);
         emailCertificateRepository.save(emailCertificate);
         emailSender.send(email,key);
     }
@@ -122,19 +123,16 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public void verifiedAuthKeyAndChangePassword(VerifiedAuthKeyAndChangePasswordDto verifiedAuthKeyAndChangePasswordDto) {
         String dtoKey = verifiedAuthKeyAndChangePasswordDto.getKey();
-        String authKey = emailCertificateRepository.findByKey(dtoKey).getKey();
-        String email = emailCertificateRepository.findByKey(dtoKey).getEmail();
+        EmailCertificate emailCertificate = emailCertificateRepository.findByKey(dtoKey).orElseThrow(UserAuthenticationAnswerNotMatchingException::new);
+        String authKey = emailCertificate.getKey();
+        String email = emailCertificate.getEmail();
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
 
-        if(dtoKey.equals(authKey)){
-            if(emailCertificateRepository.findByKey(authKey).getExpiredTime().isAfter(LocalDateTime.now())){
-                member.updatePassword(passwordEncoder.encode(verifiedAuthKeyAndChangePasswordDto.getNewPassword()));
-                emailCertificateRepository.deleteEmailCertificateByKey(authKey);
-            } else {
-                throw new OverCertificateTimeException();
-            }
+        if(emailCertificate.getExpiredTime().isAfter(LocalDateTime.now())){
+            member.updatePassword(passwordEncoder.encode(verifiedAuthKeyAndChangePasswordDto.getNewPassword()));
+            emailCertificateRepository.deleteEmailCertificateByKey(authKey);
         } else {
-            throw new UserAuthenticationKeyNotMatchingException();
+            throw new OverCertificateTimeException();
         }
     }
 
