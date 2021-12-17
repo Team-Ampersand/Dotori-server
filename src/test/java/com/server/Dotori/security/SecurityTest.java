@@ -1,10 +1,7 @@
 package com.server.Dotori.security;
 
 import com.server.Dotori.model.member.dto.MemberDto;
-import com.server.Dotori.model.member.enumType.Role;
-import com.server.Dotori.security.authentication.MyUserDetails;
 import com.server.Dotori.security.jwt.JwtTokenProvider;
-import com.server.Dotori.util.redis.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -16,10 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class SecurityTest {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
-    @Autowired
-    private MyUserDetails myUserDetails;
-    @Autowired
-    private RedisUtil redisUtil;
 
     @Test
     public void tokenTest() {

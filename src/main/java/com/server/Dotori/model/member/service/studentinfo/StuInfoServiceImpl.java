@@ -11,7 +11,6 @@ import com.server.Dotori.model.member.dto.StudentInfoDto;
 import com.server.Dotori.model.member.dto.UsernameUpdateDto;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.util.ObjectMapperUtils;
-import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,7 +28,6 @@ import java.util.List;
 public class StuInfoServiceImpl implements StuInfoService {
 
     private final MemberRepository memberRepository;
-    private final RedisUtil redisUtil;
 
     /**
      * 학년반별로 조회한 학생들 List를 List Dto로 변경후 반환하는 서비스로직 (사감쌤, 개발자 사용가능)
@@ -70,7 +68,7 @@ public class StuInfoServiceImpl implements StuInfoService {
         SecurityContextHolder.getContext().setAuthentication(newAuth); // Security가 관리하고있는 객체를 변경된 대상으로 변경
 
         member.updateRole(roleUpdateDto.getRoles());
-        redisUtil.deleteData(member.getEmail()); //다시 로그인을 시켜야하기 때문에 refreshtoken을 미리 지워둔다.
+        member.updateRefreshToken(null); //다시 로그인을 시켜야하기 때문에 refreshtoken을 미리 지워둔다.
     }
 
     /**

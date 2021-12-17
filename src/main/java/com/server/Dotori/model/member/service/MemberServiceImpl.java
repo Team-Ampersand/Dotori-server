@@ -13,7 +13,6 @@ import com.server.Dotori.security.jwt.JwtTokenProvider;
 import com.server.Dotori.util.CurrentUserUtil;
 import com.server.Dotori.util.EmailSender;
 import com.server.Dotori.util.KeyUtil;
-import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,7 +31,6 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-    private final RedisUtil redisUtil;
     private final CurrentUserUtil currentUserUtil;
     private final KeyUtil keyUtil;
     private final EmailSender emailSender;

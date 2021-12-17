@@ -11,7 +11,6 @@ import com.server.Dotori.model.member.repository.email.EmailCertificateRepositor
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.util.EmailSender;
 import com.server.Dotori.util.KeyUtil;
-import com.server.Dotori.util.redis.RedisUtil;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
