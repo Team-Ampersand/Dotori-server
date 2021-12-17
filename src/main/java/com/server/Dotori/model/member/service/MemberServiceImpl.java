@@ -132,6 +132,7 @@ public class MemberServiceImpl implements MemberService {
             member.updatePassword(passwordEncoder.encode(verifiedAuthKeyAndChangePasswordDto.getNewPassword()));
             emailCertificateRepository.deleteEmailCertificateByKey(authKey);
         } else {
+            emailCertificateRepository.deleteEmailCertificateByKey(authKey);
             throw new OverCertificateTimeException();
         }
     }
