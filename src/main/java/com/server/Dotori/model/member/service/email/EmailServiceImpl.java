@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.service.email;
 
+import com.server.Dotori.exception.user.exception.OverCertificateTimeException;
 import com.server.Dotori.exception.user.exception.UserAlreadyException;
 import com.server.Dotori.exception.user.exception.UserAuthenticationKeyNotMatchingException;
 import com.server.Dotori.model.member.EmailCertificate;
@@ -32,12 +33,17 @@ public class EmailServiceImpl implements EmailService {
      */
     @Override
     public String authKey(EmailDto emailDto) {
-        if(!memberRepository.existsByEmail(emailDto.getEmail())){
+        String email = emailDto.getEmail();
+
+        if(!memberRepository.existsByEmail(email)){
             String key = keyUtil.keyIssuance();
+
             EmailCertificateDto emailCertificateDto = new EmailCertificateDto();
-            EmailCertificate emailCertificate = emailCertificateDto.toEntity(emailDto.getEmail(), key);
+            EmailCertificate emailCertificate = emailCertificateDto.toEntity(email, key);
+
+            emailCertificateRepository.deleteEmailCertificateByEmail(email);
             emailCertificateRepository.save(emailCertificate);
-            emailSender.send(emailDto.getEmail(),key);
+            emailSender.send(email,key);
             return key;
         }else{
             throw new UserAlreadyException();
@@ -53,15 +59,14 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public String authCheck(MemberEmailKeyDto memberEmailKeyDto) {
         String key = memberEmailKeyDto.getKey();
-        if (emailCertificateRepository.findByKey(key).getKey().equals(key)){
-            if(emailCertificateRepository.findByKey(key).getExpiredTime().isAfter(LocalDateTime.now())){
-                emailCertificateRepository.deleteEmailCertificateByKey(key);
-                return key;
-            }else{
-                throw new IllegalArgumentException("인증 시간이 초과되었습니다.");
-            }
-        } else {
-            throw new UserAuthenticationKeyNotMatchingException();
+        EmailCertificate emailCertificate = emailCertificateRepository.findByKey(key).orElseThrow(UserAuthenticationKeyNotMatchingException::new);
+
+        if(emailCertificate.getExpiredTime().isAfter(LocalDateTime.now())){
+            emailCertificateRepository.deleteEmailCertificateByKey(key);
+            return key;
+        }else{
+            emailCertificateRepository.deleteEmailCertificateByKey(key);
+            throw new OverCertificateTimeException();
         }
     }
 }
