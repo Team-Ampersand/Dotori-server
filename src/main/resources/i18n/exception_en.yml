@@ -46,6 +46,10 @@ user-already-join-this-stunum:
   code: "-960"
   msg: "Already join this stunum."
 
+user-no-information:
+  code: "-970"
+  msg: "Can't find information in this user."
+
 access-token-expired:
   code: "-800"
   msg: "The access token has expired."
