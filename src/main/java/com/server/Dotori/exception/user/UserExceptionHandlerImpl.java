@@ -64,4 +64,11 @@ public class UserExceptionHandlerImpl implements UserExceptionHandler {
         log.debug("=== User Already Join This Stunum Exception 발생 ===");
         return exceptionResponseObjectUtil.getExceptionResponseObject(USER_ALREADY_JOIN_THIS_STUNUM);
     }
+
+    @Override
+    public CommonResult userNoInformationException(UserNoInformationException ex) {
+        log.debug("=== User No Information Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(USER_NO_INFORMATION);
+    }
+
 }

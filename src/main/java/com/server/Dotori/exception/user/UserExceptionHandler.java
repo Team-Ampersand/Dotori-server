@@ -16,6 +16,8 @@ public interface UserExceptionHandler {
     String USER_AUTHENTICATION_KEY_NOT_MATCHING = "user-authentication-key-not-matching";
     String USER_ALREADY_JOIN_THIS_STUNUM = "user-already-join-this-stunum";
     String USER_ALREADY_JOIN_THIS_NAME = "user-already-join-this-name";
+    String USER_NO_INFORMATION = "user-no-information";
+    String OVER_CERTIFICATE_TIME = "over-certificate-time";
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -48,5 +50,9 @@ public interface UserExceptionHandler {
     @ExceptionHandler(UserAlreadyJoinThisStunumException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     CommonResult userAlreadyJoinThisStunumException(UserAlreadyJoinThisStunumException ex);
+
+    @ExceptionHandler(UserNoInformationException.class)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    CommonResult userNoInformationException(UserNoInformationException ex);
 
 }
