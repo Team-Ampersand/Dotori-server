@@ -25,7 +25,6 @@ public class EmailCertificateDto {
                 .member(null)
                 .email(email)
                 .key(key)
-                .expired(false)
                 .expiredTime(LocalDateTime.now().plusMinutes(3))
                 .build();
     }
