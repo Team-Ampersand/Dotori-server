@@ -65,6 +65,7 @@ public class EmailServiceImpl implements EmailService {
             emailCertificateRepository.deleteEmailCertificateByKey(key);
             return key;
         }else{
+            emailCertificateRepository.deleteEmailCertificateByKey(key);
             throw new OverCertificateTimeException();
         }
     }
