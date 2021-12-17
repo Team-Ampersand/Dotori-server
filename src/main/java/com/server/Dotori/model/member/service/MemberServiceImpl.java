@@ -128,9 +128,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void verifiedAuthKeyAndChangePassword(VerifiedAuthKeyAndChangePasswordDto verifiedAuthKeyAndChangePasswordDto) {
-        String authKey = verifiedAuthKeyAndChangePasswordDto.getKey();
-        String dtoKey = emailCertificateRepository.findByKey(authKey).getKey();
-        String email = emailCertificateRepository.findByKey(authKey).getEmail();
+        String dtoKey = verifiedAuthKeyAndChangePasswordDto.getKey();
+        String authKey = emailCertificateRepository.findByKey(dtoKey).getKey();
+        String email = emailCertificateRepository.findByKey(dtoKey).getEmail();
         Member member = memberRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
 
         if(dtoKey.equals(authKey)){
