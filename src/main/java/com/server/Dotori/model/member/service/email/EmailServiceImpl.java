@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.service.email;
 
+import com.server.Dotori.exception.user.exception.OverCertificateTimeException;
 import com.server.Dotori.exception.user.exception.UserAlreadyException;
 import com.server.Dotori.exception.user.exception.UserAuthenticationKeyNotMatchingException;
 import com.server.Dotori.model.member.EmailCertificate;
@@ -64,7 +65,7 @@ public class EmailServiceImpl implements EmailService {
             emailCertificateRepository.deleteEmailCertificateByKey(key);
             return key;
         }else{
-            throw new IllegalArgumentException("인증 시간이 초과되었습니다.");
+            throw new OverCertificateTimeException();
         }
     }
 }
