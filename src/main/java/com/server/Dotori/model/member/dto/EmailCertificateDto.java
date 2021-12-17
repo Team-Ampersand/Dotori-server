@@ -5,7 +5,6 @@ import com.server.Dotori.model.member.Member;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Getter
 @Setter
