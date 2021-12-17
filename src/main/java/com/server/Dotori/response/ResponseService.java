@@ -17,11 +17,11 @@ public class ResponseService {
         FAIL(-1, "실패하였습니다.");
 
         int code;
-        String massage;
+        String message;
 
-        CommonResponse(int code, String massage){
+        CommonResponse(int code, String message){
             this.code = code;
-            this.massage = massage;
+            this.message = message;
         }
     }
 
@@ -31,7 +31,7 @@ public class ResponseService {
         return CommonResult.builder()
                 .success(true)
                 .code(CommonResponse.SUCCESS.getCode())
-                .massage(CommonResponse.SUCCESS.getMassage())
+                .message(CommonResponse.SUCCESS.getMessage())
                 .build();
     }
 
@@ -50,7 +50,7 @@ public class ResponseService {
         return CommonResult.builder()
                 .success(false)
                 .code(code)
-                .massage(msg)
+                .message(msg)
                 .build();
     }
 }
