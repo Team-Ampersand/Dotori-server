@@ -5,7 +5,7 @@ on:
     branches: [ feature/github-action-cd ]
 
 jobs:
-  build:
+  CD:
 
     runs-on: ubuntu-latest
 
