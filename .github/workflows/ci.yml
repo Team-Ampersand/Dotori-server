@@ -24,10 +24,10 @@ jobs:
       
     - name: Create application.yml
       run: |
-        echo application.yml="$APPLICATION_YML" >> ~/src/main/resources/
-        echo application-dev.yml="$APPLICATION_DEV_YML" >> ~/src/main/resources/
-        echo application-prod.yml="$APPLICATION_PROD_YML" >> ~/src/main/resources/
-        echo application.yml="$APPLICATION_TEST_YML" >> ~/src/test/resources/
+        echo application.yml="$APPLICATION_YML" >> ~/src/main/resources
+        echo application-dev.yml="$APPLICATION_DEV_YML" >> ~/src/main/resources
+        echo application-prod.yml="$APPLICATION_PROD_YML" >> ~/src/main/resources
+        echo application.yml="$APPLICATION_TEST_YML" >> ~/src/test/resources
       shell: bash
       env:
         APPLICATION_YML: ${{ secrets.APPLICATION_YML }}
