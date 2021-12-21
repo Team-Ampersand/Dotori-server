@@ -54,6 +54,10 @@ over-certificate-time:
   code: "-980"
   msg: "인증 시간이 초과되었습니다."
 
+email-has-not-been-certificate:
+  code: "-990"
+  msg: "이메일 인증이 되지않았습니다"
+
 access-token-expired:
   code: "-800"
   msg: "액세스 토큰이 만료되었습니다."

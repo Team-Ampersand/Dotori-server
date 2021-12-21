@@ -77,4 +77,10 @@ public class UserExceptionHandlerImpl implements UserExceptionHandler {
         return exceptionResponseObjectUtil.getExceptionResponseObject(OVER_CERTIFICATE_TIME);
     }
 
+    @Override
+    public CommonResult emailHasNotBeenCertificateException(EmailHasNotBeenCertificateException ex) {
+        log.debug("=== Email Has Not Been Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(EMAIL_HAS_NOT_BEEN_CERTIFICATE);
+    }
+
 }
