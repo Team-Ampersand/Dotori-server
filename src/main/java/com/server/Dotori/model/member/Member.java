@@ -1,6 +1,7 @@
 package com.server.Dotori.model.member;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.server.Dotori.model.BaseTimeEntity;
 import com.server.Dotori.model.member.enumType.Music;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.enumType.SelfStudy;
@@ -27,7 +28,7 @@ import static javax.persistence.GenerationType.*;
 @Builder @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Member implements UserDetails {
+public class Member extends BaseTimeEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = IDENTITY)
     @Column(name = "member_id")
