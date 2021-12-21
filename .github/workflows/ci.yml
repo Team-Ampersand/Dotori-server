@@ -38,6 +38,16 @@ jobs:
         aws s3 cp s3://elasticbeanstalk-ap-northeast-2-340839260993/yml/application-prod.yml ./src/main/resources/application-prod.yml
         aws s3 cp s3://elasticbeanstalk-ap-northeast-2-340839260993/yml/application-test.yml ./src/test/resources/application.yml
 
+    - name: Cache Gradle packages
+      uses: actions/cache@v2
+      with:
+        path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+        restore-keys: |
+            ${{ runner.os }}-gradle-
+
     - name: Build with Gradle
       run: ./gradlew clean build
       
