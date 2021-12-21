@@ -61,8 +61,8 @@ public class UserExceptionController {
     }
 
     @GetMapping("/email-has-not-been-certificate")
-    public CommonResult emailHasNotBeenCertificate() {
-        throw new EmailHasNotBeenCertificate();
+    public CommonResult emailHasNotBeenCertificateException() {
+        throw new EmailHasNotBeenCertificateException();
     }
 
 }

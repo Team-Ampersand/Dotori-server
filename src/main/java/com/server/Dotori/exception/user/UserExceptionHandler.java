@@ -60,8 +60,8 @@ public interface UserExceptionHandler {
     @ResponseStatus(HttpStatus.ACCEPTED)
     CommonResult overCertificateTimeException(OverCertificateTimeException ex);
 
-    @ExceptionHandler(EmailHasNotBeenCertificate.class)
+    @ExceptionHandler(EmailHasNotBeenCertificateException.class)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    CommonResult emailHasNotBeenCertificateException(EmailHasNotBeenCertificate ex);
+    CommonResult emailHasNotBeenCertificateException(EmailHasNotBeenCertificateException ex);
 
 }
