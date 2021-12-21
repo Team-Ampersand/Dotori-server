@@ -41,12 +41,15 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public Long signup(MemberDto memberDto){
+        String email = memberDto.getEmail();
         try {
-            if (!memberRepository.existsByEmailAndStdNum(memberDto.getEmail(), memberDto.getStdNum())) {
-                memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-                Member result = memberRepository.save(memberDto.toEntity());
-                return result.getId();
-            } else throw new UserAlreadyException();
+            if(!emailCertificateRepository.existsByEmail(email)){
+                if (!memberRepository.existsByEmailAndStdNum(email, memberDto.getStdNum())) {
+                    memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+                    Member result = memberRepository.save(memberDto.toEntity());
+                    return result.getId();
+                } else throw new UserAlreadyException();
+            } else throw new EmailHasNotBeenCertificateException();
         } catch (DataIntegrityViolationException e) {
             throw new UserAlreadyException();
         }
