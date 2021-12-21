@@ -21,28 +21,24 @@ jobs:
         cache: gradle
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-      
+
+    - name: AWS configure-aws-credentials
+      uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.IAM_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.IAM_SECRET_KEY }}
+          aws-region: ap-northeast-2
+
     - name: Create application.yml
       run: |
-        mkdir -p ~/src/main/resources
-        mkdir -p ~/src/test/resources
-        echo application.yml="$APPLICATION_YML" > ~/src/main/resources/application.yml
-        echo application-dev.yml="$APPLICATION_DEV_YML" > ~/src/main/resources/application-dev.yml
-        echo application-prod.yml="$APPLICATION_PROD_YML" > ~/src/main/resources/application-prod.yml
-        echo application.yml="$APPLICATION_TEST_YML" > ~/src/test/resources/application-test.yml
-      shell: bash
-      env:
-        APPLICATION_YML: ${{ secrets.APPLICATION_YML }}
-        APPLICATION_DEV_YML: ${{ secrets.APPLICATION_DEV_YML }}
-        APPLICATION_PROD_YML: ${{ secrets.APPLICATION_PROD_YML }}
-        APPLICATION_TEST_YML: ${{ secrets.APPLICATION_TEST_YML }}
-      
+        mkdir -p ./src/main/resources
+        mkdir -p ./src/test/resources
+        aws s3 cp s3://elasticbeanstalk-ap-northeast-2-340839260993/yml/application.yml ./src/main/resources/application.yml
+        aws s3 cp s3://elasticbeanstalk-ap-northeast-2-340839260993/yml/application-dev.yml ./src/main/resources/application-dev.yml
+        aws s3 cp s3://elasticbeanstalk-ap-northeast-2-340839260993/yml/application-prod.yml ./src/main/resources/application-prod.yml
+        aws s3 cp s3://elasticbeanstalk-ap-northeast-2-340839260993/yml/application-test.yml ./src/test/resources/application.yml
+
     - name: Build with Gradle
-      env:
-        APPLICATION_YML: ${{ secrets.APPLICATION_YML }}
-        APPLICATION_DEV_YML: ${{ secrets.APPLICATION_DEV_YML }}
-        APPLICATION_PROD_YML: ${{ secrets.APPLICATION_PROD_YML }}
-        APPLICATION_TEST_YML: ${{ secrets.APPLICATION_TEST_YML }}
       run: ./gradlew clean build
       
     - name: Get current time
