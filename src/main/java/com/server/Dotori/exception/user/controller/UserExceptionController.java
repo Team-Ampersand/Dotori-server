@@ -50,4 +50,19 @@ public class UserExceptionController {
         throw new UserAlreadyJoinThisStunumException();
     }
 
+    @GetMapping("/user-no-information")
+    public CommonResult userNoInformationException() {
+        throw new UserNoInformationException();
+    }
+
+    @GetMapping("/over-certificate-time")
+    public CommonResult overCertificateTimeException() {
+        throw new OverCertificateTimeException();
+    }
+
+    @GetMapping("/email-has-not-been-certificate")
+    public CommonResult emailHasNotBeenCertificateException() {
+        throw new EmailHasNotBeenCertificateException();
+    }
+
 }
