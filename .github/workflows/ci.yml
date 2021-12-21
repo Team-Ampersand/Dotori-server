@@ -24,10 +24,10 @@ jobs:
 
     - name: AWS configure-aws-credentials
       uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.IAM_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.IAM_SECRET_KEY }}
-          aws-region: ap-northeast-2
+      with:
+        aws-access-key-id: ${{ secrets.IAM_ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.IAM_SECRET_KEY }}
+        aws-region: ap-northeast-2
 
     - name: Create application.yml
       run: |
