@@ -21,8 +21,29 @@ jobs:
         cache: gradle
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+      
+    - name: Create application.yml
+      run: |
+        echo application.yml="$APPLICATION_YML" >> ~/src/main/resources/
+        echo application-dev.yml="$APPLICATION_DEV_YML" >> ~/src/main/resources/
+        echo application-prod.yml="$APPLICATION_PROD_YML" >> ~/src/main/resources/
+        echo application.yml="$APPLICATION_TEST_YML" >> ~/src/test/resources/
+      shell: bash
+      env:
+        APPLICATION_YML: ${{ secrets.APPLICATION_YML }}
+        APPLICATION_DEV_YML: ${{ secrets.APPLICATION_DEV_YML }}
+        APPLICATION_PROD_YML: ${{ secrets.APPLICATION_PROD_YML }}
+        APPLICATION_TEST_YML: ${{ secrets.APPLICATION_TEST_YML }}
+      
     - name: Build with Gradle
       run: ./gradlew clean build
+      
+    - name: Get current time
+      uses: 1466587594/get-current-time@v2
+      id: current-time
+      with:
+        format: YYYY-MM-DDTHH-mm-ss
+        utcOffset: "+09:00"
 
     - name: action-slack
       uses: 8398a7/action-slack@v3
