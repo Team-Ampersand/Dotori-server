@@ -18,6 +18,7 @@ public interface UserExceptionHandler {
     String USER_ALREADY_JOIN_THIS_NAME = "user-already-join-this-name";
     String USER_NO_INFORMATION = "user-no-information";
     String OVER_CERTIFICATE_TIME = "over-certificate-time";
+    String EMAIL_HAS_NOT_BEEN_CERTIFICATE = "email-has-not-been-certificate";
 
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -58,5 +59,9 @@ public interface UserExceptionHandler {
     @ExceptionHandler(OverCertificateTimeException.class)
     @ResponseStatus(HttpStatus.ACCEPTED)
     CommonResult overCertificateTimeException(OverCertificateTimeException ex);
+
+    @ExceptionHandler(EmailHasNotBeenCertificateException.class)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    CommonResult emailHasNotBeenCertificateException(EmailHasNotBeenCertificateException ex);
 
 }
