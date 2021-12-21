@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 public interface EmailCertificateRepository extends JpaRepository<EmailCertificate,Long> {
     Optional<EmailCertificate> findByKey(String key);
+    boolean existsByEmail(String email);
     @Transactional
     void deleteEmailCertificateByKey(String key);
     @Transactional
