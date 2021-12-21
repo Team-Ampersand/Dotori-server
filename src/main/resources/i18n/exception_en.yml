@@ -54,6 +54,10 @@ over-certificate-time:
   code: "-980"
   msg: "Over the certificate time."
 
+email-has-not-been-certificate:
+  code: "-990"
+  msg: "Email has not been certificate"
+
 access-token-expired:
   code: "-800"
   msg: "The access token has expired."
