@@ -59,6 +59,7 @@ jobs:
 
       - name: Generate deployment package # (1)
         run: |
+          mkdir -p deploy
           cp build/libs/Dotori-0.0.1-SNAPSHOT.jar deploy/application.jar
 
       - name: Deploy to EB # (2)
