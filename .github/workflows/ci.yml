@@ -19,8 +19,6 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
         cache: gradle
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
 
     - name: AWS configure-aws-credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -37,6 +35,9 @@ jobs:
         aws s3 cp s3://elasticbeanstalk-ap-northeast-2-340839260993/yml/application-dev.yml ./src/main/resources/application-dev.yml
         aws s3 cp s3://elasticbeanstalk-ap-northeast-2-340839260993/yml/application-prod.yml ./src/main/resources/application-prod.yml
         aws s3 cp s3://elasticbeanstalk-ap-northeast-2-340839260993/yml/application-test.yml ./src/test/resources/application.yml
+
+    - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
 
     - name: Cache Gradle packages
       uses: actions/cache@v2
