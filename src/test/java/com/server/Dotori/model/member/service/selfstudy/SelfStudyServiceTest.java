@@ -1,15 +1,13 @@
 package com.server.Dotori.model.member.service.selfstudy;
 
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantCancelDateException;
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantCancelTimeException;
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantRequestDateException;
-import com.server.Dotori.exception.selfstudy.exception.SelfStudyCantRequestTimeException;
+import com.server.Dotori.exception.selfstudy.exception.*;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.enumType.SelfStudy;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
+import com.server.Dotori.model.member.repository.selfStudy.SelfStudyRepository;
 import com.server.Dotori.util.CurrentUserUtil;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.DisplayName;
@@ -26,6 +24,7 @@ import javax.persistence.EntityManager;
 import java.time.DayOfWeek;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static com.server.Dotori.model.member.enumType.Music.CAN;
 import static com.server.Dotori.model.member.enumType.SelfStudy.*;
@@ -41,6 +40,7 @@ class SelfStudyServiceTest {
     @Autowired private MemberRepository memberRepository;
     @Autowired private CurrentUserUtil currentUserUtil;
     @Autowired private SelfStudyService selfStudyService;
+    @Autowired private SelfStudyRepository selfStudyRepository;
     @Autowired
     EntityManager em;
 
@@ -79,6 +79,7 @@ class SelfStudyServiceTest {
         selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 21); // 월요일 9시
 
         assertEquals(SelfStudy.APPLIED, currentUserUtil.getCurrentUser().getSelfStudy());
+        assertEquals(1 , selfStudyRepository.findAll().size());
     }
 
     @Disabled
@@ -103,6 +104,7 @@ class SelfStudyServiceTest {
         selfStudyService.cancelSelfStudy(DayOfWeek.MONDAY, 21);
 
         assertEquals(CANT, currentUserUtil.getCurrentUser().getSelfStudy());
+        assertEquals(0, selfStudyRepository.count());
     }
 
     @Disabled
@@ -204,19 +206,10 @@ class SelfStudyServiceTest {
         //given //when
         selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 21);
 
-        Integer selfStudyCount = selfStudyService.selfStudyCount();
+        Map<String, String> selfStudyInfo = selfStudyService.selfStudyInfo();
 
         //then
-        assertEquals(1, selfStudyCount);
-    }
-
-    @Test
-    @DisplayName("자습신청 상태가 잘 조회되나요?")
-    public void selfStudyStatusTest() {
-        //given //when
-        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 21); // 자습신청
-
-        //then
-        assertEquals(APPLIED, selfStudyService.getCurrentSelfStudyStatus()); // 자습신청 상태조회
+        assertEquals(APPLIED.toString(), selfStudyInfo.get("selfStudy_status"));
+        assertEquals("1", selfStudyInfo.get("count"));
     }
 }
