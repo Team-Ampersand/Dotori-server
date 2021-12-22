@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member;
 
+import com.server.Dotori.model.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,16 +14,14 @@ import static javax.persistence.GenerationType.*;
 @Builder @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SelfStudy {
+public class SelfStudy extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = IDENTITY)
     @Column(name = "selfStudy_id")
     private Long id;
 
-    @Column(name = "selfStudy_count")
-    private int count;
+    @OneToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
-    public void updateCount(int count) {
-        this.count = count;
-    }
 }
