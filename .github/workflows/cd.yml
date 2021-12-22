@@ -1,0 +1,84 @@
+name: Java CD with Gradle
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  CD:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 11
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          cache: gradle
+
+      - name: AWS configure-aws-credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.IAM_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.IAM_SECRET_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Create application.yml
+        run: |
+          mkdir -p ./src/main/resources
+          mkdir -p ./src/test/resources
+          aws s3 cp s3://elasticbeanstalk-ap-northeast-2-340839260993/yml/application.yml ./src/main/resources/application.yml
+          aws s3 cp s3://elasticbeanstalk-ap-northeast-2-340839260993/yml/application-dev.yml ./src/main/resources/application-dev.yml
+          aws s3 cp s3://elasticbeanstalk-ap-northeast-2-340839260993/yml/application-prod.yml ./src/main/resources/application-prod.yml
+          aws s3 cp s3://elasticbeanstalk-ap-northeast-2-340839260993/yml/application-test.yml ./src/test/resources/application.yml
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Build with Gradle
+        run: ./gradlew clean build
+
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYY-MM-DDTHH-mm-ss
+          utcOffset: "+09:00"
+
+      - name: Generate deployment package # (1)
+        run: |
+          mkdir -p deploy
+          cp build/libs/Dotori-0.0.1-SNAPSHOT.jar deploy/application.jar
+
+      - name: Deploy to EB # (2)
+        uses: einaregilsson/beanstalk-deploy@v20
+        with:
+          aws_access_key: ${{ secrets.IAM_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.IAM_SECRET_KEY }}
+          application_name: Dotori-server
+          environment_name: Dotoriserver-env
+          version_label: github-action-${{steps.current-time.outputs.formattedTime}}
+          region: ap-northeast-2
+          deployment_package: deploy/application.jar
+          wait_for_environment_recovery: 180
+
+      - name: action-slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took,pullRequest
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
