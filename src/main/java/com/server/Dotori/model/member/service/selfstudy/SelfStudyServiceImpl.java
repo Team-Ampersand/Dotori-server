@@ -4,8 +4,8 @@ import com.server.Dotori.exception.selfstudy.exception.*;
 import com.server.Dotori.exception.user.exception.UserNotFoundByClassException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
-import com.server.Dotori.model.member.enumType.SelfStudy;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
+import com.server.Dotori.model.member.repository.selfStudy.SelfStudyRepository;
 import com.server.Dotori.util.CurrentUserUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.server.Dotori.model.member.enumType.SelfStudy.*;
 
@@ -24,8 +26,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
 
     private final CurrentUserUtil currentUserUtil;
     private final MemberRepository memberRepository;
-
-    static int count = 0;
+    private final SelfStudyRepository selfStudyRepository;
 
     /**
      * 자습 신청 서비스로직 (로그인 된 유저 사용가능) <br>
@@ -45,15 +46,20 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Transactional
     public void requestSelfStudy(DayOfWeek dayOfWeek, int hour) {
 //        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new SelfStudyCantRequestDateException();
-//        if (!(hour >= 20 && hour < 23)) throw new SelfStudyCantRequestTimeException(); // 20시(8시)부터 22시(10시) 사이가 아니라면 자습신청 불가능
+//        if (!(hour >= 20 && hour < 22)) throw new SelfStudyCantRequestTimeException(); // 20시(8시)부터 22시(10시 (9시 59분)) 사이가 아니라면 자습신청 불가능
 
         Member currentUser = currentUserUtil.getCurrentUser();
+        long count = selfStudyRepository.count();
 
-        if (count <= 50){
+        if (count < 50){
             if (currentUser.getSelfStudy() == CAN) {
                 currentUser.updateSelfStudy(APPLIED);
-                count++;
-                log.info("Current Self Study Student Count is {}", count);
+
+                selfStudyRepository.save(com.server.Dotori.model.member.SelfStudy.builder()
+                        .member(currentUser)
+                        .build());
+
+                log.info("Current Self Study Student Count is {}", count+1);
             } else
                 throw new SelfStudyCantAppliedException();
         } else
@@ -76,14 +82,15 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Transactional
     public void cancelSelfStudy(DayOfWeek dayOfWeek, int hour) {
 //        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new SelfStudyCantCancelDateException();
-//        if (!(hour >= 20 && hour < 23)) throw new SelfStudyCantCancelTimeException(); // 20시(8시)부터 22시(10시) 사이가 아니라면 자습신청 취소 불가능
+//        if (!(hour >= 20 && hour < 22)) throw new SelfStudyCantCancelTimeException(); // 20시(8시)부터 22시(10시 (9시 59분)) 사이가 아니라면 자습신청 취소 불가능
 
         Member currentUser = currentUserUtil.getCurrentUser();
+        long count = selfStudyRepository.count();
 
         if (currentUser.getSelfStudy() == APPLIED) {
             currentUser.updateSelfStudy(CANT);
-            count--;
-            log.info("Current Self Study Student Count is {}", count);
+            selfStudyRepository.deleteByMemberId(currentUser.getId());
+            log.info("Current Self Study Student Count is {}", count-1);
         } else
             throw new SelfStudyCantChangeException();
     }
@@ -118,29 +125,27 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         return selfStudyCategory;
     }
 
-    @Override
-    public SelfStudy getCurrentSelfStudyStatus() {
-        return  currentUserUtil.getCurrentUser().getSelfStudy();
-    }
-
     /**
-     * 자습신청 상태를 '신청가능'으로 변경하는 서비스로직 (Schedule)
+     * 자습신청 상태를 '신청가능'으로 변경하고, 자습신청 카운트 초기화 서비스로직 (Schedule)
      * @author 배태현
      */
     @Override
     @Transactional
     public void updateSelfStudyStatus() {
-        count = 0;
+        selfStudyRepository.deleteAll();
         memberRepository.updateSelfStudyStatus();
     }
 
     /**
-     * 자습신청한 학생수를 조회하는 서비스로직 (로그인된 유저 사용가능)
-     * @return count
+     * 자습신청한 학생수와 현재 자신의 자습신청 상태를 조회하는 서비스로직 (로그인된 유저 사용가능)
+     * @return Map<String, String> selfStudy_status, count
      * @author 배태현
      */
     @Override
-    public int selfStudyCount() {
-        return count;
+    public Map<String, String> selfStudyInfo() {
+        Map<String,String> map = new HashMap<>();
+        map.put("selfStudy_status", currentUserUtil.getCurrentUser().getSelfStudy().toString());
+        map.put("count", String.valueOf(selfStudyRepository.count()));
+        return map;
     }
 }

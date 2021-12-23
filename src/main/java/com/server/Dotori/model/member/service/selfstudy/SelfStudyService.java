@@ -1,10 +1,10 @@
 package com.server.Dotori.model.member.service.selfstudy;
 
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
-import com.server.Dotori.model.member.enumType.SelfStudy;
 
 import java.time.DayOfWeek;
 import java.util.List;
+import java.util.Map;
 
 public interface SelfStudyService {
 
@@ -16,9 +16,7 @@ public interface SelfStudyService {
 
     List<SelfStudyStudentsDto> getSelfStudyStudentsByCategory(Long id);
 
-    SelfStudy getCurrentSelfStudyStatus();
-
     void updateSelfStudyStatus();
 
-    int selfStudyCount();
+    Map<String, String> selfStudyInfo();
 }
