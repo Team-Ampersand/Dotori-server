@@ -21,10 +21,10 @@
         </layout>
 
         <!-- Hardcoded Log Group Name -->
-        <logGroupName>YAPP-log</logGroupName>
+        <logGroupName>Dotori-Server-Log</logGroupName>
 
         <!-- Log Stream Name UUID Prefix -->
-        <logStreamUuidPrefix>YAPP/</logStreamUuidPrefix>
+        <logStreamUuidPrefix>logStream/</logStreamUuidPrefix>
 
         <!-- AWS Region -->
         <logRegion>ap-northeast-2</logRegion>
