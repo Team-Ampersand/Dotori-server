@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <springProfile name="!(dev | prod)">
+        <root level="debug">
+            <appender name="CONSOLE_LOG" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
+                    <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %magenta([traceId=%X{traceId}]) %highlight(%-5level) %logger{36}.%M - %msg%n</pattern>
+                </encoder>
+            </appender>
+        </root>
+    </springProfile>
+    <springProfile name="dev | prod">
+        <root level="info">
+            <appender name="CLOUDWATCH_LOG" class="ca.pjer.logback.AwsLogsAppender">
+                <layout>
+                    <pattern>[traceId=%X{traceId}] %-5level %logger{36}.%M - %msg%n</pattern>
+                </layout>
+                <logGroupName>Dotori-Server-Log</logGroupName>
+                <logStreamUuidPrefix>LogStream</logStreamUuidPrefix>
+                <logRegion>ap-northeast-2</logRegion>
+                <maxBatchLogEvents>50</maxBatchLogEvents>
+                <maxFlushTimeMillis>30000</maxFlushTimeMillis>
+                <maxBlockTimeMillis>5000</maxBlockTimeMillis>
+                <retentionTimeDays>0</retentionTimeDays>
+            </appender>
+        </root>
+    </springProfile>
+</configuration>
