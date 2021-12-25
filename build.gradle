@@ -68,6 +68,9 @@ dependencies {
 
 	// *** AWS SES *** ///
 	implementation group: 'com.amazonaws', name: 'aws-java-sdk-ses', version: '1.11.227'
+
+	// *** AWS CloudWatch Log *** //
+	compile group: 'ca.pjer', name: 'logback-awslogs-appender', version: '1.4.0'
 }
 
 test {
