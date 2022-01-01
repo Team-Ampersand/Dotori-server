@@ -26,7 +26,7 @@ public class JwtTokenProvider {
     private String secretKey;
 
     // 토큰 만료 시간
-    public static long TOKEN_VALIDATION_SECOND = 1000L * 60 * 60 ;  // 1시간을 accessToken 만료 기간으로 잡는다
+    public static long TOKEN_VALIDATION_SECOND = 1000L * 60 * 60 * 3;  // 3시간을 accessToken 만료 기간으로 잡는다
     public static long REFRESH_TOKEN_VALIDATION_SECOND = TOKEN_VALIDATION_SECOND * 24 * 180; // 6달을 refreshToken 만료 기간으로 잡는다.
 
     private final MyUserDetails myUserDetails;

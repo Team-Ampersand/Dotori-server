@@ -57,22 +57,22 @@ jobs:
           format: YYYY-MM-DDTHH-mm-ss
           utcOffset: "+09:00"
 
-      - name: Generate deployment package # (1)
-        run: |
-          mkdir -p deploy
-          cp build/libs/Dotori-0.0.1-SNAPSHOT.jar deploy/application.jar
-
-      - name: Deploy to EB # (2)
-        uses: einaregilsson/beanstalk-deploy@v20
-        with:
-          aws_access_key: ${{ secrets.IAM_ACCESS_KEY }}
-          aws_secret_key: ${{ secrets.IAM_SECRET_KEY }}
-          application_name: Dotori-server
-          environment_name: Dotoriserver-env
-          version_label: github-action-${{steps.current-time.outputs.formattedTime}}
-          region: ap-northeast-2
-          deployment_package: deploy/application.jar
-          wait_for_environment_recovery: 180
+#      - name: Generate deployment package # (1)
+#        run: |
+#          mkdir -p deploy
+#          cp build/libs/Dotori-0.0.1-SNAPSHOT.jar deploy/application.jar
+#
+#      - name: Deploy to EB # (2)
+#        uses: einaregilsson/beanstalk-deploy@v20
+#        with:
+#          aws_access_key: ${{ secrets.IAM_ACCESS_KEY }}
+#          aws_secret_key: ${{ secrets.IAM_SECRET_KEY }}
+#          application_name: Dotori-server
+#          environment_name: Dotoriserver-env
+#          version_label: github-action-${{steps.current-time.outputs.formattedTime}}
+#          region: ap-northeast-2
+#          deployment_package: deploy/application.jar
+#          wait_for_environment_recovery: 180
 
       - name: action-slack
         uses: 8398a7/action-slack@v3
