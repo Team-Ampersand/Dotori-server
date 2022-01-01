@@ -34,7 +34,7 @@ public class CouncillorStuInfoController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult getStudentInfoDeveloper(@PathVariable("classId") Long id) {
+    public SingleResult getStudentInfoCouncillor(@PathVariable("classId") Long id) {
         return responseService.getSingleResult(stuInfoService.getStudentInfo(id));
     }
 
@@ -50,7 +50,7 @@ public class CouncillorStuInfoController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateRoleDeveloper(@RequestBody RoleUpdateDto roleUpdateDto) {
+    public CommonResult updateRoleCouncillor(@RequestBody RoleUpdateDto roleUpdateDto) {
         stuInfoService.updateRole(roleUpdateDto);
         return responseService.getSuccessResult();
     }
@@ -67,7 +67,7 @@ public class CouncillorStuInfoController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateStuNumDeveloper(@RequestBody StuNumUpdateDto stuNumUpdateDto) {
+    public CommonResult updateStuNumCouncillor(@RequestBody StuNumUpdateDto stuNumUpdateDto) {
         stuInfoService.updateStuNum(stuNumUpdateDto);
         return responseService.getSuccessResult();
     }
@@ -84,7 +84,7 @@ public class CouncillorStuInfoController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateUsernameDeveloper(@RequestBody UsernameUpdateDto usernameUpdateDto) {
+    public CommonResult updateUsernameCouncillor(@RequestBody UsernameUpdateDto usernameUpdateDto) {
         stuInfoService.updateUsername(usernameUpdateDto);
         return responseService.getSuccessResult();
     }
