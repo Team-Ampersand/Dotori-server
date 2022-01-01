@@ -45,8 +45,8 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Override
     @Transactional
     public void requestSelfStudy(DayOfWeek dayOfWeek, int hour) {
-//        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new SelfStudyCantRequestDateException();
-//        if (!(hour >= 20 && hour < 22)) throw new SelfStudyCantRequestTimeException(); // 20시(8시)부터 22시(10시 (9시 59분)) 사이가 아니라면 자습신청 불가능
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new SelfStudyCantRequestDateException();
+        if (!(hour >= 20 && hour < 22)) throw new SelfStudyCantRequestTimeException(); // 20시(8시)부터 22시(10시 (9시 59분)) 사이가 아니라면 자습신청 불가능
 
         Member currentUser = currentUserUtil.getCurrentUser();
         long count = selfStudyRepository.count();
@@ -81,8 +81,8 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Override
     @Transactional
     public void cancelSelfStudy(DayOfWeek dayOfWeek, int hour) {
-//        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new SelfStudyCantCancelDateException();
-//        if (!(hour >= 20 && hour < 22)) throw new SelfStudyCantCancelTimeException(); // 20시(8시)부터 22시(10시 (9시 59분)) 사이가 아니라면 자습신청 취소 불가능
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new SelfStudyCantCancelDateException();
+        if (!(hour >= 20 && hour < 22)) throw new SelfStudyCantCancelTimeException(); // 20시(8시)부터 22시(10시 (9시 59분)) 사이가 아니라면 자습신청 취소 불가능
 
         Member currentUser = currentUserUtil.getCurrentUser();
         long count = selfStudyRepository.count();

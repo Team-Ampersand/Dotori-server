@@ -42,7 +42,7 @@ public class MusicServiceImpl implements MusicService {
     @Override
     @Transactional
     public Music musicApplication(MusicApplicationDto musicApplicationDto, DayOfWeek dayOfWeek) {
-//        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY) throw new MusicCantRequestDateException();
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY) throw new MusicCantRequestDateException();
 
         Member currentUser = currentUserUtil.getCurrentUser();
 
