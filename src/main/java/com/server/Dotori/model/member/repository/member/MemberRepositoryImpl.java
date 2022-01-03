@@ -127,4 +127,12 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .orderBy(member.stdNum.asc())
                 .fetch();
     }
+
+    @Override
+    public List<Member> findAllStudentInfo() {
+        return queryFactory.from(member)
+                .select(member)
+                .orderBy(member.stdNum.asc())
+                .fetch();
+    }
 }
