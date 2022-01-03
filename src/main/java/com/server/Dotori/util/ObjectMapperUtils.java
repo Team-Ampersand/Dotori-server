@@ -2,11 +2,13 @@ package com.server.Dotori.util;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Component
 public class ObjectMapperUtils {
 
     private static ModelMapper modelMapper = new ModelMapper();

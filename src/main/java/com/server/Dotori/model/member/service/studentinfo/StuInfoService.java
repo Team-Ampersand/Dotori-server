@@ -11,6 +11,8 @@ public interface StuInfoService {
 
     List<StudentInfoDto> getStudentInfo(Long id);
 
+    List<StudentInfoDto> getAllStudentInfo();
+
     void updateRole(RoleUpdateDto roleUpdateDto);
 
     void updateStuNum(StuNumUpdateDto stuNumUpdateDto);

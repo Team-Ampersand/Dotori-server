@@ -23,8 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:8080", "http://localhost:3000", "http://localhost:5000",
-                        "https://www.dotori-gsm.com", "https://dotori-gsm.com", "https://server.dotori-gsm.com",
-                        "http://dotori-client.s3-website.ap-northeast-2.amazonaws.com") // local, dotori-domain
+                        "https://www.dotori-gsm.com", "https://dotori-gsm.com", "https://server.dotori-gsm.com") // local, dotori-domain
                 .allowedMethods(
                         HttpMethod.GET.name(),
                         HttpMethod.HEAD.name(),
