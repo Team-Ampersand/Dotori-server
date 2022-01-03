@@ -28,6 +28,7 @@ import java.util.List;
 public class StuInfoServiceImpl implements StuInfoService {
 
     private final MemberRepository memberRepository;
+    private final ObjectMapperUtils objectMapperUtils;
 
     /**
      * 학년반별로 조회한 학생들 List를 List Dto로 변경후 반환하는 서비스로직 (사감쌤, 개발자 사용가능)
@@ -41,7 +42,14 @@ public class StuInfoServiceImpl implements StuInfoService {
 
         if (studentInfo.isEmpty()) throw new UserNotFoundByClassException();
 
-        return ObjectMapperUtils.mapAll(studentInfo, StudentInfoDto.class);
+        return objectMapperUtils.mapAll(studentInfo, StudentInfoDto.class);
+    }
+
+    @Override
+    public List<StudentInfoDto> getAllStudentInfo() {
+        List<Member> allStudentInfo = memberRepository.findAllStudentInfo();
+
+        return objectMapperUtils.mapAll(allStudentInfo, StudentInfoDto.class);
     }
 
     /**
