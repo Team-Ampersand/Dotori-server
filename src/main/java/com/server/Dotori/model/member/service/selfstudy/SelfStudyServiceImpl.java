@@ -32,12 +32,12 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * 자습 신청 서비스로직 (로그인 된 유저 사용가능) <br>
      * 50명까지 신청 가능, 자습신청 상태가 '가능'인 사람만 신청가능 <br>
      * 금요일, 토요일, 일요일에는 자습신청 불가능 <br>
-     * 위 요일을 제외한 나머지 요일에는 오후 8시부터 오후 10시까지만 자습신청 가능 <br>
+     * 위 요일을 제외한 나머지 요일에는 오후 8시부터 오후 9시까지만 자습신청 가능 <br>
      * 자습신청 할 시 '신청함'으로 상태변경 <br>
      * @param dayOfWeek 현재 요일
      * @param hour 현재 시
      * @exception SelfStudyCantRequestDateException 금요일, 토요일, 일요일에 자습신청을 했을 때
-     * @exception SelfStudyCantRequestTimeException 오후 8시에서 오후 10시 사이가 아닌 시간에 자습신청을 했을 때
+     * @exception SelfStudyCantRequestTimeException 오후 8시에서 오후 9시 사이가 아닌 시간에 자습신청을 했을 때
      * @exception SelfStudyCantAppliedException 자습신청 상태가 CAN(가능)이 아닐 때 (자습신청을 할 수 없는 상태)
      * @exception SelfStudyOverPersonalException 자습신청 인원이 50명이 넘었을 때
      * @author 배태현
@@ -46,7 +46,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Transactional
     public void requestSelfStudy(DayOfWeek dayOfWeek, int hour) {
         if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new SelfStudyCantRequestDateException();
-        if (!(hour >= 20 && hour < 22)) throw new SelfStudyCantRequestTimeException(); // 20시(8시)부터 22시(10시 (9시 59분)) 사이가 아니라면 자습신청 불가능
+        if (!(hour >= 20 && hour < 21)) throw new SelfStudyCantRequestTimeException(); // 20시(8시)부터 22시(9시 (8시 59분)) 사이가 아니라면 자습신청 불가능
 
         Member currentUser = currentUserUtil.getCurrentUser();
         long count = selfStudyRepository.count();
@@ -74,7 +74,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * @param dayOfWeek 현재 요일
      * @param hour 현재 시
      * @exception SelfStudyCantCancelDateException 금요일, 토요일, 일요일에 자습신청 취소를 했을 때
-     * @exception SelfStudyCantCancelTimeException 오후 8시에서 오후 10시 사이가 아닌 시간에 자습신청 취소를 했을 때
+     * @exception SelfStudyCantCancelTimeException 오후 8시에서 오후 9시 사이가 아닌 시간에 자습신청 취소를 했을 때
      * @exception SelfStudyCantChangeException 자습신청 상태가 APPLIED(신청됨)가 아닐 때 (자습신청 취소를 할 수 없는 상태)
      * @author 배태현
      */
@@ -82,7 +82,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Transactional
     public void cancelSelfStudy(DayOfWeek dayOfWeek, int hour) {
         if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new SelfStudyCantCancelDateException();
-        if (!(hour >= 20 && hour < 22)) throw new SelfStudyCantCancelTimeException(); // 20시(8시)부터 22시(10시 (9시 59분)) 사이가 아니라면 자습신청 취소 불가능
+        if (!(hour >= 20 && hour < 21)) throw new SelfStudyCantCancelTimeException(); // 20시(8시)부터 22시(9시 (8시 59분)) 사이가 아니라면 자습신청 취소 불가능
 
         Member currentUser = currentUserUtil.getCurrentUser();
         long count = selfStudyRepository.count();
