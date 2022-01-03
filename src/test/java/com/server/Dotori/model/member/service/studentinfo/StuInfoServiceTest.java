@@ -62,6 +62,13 @@ class StuInfoServiceTest {
     }
 
     @Test
+    @DisplayName("학생정보 전체조회가 잘 되나요?")
+    public void findAllStudentInfo() {
+        List<StudentInfoDto> allStudentInfo = stuInfoService.getAllStudentInfo();
+        assertEquals(1, allStudentInfo.size());
+    }
+
+    @Test
     @DisplayName("학년반별로 학생의 정보가 잘 조회되나요?")
     public void getStudentInfoTest() {
         //given //when

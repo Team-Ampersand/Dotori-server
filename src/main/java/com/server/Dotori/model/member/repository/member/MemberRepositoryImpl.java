@@ -115,15 +115,29 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     }
 
     /**
-     * 학생정보를 조회하는 query
+     * 반별로 학생정보를 조회하는 query
      * @param id classId
      * @return List - Member
+     * @author 배태현
      */
     @Override
     public List<Member> findStudentInfo(Long id) {
         return queryFactory.from(member)
                 .select(member)
                 .where(member.stdNum.like(id+"%"))
+                .orderBy(member.stdNum.asc())
+                .fetch();
+    }
+
+    /**
+     * 학생정보 전체조회 query
+     * @return List - Member
+     * @author 배태현
+     */
+    @Override
+    public List<Member> findAllStudentInfo() {
+        return queryFactory.from(member)
+                .select(member)
                 .orderBy(member.stdNum.asc())
                 .fetch();
     }

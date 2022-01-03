@@ -76,7 +76,7 @@ class SelfStudyServiceTest {
     @Test
     @DisplayName("자습신청이 제대로 되나요?")
     public void requestSelfStudyTest() {
-        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 21); // 월요일 9시
+        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20); // 월요일 8시
 
         assertEquals(SelfStudy.APPLIED, currentUserUtil.getCurrentUser().getSelfStudy());
         assertEquals(1 , selfStudyRepository.findAll().size());
@@ -88,7 +88,7 @@ class SelfStudyServiceTest {
     public void requestSelfStudyExceptionTest() {
         assertThrows(
                 SelfStudyCantRequestDateException.class,
-                () -> selfStudyService.requestSelfStudy(DayOfWeek.FRIDAY, 21)
+                () -> selfStudyService.requestSelfStudy(DayOfWeek.FRIDAY, 20)
         );
 
         assertThrows(
@@ -100,8 +100,8 @@ class SelfStudyServiceTest {
     @Test
     @DisplayName("자습신청 취소가 제대로 되나요?")
     public void cancelSelfStudy() {
-        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 21);
-        selfStudyService.cancelSelfStudy(DayOfWeek.MONDAY, 21);
+        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20);
+        selfStudyService.cancelSelfStudy(DayOfWeek.MONDAY, 20);
 
         assertEquals(CANT, currentUserUtil.getCurrentUser().getSelfStudy());
         assertEquals(0, selfStudyRepository.count());
@@ -113,7 +113,7 @@ class SelfStudyServiceTest {
     public void cancelSelfStudyExceptionTest() {
         assertThrows(
                 SelfStudyCantCancelDateException.class,
-                () -> selfStudyService.cancelSelfStudy(DayOfWeek.FRIDAY, 21)
+                () -> selfStudyService.cancelSelfStudy(DayOfWeek.FRIDAY, 20)
         );
 
         assertThrows(
@@ -126,7 +126,7 @@ class SelfStudyServiceTest {
     @DisplayName("자습 신청한 학생들 목록이 잘 조회 되나요?")
     public void getSelfStudyStudents() {
         //given //when
-        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 21);
+        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20);
         List<SelfStudyStudentsDto> selfStudyStudents = selfStudyService.getSelfStudyStudents();
 
         //then
@@ -137,7 +137,7 @@ class SelfStudyServiceTest {
     @DisplayName("자습신청한 학생들의 목록이 학년반별 카테고리 목록으로 조회 되나요?")
     public void getSelfStudyStudentsCategoryTest() {
         //given //when
-        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 21);
+        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20);
         List<SelfStudyStudentsDto> selfStudyStudentsByCategory = selfStudyService.getSelfStudyStudentsByCategory(24L);
 
         //then
@@ -204,7 +204,7 @@ class SelfStudyServiceTest {
     @DisplayName("자습신청한 학생 수 카운트가 잘 세지나요?")
     public void selfStudyCountTest() {
         //given //when
-        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 21);
+        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20);
 
         Map<String, String> selfStudyInfo = selfStudyService.selfStudyInfo();
 
