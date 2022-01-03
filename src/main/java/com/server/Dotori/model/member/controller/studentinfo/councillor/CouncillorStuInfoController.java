@@ -23,6 +23,21 @@ public class CouncillorStuInfoController {
     private final StuInfoService stuInfoService;
 
     /**
+     * 학생정보 변경을 위한 학생정보 전체 조회 컨트롤러
+     * @return SingleResult - List (id, stuNum, username, role)
+     * @author 배태현
+     */
+    @GetMapping ("/info")
+    @ResponseStatus( HttpStatus.OK )
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public SingleResult getStudentInfo() {
+        return responseService.getSingleResult(stuInfoService.getAllStudentInfo());
+    }
+
+    /**
      * 학생정보 변경을 위해 반별로 학생을 조회하는 컨트롤러
      * @param id classId
      * @return SingleResult - List (id, stuNum, username, role)
