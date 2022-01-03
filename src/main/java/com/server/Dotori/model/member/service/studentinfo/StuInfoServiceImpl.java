@@ -31,7 +31,7 @@ public class StuInfoServiceImpl implements StuInfoService {
     private final ObjectMapperUtils objectMapperUtils;
 
     /**
-     * 학년반별로 조회한 학생들 List를 List Dto로 변경후 반환하는 서비스로직 (사감쌤, 개발자 사용가능)
+     * 학년반별로 조회한 학생들 List를 List Dto로 변경후 반환하는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * @param id classId
      * @exception UserNotFoundByClassException 해당 반에 해당하는 학생들이 없을 때
      * @return List - StudentInfoDto (id, stuNum, username, roles)
@@ -45,6 +45,10 @@ public class StuInfoServiceImpl implements StuInfoService {
         return objectMapperUtils.mapAll(studentInfo, StudentInfoDto.class);
     }
 
+    /**
+     * 전체 조회한 학생들 List를 List Dto로 변경후 반환하는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
+     * @return List - StudentInfoDto (id, stuNum, username, roles)
+     */
     @Override
     public List<StudentInfoDto> getAllStudentInfo() {
         List<Member> allStudentInfo = memberRepository.findAllStudentInfo();
@@ -53,7 +57,7 @@ public class StuInfoServiceImpl implements StuInfoService {
     }
 
     /**
-     * 권한을 업데이트하는 서비스로직 (사감쌤, 개발자 사용가능)
+     * 권한을 업데이트하는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * 권한이 업데이트된 사용자는 로그인을 다시 해야한다. (공지를 해야할듯)
      * @param roleUpdateDto (receiverId, roles)
      * @exception UserNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
@@ -80,7 +84,7 @@ public class StuInfoServiceImpl implements StuInfoService {
     }
 
     /**
-     * 학번을 변경시키는 서비스로직 (사감쌤 개발자 사용가능)
+     * 학번을 변경시키는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * @param stuNumUpdateDto (receiverId, stuNum)
      * @exception UserNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
      * @exception UserAlreadyJoinThisStunumException 해당 학번으로 이미 가입된 유저가 있을 때
@@ -98,7 +102,7 @@ public class StuInfoServiceImpl implements StuInfoService {
     }
 
     /**
-     * 학생의 이름을 변경시키는 서비스로직 (사감쌤, 개발자 사용가능)
+     * 학생의 이름을 변경시키는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * @param usernameUpdateDto (receiverId, username)
      * @exception UserNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
      * @exception UserAlreadyJoinThisNameException 해당 이름으로 이미 가입된 유저가 있을 때
