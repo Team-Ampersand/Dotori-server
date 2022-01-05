@@ -3,10 +3,7 @@ package com.server.Dotori.model.board;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.server.Dotori.model.BaseTimeEntity;
 import com.server.Dotori.model.member.Member;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -14,11 +11,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.CascadeType.*;
 import static javax.persistence.FetchType.*;
 import static javax.persistence.GenerationType.*;
 
 @Entity @Table(name = "Board")
-@Builder @Getter
+@Builder @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 public class Board extends BaseTimeEntity {
 
@@ -34,11 +32,11 @@ public class Board extends BaseTimeEntity {
     @Column(name = "board_title", nullable = false)
     private String title;
 
-    @Column(name = "board_content", length = 500, nullable = false)
+    @Column(name = "board_content", length = 800, nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "board")
-    private List<Image> images = new ArrayList<>();
+    @Column(name = "board_image_url")
+    private String url;
 
     public void updateBoard(String title, String content) {
         this.title = title != null ? title : this.title;
