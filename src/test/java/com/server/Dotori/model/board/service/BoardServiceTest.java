@@ -80,7 +80,7 @@ class BoardServiceTest {
                 BoardDto.builder()
                         .title("도토리 공지사항")
                         .content("도토리 공지사항 생성 테스트")
-                        .build()
+                        .build(), null
         );
 
         //then
@@ -119,7 +119,7 @@ class BoardServiceTest {
                 BoardDto.builder()
                         .title("도토리 공지사항")
                         .content("도토리 공지사항 id로 공지사항 조회 테스트")
-                        .build()
+                        .build(), null
         );
 
         //when
@@ -137,7 +137,7 @@ class BoardServiceTest {
                 BoardDto.builder()
                         .title("도토리 공지사항")
                         .content("도토리 공지사항 수정 테스트")
-                        .build()
+                        .build(), null
         );
 
         //when
@@ -161,7 +161,7 @@ class BoardServiceTest {
                 BoardDto.builder()
                         .title("도토리 공지사항")
                         .content("도토리 공지사항 삭제 테스트")
-                        .build()
+                        .build(), null
         );
 
         //when
