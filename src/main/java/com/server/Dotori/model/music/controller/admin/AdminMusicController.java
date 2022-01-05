@@ -1,5 +1,6 @@
 package com.server.Dotori.model.music.controller.admin;
 
+import com.server.Dotori.model.music.dto.DateMusicDto;
 import com.server.Dotori.model.music.dto.MusicResDto;
 import com.server.Dotori.model.music.service.MusicService;
 import com.server.Dotori.response.ResponseService;
@@ -72,5 +73,16 @@ public class AdminMusicController {
     })
     public SingleResult<List<MusicResDto>> findCurrentDateMusicAdmin() {
         return responseService.getSingleResult(musicService.getCurrentDateMusic());
+    }
+
+    @PostMapping("/music/date")
+    @ResponseStatus( HttpStatus.OK )
+    @ApiOperation(value = "해당 날짜에 신청된 음악목록 조회", notes = "해당 날짜에 신청된 음악목록 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public SingleResult<List<MusicResDto>> findDateMusicMember(@RequestBody DateMusicDto dateMusicDto) {
+        return responseService.getSingleResult(musicService.getDateMusic(dateMusicDto.getDate()));
     }
 }
