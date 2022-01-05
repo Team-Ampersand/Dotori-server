@@ -25,6 +25,6 @@ public class Image {
     @JoinColumn(name = "board_id")
     private Board board;
 
-    @Column(name = "image_url", nullable = false)
+    @Column(name = "image_url")
     private String url;
 }
