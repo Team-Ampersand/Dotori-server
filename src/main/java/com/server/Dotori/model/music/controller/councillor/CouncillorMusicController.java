@@ -95,6 +95,12 @@ public class CouncillorMusicController {
         return responseService.getSingleResult(musicService.getCurrentDateMusic());
     }
 
+    /**
+     * 특정 날짜에 신청된 음악목록을 조회하는 컨트롤러
+     * @param dateMusicDto date
+     * @return SingleResult - List - MusicResDto
+     * @author 배태현
+     */
     @PostMapping("/music/date")
     @ResponseStatus( HttpStatus.OK )
     @ApiOperation(value = "해당 날짜에 신청된 음악목록 조회", notes = "해당 날짜에 신청된 음악목록 조회")
