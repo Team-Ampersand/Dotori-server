@@ -1,9 +1,6 @@
 package com.server.Dotori.exception.music.controller;
 
-import com.server.Dotori.exception.music.exception.MusicAlreadyException;
-import com.server.Dotori.exception.music.exception.MusicCantRequestDateException;
-import com.server.Dotori.exception.music.exception.MusicNotAppliedException;
-import com.server.Dotori.exception.music.exception.MusicNotFoundException;
+import com.server.Dotori.exception.music.exception.*;
 import com.server.Dotori.response.result.CommonResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,4 +29,10 @@ public class MusicExceptionController {
     public CommonResult musicCantRequestDate() {
         throw new MusicCantRequestDateException();
     }
+
+    @GetMapping("/music-not-request-on-that-date")
+    public CommonResult musicNotRequestOnThatDate() {
+        throw new MusicNotRequestOnThatDateException();
+    }
+
 }
