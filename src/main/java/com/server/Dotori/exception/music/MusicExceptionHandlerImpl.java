@@ -46,4 +46,10 @@ public class MusicExceptionHandlerImpl implements MusicExceptionHandler {
         log.debug("=== Music Today Not Request Exception 발생 ===");
         return exceptionResponseObjectUtil.getExceptionResponseObject(MUSIC_TODAY_NOT_REQUESTED);
     }
+
+    @Override
+    public CommonResult musicNotRequestOnThatDateException(MusicNotRequestOnThatDateException ex) {
+        log.debug("=== Music Not Request On That Date Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(MUSIC_NOT_REQUEST_ON_THAT_DATE);
+    }
 }
