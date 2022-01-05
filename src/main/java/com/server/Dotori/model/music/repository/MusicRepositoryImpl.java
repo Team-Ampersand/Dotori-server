@@ -85,6 +85,12 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
                 .fetch();
     }
 
+    /**
+     * 해당하는 날짜에 신청된 음악을 조회하는 query
+     * @param date date
+     * @return List-MusicResDto (id, musicUrl, member.username)
+     * @author 배태현
+     */
     @Override
     public List<MusicResDto> findDateMusic(LocalDate date) {
         return queryFactory
