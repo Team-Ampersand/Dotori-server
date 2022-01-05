@@ -84,4 +84,19 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
                 .orderBy(music.createdDate.asc())
                 .fetch();
     }
+
+    @Override
+    public List<MusicResDto> findDateMusic(LocalDate date) {
+        return queryFactory
+                .select(Projections.fields(MusicResDto.class,
+                        music.id,
+                        music.url,
+                        music.member.username,
+                        music.createdDate
+                ))
+                .from(music)
+                .where(music.createdDate.stringValue().like(date+"%"))
+                .orderBy(music.createdDate.asc())
+                .fetch();
+    }
 }
