@@ -42,7 +42,7 @@ public class DeveloperBoardController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult createBoardAdmin(
+    public CommonResult createBoardDeveloper(
             @RequestParam(value = "files", required = false) MultipartFile multipartFile,
             @RequestParam("title") String title,
             @RequestParam("content") String content
