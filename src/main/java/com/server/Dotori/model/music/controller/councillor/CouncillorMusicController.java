@@ -108,7 +108,7 @@ public class CouncillorMusicController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult<List<MusicResDto>> findDateMusicMember(@RequestBody DateMusicDto dateMusicDto) {
+    public SingleResult<List<MusicResDto>> findDateMusicCouncillor(@RequestBody DateMusicDto dateMusicDto) {
         return responseService.getSingleResult(musicService.getDateMusic(dateMusicDto.getDate()));
     }
 }
