@@ -221,4 +221,19 @@ class MusicServiceTest {
         List<MusicResDto> currentDateMusic = musicService.getCurrentDateMusic();
         assertEquals(localDate, currentDateMusic.get(0).getCreatedDate().toString().substring(0, 10));
     }
+
+    @Test
+    @DisplayName("해당 날짜에 신청된 음악이 잘 조회되나요 ?")
+    public void findDateMusic() {
+        musicService.musicApplication(
+                MusicApplicationDto.builder()
+                        .musicUrl("https://www.youtube.com/watch?v=6h9qmKWK6Io")
+                        .build(),
+                DayOfWeek.MONDAY // 월요일
+        );
+
+        LocalDate date = LocalDate.now();
+
+        assertEquals(1, musicService.getDateMusic(date).size());
+    }
 }

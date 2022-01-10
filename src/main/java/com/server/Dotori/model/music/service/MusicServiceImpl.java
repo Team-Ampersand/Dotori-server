@@ -3,6 +3,7 @@ package com.server.Dotori.model.music.service;
 import com.server.Dotori.exception.music.exception.*;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.music.Music;
+import com.server.Dotori.model.music.dto.DateMusicDto;
 import com.server.Dotori.model.music.dto.MusicApplicationDto;
 import com.server.Dotori.model.music.dto.MusicResDto;
 import com.server.Dotori.model.music.repository.MusicRepository;
@@ -99,6 +100,19 @@ public class MusicServiceImpl implements MusicService {
     }
 
     /**
+     * 날짜별로 신청된 음악을 조회하는 서비스 로직 (로그인 된 유저 사용가능)
+     * @param date date (2022-01-05)
+     * @return
+     */
+    @Override
+    public List<MusicResDto> getDateMusic(LocalDate date) {
+        List<MusicResDto> dateMusic = musicRepository.findDateMusic(date);
+
+        if (dateMusic.isEmpty()) throw new IllegalArgumentException("해당 날짜에 신청된 노래가 없습니다.");
+        return dateMusic;
+    }
+
+    /**
      * 음악신청된 회원의 음악신청 상태를 변경하는 서비스로직 (Scheduled)
      * @author 배태현
      */
@@ -113,7 +127,7 @@ public class MusicServiceImpl implements MusicService {
      * @author 배태현
      */
     @Override
-    public void saturdayMusicDeleteAll() {
+    public void monthMusicDeleteAll() {
         musicRepository.deleteAll();
     }
 }
