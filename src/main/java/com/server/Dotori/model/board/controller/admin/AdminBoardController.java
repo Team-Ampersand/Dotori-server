@@ -32,24 +32,18 @@ public class AdminBoardController {
      * @return CommonResult - SuccessResult
      * @author 배태현
      */
-    @PostMapping(value = "/board", consumes = {"multipart/form-data"})
+    @PostMapping(value = "/board")
     @ResponseStatus( HttpStatus.CREATED )
     @ApiOperation(value = "공지사항 작성", notes = "공지사항 작성")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult createBoardAdmin(
-            @RequestParam(value = "files", required = false) MultipartFile multipartFile,
-            @RequestParam("title") String title,
-            @RequestParam("content") String content
+    public CommonResult createBoardDeveloper(
+            @RequestPart(value = "files", required = false) MultipartFile multipartFile,
+            @RequestPart(value = "boardDto") BoardDto boardDto
     ) {
-        boardService.createBoard(
-                BoardDto.builder()
-                        .title(title)
-                        .content(content)
-                        .build(),
-                multipartFile);
+        boardService.createBoard(boardDto, multipartFile);
         return responseService.getSuccessResult();
     }
 
