@@ -108,7 +108,7 @@ public class MusicServiceImpl implements MusicService {
     public List<MusicResDto> getDateMusic(LocalDate date) {
         List<MusicResDto> dateMusic = musicRepository.findDateMusic(date);
 
-        if (dateMusic.isEmpty()) throw new IllegalArgumentException("해당 날짜에 신청된 노래가 없습니다.");
+        if (dateMusic.isEmpty()) throw new MusicNotRequestOnThatDateException();
         return dateMusic;
     }
 
