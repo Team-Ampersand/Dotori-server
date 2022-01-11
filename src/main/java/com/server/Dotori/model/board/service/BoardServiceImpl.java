@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
     private final CurrentUserUtil currentUserUtil;
+    private final S3Service s3Service;
 
     /**
      * 공지사항을 생성하는 서비스로직 (기자위, 사감쌤, 개발자만 가능)
@@ -30,10 +32,15 @@ public class BoardServiceImpl implements BoardService {
      * @author 배태현
      */
     @Override
-    public Board createBoard(BoardDto boardDto) {
+    public Board createBoard(BoardDto boardDto, MultipartFile multipartFileList) {
         Member currentUser = currentUserUtil.getCurrentUser();
-
-        return boardRepository.save(boardDto.saveToEntity(currentUser));
+        String uploadFile = null;
+        try {
+            uploadFile = s3Service.uploadFile(multipartFileList);
+            return boardRepository.save(boardDto.saveToEntity(currentUser, uploadFile));
+        } catch (NullPointerException e) {
+            return boardRepository.save(boardDto.saveToEntity(currentUser, uploadFile));
+        }
     }
 
     /**
@@ -108,6 +115,11 @@ public class BoardServiceImpl implements BoardService {
         Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new BoardNotFoundException());
 
-        boardRepository.deleteById(board.getId());
+        try {
+            s3Service.deleteFile(board.getUrl().substring(54));
+            boardRepository.deleteById(board.getId());
+        } catch (NullPointerException e) {
+            boardRepository.deleteById(board.getId());
+        }
     }
 }
