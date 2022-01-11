@@ -4,8 +4,8 @@ import lombok.*;
 
 @Getter @Setter @Builder
 @AllArgsConstructor @NoArgsConstructor
-public class UsernameUpdateDto {
+public class MemberNameUpdateDto {
 
     private Long receiverId;
-    private String username;
+    private String memberName;
 }
