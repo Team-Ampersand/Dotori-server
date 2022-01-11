@@ -8,6 +8,6 @@ public class GetAboutPointDto {
 
     private Long id;
     private String stuNum;
-    private String username;
+    private String memberName;
     private Long point;
 }
