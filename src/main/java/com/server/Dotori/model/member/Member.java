@@ -34,7 +34,7 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "member_username", nullable = false, unique = true)
+    @Column(name = "member_username", nullable = false)
     private String username;
 
     @Column(name = "member_stdnum", nullable = false, unique = true)
