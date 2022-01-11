@@ -29,7 +29,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .select(Projections.fields(SelfStudyStudentsDto.class,
                         member.id,
                         member.stdNum,
-                        member.username)
+                        member.memberName)
                 ).where(
                         member.selfStudy.eq(SelfStudy.APPLIED)
                 )
@@ -49,7 +49,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .select(Projections.fields(SelfStudyStudentsDto.class,
                         member.id,
                         member.stdNum,
-                        member.username))
+                        member.memberName))
                 .where(
                         member.selfStudy.eq(SelfStudy.APPLIED)
                         .and(member.stdNum.like(id+"%"))
@@ -87,7 +87,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .select(Projections.constructor(GetAboutPointDto.class,
                         member.id,
                         member.stdNum,
-                        member.username,
+                        member.memberName,
                         member.point
                         ))
                 .where(member.stdNum.like(id+"%"))
@@ -107,7 +107,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .select(Projections.constructor(GetAboutPointDto.class,
                         member.id,
                         member.stdNum,
-                        member.username,
+                        member.memberName,
                         member.point
                 ))
                 .where(member.eq(memberEntity))
