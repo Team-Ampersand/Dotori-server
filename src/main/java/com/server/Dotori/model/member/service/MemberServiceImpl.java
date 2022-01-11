@@ -7,7 +7,7 @@ import com.server.Dotori.model.member.dto.*;
 import com.server.Dotori.model.member.repository.email.EmailCertificateRepository;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.security.jwt.JwtTokenProvider;
-import com.server.Dotori.util.CurrentUserUtil;
+import com.server.Dotori.util.CurrentMemberUtil;
 import com.server.Dotori.util.EmailSender;
 import com.server.Dotori.util.KeyUtil;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +19,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -28,7 +29,7 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
-    private final CurrentUserUtil currentUserUtil;
+    private final CurrentMemberUtil currentMemberUtil;
     private final KeyUtil keyUtil;
     private final EmailSender emailSender;
     private final EmailCertificateRepository emailCertificateRepository;
@@ -58,24 +59,35 @@ public class MemberServiceImpl implements MemberService {
     /**
      * 로그인하는 서비스 로직
      * @param memberLoginDto email, password
-     * @return map - username, accessToken, refreshToken
+     * @return token - email, accessToken, refreshToken
      * @author 노경준
      */
     @Transactional
     @Override
     public Map<String,String> signin(MemberLoginDto memberLoginDto) {
-        Member findUser = memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow(() -> new UserNotFoundException()); // email로 유저정보를 가져옴
+        Member findMember = memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow(() -> new UserNotFoundException()); // email로 유저정보를 가져옴
+        if(!passwordEncoder.matches(memberLoginDto.getPassword(),findMember.getPassword())) throw new UserPasswordNotMatchingException(); // 비밀번호가 DB에 있는 비밀번호와 입력된 비밀번호가 같은지 체크
 
-        if(!passwordEncoder.matches(memberLoginDto.getPassword(),findUser.getPassword())) throw new UserPasswordNotMatchingException(); // 비밀번호가 DB에 있는 비밀번호와 입력된 비밀번호가 같은지 체크
+        Map<String, String> token = createToken(findMember);
 
+        return token;
+    }
+
+    /**
+     * 토큰을 생성하는 private 메서드
+     * @param member
+     * @return map - email, accessToken, refreshToken
+     * @author 노경준
+     */
+    private Map<String,String> createToken(Member member) {
         Map<String,String> map = new HashMap<>(); // Token 을 담을수있는 Hashmap 선언
-        String accessToken = jwtTokenProvider.createToken(findUser.getUsername(), findUser.getRoles()); // 유저정보에서 Username : 유저정보에서 Role (Key : Value)
+        String accessToken = jwtTokenProvider.createToken(member.getEmail(), member.getRoles()); // 유저정보에서 Username : 유저정보에서 Role (Key : Value)
         String refreshToken = jwtTokenProvider.createRefreshToken();
 
-        findUser.updateRefreshToken(refreshToken);
+        member.updateRefreshToken(refreshToken);
 
-        // map에 username, accessToken, refreshToken 정보 입력
-        map.put("username", findUser.getUsername());
+        // map 에 email, accessToken, refreshToken 정보 put
+        map.put("email", member.getEmail());
         map.put("accessToken","Bearer " + accessToken);
         map.put("refreshToken","Bearer " + refreshToken);
 
@@ -91,7 +103,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public String passwordChange(MemberPasswordDto memberPasswordDto) {
-        Member findMember = currentUserUtil.getCurrentUser();
+        Member findMember = currentMemberUtil.getCurrentMember();
         if (!passwordEncoder.matches(memberPasswordDto.getCurrentPassword(), findMember.getPassword())) throw new UserPasswordNotMatchingException();
         findMember.updatePassword(passwordEncoder.encode(memberPasswordDto.getNewPassword()));
 
@@ -146,7 +158,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public void logout() {
-        currentUserUtil.getCurrentUser().updateRefreshToken(null);
+        currentMemberUtil.getCurrentMember().updateRefreshToken(null);
     }
 
     /**
