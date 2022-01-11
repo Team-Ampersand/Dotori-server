@@ -13,6 +13,7 @@ public interface MusicExceptionHandler {
     String MUSIC_NOT_FOUND = "music-not-found";
     String MUSIC_CANT_REQUEST_DATE = "music-cant-request-date";
     String MUSIC_TODAY_NOT_REQUESTED = "music-today-not-requested";
+    String MUSIC_NOT_REQUEST_ON_THAT_DATE = "music-not-request-on-that-date";
 
     @ExceptionHandler(MusicAlreadyException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -33,4 +34,8 @@ public interface MusicExceptionHandler {
     @ExceptionHandler(MusicTodayNotRequestedException.class)
     @ResponseStatus(HttpStatus.ACCEPTED)
     CommonResult musicTodayNotRequestedException(MusicTodayNotRequestedException ex);
+
+    @ExceptionHandler(MusicNotRequestOnThatDateException.class)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    CommonResult musicNotRequestOnThatDateException(MusicNotRequestOnThatDateException ex);
 }

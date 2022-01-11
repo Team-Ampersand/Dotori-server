@@ -149,3 +149,7 @@ music-cant-request-date:
 music-today-not-requested:
   code: "-540"
   msg: "There's no music requested today."
+
+music-not-request-on-that-date:
+  code: "-550"
+  msg: "There are no songs requested on that date"

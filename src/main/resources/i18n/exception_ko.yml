@@ -149,3 +149,7 @@ music-cant-request-date:
 music-today-not-requested:
   code: "-540"
   msg: "오늘 신청된 음악이 없습니다."
+
+music-not-request-on-that-date:
+  code: "-550"
+  msg: "해당 날짜에 신청된 노래가 없습니다."

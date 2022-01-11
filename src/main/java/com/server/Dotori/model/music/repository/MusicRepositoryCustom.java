@@ -12,4 +12,6 @@ public interface MusicRepositoryCustom {
     List<MusicResDto> findAllMusic();
 
     List<MusicResDto> findCurrentDateMusic(LocalDate localDate);
+
+    List<MusicResDto> findDateMusic(LocalDate date);
 }

@@ -15,13 +15,23 @@ public class MusicSchedule {
 
     private final MusicService musicService;
 
+//    /**
+//     * "토요일 23시 59분"에 음악신청 목록을 자동으로 초기화해주는 Scheduled
+//     * @author 배태현
+//     */
+//    @Scheduled(cron = "0 59 23 ? * SAT")
+//    public void saturdayMusicDeleteAll() {
+//        musicService.saturdayMusicDeleteAll();
+//        log.info("Music Delete All At {}", new Date());
+//    }
+
     /**
-     * "토요일 23시 59분"에 음악신청 목록을 자동으로 초기화해주는 Scheduled
+     * 매 달 1일 새벽 4시에 음악신청 목록을 초기화해주는 Scheduled
      * @author 배태현
      */
-    @Scheduled(cron = "0 59 23 ? * SAT")
-    public void saturdayMusicDeleteAll() {
-        musicService.saturdayMusicDeleteAll();
+    @Scheduled(cron = "0 0 4 1 1/1 ?")
+    public void monthMusicDeleteAll() {
+        musicService.monthMusicDeleteAll();
         log.info("Music Delete All At {}", new Date());
     }
 

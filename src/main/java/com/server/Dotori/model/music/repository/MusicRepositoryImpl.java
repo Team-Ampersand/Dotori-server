@@ -84,4 +84,25 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
                 .orderBy(music.createdDate.asc())
                 .fetch();
     }
+
+    /**
+     * 해당하는 날짜에 신청된 음악을 조회하는 query
+     * @param date date
+     * @return List-MusicResDto (id, musicUrl, member.username)
+     * @author 배태현
+     */
+    @Override
+    public List<MusicResDto> findDateMusic(LocalDate date) {
+        return queryFactory
+                .select(Projections.fields(MusicResDto.class,
+                        music.id,
+                        music.url,
+                        music.member.username,
+                        music.createdDate
+                ))
+                .from(music)
+                .where(music.createdDate.stringValue().like(date+"%"))
+                .orderBy(music.createdDate.asc())
+                .fetch();
+    }
 }

@@ -1,10 +1,12 @@
 package com.server.Dotori.model.music.service;
 
 import com.server.Dotori.model.music.Music;
+import com.server.Dotori.model.music.dto.DateMusicDto;
 import com.server.Dotori.model.music.dto.MusicApplicationDto;
 import com.server.Dotori.model.music.dto.MusicResDto;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,8 +19,10 @@ public interface MusicService {
     List<MusicResDto> getCurrentDateMusic();
 
     void deleteMusic(Long musicId);
+
+    List<MusicResDto> getDateMusic(LocalDate date);
   
     void updateMemberMusicStatus();
 
-    void saturdayMusicDeleteAll();
+    void monthMusicDeleteAll();
 }

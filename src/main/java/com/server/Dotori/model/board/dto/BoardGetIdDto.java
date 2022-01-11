@@ -16,10 +16,12 @@ public class BoardGetIdDto {
     private String title;
     private String content;
     private List<Role> roles;
+    private String url;
 
     @CreatedDate
     private LocalDateTime createdDate;
 
     @LastModifiedDate
     private LocalDateTime modifiedDate;
+
 }
