@@ -8,7 +8,8 @@ import com.server.Dotori.model.board.dto.BoardDto;
 import com.server.Dotori.model.board.dto.BoardGetIdDto;
 import com.server.Dotori.model.board.repository.BoardRepository;
 import com.server.Dotori.model.member.Member;
-import com.server.Dotori.util.CurrentUserUtil;
+
+import com.server.Dotori.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -21,7 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
-    private final CurrentUserUtil currentUserUtil;
+    private final CurrentMemberUtil currentMemberUtil;
 
     /**
      * 공지사항을 생성하는 서비스로직 (기자위, 사감쌤, 개발자만 가능)
@@ -31,7 +32,7 @@ public class BoardServiceImpl implements BoardService {
      */
     @Override
     public Board createBoard(BoardDto boardDto) {
-        Member currentUser = currentUserUtil.getCurrentUser();
+        Member currentUser = currentMemberUtil.getCurrentMember();
 
         return boardRepository.save(boardDto.saveToEntity(currentUser));
     }
