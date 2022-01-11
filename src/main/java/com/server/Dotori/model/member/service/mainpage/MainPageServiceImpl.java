@@ -2,7 +2,7 @@ package com.server.Dotori.model.member.service.mainpage;
 
 import com.server.Dotori.model.member.dto.GetAboutPointDto;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
-import com.server.Dotori.util.CurrentUserUtil;
+import com.server.Dotori.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MainPageServiceImpl implements MainPageService {
 
-    private final CurrentUserUtil currentUserUtil;
+    private final CurrentMemberUtil currentMemberUtil;
     private final MemberRepository memberRepository;
 
     /**
@@ -18,8 +18,9 @@ public class MainPageServiceImpl implements MainPageService {
      * @return GetAboutPointDto (id, username, stNum, point)
      * @author 배태현
      */
+
     @Override
     public GetAboutPointDto getMyProfile() {
-        return memberRepository.findProfileByMember(currentUserUtil.getCurrentUser());
+        return memberRepository.findProfileByMember(currentMemberUtil.getCurrentMember());
     }
 }
