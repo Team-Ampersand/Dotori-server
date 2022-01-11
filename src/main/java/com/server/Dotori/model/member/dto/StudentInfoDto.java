@@ -11,6 +11,6 @@ public class StudentInfoDto {
 
     private Long id;
     private String stdNum;
-    private String username;
+    private String memberName;
     private List<Role> roles;
 }
