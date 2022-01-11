@@ -6,7 +6,7 @@ import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.model.member.repository.selfStudy.SelfStudyRepository;
-import com.server.Dotori.util.CurrentUserUtil;
+import com.server.Dotori.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ import static com.server.Dotori.model.member.enumType.SelfStudy.*;
 @RequiredArgsConstructor
 public class SelfStudyServiceImpl implements SelfStudyService {
 
-    private final CurrentUserUtil currentUserUtil;
+    private final CurrentMemberUtil currentMemberUtil;
     private final MemberRepository memberRepository;
     private final SelfStudyRepository selfStudyRepository;
 
@@ -48,7 +48,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new SelfStudyCantRequestDateException();
         if (!(hour >= 20 && hour < 21)) throw new SelfStudyCantRequestTimeException(); // 20시(8시)부터 21시(9시 (8시 59분)) 사이가 아니라면 자습신청 불가능
 
-        Member currentUser = currentUserUtil.getCurrentUser();
+        Member currentUser = currentMemberUtil.getCurrentMember();
         long count = selfStudyRepository.count();
 
         if (count < 50){
@@ -84,7 +84,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new SelfStudyCantCancelDateException();
         if (!(hour >= 20 && hour < 21)) throw new SelfStudyCantCancelTimeException(); // 20시(8시)부터 21시(9시 (8시 59분)) 사이가 아니라면 자습신청 취소 불가능
 
-        Member currentUser = currentUserUtil.getCurrentUser();
+        Member currentUser = currentMemberUtil.getCurrentMember();
         long count = selfStudyRepository.count();
 
         if (currentUser.getSelfStudy() == APPLIED) {
@@ -144,7 +144,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Override
     public Map<String, String> selfStudyInfo() {
         Map<String,String> map = new HashMap<>();
-        map.put("selfStudy_status", currentUserUtil.getCurrentUser().getSelfStudy().toString());
+        map.put("selfStudy_status", currentMemberUtil.getCurrentMember().getSelfStudy().toString());
         map.put("count", String.valueOf(selfStudyRepository.count()));
         return map;
     }
