@@ -14,7 +14,7 @@ public class MusicResDto {
 
     private Long id;
     private String url;
-    private String username;
+    private String memberName;
 
     @CreatedDate
     private LocalDateTime createdDate;
