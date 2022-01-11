@@ -1,7 +1,7 @@
 package com.server.Dotori.model.member.service.role;
 
 import com.server.Dotori.model.member.enumType.Role;
-import com.server.Dotori.util.CurrentUserUtil;
+import com.server.Dotori.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
 
-    private final CurrentUserUtil currentUserUtil;
+    private final CurrentMemberUtil currentMemberUtil;
 
     /**
      * 현재 로그인된 유저의 권한을 조회하는 서비스로직 (모든 유저 사용가능)
@@ -19,6 +19,6 @@ public class RoleServiceImpl implements RoleService {
      */
     @Override
     public List<Role> getCurrentRole() {
-        return currentUserUtil.getCurrentUser().getRoles();
+        return currentMemberUtil.getCurrentMember().getRoles();
     }
 }
