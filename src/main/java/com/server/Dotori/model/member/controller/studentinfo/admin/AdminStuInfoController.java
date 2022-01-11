@@ -2,7 +2,7 @@ package com.server.Dotori.model.member.controller.studentinfo.admin;
 
 import com.server.Dotori.model.member.dto.RoleUpdateDto;
 import com.server.Dotori.model.member.dto.StuNumUpdateDto;
-import com.server.Dotori.model.member.dto.UsernameUpdateDto;
+import com.server.Dotori.model.member.dto.MemberNameUpdateDto;
 import com.server.Dotori.model.member.service.studentinfo.StuInfoService;
 import com.server.Dotori.response.ResponseService;
 import com.server.Dotori.response.result.CommonResult;
@@ -89,7 +89,7 @@ public class AdminStuInfoController {
 
     /**
      * 학생 정보 변경 - 이름 변경
-     * @param usernameUpdateDto (receiverId, username)
+     * @param memberNameUpdateDto (receiverId, username)
      * @return CommonResult - SuccessResult
      */
     @PutMapping("/info/username")
@@ -99,8 +99,8 @@ public class AdminStuInfoController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateUsernameAdmin(@RequestBody UsernameUpdateDto usernameUpdateDto) {
-        stuInfoService.updateUsername(usernameUpdateDto);
+    public CommonResult updateUsernameAdmin(@RequestBody MemberNameUpdateDto memberNameUpdateDto) {
+        stuInfoService.updateMemberName(memberNameUpdateDto);
         return responseService.getSuccessResult();
     }
 }
