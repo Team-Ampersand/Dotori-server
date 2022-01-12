@@ -83,5 +83,5 @@ class CurrentMemberUtilTest {
         assertEquals(memberDto.getMemberName(), currentMember.getMemberName());
         assertEquals(memberDto.getEmail(), currentMember.getEmail());
     }
-    
+
 }
