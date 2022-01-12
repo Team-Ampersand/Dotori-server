@@ -76,14 +76,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
     private Music music;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    public String getEmail() {
-        return this.email;
-    }
-
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public String getUsername() {
-        return this.memberName;
+        return this.email;
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
