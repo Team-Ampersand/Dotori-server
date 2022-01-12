@@ -9,11 +9,11 @@ public class SelfStudyStudentsDto {
 
     private Long id;
     private String stdNum;
-    private String username;
+    private String memberName;
 
-    public SelfStudyStudentsDto(Long id, String stdNum, String username) {
+    public SelfStudyStudentsDto(Long id, String stdNum, String memberName) {
         this.id = id;
         this.stdNum = stdNum;
-        this.username = username;
+        this.memberName = memberName;
     }
 }

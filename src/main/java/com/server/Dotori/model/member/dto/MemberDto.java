@@ -19,7 +19,7 @@ import java.util.Collections;
 public class MemberDto {
     @NotBlank
     @Size(min = 1, max = 10)
-    private String username;
+    private String memberName;
 
     @NotBlank
     @Size(min = 4, max = 4)
@@ -35,7 +35,7 @@ public class MemberDto {
 
     public Member toEntity(){
         return Member.builder()
-                .username(username)
+                .memberName(memberName)
                 .stdNum(stdNum)
                 .password(password)
                 .email(email)

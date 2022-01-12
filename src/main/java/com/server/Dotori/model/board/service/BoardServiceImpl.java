@@ -8,7 +8,8 @@ import com.server.Dotori.model.board.dto.BoardDto;
 import com.server.Dotori.model.board.dto.BoardGetIdDto;
 import com.server.Dotori.model.board.repository.BoardRepository;
 import com.server.Dotori.model.member.Member;
-import com.server.Dotori.util.CurrentUserUtil;
+
+import com.server.Dotori.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -22,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
-    private final CurrentUserUtil currentUserUtil;
+    private final CurrentMemberUtil currentMemberUtil;
     private final S3Service s3Service;
 
     /**
@@ -33,7 +34,7 @@ public class BoardServiceImpl implements BoardService {
      */
     @Override
     public Board createBoard(BoardDto boardDto, MultipartFile multipartFileList) {
-        Member currentUser = currentUserUtil.getCurrentUser();
+        Member currentUser = currentMemberUtil.getCurrentMember();
         String uploadFile = null;
         try {
             uploadFile = s3Service.uploadFile(multipartFileList);

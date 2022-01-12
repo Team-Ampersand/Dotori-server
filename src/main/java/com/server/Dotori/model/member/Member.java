@@ -34,8 +34,8 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "member_username", nullable = false, unique = true)
-    private String username;
+    @Column(name = "member_name", nullable = false)
+    private String memberName;
 
     @Column(name = "member_stdnum", nullable = false, unique = true)
     private String stdNum;
@@ -76,9 +76,14 @@ public class Member extends BaseTimeEntity implements UserDetails {
     private Music music;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    public String getEmail() {
+        return this.email;
+    }
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public String getUsername() {
-        return this.username;
+        return this.memberName;
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -128,8 +133,8 @@ public class Member extends BaseTimeEntity implements UserDetails {
         this.stdNum = stdNum != null ? stdNum : this.stdNum;
     }
 
-    public void updateUsername(String username) {
-        this.username = username != null ? username : this.username;
+    public void updateUsername(String name) {
+        this.memberName = name != null ? name : this.memberName;
     }
 
     public void updateRefreshToken(String refreshToken){

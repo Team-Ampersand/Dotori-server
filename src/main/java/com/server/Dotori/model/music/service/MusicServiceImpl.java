@@ -7,7 +7,7 @@ import com.server.Dotori.model.music.dto.DateMusicDto;
 import com.server.Dotori.model.music.dto.MusicApplicationDto;
 import com.server.Dotori.model.music.dto.MusicResDto;
 import com.server.Dotori.model.music.repository.MusicRepository;
-import com.server.Dotori.util.CurrentUserUtil;
+import com.server.Dotori.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +28,7 @@ import static com.server.Dotori.model.member.enumType.Music.*;
 public class MusicServiceImpl implements MusicService {
 
     private final MusicRepository musicRepository;
-    private final CurrentUserUtil currentUserUtil;
+    private final CurrentMemberUtil currentMemberUtil;
 
     /**
      * 음악을 신청하는 서비스 로직 (로그인된 유저 사용가능) <br>
@@ -45,7 +45,7 @@ public class MusicServiceImpl implements MusicService {
     public Music musicApplication(MusicApplicationDto musicApplicationDto, DayOfWeek dayOfWeek) {
         if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY) throw new MusicCantRequestDateException();
 
-        Member currentUser = currentUserUtil.getCurrentUser();
+        Member currentUser = currentMemberUtil.getCurrentMember();
 
         if (currentUser.getMusic() == CAN) {
             Music music = musicRepository.save(musicApplicationDto.saveToEntity(currentUser));

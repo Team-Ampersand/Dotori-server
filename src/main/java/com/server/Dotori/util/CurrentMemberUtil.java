@@ -1,5 +1,7 @@
 package com.server.Dotori.util;
 
+import com.server.Dotori.exception.user.exception.UserNoInformationException;
+import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,29 +11,30 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CurrentUserUtil {
+public class CurrentMemberUtil {
 
     private final MemberRepository memberRepository;
 
-    public static String getCurrentUserNickname(){
-        String username = null;
+    public static String getCurrentEmail(){
+        String email = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
+            email = ((Member) principal).getEmail();
         } else{
-            username = principal.toString();
+            email = principal.toString();
         }
-        return username;
+        return email;
     }
 
-    public Member getCurrentUser() {
-        String username = null;
+    public Member getCurrentMember() {
+        String email = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
+            email = ((Member) principal).getEmail();
         } else{
-            username = principal.toString();
+            email = principal.toString();
         }
-        return memberRepository.findByUsername(username);
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException());
     }
 }

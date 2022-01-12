@@ -53,7 +53,7 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
                 .select(Projections.fields(MusicResDto.class,
                         music.id,
                         music.url,
-                        music.member.username,
+                        music.member.memberName,
                         music.createdDate
                         ))
                 .from(music)
@@ -73,7 +73,7 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
                 .select(Projections.fields(MusicResDto.class,
                         music.id,
                         music.url,
-                        music.member.username,
+                        music.member.memberName,
                         music.createdDate
                         ))
                 .from(music)

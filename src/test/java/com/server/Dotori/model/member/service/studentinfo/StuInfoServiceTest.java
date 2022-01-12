@@ -115,10 +115,10 @@ class StuInfoServiceTest {
     @DisplayName("이름이 잘 변경되나요?")
     public void updateUsernameTest() {
         //given //when
-        stuInfoService.updateUsername(
-                UsernameUpdateDto.builder()
+        stuInfoService.updateMemberName(
+                MemberNameUpdateDto.builder()
                         .receiverId(currentUserUtil.getCurrentUser().getId())
-                        .username("배털")
+                        .memberName("배털")
                         .build()
         );
 

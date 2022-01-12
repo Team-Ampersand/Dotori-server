@@ -8,7 +8,7 @@ import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.RoleUpdateDto;
 import com.server.Dotori.model.member.dto.StuNumUpdateDto;
 import com.server.Dotori.model.member.dto.StudentInfoDto;
-import com.server.Dotori.model.member.dto.UsernameUpdateDto;
+import com.server.Dotori.model.member.dto.MemberNameUpdateDto;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.util.ObjectMapperUtils;
 import lombok.RequiredArgsConstructor;
@@ -103,20 +103,16 @@ public class StuInfoServiceImpl implements StuInfoService {
 
     /**
      * 학생의 이름을 변경시키는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
-     * @param usernameUpdateDto (receiverId, username)
+     * @param memberNameUpdateDto (receiverId, username)
      * @exception UserNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
      * @exception UserAlreadyJoinThisNameException 해당 이름으로 이미 가입된 유저가 있을 때
      */
     @Override
     @Transactional
-    public void updateUsername(UsernameUpdateDto usernameUpdateDto) {
-        Member findMember = memberRepository.findById(usernameUpdateDto.getReceiverId())
+    public void updateMemberName(MemberNameUpdateDto memberNameUpdateDto) {
+        Member findMember = memberRepository.findById(memberNameUpdateDto.getReceiverId())
                 .orElseThrow(() -> new UserNotFoundException());
 
-        // 동일한 이름으로 회원가입/로그인 하여 서비스 사용이 가능하다면 없어질 코드
-        if (memberRepository.existsByUsername(usernameUpdateDto.getUsername()))
-            throw new UserAlreadyJoinThisNameException();
-
-        findMember.updateUsername(usernameUpdateDto.getUsername());
+        findMember.updateUsername(memberNameUpdateDto.getMemberName());
     }
 }
