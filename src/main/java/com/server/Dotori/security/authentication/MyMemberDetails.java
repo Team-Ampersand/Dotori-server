@@ -1,7 +1,6 @@
 package com.server.Dotori.security.authentication;
 
-import com.server.Dotori.exception.user.exception.UserNoInformationException;
-import com.server.Dotori.exception.user.exception.UserNotFoundException;
+import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,7 @@ public class MyMemberDetails implements UserDetailsService { // UserDetailsServi
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Member member = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(() -> new MemberNotFoundException());
 
         return member;
     }

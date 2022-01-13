@@ -1,9 +1,8 @@
 package com.server.Dotori.model.member.service.studentinfo;
 
-import com.server.Dotori.exception.user.exception.UserAlreadyJoinThisNameException;
-import com.server.Dotori.exception.user.exception.UserAlreadyJoinThisStunumException;
-import com.server.Dotori.exception.user.exception.UserNotFoundByClassException;
-import com.server.Dotori.exception.user.exception.UserNotFoundException;
+import com.server.Dotori.exception.member.exception.MemberAlreadyJoinThisStunumException;
+import com.server.Dotori.exception.member.exception.MemberNotFoundByClassException;
+import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.RoleUpdateDto;
 import com.server.Dotori.model.member.dto.StuNumUpdateDto;
@@ -33,14 +32,14 @@ public class StuInfoServiceImpl implements StuInfoService {
     /**
      * 학년반별로 조회한 학생들 List를 List Dto로 변경후 반환하는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * @param id classId
-     * @exception UserNotFoundByClassException 해당 반에 해당하는 학생들이 없을 때
+     * @exception MemberNotFoundByClassException 해당 반에 해당하는 학생들이 없을 때
      * @return List - StudentInfoDto (id, stuNum, username, roles)
      */
     @Override
     public List<StudentInfoDto> getStudentInfo(Long id) {
         List<Member> studentInfo = memberRepository.findStudentInfo(id);
 
-        if (studentInfo.isEmpty()) throw new UserNotFoundByClassException();
+        if (studentInfo.isEmpty()) throw new MemberNotFoundByClassException();
 
         return objectMapperUtils.mapAll(studentInfo, StudentInfoDto.class);
     }
@@ -60,13 +59,13 @@ public class StuInfoServiceImpl implements StuInfoService {
      * 권한을 업데이트하는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * 권한이 업데이트된 사용자는 로그인을 다시 해야한다. (공지를 해야할듯)
      * @param roleUpdateDto (receiverId, roles)
-     * @exception UserNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
+     * @exception MemberNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
      */
     @Override
     @Transactional
     public void updateRole(RoleUpdateDto roleUpdateDto) {
         Member member = memberRepository.findById(roleUpdateDto.getReceiverId())
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(() -> new MemberNotFoundException());
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication(); //기존 계정의 권한정보를 가지고온다.
         List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
@@ -86,17 +85,17 @@ public class StuInfoServiceImpl implements StuInfoService {
     /**
      * 학번을 변경시키는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * @param stuNumUpdateDto (receiverId, stuNum)
-     * @exception UserNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
-     * @exception UserAlreadyJoinThisStunumException 해당 학번으로 이미 가입된 유저가 있을 때
+     * @exception MemberNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
+     * @exception MemberAlreadyJoinThisStunumException 해당 학번으로 이미 가입된 유저가 있을 때
      */
     @Override
     @Transactional
     public void updateStuNum(StuNumUpdateDto stuNumUpdateDto) {
         Member findMember = memberRepository.findById(stuNumUpdateDto.getReceiverId())
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(() -> new MemberNotFoundException());
 
         if (memberRepository.existsByStuNum(stuNumUpdateDto.getStuNum()))
-            throw new UserAlreadyJoinThisStunumException();
+            throw new MemberAlreadyJoinThisStunumException();
 
         findMember.updateStuNum(stuNumUpdateDto.getStuNum());
     }
@@ -104,14 +103,14 @@ public class StuInfoServiceImpl implements StuInfoService {
     /**
      * 학생의 이름을 변경시키는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * @param memberNameUpdateDto (receiverId, username)
-     * @exception UserNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
-     * @exception UserAlreadyJoinThisNameException 해당 이름으로 이미 가입된 유저가 있을 때
+     * @exception MemberNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
+     * @exception MemberAlreadyJoinThisNameException 해당 이름으로 이미 가입된 유저가 있을 때
      */
     @Override
     @Transactional
     public void updateMemberName(MemberNameUpdateDto memberNameUpdateDto) {
         Member findMember = memberRepository.findById(memberNameUpdateDto.getReceiverId())
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(() -> new MemberNotFoundException());
 
         findMember.updateUsername(memberNameUpdateDto.getMemberName());
     }

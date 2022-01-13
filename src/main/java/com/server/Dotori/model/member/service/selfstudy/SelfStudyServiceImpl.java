@@ -1,7 +1,7 @@
 package com.server.Dotori.model.member.service.selfstudy;
 
+import com.server.Dotori.exception.member.exception.MemberNotFoundByClassException;
 import com.server.Dotori.exception.selfstudy.exception.*;
-import com.server.Dotori.exception.user.exception.UserNotFoundByClassException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
@@ -113,14 +113,14 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * 자습신청한 학생을 학년반별로 조회하는 서비스로직 (로그인된 유저 사용가능)
      * @param id classId
      * @return List - SelfStudyStudentDto (id, stuNum, username)
-     * @exception UserNotFoundByClassException 해당 반에 해당하는 학생이 없을 때
+     * @exception MemberNotFoundByClassException 해당 반에 해당하는 학생이 없을 때
      * @author 배태현
      */
     @Override
     public List<SelfStudyStudentsDto> getSelfStudyStudentsByCategory(Long id) {
         List<SelfStudyStudentsDto> selfStudyCategory = memberRepository.findBySelfStudyCategory(id);
 
-        if (selfStudyCategory.isEmpty()) throw new UserNotFoundByClassException();
+        if (selfStudyCategory.isEmpty()) throw new MemberNotFoundByClassException();
 
         return selfStudyCategory;
     }
