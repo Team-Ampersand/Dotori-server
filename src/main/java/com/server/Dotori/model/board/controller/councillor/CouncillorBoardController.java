@@ -31,7 +31,7 @@ public class CouncillorBoardController {
 
     /**
      * 공지사항 생성 컨트롤러
-     * @param (title, content, multipartFile)
+     * @param (boardDto, multipartFile)
      * @return CommonResult - SuccessResult
      * @author 배태현
      */
