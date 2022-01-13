@@ -1,8 +1,8 @@
 package com.server.Dotori.model.member.service;
 
+import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.exception.token.exception.LogoutTokenException;
 import com.server.Dotori.exception.token.exception.RefreshTokenFailException;
-import com.server.Dotori.exception.user.exception.UserNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
@@ -33,7 +33,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Override
     public Map<String, String> getRefreshToken(String email, String refreshToken) {
         Member findMember = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(() -> new MemberNotFoundException());
 
         if (findMember.getRefreshToken() == null) {
             throw new LogoutTokenException();

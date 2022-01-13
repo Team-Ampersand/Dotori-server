@@ -1,6 +1,6 @@
 package com.server.Dotori.model.member.service;
 
-import com.server.Dotori.exception.user.exception.*;
+import com.server.Dotori.exception.member.exception.*;
 import com.server.Dotori.model.member.EmailCertificate;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.*;
@@ -48,10 +48,10 @@ public class MemberServiceImpl implements MemberService {
                     memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
                     Member result = memberRepository.save(memberDto.toEntity());
                     return result.getId();
-                } else throw new UserAlreadyException();
+                } else throw new MemberAlreadyException();
             } else throw new EmailHasNotBeenCertificateException();
         } catch (DataIntegrityViolationException e) {
-            throw new UserAlreadyException();
+            throw new MemberAlreadyException();
         }
     }
 
@@ -64,8 +64,8 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public Map<String,String> signin(MemberLoginDto memberLoginDto) {
-        Member findMember = memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow(() -> new UserNotFoundException()); // email로 유저정보를 가져옴
-        if(!passwordEncoder.matches(memberLoginDto.getPassword(),findMember.getPassword())) throw new UserPasswordNotMatchingException(); // 비밀번호가 DB에 있는 비밀번호와 입력된 비밀번호가 같은지 체크
+        Member findMember = memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow(() -> new MemberNotFoundException()); // email로 유저정보를 가져옴
+        if(!passwordEncoder.matches(memberLoginDto.getPassword(),findMember.getPassword())) throw new MemberPasswordNotMatchingException(); // 비밀번호가 DB에 있는 비밀번호와 입력된 비밀번호가 같은지 체크
 
         Map<String, String> token = createToken(findMember);
 
@@ -103,7 +103,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public String passwordChange(MemberPasswordDto memberPasswordDto) {
         Member findMember = currentMemberUtil.getCurrentMember();
-        if (!passwordEncoder.matches(memberPasswordDto.getCurrentPassword(), findMember.getPassword())) throw new UserPasswordNotMatchingException();
+        if (!passwordEncoder.matches(memberPasswordDto.getCurrentPassword(), findMember.getPassword())) throw new MemberPasswordNotMatchingException();
         findMember.updatePassword(passwordEncoder.encode(memberPasswordDto.getNewPassword()));
 
         return findMember.getPassword();
@@ -116,7 +116,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public void sendAuthKeyForChangePassword(SendAuthKeyForChangePasswordDto sendAuthKeyForChangePasswordDto) {
-        Member findMember = memberRepository.findByEmail(sendAuthKeyForChangePasswordDto.getEmail()).orElseThrow(() -> new UserNotFoundException());
+        Member findMember = memberRepository.findByEmail(sendAuthKeyForChangePasswordDto.getEmail()).orElseThrow(() -> new MemberNotFoundException());
         String email = findMember.getEmail();
         String key = keyUtil.keyIssuance();
 
@@ -137,10 +137,10 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public void verifiedAuthKeyAndChangePassword(VerifiedAuthKeyAndChangePasswordDto verifiedAuthKeyAndChangePasswordDto) {
         String dtoKey = verifiedAuthKeyAndChangePasswordDto.getKey();
-        EmailCertificate emailCertificate = emailCertificateRepository.findByKey(dtoKey).orElseThrow(UserAuthenticationAnswerNotMatchingException::new);
+        EmailCertificate emailCertificate = emailCertificateRepository.findByKey(dtoKey).orElseThrow(MemberAuthenticationAnswerNotMatchingException::new);
         String authKey = emailCertificate.getKey();
         String email = emailCertificate.getEmail();
-        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException());
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new MemberNotFoundException());
 
         if(emailCertificate.getExpiredTime().isAfter(LocalDateTime.now())){
             member.updatePassword(passwordEncoder.encode(verifiedAuthKeyAndChangePasswordDto.getNewPassword()));
@@ -167,9 +167,9 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public void delete(MemberDeleteDto memberDeleteDto) {
-        Member findMember = memberRepository.findByEmail(memberDeleteDto.getEmail()).orElseThrow(() -> new UserNotFoundException());
+        Member findMember = memberRepository.findByEmail(memberDeleteDto.getEmail()).orElseThrow(() -> new MemberNotFoundException());
         if(!passwordEncoder.matches(memberDeleteDto.getPassword(),findMember.getPassword()))
-            throw new UserPasswordNotMatchingException();
+            throw new MemberPasswordNotMatchingException();
 
         memberRepository.delete(findMember);
     }

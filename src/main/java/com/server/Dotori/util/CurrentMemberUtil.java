@@ -1,7 +1,6 @@
 package com.server.Dotori.util;
 
-import com.server.Dotori.exception.user.exception.UserNoInformationException;
-import com.server.Dotori.exception.user.exception.UserNotFoundException;
+import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +34,6 @@ public class CurrentMemberUtil {
             email = principal.toString();
         }
         return memberRepository.findByEmail(email)
-                .orElseThrow(() -> new UserNotFoundException());
+                .orElseThrow(() -> new MemberNotFoundException());
     }
 }

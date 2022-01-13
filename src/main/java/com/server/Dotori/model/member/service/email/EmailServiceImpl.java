@@ -1,8 +1,8 @@
 package com.server.Dotori.model.member.service.email;
 
-import com.server.Dotori.exception.user.exception.OverCertificateTimeException;
-import com.server.Dotori.exception.user.exception.UserAlreadyException;
-import com.server.Dotori.exception.user.exception.UserAuthenticationKeyNotMatchingException;
+import com.server.Dotori.exception.member.exception.MemberAlreadyException;
+import com.server.Dotori.exception.member.exception.MemberAuthenticationKeyNotMatchingException;
+import com.server.Dotori.exception.member.exception.OverCertificateTimeException;
 import com.server.Dotori.model.member.EmailCertificate;
 import com.server.Dotori.model.member.dto.EmailCertificateDto;
 import com.server.Dotori.model.member.dto.EmailDto;
@@ -46,7 +46,7 @@ public class EmailServiceImpl implements EmailService {
             emailSender.send(email,key);
             return key;
         }else{
-            throw new UserAlreadyException();
+            throw new MemberAlreadyException();
         }
     }
 
@@ -59,7 +59,7 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public String authCheck(MemberEmailKeyDto memberEmailKeyDto) {
         String key = memberEmailKeyDto.getKey();
-        EmailCertificate emailCertificate = emailCertificateRepository.findByKey(key).orElseThrow(UserAuthenticationKeyNotMatchingException::new);
+        EmailCertificate emailCertificate = emailCertificateRepository.findByKey(key).orElseThrow(MemberAuthenticationKeyNotMatchingException::new);
 
         if(emailCertificate.getExpiredTime().isAfter(LocalDateTime.now())){
             emailCertificateRepository.deleteEmailCertificateByKey(key);
