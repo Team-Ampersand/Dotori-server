@@ -18,7 +18,7 @@ public class SecurityTest {
     public void tokenTest() {
         MemberDto memberDto = new MemberDto();
         memberDto.setUsername("노경준");
-        memberDto.setStdNum("2206");
+        memberDto.setStuNum("2206");
         memberDto.setPassword("1234");
         memberDto.setEmail("shrudwns@naver.com");
 

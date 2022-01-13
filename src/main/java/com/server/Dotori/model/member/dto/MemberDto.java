@@ -23,7 +23,7 @@ public class MemberDto {
 
     @NotBlank
     @Size(min = 4, max = 4)
-    private String stdNum;
+    private String stuNum;
 
     @NotBlank
     @Size(min = 4)
@@ -36,7 +36,7 @@ public class MemberDto {
     public Member toEntity(){
         return Member.builder()
                 .memberName(memberName)
-                .stdNum(stdNum)
+                .stuNum(stuNum)
                 .password(password)
                 .email(email)
                 .refreshToken(null)

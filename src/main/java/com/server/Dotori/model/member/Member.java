@@ -37,8 +37,8 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Column(name = "member_name", nullable = false)
     private String memberName;
 
-    @Column(name = "member_stdnum", nullable = false, unique = true)
-    private String stdNum;
+    @Column(name = "member_stuNum", nullable = false, unique = true)
+    private String stuNum;
 
     @Column(name = "member_email", nullable = false, unique = true)
     private String email;
@@ -125,7 +125,7 @@ public class Member extends BaseTimeEntity implements UserDetails {
     }
 
     public void updateStuNum(String stdNum) {
-        this.stdNum = stdNum != null ? stdNum : this.stdNum;
+        this.stuNum = stdNum != null ? stdNum : this.stuNum;
     }
 
     public void updateUsername(String name) {
