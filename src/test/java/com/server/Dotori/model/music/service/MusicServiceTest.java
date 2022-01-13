@@ -10,7 +10,7 @@ import com.server.Dotori.model.music.Music;
 import com.server.Dotori.model.music.dto.MusicApplicationDto;
 import com.server.Dotori.model.music.dto.MusicResDto;
 import com.server.Dotori.model.music.repository.MusicRepository;
-import com.server.Dotori.util.CurrentUserUtil;
+import com.server.Dotori.util.CurrentMemberUtil;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,7 +41,7 @@ class MusicServiceTest {
     @Autowired private MusicRepository musicRepository;
     @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private MemberRepository memberRepository;
-    @Autowired private CurrentUserUtil currentUserUtil;
+    @Autowired private CurrentMemberUtil currentMemberUtil;
     @Autowired
     EntityManager em;
 
@@ -50,7 +50,7 @@ class MusicServiceTest {
     void currentUser() {
         //given
         MemberDto memberDto = MemberDto.builder()
-                .username("배태현")
+                .memberName("배태현")
                 .stdNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
@@ -61,7 +61,7 @@ class MusicServiceTest {
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                memberDto.getUsername(),
+                memberDto.getEmail(),
                 memberDto.getPassword(),
                 List.of(new SimpleGrantedAuthority(Role.ROLE_ADMIN.name())));
         SecurityContext context = SecurityContextHolder.getContext();
@@ -70,8 +70,8 @@ class MusicServiceTest {
         System.out.println(context);
 
         //then
-        String currentUsername = CurrentUserUtil.getCurrentUserNickname();
-        assertEquals("배태현", currentUsername);
+        String currentMemberEmail = CurrentMemberUtil.getCurrentEmail();
+        assertEquals("s20032@gsm.hs.kr", currentMemberEmail);
     }
 
     @Test
@@ -109,12 +109,12 @@ class MusicServiceTest {
     @DisplayName("신청된 모든 음악 목록이 잘 조회되는지 확인하는 테스트")
     public void getAllMusicTest() {
         //given
-        Member currentUser = currentUserUtil.getCurrentUser();
+        Member currentMember = currentMemberUtil.getCurrentMember();
 
         List<Music> musicList = Stream.generate(
                 () -> Music.builder()
                         .url("https://www.youtube.com/watch?v=her_7pa0vrg&pp=sAQA")
-                        .member(currentUser)
+                        .member(currentMember)
                         .build()
         ).limit(30).collect(Collectors.toList());
 
@@ -131,12 +131,12 @@ class MusicServiceTest {
     @DisplayName("신청된 음악이 삭제되는지 확인하는 테스트")
     public void deleteMusicTest() {
         //given
-        Member currentUser = currentUserUtil.getCurrentUser();
+        Member currentMember = currentMemberUtil.getCurrentMember();
 
         List<Music> musicList = Stream.generate(
                 () -> Music.builder()
                         .url("https://www.youtube.com/watch?v=her_7pa0vrg&pp=sAQA")
-                        .member(currentUser)
+                        .member(currentMember)
                         .build()
         ).limit(10).collect(Collectors.toList());
 
@@ -155,7 +155,7 @@ class MusicServiceTest {
         //given
         memberRepository.save(
                 Member.builder()
-                        .username("qoxogus1")
+                        .memberName("qoxogus1")
                         .stdNum("2410")
                         .password("1234")
                         .email("s20033@gsm.hs.kr")
@@ -168,7 +168,7 @@ class MusicServiceTest {
 
         memberRepository.save(
                 Member.builder()
-                        .username("qwer")
+                        .memberName("qwer")
                         .stdNum("2408")
                         .password("1234")
                         .email("s20031@gsm.hs.kr")
@@ -181,7 +181,7 @@ class MusicServiceTest {
 
         memberRepository.save(
                 Member.builder()
-                        .username("rewq")
+                        .memberName("rewq")
                         .stdNum("2407")
                         .password("1234")
                         .email("s20030@gsm.hs.kr")
@@ -199,9 +199,9 @@ class MusicServiceTest {
         em.clear();
 
         //then
-        assertEquals(CAN, memberRepository.findByUsername("qoxogus1").getMusic());
-        assertEquals(CAN, memberRepository.findByUsername("qwer").getMusic());
-        assertEquals(CAN, memberRepository.findByUsername("rewq").getMusic()); //이 회원은 그대로 CAN
+        assertEquals(CAN, memberRepository.findByEmail("s20033@gsm.hs.kr").get().getMusic());
+        assertEquals(CAN, memberRepository.findByEmail("s20031@gsm.hs.kr").get().getMusic());
+        assertEquals(CAN, memberRepository.findByEmail("s20030@gsm.hs.kr").get().getMusic()); //이 회원은 그대로 CAN
     }
 
     @Test

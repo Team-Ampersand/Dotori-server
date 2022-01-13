@@ -7,7 +7,7 @@ import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.enumType.SelfStudy;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.model.member.dto.PointDto;
-import com.server.Dotori.util.CurrentUserUtil;
+import com.server.Dotori.util.CurrentMemberUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,7 +45,7 @@ class PointServiceTest {
     void currentUser() {
         //given
         MemberDto memberDto = MemberDto.builder()
-                .username("배태현")
+                .memberName("배태현")
                 .stdNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
@@ -56,7 +56,7 @@ class PointServiceTest {
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                memberDto.getUsername(),
+                memberDto.getEmail(),
                 memberDto.getPassword(),
                 List.of(new SimpleGrantedAuthority(Role.ROLE_ADMIN.name())));
         SecurityContext context = SecurityContextHolder.getContext();
@@ -65,8 +65,8 @@ class PointServiceTest {
         System.out.println(context);
 
         //then
-        String currentUsername = CurrentUserUtil.getCurrentUserNickname();
-        assertEquals("배태현", currentUsername);
+        String currentMemberEmail = CurrentMemberUtil.getCurrentEmail();
+        assertEquals("s20032@gsm.hs.kr", currentMemberEmail);
     }
 
     @Test
@@ -75,7 +75,7 @@ class PointServiceTest {
         //given
         memberRepository.save(
                 Member.builder()
-                        .username("qoxoqoxo")
+                        .memberName("qoxoqoxo")
                         .stdNum("2420")
                         .password("1234")
                         .email("s20043@gsm.hs.kr")
@@ -89,7 +89,7 @@ class PointServiceTest {
         //when
         pointService.point(
                 PointDto.builder()
-                        .receiverId(memberRepository.findByUsername("qoxoqoxo").getId())
+                        .receiverId(memberRepository.findByEmail("s20043@gsm.hs.kr").get().getId())
                         .point(-3L)
                         .build()
         );
@@ -98,7 +98,7 @@ class PointServiceTest {
         em.clear();
 
         //then
-        assertEquals(-3L, memberRepository.findByUsername("qoxoqoxo").getPoint());
+        assertEquals(-3L, memberRepository.findByEmail("s20043@gsm.hs.kr").get().getPoint());
     }
 
     @Test
@@ -106,7 +106,7 @@ class PointServiceTest {
     public void getAllStudentsPointTest() {
         memberRepository.save(
                 Member.builder()
-                        .username("qoxoqoxo")
+                        .memberName("qoxoqoxo")
                         .stdNum("1120")
                         .password("1234")
                         .email("s20013@gsm.hs.kr")
@@ -119,7 +119,7 @@ class PointServiceTest {
 
         memberRepository.save(
                 Member.builder()
-                        .username("qoxoqoxoqoxo")
+                        .memberName("qoxoqoxoqoxo")
                         .stdNum("1119")
                         .password("1234")
                         .email("s20083@gsm.hs.kr")
