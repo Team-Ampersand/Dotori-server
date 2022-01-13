@@ -10,48 +10,48 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/exception")
 public class MemberExceptionController {
 
-    @GetMapping("/user-not-found")
-    public CommonResult userNotFoundException(){
+    @GetMapping("/member-not-found")
+    public CommonResult memberNotFoundException(){
         throw new MemberNotFoundException();
     }
 
-    @GetMapping("/user-already")
-    public CommonResult userAlreadyException(){
+    @GetMapping("/member-already")
+    public CommonResult memberAlreadyException(){
         throw new MemberAlreadyException();
     }
 
-    @GetMapping("/user-password-not-matching")
-    public CommonResult userPasswordNotMatchingException(){
+    @GetMapping("/member-password-not-matching")
+    public CommonResult memberPasswordNotMatchingException(){
         throw new MemberPasswordNotMatchingException();
     }
 
-    @GetMapping("/user-not-found-by-class")
-    public CommonResult userNotFoundByClassException(){
+    @GetMapping("/member-not-found-by-class")
+    public CommonResult memberNotFoundByClassException(){
         throw new MemberNotFoundByClassException();
     }
 
-    @GetMapping("/user-authentication-answer-not-matching")
-    public CommonResult userAuthenticationAnswerNotMatchingException() {
+    @GetMapping("/member-authentication-answer-not-matching")
+    public CommonResult memberAuthenticationAnswerNotMatchingException() {
         throw new MemberAuthenticationAnswerNotMatchingException();
     }
 
-    @GetMapping("/user-authentication-key-not-matching")
-    public CommonResult userAuthenticationKeyNotMatchingException() {
+    @GetMapping("/member-authentication-key-not-matching")
+    public CommonResult memberAuthenticationKeyNotMatchingException() {
         throw new MemberAuthenticationKeyNotMatchingException();
     }
 
-    @GetMapping("/user-already-join-this-name")
-    public CommonResult userAlreadyJoinThisNameException() {
+    @GetMapping("/member-already-join-this-name")
+    public CommonResult memberAlreadyJoinThisNameException() {
         throw new MemberAlreadyJoinThisNameException();
     }
 
-    @GetMapping("/user-already-join-this-stunum")
-    public CommonResult userAlreadyJoinThisStunumException() {
+    @GetMapping("/member-already-join-this-stunum")
+    public CommonResult memberAlreadyJoinThisStunumException() {
         throw new MemberAlreadyJoinThisStunumException();
     }
 
-    @GetMapping("/user-no-information")
-    public CommonResult userNoInformationException() {
+    @GetMapping("/member-no-information")
+    public CommonResult memberNoInformationException() {
         throw new MemberNoInformationException();
     }
 
