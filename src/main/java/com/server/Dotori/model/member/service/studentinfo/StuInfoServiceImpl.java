@@ -104,7 +104,6 @@ public class StuInfoServiceImpl implements StuInfoService {
      * 학생의 이름을 변경시키는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * @param memberNameUpdateDto (receiverId, username)
      * @exception MemberNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
-     * @exception MemberAlreadyJoinThisNameException 해당 이름으로 이미 가입된 유저가 있을 때
      */
     @Override
     @Transactional
@@ -112,6 +111,6 @@ public class StuInfoServiceImpl implements StuInfoService {
         Member findMember = memberRepository.findById(memberNameUpdateDto.getReceiverId())
                 .orElseThrow(() -> new MemberNotFoundException());
 
-        findMember.updateUsername(memberNameUpdateDto.getMemberName());
+        findMember.updateMemberName(memberNameUpdateDto.getMemberName());
     }
 }
