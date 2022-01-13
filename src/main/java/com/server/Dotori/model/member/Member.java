@@ -124,12 +124,12 @@ public class Member extends BaseTimeEntity implements UserDetails {
         this.roles = roles != null ? roles : this.roles;
     }
 
-    public void updateStuNum(String stdNum) {
-        this.stuNum = stdNum != null ? stdNum : this.stuNum;
+    public void updateStuNum(String stuNum) {
+        this.stuNum = stuNum != null ? stuNum : this.stuNum;
     }
 
-    public void updateUsername(String name) {
-        this.memberName = name != null ? name : this.memberName;
+    public void updateMemberName(String memberName) {
+        this.memberName = memberName != null ? memberName : this.memberName;
     }
 
     public void updateRefreshToken(String refreshToken){
