@@ -29,6 +29,7 @@ public class CouncillorStuInfoController {
      */
     @GetMapping ("/info")
     @ResponseStatus( HttpStatus.OK )
+    @ApiOperation(value = "학생정보목록 전체 조회", notes = "학생정보목록 전체 조회")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
