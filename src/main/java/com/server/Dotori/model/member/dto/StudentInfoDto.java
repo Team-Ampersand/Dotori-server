@@ -10,7 +10,7 @@ import java.util.List;
 public class StudentInfoDto {
 
     private Long id;
-    private String stdNum;
+    private String stuNum;
     private String memberName;
     private List<Role> roles;
 }
