@@ -1,6 +1,6 @@
-package com.server.Dotori.exception.user.exception;
+package com.server.Dotori.exception.member.exception;
 
-public class UserAlreadyJoinThisStunumException extends RuntimeException {
+public class MemberAlreadyJoinThisStunumException extends RuntimeException {
     public UserAlreadyJoinThisStunumException(String msg, Throwable t) {
         super(msg, t);
     }

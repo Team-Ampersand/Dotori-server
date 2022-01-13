@@ -1,12 +1,12 @@
-package com.server.Dotori.exception.user;
+package com.server.Dotori.exception.member;
 
-import com.server.Dotori.exception.user.exception.*;
+import com.server.Dotori.exception.member.exception.*;
 import com.server.Dotori.response.result.CommonResult;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-public interface UserExceptionHandler {
+public interface MemberExceptionHandler {
 
     String USER_NOT_FOUND = "user-not-found";
     String USER_ALREADY = "user-already";

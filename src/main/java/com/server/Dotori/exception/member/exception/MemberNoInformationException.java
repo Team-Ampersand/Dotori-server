@@ -1,6 +1,6 @@
-package com.server.Dotori.exception.user.exception;
+package com.server.Dotori.exception.member.exception;
 
-public class UserNoInformationException extends RuntimeException {
+public class MemberNoInformationException extends RuntimeException {
     public UserNoInformationException(String msg, Throwable t) {
         super(msg, t);
     }

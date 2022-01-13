@@ -1,4 +1,4 @@
-package com.server.Dotori.exception.user.exception;
+package com.server.Dotori.exception.member.exception;
 
 public class UserAuthenticationKeyNotMatchingException extends RuntimeException {
     public UserAuthenticationKeyNotMatchingException(String msg, Throwable t) {

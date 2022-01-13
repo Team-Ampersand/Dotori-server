@@ -1,4 +1,4 @@
-package com.server.Dotori.exception.user.exception;
+package com.server.Dotori.exception.member.exception;
 
 public class UserAuthenticationAnswerNotMatchingException extends RuntimeException {
     public UserAuthenticationAnswerNotMatchingException(String msg, Throwable t) {

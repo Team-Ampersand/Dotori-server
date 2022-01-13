@@ -1,6 +1,6 @@
-package com.server.Dotori.exception.user.exception;
+package com.server.Dotori.exception.member.exception;
 
-public class UserAlreadyJoinThisNameException extends RuntimeException {
+public class MemberAlreadyJoinThisNameException extends RuntimeException {
     public UserAlreadyJoinThisNameException(String msg, Throwable t) {
         super(msg, t);
     }
