@@ -6,7 +6,7 @@ import com.server.Dotori.model.member.dto.MemberLoginDto;
 import com.server.Dotori.model.member.dto.MemberPasswordDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
-import com.server.Dotori.util.CurrentUserUtil;
+import com.server.Dotori.util.CurrentMemberUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,8 +43,8 @@ public class MemberServiceTest {
     void signup(){
         // given
         MemberDto memberDto = MemberDto.builder()
-                .username("관리자")
-                .stdNum("1111")
+                .memberName("관리자")
+                .stuNum("1111")
                 .password("1234")
                 .email("s20000@gsm.hs.kr")
                 .build();
@@ -59,11 +59,11 @@ public class MemberServiceTest {
 
     @BeforeEach
     @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
-    void currentUser() {
+    void currentMember() {
         //given
         MemberDto memberDto = MemberDto.builder()
-                .username("노경준")
-                .stdNum("2206")
+                .memberName("노경준")
+                .stuNum("2206")
                 .password("1234")
                 .email("s20018@gsm.hs.kr")
                 .build();
@@ -73,7 +73,7 @@ public class MemberServiceTest {
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                memberDto.getUsername(),
+                memberDto.getEmail(),
                 memberDto.getPassword(),
                 List.of(new SimpleGrantedAuthority(Role.ROLE_ADMIN.name())));
         SecurityContext context = SecurityContextHolder.getContext();
@@ -82,8 +82,8 @@ public class MemberServiceTest {
         System.out.println(context);
 
         //then
-        String currentUsername = CurrentUserUtil.getCurrentUserNickname();
-        assertEquals("노경준", currentUsername);
+        String currentEmail = CurrentMemberUtil.getCurrentEmail();
+        assertEquals("s20018@gsm.hs.kr", currentEmail);
     }
 
     @Test
@@ -100,7 +100,7 @@ public class MemberServiceTest {
 
         // then
         assertNotNull(result);
-        assertThat(result.get("username")).isEqualTo(memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow().getUsername());
+        assertThat(result.get("email")).isEqualTo(memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow().getEmail());
     }
 
     @Test

@@ -113,7 +113,7 @@ class StuInfoServiceTest {
 
     @Test
     @DisplayName("이름이 잘 변경되나요?")
-    public void updateUsernameTest() {
+    public void updateMemberNameTest() {
         //given //when
         stuInfoService.updateMemberName(
                 MemberNameUpdateDto.builder()

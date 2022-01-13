@@ -89,17 +89,17 @@ public class AdminStuInfoController {
 
     /**
      * 학생 정보 변경 - 이름 변경
-     * @param memberNameUpdateDto (receiverId, username)
+     * @param memberNameUpdateDto (receiverId, memberName)
      * @return CommonResult - SuccessResult
      */
-    @PutMapping("/info/username")
+    @PutMapping("/info/membername")
     @ResponseStatus( HttpStatus.OK )
     @ApiOperation(value = "이름 변경", notes = "이름 변경")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateUsernameAdmin(@RequestBody MemberNameUpdateDto memberNameUpdateDto) {
+    public CommonResult updateMemberNameAdmin(@RequestBody MemberNameUpdateDto memberNameUpdateDto) {
         stuInfoService.updateMemberName(memberNameUpdateDto);
         return responseService.getSuccessResult();
     }

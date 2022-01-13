@@ -17,16 +17,16 @@ public class SecurityTest {
     @Test
     public void tokenTest() {
         MemberDto memberDto = new MemberDto();
-        memberDto.setUsername("노경준");
+        memberDto.setMemberName("노경준");
         memberDto.setStuNum("2206");
         memberDto.setPassword("1234");
-        memberDto.setEmail("shrudwns@naver.com");
+        memberDto.setEmail("s20018@gsm.hs.kr");
 
-        String accessToken = jwtTokenProvider.createToken(memberDto.getUsername(), memberDto.toEntity().getRoles());
+        String accessToken = jwtTokenProvider.createToken(memberDto.getEmail(), memberDto.toEntity().getRoles());
         // 유효한 토큰인지 확인
         if (accessToken != null && jwtTokenProvider.validateToken(accessToken)){
-            String nickname = jwtTokenProvider.getUsername(accessToken);
-            Assertions.assertThat(nickname).isEqualTo("노경준");
+            String email = jwtTokenProvider.getEmail(accessToken);
+            Assertions.assertThat(email).isEqualTo("s20018@gsm.hs.kr");
         }
     }
 }
