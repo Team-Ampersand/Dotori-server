@@ -45,11 +45,11 @@ public class MusicServiceImpl implements MusicService {
     public Music musicApplication(MusicApplicationDto musicApplicationDto, DayOfWeek dayOfWeek) {
         if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY) throw new MusicCantRequestDateException();
 
-        Member currentUser = currentMemberUtil.getCurrentMember();
+        Member currentMember = currentMemberUtil.getCurrentMember();
 
-        if (currentUser.getMusic() == CAN) {
-            Music music = musicRepository.save(musicApplicationDto.saveToEntity(currentUser));
-            currentUser.updateMusic(APPLIED);
+        if (currentMember.getMusic() == CAN) {
+            Music music = musicRepository.save(musicApplicationDto.saveToEntity(currentMember));
+            currentMember.updateMusic(APPLIED);
             return music;
 
         } else {
