@@ -50,7 +50,7 @@ class SelfStudyServiceTest {
         //given
         MemberDto memberDto = MemberDto.builder()
                 .memberName("배태현")
-                .stdNum("2409")
+                .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
                 .build();
@@ -151,7 +151,7 @@ class SelfStudyServiceTest {
         memberRepository.save(
                 Member.builder()
                         .memberName("qoxogus1")
-                        .stdNum("2410")
+                        .stuNum("2410")
                         .password("1234")
                         .email("s20033@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
@@ -164,7 +164,7 @@ class SelfStudyServiceTest {
         memberRepository.save(
                 Member.builder()
                         .memberName("qwer")
-                        .stdNum("2408")
+                        .stuNum("2408")
                         .password("1234")
                         .email("s20031@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
@@ -177,7 +177,7 @@ class SelfStudyServiceTest {
         memberRepository.save(
                 Member.builder()
                         .memberName("rewq")
-                        .stdNum("2407")
+                        .stuNum("2407")
                         .password("1234")
                         .email("s20030@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))

@@ -38,7 +38,7 @@ class StuInfoServiceTest {
         //given
         MemberDto memberDto = MemberDto.builder()
                 .memberName("배태현")
-                .stdNum("2409")
+                .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
                 .build();
@@ -108,7 +108,7 @@ class StuInfoServiceTest {
         );
 
         //then
-        assertEquals("1111", memberRepository.findById(currentMemberUtil.getCurrentMember().getId()).get().getStdNum());
+        assertEquals("1111", memberRepository.findById(currentMemberUtil.getCurrentMember().getId()).get().getStuNum());
     }
 
     @Test

@@ -34,7 +34,7 @@ class CurrentMemberUtilTest {
         //given
         MemberDto memberDto = MemberDto.builder()
                 .memberName("노경준")
-                .stdNum("2206")
+                .stuNum("2206")
                 .password("1234")
                 .email("s20018@gmail.com")
                 .build();
@@ -61,7 +61,7 @@ class CurrentMemberUtilTest {
         //given
         MemberDto memberDto = MemberDto.builder()
                 .memberName("노경준")
-                .stdNum("2206")
+                .stuNum("2206")
                 .password("1234")
                 .email("s20018@gmail.com")
                 .build();
