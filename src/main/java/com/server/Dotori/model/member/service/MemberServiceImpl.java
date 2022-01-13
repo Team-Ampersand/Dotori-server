@@ -19,7 +19,6 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -45,7 +44,7 @@ public class MemberServiceImpl implements MemberService {
         String email = memberDto.getEmail();
         try {
             if(!emailCertificateRepository.existsByEmail(email)){
-                if (!memberRepository.existsByEmailAndStdNum(email, memberDto.getStdNum())) {
+                if (!memberRepository.existsByEmailAndStuNum(email, memberDto.getStuNum())) {
                     memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
                     Member result = memberRepository.save(memberDto.toEntity());
                     return result.getId();

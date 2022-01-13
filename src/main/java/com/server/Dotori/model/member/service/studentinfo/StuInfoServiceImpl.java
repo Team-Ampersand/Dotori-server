@@ -95,7 +95,7 @@ public class StuInfoServiceImpl implements StuInfoService {
         Member findMember = memberRepository.findById(stuNumUpdateDto.getReceiverId())
                 .orElseThrow(() -> new UserNotFoundException());
 
-        if (memberRepository.existsByStdNum(stuNumUpdateDto.getStuNum()))
+        if (memberRepository.existsByStuNum(stuNumUpdateDto.getStuNum()))
             throw new UserAlreadyJoinThisStunumException();
 
         findMember.updateStuNum(stuNumUpdateDto.getStuNum());

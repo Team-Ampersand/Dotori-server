@@ -49,7 +49,7 @@ class BoardServiceTest {
         //given
         MemberDto memberDto = MemberDto.builder()
                 .memberName("배태현")
-                .stdNum("2409")
+                .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
                 .build();

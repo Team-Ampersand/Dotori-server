@@ -48,15 +48,15 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new SelfStudyCantRequestDateException();
         if (!(hour >= 20 && hour < 21)) throw new SelfStudyCantRequestTimeException(); // 20시(8시)부터 21시(9시 (8시 59분)) 사이가 아니라면 자습신청 불가능
 
-        Member currentUser = currentMemberUtil.getCurrentMember();
+        Member currentMember = currentMemberUtil.getCurrentMember();
         long count = selfStudyRepository.count();
 
         if (count < 50){
-            if (currentUser.getSelfStudy() == CAN) {
-                currentUser.updateSelfStudy(APPLIED);
+            if (currentMember.getSelfStudy() == CAN) {
+                currentMember.updateSelfStudy(APPLIED);
 
                 selfStudyRepository.save(com.server.Dotori.model.member.SelfStudy.builder()
-                        .member(currentUser)
+                        .member(currentMember)
                         .build());
 
                 log.info("Current Self Study Student Count is {}", count+1);
@@ -84,12 +84,12 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new SelfStudyCantCancelDateException();
         if (!(hour >= 20 && hour < 21)) throw new SelfStudyCantCancelTimeException(); // 20시(8시)부터 21시(9시 (8시 59분)) 사이가 아니라면 자습신청 취소 불가능
 
-        Member currentUser = currentMemberUtil.getCurrentMember();
+        Member currentMember = currentMemberUtil.getCurrentMember();
         long count = selfStudyRepository.count();
 
-        if (currentUser.getSelfStudy() == APPLIED) {
-            currentUser.updateSelfStudy(CANT);
-            selfStudyRepository.deleteByMemberId(currentUser.getId());
+        if (currentMember.getSelfStudy() == APPLIED) {
+            currentMember.updateSelfStudy(CANT);
+            selfStudyRepository.deleteByMemberId(currentMember.getId());
             log.info("Current Self Study Student Count is {}", count-1);
         } else
             throw new SelfStudyCantChangeException();

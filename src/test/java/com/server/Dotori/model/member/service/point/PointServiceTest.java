@@ -46,7 +46,7 @@ class PointServiceTest {
         //given
         MemberDto memberDto = MemberDto.builder()
                 .memberName("배태현")
-                .stdNum("2409")
+                .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
                 .build();
@@ -76,7 +76,7 @@ class PointServiceTest {
         memberRepository.save(
                 Member.builder()
                         .memberName("qoxoqoxo")
-                        .stdNum("2420")
+                        .stuNum("2420")
                         .password("1234")
                         .email("s20043@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_MEMBER))
@@ -107,7 +107,7 @@ class PointServiceTest {
         memberRepository.save(
                 Member.builder()
                         .memberName("qoxoqoxo")
-                        .stdNum("1120")
+                        .stuNum("1120")
                         .password("1234")
                         .email("s20013@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_MEMBER))
@@ -120,7 +120,7 @@ class PointServiceTest {
         memberRepository.save(
                 Member.builder()
                         .memberName("qoxoqoxoqoxo")
-                        .stdNum("1119")
+                        .stuNum("1119")
                         .password("1234")
                         .email("s20083@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_MEMBER))

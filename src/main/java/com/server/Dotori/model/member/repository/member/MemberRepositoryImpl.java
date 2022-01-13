@@ -28,12 +28,12 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         return queryFactory.from(member)
                 .select(Projections.fields(SelfStudyStudentsDto.class,
                         member.id,
-                        member.stdNum,
+                        member.stuNum,
                         member.memberName)
                 ).where(
                         member.selfStudy.eq(SelfStudy.APPLIED)
                 )
-                .orderBy(member.stdNum.asc())
+                .orderBy(member.stuNum.asc())
                 .fetch();
     }
 
@@ -48,13 +48,13 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         return queryFactory.from(member)
                 .select(Projections.fields(SelfStudyStudentsDto.class,
                         member.id,
-                        member.stdNum,
+                        member.stuNum,
                         member.memberName))
                 .where(
                         member.selfStudy.eq(SelfStudy.APPLIED)
-                        .and(member.stdNum.like(id+"%"))
+                        .and(member.stuNum.like(id+"%"))
                 )
-                .orderBy(member.stdNum.asc())
+                .orderBy(member.stuNum.asc())
                 .fetch();
     }
 
@@ -86,12 +86,12 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         return queryFactory.from(member)
                 .select(Projections.constructor(GetAboutPointDto.class,
                         member.id,
-                        member.stdNum,
+                        member.stuNum,
                         member.memberName,
                         member.point
                         ))
-                .where(member.stdNum.like(id+"%"))
-                .orderBy(member.stdNum.asc())
+                .where(member.stuNum.like(id+"%"))
+                .orderBy(member.stuNum.asc())
                 .fetch();
     }
 
@@ -106,7 +106,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         return queryFactory.from(member)
                 .select(Projections.constructor(GetAboutPointDto.class,
                         member.id,
-                        member.stdNum,
+                        member.stuNum,
                         member.memberName,
                         member.point
                 ))
@@ -124,8 +124,8 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     public List<Member> findStudentInfo(Long id) {
         return queryFactory.from(member)
                 .select(member)
-                .where(member.stdNum.like(id+"%"))
-                .orderBy(member.stdNum.asc())
+                .where(member.stuNum.like(id+"%"))
+                .orderBy(member.stuNum.asc())
                 .fetch();
     }
 
@@ -138,7 +138,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     public List<Member> findAllStudentInfo() {
         return queryFactory.from(member)
                 .select(member)
-                .orderBy(member.stdNum.asc())
+                .orderBy(member.stuNum.asc())
                 .fetch();
     }
 }
