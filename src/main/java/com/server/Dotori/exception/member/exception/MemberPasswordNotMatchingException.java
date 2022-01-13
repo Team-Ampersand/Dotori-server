@@ -1,14 +1,14 @@
 package com.server.Dotori.exception.member.exception;
 
-public class UserPasswordNotMatchingException extends RuntimeException{
+public class MemberPasswordNotMatchingException extends RuntimeException{
 
-    public UserPasswordNotMatchingException(String msg, Throwable t){
+    public MemberPasswordNotMatchingException(String msg, Throwable t){
         super(msg, t);
     }
-    public UserPasswordNotMatchingException(String msg){
+    public MemberPasswordNotMatchingException(String msg){
         super(msg);
     }
-    public UserPasswordNotMatchingException(){
+    public MemberPasswordNotMatchingException(){
         super();
     }
 }

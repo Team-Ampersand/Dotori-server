@@ -8,53 +8,53 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 public interface MemberExceptionHandler {
 
-    String USER_NOT_FOUND = "user-not-found";
-    String USER_ALREADY = "user-already";
-    String USER_PASSWORD_NOT_MATCHING = "user-password-not-matching";
-    String USER_NOT_FOUND_BY_CLASS = "user-not-found-by-class";
-    String USER_AUTHENTICATION_ANSWER_NOT_MATCHING = "user-authentication-answer-not-matching";
-    String USER_AUTHENTICATION_KEY_NOT_MATCHING = "user-authentication-key-not-matching";
-    String USER_ALREADY_JOIN_THIS_STUNUM = "user-already-join-this-stunum";
-    String USER_ALREADY_JOIN_THIS_NAME = "user-already-join-this-name";
-    String USER_NO_INFORMATION = "user-no-information";
+    String MEMBER_NOT_FOUND = "member-not-found";
+    String MEMBER_ALREADY = "member-already";
+    String MEMBER_PASSWORD_NOT_MATCHING = "member-password-not-matching";
+    String MEMBER_NOT_FOUND_BY_CLASS = "member-not-found-by-class";
+    String MEMBER_AUTHENTICATION_ANSWER_NOT_MATCHING = "member-authentication-answer-not-matching";
+    String MEMBER_AUTHENTICATION_KEY_NOT_MATCHING = "member-authentication-key-not-matching";
+    String MEMBER_ALREADY_JOIN_THIS_STUNUM = "member-already-join-this-stunum";
+    String MEMBER_ALREADY_JOIN_THIS_NAME = "member-already-join-this-name";
+    String MEMBER_NO_INFORMATION = "member-no-information";
     String OVER_CERTIFICATE_TIME = "over-certificate-time";
     String EMAIL_HAS_NOT_BEEN_CERTIFICATE = "email-has-not-been-certificate";
 
-    @ExceptionHandler(UserNotFoundException.class)
+    @ExceptionHandler(MemberNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    CommonResult userNotFoundException(UserNotFoundException ex);
+    CommonResult memberNotFoundException(MemberNotFoundException ex);
 
-    @ExceptionHandler(UserAlreadyException.class)
+    @ExceptionHandler(MemberAlreadyException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    CommonResult userAlreadyException(UserAlreadyException ex);
+    CommonResult memberAlreadyException(MemberAlreadyException ex);
 
-    @ExceptionHandler(UserPasswordNotMatchingException.class)
+    @ExceptionHandler(MemberPasswordNotMatchingException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    CommonResult userPasswordNotMatchingException(UserPasswordNotMatchingException ex);
+    CommonResult memberPasswordNotMatchingException(MemberPasswordNotMatchingException ex);
 
-    @ExceptionHandler(UserNotFoundByClassException.class)
+    @ExceptionHandler(MemberNotFoundByClassException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    CommonResult userNotFoundByClassException(UserNotFoundByClassException ex);
+    CommonResult memberNotFoundByClassException(MemberNotFoundByClassException ex);
 
-    @ExceptionHandler(UserAuthenticationAnswerNotMatchingException.class)
+    @ExceptionHandler(MemberAuthenticationAnswerNotMatchingException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    CommonResult userAuthenticationAnswerNotMatchingException(UserAuthenticationAnswerNotMatchingException ex);
+    CommonResult memberAuthenticationAnswerNotMatchingException(MemberAuthenticationAnswerNotMatchingException ex);
 
-    @ExceptionHandler(UserAuthenticationKeyNotMatchingException.class)
+    @ExceptionHandler(MemberAuthenticationKeyNotMatchingException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    CommonResult userAuthenticationKeyNotMatchingException(UserAuthenticationKeyNotMatchingException ex);
+    CommonResult memberAuthenticationKeyNotMatchingException(MemberAuthenticationKeyNotMatchingException ex);
 
-    @ExceptionHandler(UserAlreadyJoinThisNameException.class)
+    @ExceptionHandler(MemberAlreadyJoinThisNameException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    CommonResult userAlreadyJoinThisNameException(UserAlreadyJoinThisNameException ex);
+    CommonResult memberAlreadyJoinThisNameException(MemberAlreadyJoinThisNameException ex);
 
-    @ExceptionHandler(UserAlreadyJoinThisStunumException.class)
+    @ExceptionHandler(MemberAlreadyJoinThisStunumException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
-    CommonResult userAlreadyJoinThisStunumException(UserAlreadyJoinThisStunumException ex);
+    CommonResult memberAlreadyJoinThisStunumException(MemberAlreadyJoinThisStunumException ex);
 
-    @ExceptionHandler(UserNoInformationException.class)
+    @ExceptionHandler(MemberNoInformationException.class)
     @ResponseStatus(HttpStatus.ACCEPTED)
-    CommonResult userNoInformationException(UserNoInformationException ex);
+    CommonResult memberNoInformationException(MemberNoInformationException ex);
 
     @ExceptionHandler(OverCertificateTimeException.class)
     @ResponseStatus(HttpStatus.ACCEPTED)

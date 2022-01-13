@@ -1,13 +1,13 @@
 package com.server.Dotori.exception.member.exception;
 
-public class UserNotFoundByClassException extends RuntimeException {
-    public UserNotFoundByClassException(String msg, Throwable t) {
+public class MemberNotFoundByClassException extends RuntimeException {
+    public MemberNotFoundByClassException(String msg, Throwable t) {
         super(msg, t);
     }
-    public UserNotFoundByClassException(String msg) {
+    public MemberNotFoundByClassException(String msg) {
         super(msg);
     }
-    public UserNotFoundByClassException() {
+    public MemberNotFoundByClassException() {
         super();
     }
 }

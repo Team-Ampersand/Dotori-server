@@ -1,6 +1,6 @@
-package com.server.Dotori.exception.user;
+package com.server.Dotori.exception.member;
 
-import com.server.Dotori.exception.user.exception.*;
+import com.server.Dotori.exception.member.exception.*;
 import com.server.Dotori.response.result.CommonResult;
 import com.server.Dotori.util.ExceptionResponseObjectUtil;
 import lombok.RequiredArgsConstructor;
@@ -13,62 +13,62 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RequiredArgsConstructor
 @RestControllerAdvice
-public class UserExceptionHandlerImpl implements UserExceptionHandler {
+public class MemberExceptionHandlerImpl implements MemberExceptionHandler {
 
     private final ExceptionResponseObjectUtil exceptionResponseObjectUtil;
 
     @Override
-    public CommonResult userNotFoundException(UserNotFoundException ex) {
-        log.debug("=== User NotFound Exception 발생 ===");
-        return exceptionResponseObjectUtil.getExceptionResponseObject(USER_NOT_FOUND);
+    public CommonResult memberNotFoundException(MemberNotFoundException ex) {
+        log.debug("=== Member NotFound Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(MEMBER_NOT_FOUND);
     }
 
     @Override
-    public CommonResult userAlreadyException(UserAlreadyException ex) {
-        log.debug("=== User Already Exception 발생 ===");
-        return exceptionResponseObjectUtil.getExceptionResponseObject(USER_ALREADY);
+    public CommonResult memberAlreadyException(MemberAlreadyException ex) {
+        log.debug("=== Member Already Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(MEMBER_ALREADY);
     }
 
     @Override
-    public CommonResult userPasswordNotMatchingException(UserPasswordNotMatchingException ex) {
-        log.debug("=== User Password Not Matching Exception 발생 ===");
-        return exceptionResponseObjectUtil.getExceptionResponseObject(USER_PASSWORD_NOT_MATCHING);
+    public CommonResult memberPasswordNotMatchingException(MemberPasswordNotMatchingException ex) {
+        log.debug("=== Member Password Not Matching Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(MEMBER_PASSWORD_NOT_MATCHING);
     }
 
     @Override
-    public CommonResult userNotFoundByClassException(UserNotFoundByClassException ex) {
-        log.debug("=== User NotFound By Class Exception 발생 ===");
-        return exceptionResponseObjectUtil.getExceptionResponseObject(USER_NOT_FOUND_BY_CLASS);
+    public CommonResult memberNotFoundByClassException(MemberNotFoundByClassException ex) {
+        log.debug("=== Member NotFound By Class Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(MEMBER_NOT_FOUND_BY_CLASS);
     }
 
     @Override
-    public CommonResult userAuthenticationAnswerNotMatchingException(UserAuthenticationAnswerNotMatchingException ex) {
-        log.debug("=== User Authentication Answer Not Matching Exception 발생 ===");
-        return exceptionResponseObjectUtil.getExceptionResponseObject(USER_AUTHENTICATION_ANSWER_NOT_MATCHING);
+    public CommonResult memberAuthenticationAnswerNotMatchingException(MemberAuthenticationAnswerNotMatchingException ex) {
+        log.debug("=== Member Authentication Answer Not Matching Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(MEMBER_AUTHENTICATION_ANSWER_NOT_MATCHING);
     }
 
     @Override
-    public CommonResult userAuthenticationKeyNotMatchingException(UserAuthenticationKeyNotMatchingException ex) {
-        log.debug("=== User Authentication Key Not Matching Exception 발생 ===");
-        return exceptionResponseObjectUtil.getExceptionResponseObject(USER_AUTHENTICATION_KEY_NOT_MATCHING);
+    public CommonResult memberAuthenticationKeyNotMatchingException(MemberAuthenticationKeyNotMatchingException ex) {
+        log.debug("=== Member Authentication Key Not Matching Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(MEMBER_AUTHENTICATION_KEY_NOT_MATCHING);
     }
 
     @Override
-    public CommonResult userAlreadyJoinThisNameException(UserAlreadyJoinThisNameException ex) {
-        log.debug("=== User Already Join This Name Exception 발생 ===");
-        return exceptionResponseObjectUtil.getExceptionResponseObject(USER_ALREADY_JOIN_THIS_NAME);
+    public CommonResult memberAlreadyJoinThisNameException(MemberAlreadyJoinThisNameException ex) {
+        log.debug("=== Member Already Join This Name Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(MEMBER_ALREADY_JOIN_THIS_NAME);
     }
 
     @Override
-    public CommonResult userAlreadyJoinThisStunumException(UserAlreadyJoinThisStunumException ex) {
-        log.debug("=== User Already Join This Stunum Exception 발생 ===");
-        return exceptionResponseObjectUtil.getExceptionResponseObject(USER_ALREADY_JOIN_THIS_STUNUM);
+    public CommonResult memberAlreadyJoinThisStunumException(MemberAlreadyJoinThisStunumException ex) {
+        log.debug("=== Member Already Join This Stunum Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(MEMBER_ALREADY_JOIN_THIS_STUNUM);
     }
 
     @Override
-    public CommonResult userNoInformationException(UserNoInformationException ex) {
-        log.debug("=== User No Information Exception 발생 ===");
-        return exceptionResponseObjectUtil.getExceptionResponseObject(USER_NO_INFORMATION);
+    public CommonResult memberNoInformationException(MemberNoInformationException ex) {
+        log.debug("=== Member No Information Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(MEMBER_NO_INFORMATION);
     }
 
     @Override

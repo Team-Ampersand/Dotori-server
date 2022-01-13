@@ -1,6 +1,6 @@
-package com.server.Dotori.exception.user.controller;
+package com.server.Dotori.exception.member.controller;
 
-import com.server.Dotori.exception.user.exception.*;
+import com.server.Dotori.exception.member.exception.*;
 import com.server.Dotori.response.result.CommonResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,51 +8,51 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/exception")
-public class UserExceptionController {
+public class MemberExceptionController {
 
     @GetMapping("/user-not-found")
     public CommonResult userNotFoundException(){
-        throw new UserNotFoundException();
+        throw new MemberNotFoundException();
     }
 
     @GetMapping("/user-already")
     public CommonResult userAlreadyException(){
-        throw new UserAlreadyException();
+        throw new MemberAlreadyException();
     }
 
     @GetMapping("/user-password-not-matching")
     public CommonResult userPasswordNotMatchingException(){
-        throw new UserPasswordNotMatchingException();
+        throw new MemberPasswordNotMatchingException();
     }
 
     @GetMapping("/user-not-found-by-class")
     public CommonResult userNotFoundByClassException(){
-        throw new UserNotFoundByClassException();
+        throw new MemberNotFoundByClassException();
     }
 
     @GetMapping("/user-authentication-answer-not-matching")
     public CommonResult userAuthenticationAnswerNotMatchingException() {
-        throw new UserAuthenticationAnswerNotMatchingException();
+        throw new MemberAuthenticationAnswerNotMatchingException();
     }
 
     @GetMapping("/user-authentication-key-not-matching")
     public CommonResult userAuthenticationKeyNotMatchingException() {
-        throw new UserAuthenticationKeyNotMatchingException();
+        throw new MemberAuthenticationKeyNotMatchingException();
     }
 
     @GetMapping("/user-already-join-this-name")
     public CommonResult userAlreadyJoinThisNameException() {
-        throw new UserAlreadyJoinThisNameException();
+        throw new MemberAlreadyJoinThisNameException();
     }
 
     @GetMapping("/user-already-join-this-stunum")
     public CommonResult userAlreadyJoinThisStunumException() {
-        throw new UserAlreadyJoinThisStunumException();
+        throw new MemberAlreadyJoinThisStunumException();
     }
 
     @GetMapping("/user-no-information")
     public CommonResult userNoInformationException() {
-        throw new UserNoInformationException();
+        throw new MemberNoInformationException();
     }
 
     @GetMapping("/over-certificate-time")
