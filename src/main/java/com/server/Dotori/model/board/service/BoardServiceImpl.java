@@ -34,13 +34,13 @@ public class BoardServiceImpl implements BoardService {
      */
     @Override
     public Board createBoard(BoardDto boardDto, MultipartFile multipartFileList) {
-        Member currentUser = currentMemberUtil.getCurrentMember();
+        Member currentMember = currentMemberUtil.getCurrentMember();
         String uploadFile = null;
         try {
             uploadFile = s3Service.uploadFile(multipartFileList);
-            return boardRepository.save(boardDto.saveToEntity(currentUser, uploadFile));
+            return boardRepository.save(boardDto.saveToEntity(currentMember, uploadFile));
         } catch (NullPointerException e) {
-            return boardRepository.save(boardDto.saveToEntity(currentUser, uploadFile));
+            return boardRepository.save(boardDto.saveToEntity(currentMember, uploadFile));
         }
     }
 
