@@ -2,7 +2,7 @@ package com.server.Dotori.model.rule.enumType;
 
 public enum Rule {
     FIREARMS1, WEAPON1, ALCOHOL1, TOBACCO1, MEANDERING_APPARATUS1,
-    FIREARMS2, WEAPON2, ALCOHOL12, TOBACCO2, MEANDERING_APPARATUS2, FOOD,       // 1. 금지 물품 반입
+    FIREARMS2, WEAPON2, ALCOHOL2, TOBACCO2, MEANDERING_APPARATUS2, FOOD,       // 1. 금지 물품 반입
 
     MANAGER_GUIDANCE1, MANAGER_GUIDANCE2,                                       // 2. 사감 지도 불이행
 
