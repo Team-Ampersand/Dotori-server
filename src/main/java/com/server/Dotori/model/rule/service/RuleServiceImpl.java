@@ -23,12 +23,10 @@ public class RuleServiceImpl implements RuleService{
 
     @Override
     public void grant(RuleGrantDto ruleGrantDto) {
-        List<Member> members = new ArrayList<>();
         List<RuleViolation> ruleViolations = new ArrayList<>();
 
-        for (Long memberId : ruleGrantDto.getMemberId()){
-            Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId + " 번 학생을 찾을 수 없습니다."));
-            members.add(member);
+        for (String stuNum : ruleGrantDto.getStuNum()){
+            Member member = memberRepository.findByStuNum(stuNum).orElseThrow(() -> new MemberNotFoundException());
             ruleViolations.add(ruleGrantDto.toEntity(member,ruleGrantDto.getRule()));
         }
 
