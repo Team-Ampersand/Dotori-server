@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 public class RuleGrantDto {
 
-    private List<Long> memberId;
+    private List<String> stuNum;
     private Rule rule;
 
     public RuleViolation toEntity(Member member, Rule rule){
