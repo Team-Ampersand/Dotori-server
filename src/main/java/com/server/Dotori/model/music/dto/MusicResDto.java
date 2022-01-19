@@ -15,6 +15,7 @@ public class MusicResDto {
     private Long id;
     private String url;
     private String memberName;
+    private String email;
 
     @CreatedDate
     private LocalDateTime createdDate;

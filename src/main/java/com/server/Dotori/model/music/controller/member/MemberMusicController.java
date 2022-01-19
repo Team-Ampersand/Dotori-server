@@ -96,4 +96,21 @@ public class MemberMusicController {
     public SingleResult<List<MusicResDto>> findDateMusicMember(@RequestBody DateMusicDto dateMusicDto) {
         return responseService.getSingleResult(musicService.getDateMusic(dateMusicDto.getDate()));
     }
+
+    /**
+     * 음악신청 목록 개별 삭제 컨트롤러
+     * @param id id
+     * @return CommonResult - SuccessResult
+     */
+    @DeleteMapping("/music/{id}")
+    @ResponseStatus (HttpStatus.OK )
+    @ApiOperation(value = "음악 신청목록 개별 삭제", notes = "음악 신청목록 개별 삭제")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public CommonResult deleteMusicAdmin(@PathVariable("id") Long id) {
+        musicService.deleteMusic(id);
+        return responseService.getSuccessResult();
+    }
 }
