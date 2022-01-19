@@ -104,6 +104,7 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
                         music.createdDate
                 ))
                 .from(music)
+                .innerJoin(music.member, member)
                 .where(music.createdDate.stringValue().like(date+"%"))
                 .orderBy(music.createdDate.asc())
                 .fetch();
