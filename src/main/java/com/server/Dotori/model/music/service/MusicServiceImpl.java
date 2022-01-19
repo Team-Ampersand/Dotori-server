@@ -92,16 +92,18 @@ public class MusicServiceImpl implements MusicService {
      * @author 배태현
      */
     @Override
+    @Transactional
     public void deleteMusic(Long musicId) {
         Music music = musicRepository.findById(musicId)
                 .orElseThrow(() -> new MusicNotFoundException());
 
         musicRepository.deleteById(music.getId());
+        music.getMember().updateMusic(CAN);
     }
 
     /**
      * 날짜별로 신청된 음악을 조회하는 서비스 로직 (로그인 된 유저 사용가능)
-     * @param date date (2022-01-05)
+     * @param date date (2022-01-05 같은 형식)
      * @return
      */
     @Override
