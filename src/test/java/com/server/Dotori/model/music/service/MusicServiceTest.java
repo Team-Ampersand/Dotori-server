@@ -23,7 +23,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -121,7 +120,7 @@ class MusicServiceTest {
         musicRepository.saveAll(musicList);
 
         //when
-        List<MusicResDto> getAllMusic = musicService.getAllMusic();
+        List<MusicResDto> getAllMusic = musicService.getAllMusic(null);
 
         //then
         assertEquals(getAllMusic.size(), 30);
@@ -202,38 +201,5 @@ class MusicServiceTest {
         assertEquals(CAN, memberRepository.findByEmail("s20033@gsm.hs.kr").get().getMusic());
         assertEquals(CAN, memberRepository.findByEmail("s20031@gsm.hs.kr").get().getMusic());
         assertEquals(CAN, memberRepository.findByEmail("s20030@gsm.hs.kr").get().getMusic()); //이 회원은 그대로 CAN
-    }
-
-    @Test
-    @DisplayName("오늘 신청된 음악이 잘 조회 되나요 ?")
-    public void findCurrentDateMusic() {
-        //given //when
-        String localDate = LocalDate.now().toString();
-
-        Music music = musicService.musicApplication(
-                MusicApplicationDto.builder()
-                        .musicUrl("https://www.youtube.com/watch?v=6h9qmKWK6Io")
-                        .build(),
-                DayOfWeek.MONDAY // 월요일
-        );
-
-        //then
-        List<MusicResDto> currentDateMusic = musicService.getCurrentDateMusic();
-        assertEquals(localDate, currentDateMusic.get(0).getCreatedDate().toString().substring(0, 10));
-    }
-
-    @Test
-    @DisplayName("해당 날짜에 신청된 음악이 잘 조회되나요 ?")
-    public void findDateMusic() {
-        musicService.musicApplication(
-                MusicApplicationDto.builder()
-                        .musicUrl("https://www.youtube.com/watch?v=6h9qmKWK6Io")
-                        .build(),
-                DayOfWeek.MONDAY // 월요일
-        );
-
-        LocalDate date = LocalDate.now();
-
-        assertEquals(1, musicService.getDateMusic(date).size());
     }
 }
