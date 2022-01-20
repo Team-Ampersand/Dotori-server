@@ -124,6 +124,6 @@ public class RuleServiceTest {
         HashMap<Rule, RulesCntAndDatesDto> violationOfTheRules = ruleService.findViolationOfTheRules("2206");
 
         // then
-        org.assertj.core.api.Assertions.assertThat(violationOfTheRules.get(Rule.FIREARMS1).getCnt()).isEqualTo(1);
+        assertThat(violationOfTheRules.get(Rule.FIREARMS1).getCnt()).isEqualTo(1);
     }
 }
