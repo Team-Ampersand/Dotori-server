@@ -3,7 +3,6 @@ package com.server.Dotori.model.music.service;
 import com.server.Dotori.exception.music.exception.*;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.music.Music;
-import com.server.Dotori.model.music.dto.DateMusicDto;
 import com.server.Dotori.model.music.dto.MusicApplicationDto;
 import com.server.Dotori.model.music.dto.MusicResDto;
 import com.server.Dotori.model.music.repository.MusicRepository;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.server.Dotori.model.member.enumType.Music.*;
@@ -58,31 +56,27 @@ public class MusicServiceImpl implements MusicService {
     }
 
     /**
-     * 신청된 모든 음악을 조회하는 서비스 로직 (로그인된 유저 사용가능)
+     * 신청된 모든 음악을 조회하는 서비스 로직 (로그인된 유저 사용가능) <br>
+     * 쿼리 파라미터로 날짜가 넘어왔다면 해당 날짜에 신청된 음악목록을 조회한다.
      * @exception MusicNotAppliedException 신청된 음악이 없을 때
      * @return List-MusicResDto
      * @author 배태현
+     * @param date
      */
     @Override
-    public List<MusicResDto> getAllMusic() {
-        List<MusicResDto> allMusic = musicRepository.findAllMusic();
+    public List<MusicResDto> getAllMusic(LocalDate date) {
+        List<MusicResDto> musicList = null;
 
-        if (allMusic.isEmpty()) throw new MusicNotAppliedException();
-        else return allMusic;
-    }
+        try {
+            if (!date.equals(null)) {
+                musicList = musicRepository.findDateMusic(date);
+            }
+        } catch (NullPointerException e) {
+            musicList = musicRepository.findAllMusic();
+        }
 
-    /**
-     * 오늘 신청된 음악 목록들을 조회하는 서비스 로직 (로그인 된 유저 사용가능)
-     * @exception MusicTodayNotRequestedException 오늘 신청 된 음악이 없을 때
-     * @return List-MusicResDto
-     * @author 배태현
-     */
-    @Override
-    public List<MusicResDto> getCurrentDateMusic() {
-        List<MusicResDto> currentDateMusics = musicRepository.findCurrentDateMusic(LocalDate.now());
-
-        if (currentDateMusics.isEmpty()) throw new MusicTodayNotRequestedException();
-        else return currentDateMusics;
+        if (musicList.isEmpty()) throw new MusicNotAppliedException();
+        return musicList;
     }
 
     /**
@@ -99,19 +93,6 @@ public class MusicServiceImpl implements MusicService {
 
         musicRepository.deleteById(music.getId());
         music.getMember().updateMusic(CAN);
-    }
-
-    /**
-     * 날짜별로 신청된 음악을 조회하는 서비스 로직 (로그인 된 유저 사용가능)
-     * @param date date (2022-01-05 같은 형식)
-     * @return
-     */
-    @Override
-    public List<MusicResDto> getDateMusic(LocalDate date) {
-        List<MusicResDto> dateMusic = musicRepository.findDateMusic(date);
-
-        if (dateMusic.isEmpty()) throw new MusicNotRequestOnThatDateException();
-        return dateMusic;
     }
 
     /**

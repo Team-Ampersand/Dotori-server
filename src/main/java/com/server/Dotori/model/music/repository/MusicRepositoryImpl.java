@@ -58,6 +58,7 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
                         music.createdDate
                         ))
                 .from(music)
+                .innerJoin(music.member, member)
                 .orderBy(music.createdDate.asc())
                 .fetch();
     }
