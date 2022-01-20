@@ -8,7 +8,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder @Getter
 @Entity @Table(name = "RuleViolation")
 public class RuleViolation extends BaseTimeEntity {
