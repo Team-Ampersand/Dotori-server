@@ -1,5 +1,10 @@
 package com.server.Dotori.model.rule.enumType;
 
+import lombok.Getter;
+
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 public enum Rule {
     FIREARMS1, WEAPON1, ALCOHOL1, TOBACCO1, MEANDERING_APPARATUS1,
     FIREARMS2, WEAPON2, ALCOHOL2, TOBACCO2, MEANDERING_APPARATUS2, FOOD,       // 1. 금지 물품 반입
@@ -22,5 +27,6 @@ public enum Rule {
 
     VIOLATION_OF_STUDY_ROOM_RULES,                                              // 9. 학습실에서 면학분위기를 저해할 경우
 
-    OUTSIDER_ENTRY                                                              // 10. 외부인을 출입 시키는 경우
+    OUTSIDER_ENTRY;                                                              // 10. 외부인을 출입 시키는 경우
+
 }

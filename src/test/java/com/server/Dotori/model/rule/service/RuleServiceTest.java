@@ -4,7 +4,9 @@ import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.model.member.service.MemberService;
+import com.server.Dotori.model.rule.RuleViolation;
 import com.server.Dotori.model.rule.dto.RuleGrantDto;
+import com.server.Dotori.model.rule.dto.RulesCntAndDatesDto;
 import com.server.Dotori.model.rule.enumType.Rule;
 import com.server.Dotori.model.rule.repository.RuleRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -102,4 +105,25 @@ public class RuleServiceTest {
         );
     }
 
+    @Test
+    @DisplayName("기숙사 규정사항을 어긴 학생의 어떤 규정을 어겼는지 조회하는 테스트")
+    void findViolationOfTheRulesTest() {
+        // given
+        List<String> stuNumList = new ArrayList<>();
+        stuNumList.add("2206");
+        stuNumList.add("2212");
+
+        ruleService.grant(
+            RuleGrantDto.builder()
+                    .stuNum(stuNumList)
+                    .rule(Rule.FIREARMS1)
+                    .build()
+        );
+
+        // when
+        HashMap<Rule, RulesCntAndDatesDto> violationOfTheRules = ruleService.findViolationOfTheRules("2206");
+
+        // then
+        assertThat(violationOfTheRules.get(Rule.FIREARMS1).getCnt()).isEqualTo(1);
+    }
 }

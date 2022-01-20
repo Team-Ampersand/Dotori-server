@@ -1,19 +1,18 @@
 package com.server.Dotori.model.rule.controller;
 
 import com.server.Dotori.model.rule.dto.RuleGrantDto;
+import com.server.Dotori.model.rule.dto.RulesCntAndDatesDto;
+import com.server.Dotori.model.rule.enumType.Rule;
 import com.server.Dotori.model.rule.service.RuleService;
 import com.server.Dotori.response.ResponseService;
 import com.server.Dotori.response.result.CommonResult;
+import com.server.Dotori.response.result.SingleResult;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.HashMap;
 
 @RequiredArgsConstructor
 @RestController
@@ -30,6 +29,14 @@ public class RuleController {
     public CommonResult grant(@RequestBody RuleGrantDto ruleGrantDto){
         ruleService.grant(ruleGrantDto);
         return responseService.getSuccessResult();
+    }
+
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header"),
+    })
+    @GetMapping("/{stuNum}")
+    public SingleResult<HashMap<Rule, RulesCntAndDatesDto>> findViolationOfTheRules(@PathVariable("stuNum") String stuNum){
+        return responseService.getSingleResult(ruleService.findViolationOfTheRules(stuNum));
     }
 
 }

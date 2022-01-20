@@ -4,15 +4,15 @@ import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.model.rule.RuleViolation;
+import com.server.Dotori.model.rule.dto.FindRulesAndDatesDto;
 import com.server.Dotori.model.rule.dto.RuleGrantDto;
+import com.server.Dotori.model.rule.dto.RulesCntAndDatesDto;
+import com.server.Dotori.model.rule.enumType.Rule;
 import com.server.Dotori.model.rule.repository.RuleRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Service
@@ -34,4 +34,27 @@ public class RuleServiceImpl implements RuleService{
             ruleRepository.save(ruleViolation);
         }
     }
+
+    @Override
+    public HashMap<Rule, RulesCntAndDatesDto> findViolationOfTheRules(String stuNum) {
+        HashMap<Rule, RulesCntAndDatesDto> result = new LinkedHashMap<>();
+        List<FindRulesAndDatesDto> findRulesAndDatesDto = ruleRepository.findViolationOfTheRules(stuNum);
+
+        int cnt = 0;
+        for (Rule rule : Rule.values()) {
+            List<String> localDateTime = new LinkedList<>();
+            for (int i = 0; i < findRulesAndDatesDto.size(); i++) { // 3
+                if(findRulesAndDatesDto.get(i).getRules().equals(rule)){
+                    localDateTime.add(findRulesAndDatesDto.get(i).getDates().toString().substring(0,10));
+                    cnt++;
+                }
+            }
+            RulesCntAndDatesDto rulesCntAndDatesDto = new RulesCntAndDatesDto(cnt, localDateTime);
+            result.put(rule,rulesCntAndDatesDto);
+            cnt = 0;
+        }
+
+        return result;
+    }
+
 }
