@@ -3,6 +3,7 @@ package com.server.Dotori.model.member;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.server.Dotori.model.BaseTimeEntity;
 import com.server.Dotori.model.member.enumType.Music;
+import com.server.Dotori.model.member.enumType.Massage;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.enumType.SelfStudy;
 import lombok.AllArgsConstructor;
@@ -75,6 +76,10 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Column(name = "member_music", nullable = false)
     private Music music;
 
+    @Enumerated(STRING)
+    @Column(name = "member_massage")
+    private Massage massage;
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public String getUsername() {
@@ -118,6 +123,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
     }
     public void updateSelfStudy(SelfStudy selfStudy) {
         this.selfStudy = selfStudy != null ? selfStudy : this.selfStudy;
+    }
+    public void updateMassage(Massage massage) {
+        this.massage = massage != null ? massage : this.massage;
     }
 
     public void updateRole(List<Role> roles) {
