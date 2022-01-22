@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.service.selfstudy;
 
+import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.exception.selfstudy.exception.*;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -211,5 +213,51 @@ class SelfStudyServiceTest {
         //then
         assertEquals(APPLIED.toString(), selfStudyInfo.get("selfStudy_status"));
         assertEquals("1", selfStudyInfo.get("count"));
+    }
+
+    @Test
+    @DisplayName("자습신청 금지가 제대로 됬나요?")
+    public void banSelfStudyTest() {
+        Member currentMember = currentMemberUtil.getCurrentMember();
+
+        // given // when
+        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20);
+        selfStudyService.banSelfStudy(currentMember.getId());
+
+        // then
+        assertEquals(IMPOSSIBLE, currentMember.getSelfStudy());
+        assertEquals(LocalDate.now().plusDays(7).toString(), currentMember.getSelfStudyExpiredDate().toString().substring(0, 10));
+    }
+
+    @Test
+    @DisplayName("자습신청 금지 취소가 잘 되나요?")
+    public void banCancelSelfStudyTest() {
+        Member currentMember = currentMemberUtil.getCurrentMember();
+
+        //given //when
+        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20);
+        selfStudyService.banSelfStudy(currentMember.getId());
+        selfStudyService.cancelBanSelfStudy(currentMember.getId());
+
+        em.flush();
+        em.clear();
+
+        //then
+        assertEquals(CAN.toString(), currentMemberUtil.getCurrentMember().getSelfStudy().toString());
+        assertEquals(null, currentMemberUtil.getCurrentMember().getSelfStudyExpiredDate());
+    }
+
+    @Test
+    @DisplayName("")
+    public void banAndBanCancelSelfStudyExceptionTest() {
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> selfStudyService.banSelfStudy(0L)
+        );
+
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> selfStudyService.banSelfStudy(0L)
+        );
     }
 }
