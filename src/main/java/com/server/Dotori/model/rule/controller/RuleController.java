@@ -25,8 +25,8 @@ public class RuleController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header"),
     })
-    @PostMapping("/grant")
-    public CommonResult grant(@RequestBody RuleGrantDto ruleGrantDto){
+    @PostMapping("/")
+    public CommonResult insertRule(@RequestBody RuleGrantDto ruleGrantDto){
         ruleService.grant(ruleGrantDto);
         return responseService.getSuccessResult();
     }
@@ -34,7 +34,7 @@ public class RuleController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header"),
     })
-    @GetMapping("/find/all/{stuNum}")
+    @GetMapping("/all/{stuNum}")
     public SingleResult<HashMap<Rule, RulesCntAndDatesDto>> findAllViolationOfTheRules(@PathVariable("stuNum") String stuNum){
         return responseService.getSingleResult(ruleService.findAllViolationOfTheRules(stuNum));
     }
