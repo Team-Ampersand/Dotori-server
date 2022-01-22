@@ -1,2 +1,4 @@
-package com.server.Dotori.model.massage.controller.admin;public class AdminMassageController {
+package com.server.Dotori.model.massage.controller.admin;
+
+public class AdminMassageController {
 }
