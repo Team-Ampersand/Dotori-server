@@ -18,7 +18,7 @@ public class RuleRepositoryCustomImpl implements RuleRepositoryCustom{
     private final JPAQueryFactory queryFactory;
 
     /**
-     * 기숙사 규정을 어긴 학생의 이력을 모두 조회하는 쿼리
+     * 기숙사 규정을 위반한 학생의 이력을 모두 조회하는 쿼리
      * @param stuNum
      * @return result - List<FindRulesAndDatesDto> - rules, date
      */

@@ -121,7 +121,7 @@ public class RuleServiceTest {
         );
 
         // when
-        HashMap<Rule, RulesCntAndDatesDto> violationOfTheRules = ruleService.findViolationOfTheRules("2206");
+        HashMap<Rule, RulesCntAndDatesDto> violationOfTheRules = ruleService.findAllViolationOfTheRules("2206");
 
         // then
         assertThat(violationOfTheRules.get(Rule.FIREARMS1).getCnt()).isEqualTo(1);

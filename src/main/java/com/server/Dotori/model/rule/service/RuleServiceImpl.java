@@ -36,7 +36,7 @@ public class RuleServiceImpl implements RuleService{
     }
 
     @Override
-    public HashMap<Rule, RulesCntAndDatesDto> findViolationOfTheRules(String stuNum) {
+    public HashMap<Rule, RulesCntAndDatesDto> findAllViolationOfTheRules(String stuNum) {
         HashMap<Rule, RulesCntAndDatesDto> result = new LinkedHashMap<>();
         List<FindRulesAndDatesDto> findRulesAndDatesDto = ruleRepository.findViolationOfTheRules(stuNum);
 
