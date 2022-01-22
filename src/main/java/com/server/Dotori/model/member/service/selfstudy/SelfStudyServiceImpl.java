@@ -178,6 +178,6 @@ public class SelfStudyServiceImpl implements SelfStudyService {
                 .orElseThrow(() -> new MemberNotFoundException());
 
         findMember.updateSelfStudy(CAN);
-        memberRepository.updateSelfStudyExpiredDateToNull(id);
+        findMember.updateSelfStudyExpiredDate(null);
     }
 }
