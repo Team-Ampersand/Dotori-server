@@ -19,4 +19,8 @@ public interface SelfStudyService {
     void updateSelfStudyStatus();
 
     Map<String, String> selfStudyInfo();
+
+    void banSelfStudy(Long id);
+
+    void cancelBanSelfStudy(Long id);
 }
