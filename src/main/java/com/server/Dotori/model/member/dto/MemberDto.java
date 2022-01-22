@@ -1,6 +1,7 @@
 package com.server.Dotori.model.member.dto;
 
 import com.server.Dotori.model.member.Member;
+import com.server.Dotori.model.member.enumType.Massage;
 import com.server.Dotori.model.member.enumType.Music;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.enumType.SelfStudy;
@@ -41,6 +42,7 @@ public class MemberDto {
                 .email(email)
                 .refreshToken(null)
                 .roles(Collections.singletonList(Role.ROLE_MEMBER))
+                .massage(Massage.CAN)
                 .music(Music.CAN)
                 .selfStudy(SelfStudy.CAN)
                 .point(0L)
