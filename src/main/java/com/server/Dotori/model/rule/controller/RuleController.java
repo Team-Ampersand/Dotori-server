@@ -34,9 +34,9 @@ public class RuleController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header"),
     })
-    @GetMapping("/{stuNum}")
-    public SingleResult<HashMap<Rule, RulesCntAndDatesDto>> findViolationOfTheRules(@PathVariable("stuNum") String stuNum){
-        return responseService.getSingleResult(ruleService.findViolationOfTheRules(stuNum));
+    @GetMapping("/find/all/{stuNum}")
+    public SingleResult<HashMap<Rule, RulesCntAndDatesDto>> findAllViolationOfTheRules(@PathVariable("stuNum") String stuNum){
+        return responseService.getSingleResult(ruleService.findAllViolationOfTheRules(stuNum));
     }
 
 }
