@@ -67,7 +67,7 @@ public class MassageServiceTest {
     @Test
     @DisplayName("안마의자 신청이 잘 되나요?")
     public void requestMassageTest() {
-        massageService.requestMassage(DayOfWeek.WEDNESDAY, 20);
+        massageService.requestMassage(DayOfWeek.WEDNESDAY, 20, 40);
 
         assertThat(Massage.APPLIED).isEqualTo(currentMemberUtil.getCurrentMember().getMassage());
         assertThat(1).isEqualTo(massageRepository.count());

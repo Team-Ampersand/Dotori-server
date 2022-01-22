@@ -32,7 +32,7 @@ public class MemberMassageController {
     })
     public CommonResult requestMassage() {
         LocalDateTime currentTime = LocalDateTime.now();
-        massageService.requestMassage(currentTime.getDayOfWeek(), currentTime.getHour());
+        massageService.requestMassage(currentTime.getDayOfWeek(), currentTime.getHour(), currentTime.getMinute());
         return responseService.getSuccessResult();
     }
 }

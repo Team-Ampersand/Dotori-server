@@ -23,9 +23,10 @@ public class MassageServiceImpl implements MassageService {
     private final CurrentMemberUtil currentMemberUtil;
 
     @Override
-    public void requestMassage(DayOfWeek dayOfWeek, int hour) {
+    public void requestMassage(DayOfWeek dayOfWeek, int hour, int min) {
         if (dayOfWeek == DayOfWeek.MONDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new IllegalArgumentException("안마의자를 신청 할 수 있는 요일이 아닙니다.");
         if (!(hour >= 20 && hour <= 21)) throw new IllegalArgumentException("안마의자 신청을 하실 수 있는 시간이 아닙니다.");
+        if (!(min >= 20)) throw new IllegalArgumentException("안마의자 신청을 하실 수 있는 시간이 아닙니다.");
 
         long count = massageRepository.count();
 
