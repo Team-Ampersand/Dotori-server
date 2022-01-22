@@ -40,8 +40,8 @@ public class MemberController {
      * @author 노경준
      */
     @PostMapping("/signup/email")
-    public CommonResult sendEmailForSignup(@Valid @RequestBody EmailDto emailDto){
-        memberService.sendEmailForSignup(emailDto);
+    public CommonResult sendEmailSignup(@Valid @RequestBody EmailDto emailDto){
+        memberService.sendEmailSignup(emailDto);
         return responseService.getSuccessResult();
     }
 
@@ -52,8 +52,8 @@ public class MemberController {
      * @author 노경준
      */
     @PostMapping("/signup/email/check")
-    public CommonResult checkEmailForSignup(@Valid @RequestBody MemberEmailKeyDto memberEmailKeyDto){
-        memberService.checkEmailForSignup(memberEmailKeyDto);
+    public CommonResult checkEmailSignup(@Valid @RequestBody MemberEmailKeyDto memberEmailKeyDto){
+        memberService.checkEmailSignup(memberEmailKeyDto);
         return responseService.getSuccessResult();
     }
 
@@ -95,8 +95,8 @@ public class MemberController {
      */
     @ApiOperation(value="비밀번호 찾기 전 이메일로 인증번호 보내기", notes = "비밀번호 찾기 전 이메일로 인증번호 보내기")
     @PostMapping("/password/email")
-    public CommonResult sendEmailForChangePassword(@Valid @RequestBody SendAuthKeyForChangePasswordDto sendAuthKeyForChangePasswordDto){
-        memberService.sendEmailForChangePassword(sendAuthKeyForChangePasswordDto);
+    public CommonResult sendEmailChangePassword(@Valid @RequestBody SendAuthKeyForChangePasswordDto sendAuthKeyForChangePasswordDto){
+        memberService.sendEmailChangePassword(sendAuthKeyForChangePasswordDto);
         return responseService.getSuccessResult();
     }
 
@@ -108,8 +108,8 @@ public class MemberController {
      */
     @ApiOperation(value="비밀번호 찾기(인증번호 검증, 비밀번호 변경)", notes = "비밀번호 찾기(인증번호 검증, 비밀번호 변경)")
     @PostMapping("/password/email/check")
-    public CommonResult checkEmailForChangePassword(@Valid @RequestBody VerifiedAuthKeyAndChangePasswordDto verifiedAuthKeyAndChangePasswordDto){
-        memberService.checkEmailForChangePassword(verifiedAuthKeyAndChangePasswordDto);
+    public CommonResult checkEmailChangePassword(@Valid @RequestBody VerifiedAuthKeyAndChangePasswordDto verifiedAuthKeyAndChangePasswordDto){
+        memberService.checkEmailChangePassword(verifiedAuthKeyAndChangePasswordDto);
         return responseService.getSuccessResult();
     }
 
