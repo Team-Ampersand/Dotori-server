@@ -8,5 +8,5 @@ import java.util.HashMap;
 
 public interface RuleService {
     void grant(RuleGrantDto ruleGrantDto);
-    HashMap<Rule, RulesCntAndDatesDto> findViolationOfTheRules(String stuNum);
+    HashMap<Rule, RulesCntAndDatesDto> findAllViolationOfTheRules(String stuNum);
 }
