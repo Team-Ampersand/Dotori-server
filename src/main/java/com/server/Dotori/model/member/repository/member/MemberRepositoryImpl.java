@@ -142,18 +142,4 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .orderBy(member.stuNum.asc())
                 .fetch();
     }
-
-    /**
-     * 자습신청 금지 만료기간 컬럼을 null로 update하는 쿼리
-     * @param id memberId
-     * @author 배태현
-     */
-    @Override
-    public void updateSelfStudyExpiredDateToNull(Long id) {
-        queryFactory
-                .update(member)
-                .set(member.selfStudyExpiredDate, (LocalDateTime) null)
-                .where(member.id.eq(id))
-                .execute();
-    }
 }

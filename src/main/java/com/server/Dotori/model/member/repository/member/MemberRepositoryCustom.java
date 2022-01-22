@@ -21,6 +21,4 @@ public interface MemberRepositoryCustom {
     List<Member> findStudentInfo(Long id);
 
     List<Member> findAllStudentInfo();
-
-    void updateSelfStudyExpiredDateToNull(Long id);
 }
