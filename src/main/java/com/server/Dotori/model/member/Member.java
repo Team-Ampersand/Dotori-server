@@ -150,4 +150,8 @@ public class Member extends BaseTimeEntity implements UserDetails {
     public void updateRefreshToken(String refreshToken){
         this.refreshToken = refreshToken;
     }
+
+    public void updateSelfStudyExpiredDate(LocalDateTime selfStudyExpiredDate) {
+        this.selfStudyExpiredDate = selfStudyExpiredDate != null ? selfStudyExpiredDate : this.selfStudyExpiredDate;
+    }
 }
