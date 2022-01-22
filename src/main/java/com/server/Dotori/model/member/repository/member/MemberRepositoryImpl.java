@@ -8,6 +8,7 @@ import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 import com.server.Dotori.model.member.enumType.SelfStudy;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.server.Dotori.model.member.QMember.member;
@@ -140,5 +141,19 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .select(member)
                 .orderBy(member.stuNum.asc())
                 .fetch();
+    }
+
+    /**
+     * 자습신청 금지 만료기간 컬럼을 null로 update하는 쿼리
+     * @param id memberId
+     * @author 배태현
+     */
+    @Override
+    public void updateSelfStudyExpiredDateToNull(Long id) {
+        queryFactory
+                .update(member)
+                .set(member.selfStudyExpiredDate, (LocalDateTime) null)
+                .where(member.id.eq(id))
+                .execute();
     }
 }
