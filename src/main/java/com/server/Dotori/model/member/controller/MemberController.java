@@ -34,6 +34,30 @@ public class MemberController {
     }
 
     /**
+     * 회원가입 이메일 인증 Controller
+     * @param emailDto email
+     * @return SuccessResult
+     * @author 노경준
+     */
+    @PostMapping("/signup/email")
+    public CommonResult sendEmailForSignup(@Valid @RequestBody EmailDto emailDto){
+        memberService.sendEmailForSignup(emailDto);
+        return responseService.getSuccessResult();
+    }
+
+    /**
+     * 회원가입 이메일 인증 확인 Controller
+     * @param memberEmailKeyDto key
+     * @return SuccessResult
+     * @author 노경준
+     */
+    @PostMapping("/signup/email/check")
+    public CommonResult checkEmailForSignup(@Valid @RequestBody MemberEmailKeyDto memberEmailKeyDto){
+        memberService.checkEmailForSignup(memberEmailKeyDto);
+        return responseService.getSuccessResult();
+    }
+
+    /**
      * 로그인 Controller
      * @param memberLoginDto email, password
      * @return SingleResult
@@ -58,34 +82,34 @@ public class MemberController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult passwordChange(@Valid @RequestBody MemberPasswordDto memberPasswordDto){
-        memberService.passwordChange(memberPasswordDto);
+    public CommonResult changePassword(@Valid @RequestBody MemberPasswordDto memberPasswordDto){
+        memberService.changePassword(memberPasswordDto);
         return responseService.getSuccessResult();
     }
 
     /**
-     * 비밀번호 찾기(재설정)를 위한 이메일로 인증번호 보내는 Controller
+     * 비밀번호 찾기(변경) 전 이메일 인증 Controller
      * @param sendAuthKeyForChangePasswordDto email
      * @return SuccessResult
      * @author 노경준
      */
     @ApiOperation(value="비밀번호 찾기 전 이메일로 인증번호 보내기", notes = "비밀번호 찾기 전 이메일로 인증번호 보내기")
     @PostMapping("/password/email")
-    public CommonResult sendAuthKeyForChangePassword(@Valid @RequestBody SendAuthKeyForChangePasswordDto sendAuthKeyForChangePasswordDto){
-        memberService.sendAuthKeyForChangePassword(sendAuthKeyForChangePasswordDto);
+    public CommonResult sendEmailForChangePassword(@Valid @RequestBody SendAuthKeyForChangePasswordDto sendAuthKeyForChangePasswordDto){
+        memberService.sendEmailForChangePassword(sendAuthKeyForChangePasswordDto);
         return responseService.getSuccessResult();
     }
 
     /**
-     * 비밀번호 찾기(재설정) 전 인증번호 검증 Controller
+     * 비밀번호 찾기(변경) 전 이메일 인증 확인 Controller
      * @param verifiedAuthKeyAndChangePasswordDto email, key, newPassword
      * @return SuccessResult
      * @author 노경준
      */
     @ApiOperation(value="비밀번호 찾기(인증번호 검증, 비밀번호 변경)", notes = "비밀번호 찾기(인증번호 검증, 비밀번호 변경)")
     @PostMapping("/password/email/check")
-    public CommonResult verifiedAuthKeyAndChangePassword(@Valid @RequestBody VerifiedAuthKeyAndChangePasswordDto verifiedAuthKeyAndChangePasswordDto){
-        memberService.verifiedAuthKeyAndChangePassword(verifiedAuthKeyAndChangePasswordDto);
+    public CommonResult checkEmailForChangePassword(@Valid @RequestBody VerifiedAuthKeyAndChangePasswordDto verifiedAuthKeyAndChangePasswordDto){
+        memberService.checkEmailForChangePassword(verifiedAuthKeyAndChangePasswordDto);
         return responseService.getSuccessResult();
     }
 
@@ -110,7 +134,7 @@ public class MemberController {
      * @return SuccessResult
      * @author 노경준
      */
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     @ApiOperation(value="회원탈퇴")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
