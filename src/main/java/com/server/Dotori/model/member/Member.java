@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -52,6 +53,12 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     @Column(name = "member_refreshToken")
     private String refreshToken;
+
+    @Column(name = "self_study_expired_date")
+    private LocalDateTime selfStudyExpiredDate;
+
+    @Column(name = "massage_expired_date")
+    private LocalDateTime massageExpiredDate;
 
     @Enumerated(STRING) @Column(name = "Role")
     @ElementCollection(fetch = FetchType.EAGER)
