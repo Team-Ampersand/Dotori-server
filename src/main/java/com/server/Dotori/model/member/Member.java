@@ -152,6 +152,6 @@ public class Member extends BaseTimeEntity implements UserDetails {
     }
 
     public void updateSelfStudyExpiredDate(LocalDateTime selfStudyExpiredDate) {
-        this.selfStudyExpiredDate = selfStudyExpiredDate != null ? selfStudyExpiredDate : this.selfStudyExpiredDate;
+        this.selfStudyExpiredDate = selfStudyExpiredDate;
     }
 }
