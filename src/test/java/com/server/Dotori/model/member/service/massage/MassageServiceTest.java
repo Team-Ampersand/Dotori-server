@@ -45,8 +45,11 @@ public class MassageServiceTest {
                 .password("1234")
                 .email("s20014@gsm.hs.kr")
                 .build();
-        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        memberRepository.save(memberDto.toEntity());
+        memberRepository.save(
+                memberDto.toEntity(
+                        passwordEncoder.encode(memberDto.getPassword())
+                )
+        );
         System.out.println("======== saved =========");
 
         // when login session 발급

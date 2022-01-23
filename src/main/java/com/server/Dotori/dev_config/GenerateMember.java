@@ -102,8 +102,7 @@ public class GenerateMember {
                 .memberName("배태현")
                 .stuNum("2409")
                 .email("s20032@gsm.hs.kr")
-                .password(passwordEncoder.encode("string"))
-                .build().toEntity()
+                .build().toEntity(passwordEncoder.encode("string"))
         );
     }
 
@@ -113,8 +112,7 @@ public class GenerateMember {
                         .memberName("김태민")
                         .stuNum("2406")
                         .email("s20014@gsm.hs.kr")
-                        .password(passwordEncoder.encode("string"))
-                        .build().toEntity()
+                        .build().toEntity(passwordEncoder.encode("string"))
         );
     }
 
@@ -124,8 +122,7 @@ public class GenerateMember {
                         .memberName("노경준")
                         .stuNum("2206")
                         .email("s20018@gsm.hs.kr")
-                        .password(passwordEncoder.encode("string"))
-                        .build().toEntity()
+                        .build().toEntity(passwordEncoder.encode("string"))
         );
     }
 

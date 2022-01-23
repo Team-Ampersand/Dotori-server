@@ -1,20 +1,16 @@
 package com.server.Dotori.model.member.dto;
 
-import com.server.Dotori.model.member.Member;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Getter
-@Setter
 @NoArgsConstructor
-public class MemberLoginDto {
+public class SignInDto {
     @NotBlank
     @Pattern(regexp = "^[a-zA-Z0-9]+@gsm.hs.kr$")
     private String email;
@@ -24,7 +20,7 @@ public class MemberLoginDto {
     private String password;
 
     @Builder
-    public MemberLoginDto(String email, String password){
+    public SignInDto(String email, String password){
         this.email = email;
         this.password = password;
     }

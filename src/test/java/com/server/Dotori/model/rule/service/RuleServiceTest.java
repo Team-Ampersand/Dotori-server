@@ -45,8 +45,11 @@ public class RuleServiceTest {
                 .password("1234")
                 .email("s20018@gsm.hs.kr")
                 .build();
-        memberDto1.setPassword(passwordEncoder.encode(memberDto1.getPassword()));
-        memberRepository.save(memberDto1.toEntity());
+        memberRepository.save(
+                memberDto1.toEntity(
+                        passwordEncoder.encode(memberDto1.getPassword())
+                )
+        );
 
         MemberDto memberDto2 = MemberDto.builder()
                 .memberName("송시현")
@@ -54,8 +57,11 @@ public class RuleServiceTest {
                 .password("1234")
                 .email("s20040@gsm.hs.kr")
                 .build();
-        memberDto2.setPassword(passwordEncoder.encode(memberDto2.getPassword()));
-        memberRepository.save(memberDto2.toEntity());
+        memberRepository.save(
+                memberDto2.toEntity(
+                        passwordEncoder.encode(memberDto2.getPassword())
+                )
+        );
 
         assertNotNull(memberRepository.findByEmail(memberDto1.getEmail()));
         assertNotNull(memberRepository.findByEmail(memberDto2.getEmail()));

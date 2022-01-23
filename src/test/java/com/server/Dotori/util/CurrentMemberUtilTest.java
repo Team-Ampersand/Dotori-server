@@ -3,6 +3,7 @@ package com.server.Dotori.util;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
+import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.model.member.service.MemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ class CurrentMemberUtilTest {
     private MemberService memberService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Test
     public void currentMemberEmail() {
@@ -38,8 +41,11 @@ class CurrentMemberUtilTest {
                 .password("1234")
                 .email("s20018@gmail.com")
                 .build();
-        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        memberService.signup(memberDto);
+        memberRepository.save(
+                memberDto.toEntity(
+                        passwordEncoder.encode(memberDto.getPassword())
+                )
+        );
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(

@@ -5,11 +5,11 @@ import lombok.Getter;
 import javax.validation.constraints.Size;
 
 @Getter
-public class VerifiedAuthKeyAndChangePasswordDto {
+public class ChangePasswordEmailCheckDto {
 
     @Size(min = 6, max = 6)
-    String key;
+    private String key;
 
     @Size(min = 4)
-    String newPassword;
+    private String newPassword;
 }
