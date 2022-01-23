@@ -144,13 +144,18 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .fetch();
     }
 
+    /**
+     * 자습신청 금지 상태이며 자습신청 만료기간이 다 된 학생 <br>
+     * 자습신청 금지를 해제하고 자습신청 만료기간을 초기화하는 쿼리
+     * @author 배태현
+     */
     @Override
     public void updateUnBanSelfStudy() {
         queryFactory
                 .update(member)
                 .where(
                         member.selfStudy.eq(SelfStudy.IMPOSSIBLE)
-                        .and(member.selfStudyExpiredDate.stringValue().substring(0,10).eq(String.valueOf(LocalDate.now().plusDays(7))))
+                        .and(member.selfStudyExpiredDate.stringValue().substring(0,10).eq(String.valueOf(LocalDate.now())))
                 )
                 .set(member.selfStudy, SelfStudy.CAN)
                 .set(member.selfStudyExpiredDate, (LocalDateTime) null)
