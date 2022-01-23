@@ -3,27 +3,21 @@ package com.server.Dotori.model.rule.service;
 import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
-import com.server.Dotori.model.member.service.MemberService;
-import com.server.Dotori.model.rule.RuleViolation;
 import com.server.Dotori.model.rule.dto.RuleGrantDto;
 import com.server.Dotori.model.rule.dto.RulesCntAndDatesDto;
 import com.server.Dotori.model.rule.enumType.Rule;
 import com.server.Dotori.model.rule.repository.RuleRepository;
-import lombok.RequiredArgsConstructor;
-import org.aspectj.lang.annotation.After;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -127,7 +121,7 @@ public class RuleServiceTest {
         );
 
         // when
-        HashMap<Rule, RulesCntAndDatesDto> violationOfTheRules = ruleService.findAllViolationOfTheRules("2206");
+        HashMap<Rule, RulesCntAndDatesDto> violationOfTheRules = ruleService.findAllViolationOfTheRule("2206");
 
         // then
         assertThat(violationOfTheRules.get(Rule.FIREARMS1).getCnt()).isEqualTo(1);
