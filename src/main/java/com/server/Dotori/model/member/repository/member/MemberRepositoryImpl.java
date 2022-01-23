@@ -8,6 +8,7 @@ import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 import com.server.Dotori.model.member.enumType.SelfStudy;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -141,5 +142,18 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .select(member)
                 .orderBy(member.stuNum.asc())
                 .fetch();
+    }
+
+    @Override
+    public void updateUnBanSelfStudy() {
+        queryFactory
+                .update(member)
+                .where(
+                        member.selfStudy.eq(SelfStudy.IMPOSSIBLE)
+                        .and(member.selfStudyExpiredDate.stringValue().substring(0,10).eq(String.valueOf(LocalDate.now().plusDays(7))))
+                )
+                .set(member.selfStudy, SelfStudy.CAN)
+                .set(member.selfStudyExpiredDate, (LocalDateTime) null)
+                .execute();
     }
 }
