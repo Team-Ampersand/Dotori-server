@@ -2,8 +2,8 @@ package com.server.Dotori.model.member.service;
 
 import com.server.Dotori.model.member.dto.MemberDeleteDto;
 import com.server.Dotori.model.member.dto.MemberDto;
-import com.server.Dotori.model.member.dto.MemberLoginDto;
-import com.server.Dotori.model.member.dto.MemberPasswordDto;
+import com.server.Dotori.model.member.dto.SignInDto;
+import com.server.Dotori.model.member.dto.ChangePasswordDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.util.CurrentMemberUtil;
@@ -89,13 +89,13 @@ public class MemberServiceTest {
     @Test
     void signin(){
         // given
-        MemberLoginDto memberLoginDto = MemberLoginDto.builder()
+        SignInDto memberLoginDto = SignInDto.builder()
                 .email("s20018@gsm.hs.kr")
                 .password("1234")
                 .build();
 
         // when
-        Map<String,String> result = memberService.signin(memberLoginDto);
+        Map<String,String> result = memberService.signIn(memberLoginDto);
         System.out.println("================================ " + memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow().getUsername() +" ====================================");
 
         // then
@@ -106,12 +106,12 @@ public class MemberServiceTest {
     @Test
     void passwordChange(){
         // given
-        MemberPasswordDto memberPasswordDto = new MemberPasswordDto();
+        ChangePasswordDto memberPasswordDto = new ChangePasswordDto();
         memberPasswordDto.setCurrentPassword("1234");
         memberPasswordDto.setNewPassword("12345");
 
         // when
-        String result = memberService.passwordChange(memberPasswordDto);
+        String result = memberService.changePassword(memberPasswordDto);
 
         // then
         assertEquals(true,passwordEncoder.matches(memberPasswordDto.getNewPassword(),result));
@@ -121,13 +121,13 @@ public class MemberServiceTest {
     @DisplayName("로그아웃")
     void logout(){
         // when
-        MemberLoginDto memberLoginDto = MemberLoginDto.builder()
+        SignInDto memberLoginDto = SignInDto.builder()
                 .email("s20018@gsm.hs.kr")
                 .password("1234")
                 .build();
 
         // given
-        memberService.signin(memberLoginDto);
+        memberService.signIn(memberLoginDto);
         memberService.logout();
 
         // then
@@ -138,7 +138,7 @@ public class MemberServiceTest {
     @DisplayName("회원탈퇴")
     void delete(){
         // when
-        MemberLoginDto memberLoginDto = MemberLoginDto.builder()
+        SignInDto memberLoginDto = SignInDto.builder()
                 .email("s20018@gsm.hs.kr")
                 .password("1234")
                 .build();
@@ -148,7 +148,7 @@ public class MemberServiceTest {
         memberDeleteDto.setPassword("1234");
 
         // given
-        memberService.signin(memberLoginDto);
+        memberService.signIn(memberLoginDto);
         memberService.delete(memberDeleteDto);
 
         // then
