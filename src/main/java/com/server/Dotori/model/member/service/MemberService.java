@@ -9,7 +9,7 @@ public interface MemberService {
     String sendEmailSignup(EmailDto emailDto);
     void checkEmailSignup(SignUpEmailCheckDto memberEmailKeyDto);
     Map<String,String> signIn(SignInDto memberLoginDto);
-    String changePassword(ChangePasswordDto memberPasswordDto);
+    String changePassword(ChangePasswordDto changePasswordDto);
     String sendEmailChangePassword(EmailDto emailDto);
     void checkEmailChangePassword(ChangePasswordEmailCheckDto verifiedAuthKeyAndChangePasswordDto);
     void logout();

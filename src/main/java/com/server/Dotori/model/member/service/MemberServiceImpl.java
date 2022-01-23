@@ -124,9 +124,10 @@ public class MemberServiceImpl implements MemberService {
         String password = findMember.getPassword();
 
         if (!passwordEncoder.matches(currentPassword, password)) throw new MemberPasswordNotMatchingException();
-        findMember.updatePassword(passwordEncoder.encode(newPassword));
+        String encodePassword = passwordEncoder.encode(newPassword);
+        findMember.updatePassword(encodePassword);
 
-        return password;
+        return encodePassword;
     }
 
     /**

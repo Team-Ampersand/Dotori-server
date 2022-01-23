@@ -39,24 +39,6 @@ public class MemberServiceTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Test
-    void signup(){
-        // given
-        MemberDto memberDto = MemberDto.builder()
-                .memberName("관리자")
-                .stuNum("1111")
-                .password("1234")
-                .email("s20000@gsm.hs.kr")
-                .build();
-        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-
-        // when
-        Long result = memberService.signup(memberDto);
-
-        // then
-        assertThat(result).isEqualTo(memberRepository.findByEmail(memberDto.getEmail()).orElseThrow().getId());
-    }
-
     @BeforeEach
     @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
     void currentMember() {
@@ -67,9 +49,11 @@ public class MemberServiceTest {
                 .password("1234")
                 .email("s20018@gsm.hs.kr")
                 .build();
-        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        memberRepository.save(memberDto.toEntity());
-        System.out.println("======== saved =========");
+        memberRepository.save(
+                memberDto.toEntity(
+                        passwordEncoder.encode(memberDto.getPassword())
+                )
+        );
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
@@ -78,13 +62,30 @@ public class MemberServiceTest {
                 List.of(new SimpleGrantedAuthority(Role.ROLE_ADMIN.name())));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
-        System.out.println("=================================");
         System.out.println(context);
 
         //then
         String currentEmail = CurrentMemberUtil.getCurrentEmail();
         assertEquals("s20018@gsm.hs.kr", currentEmail);
     }
+
+    @Test
+    void signup(){
+        // given
+        MemberDto memberDto = MemberDto.builder()
+                .memberName("관리자")
+                .stuNum("1111")
+                .password("1234")
+                .email("s20000@gsm.hs.kr")
+                .build();
+
+        // when
+        Long result = memberService.signup(memberDto);
+
+        // then
+        assertThat(result).isEqualTo(memberRepository.findByEmail(memberDto.getEmail()).orElseThrow().getId());
+    }
+
 
     @Test
     void signin(){
@@ -96,7 +97,6 @@ public class MemberServiceTest {
 
         // when
         Map<String,String> result = memberService.signIn(memberLoginDto);
-        System.out.println("================================ " + memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow().getUsername() +" ====================================");
 
         // then
         assertNotNull(result);
@@ -106,32 +106,33 @@ public class MemberServiceTest {
     @Test
     void passwordChange(){
         // given
-        ChangePasswordDto memberPasswordDto = new ChangePasswordDto();
-        memberPasswordDto.setCurrentPassword("1234");
-        memberPasswordDto.setNewPassword("12345");
+        ChangePasswordDto changePasswordDto = ChangePasswordDto.builder()
+                .currentPassword("1234")
+                .newPassword("12345")
+                .build();
 
         // when
-        String result = memberService.changePassword(memberPasswordDto);
+        String result = memberService.changePassword(changePasswordDto);
 
         // then
-        assertEquals(true,passwordEncoder.matches(memberPasswordDto.getNewPassword(),result));
+        assertEquals(true,passwordEncoder.matches(changePasswordDto.getNewPassword(),result));
     }
 
     @Test
     @DisplayName("로그아웃")
     void logout(){
         // when
-        SignInDto memberLoginDto = SignInDto.builder()
+        SignInDto signInDto = SignInDto.builder()
                 .email("s20018@gsm.hs.kr")
                 .password("1234")
                 .build();
 
         // given
-        memberService.signIn(memberLoginDto);
+        memberService.signIn(signInDto);
         memberService.logout();
 
         // then
-        assertNull(memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow().getRefreshToken());
+        assertNull(memberRepository.findByEmail(signInDto.getEmail()).orElseThrow().getRefreshToken());
     }
 
     @Test
@@ -143,15 +144,13 @@ public class MemberServiceTest {
                 .password("1234")
                 .build();
 
-        WithdrawlDto memberDeleteDto = new WithdrawlDto();
-        memberDeleteDto.setEmail("s20018@gsm.hs.kr");
-        memberDeleteDto.setPassword("1234");
+        WithdrawlDto withdrawlDto = new WithdrawlDto("s20018@gsm.hs.kr","1234");
 
         // given
         memberService.signIn(memberLoginDto);
-        memberService.withdrawal(memberDeleteDto);
+        memberService.withdrawal(withdrawlDto);
 
         // then
-        assertThat(memberRepository.findByEmail(memberDeleteDto.getEmail())).isEqualTo(Optional.empty());
+        assertThat(memberRepository.findByEmail(withdrawlDto.getEmail())).isEqualTo(Optional.empty());
     }
 }

@@ -54,8 +54,11 @@ class MusicServiceTest {
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
                 .build();
-        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        memberRepository.save(memberDto.toEntity());
+        memberRepository.save(
+                memberDto.toEntity(
+                        memberDto.getPassword()
+                )
+        );
         System.out.println("======== saved =========");
 
         // when login session 발급
