@@ -33,11 +33,11 @@ public class MemberDto {
     @Pattern(regexp = "^[a-zA-Z0-9]+@gsm.hs.kr$")
     private String email;
 
-    public Member toEntity(){
+    public Member toEntity(String EncodePassword){
         return Member.builder()
                 .memberName(memberName)
                 .stuNum(stuNum)
-                .password(password)
+                .password(EncodePassword)
                 .email(email)
                 .refreshToken(null)
                 .roles(Collections.singletonList(Role.ROLE_MEMBER))
