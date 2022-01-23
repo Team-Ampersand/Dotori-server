@@ -177,13 +177,13 @@ public class MemberServiceImpl implements MemberService {
 
     /**
      * 회원탈퇴 하는 서비스 로직
-     * @param memberDeleteDto email, password
+     * @param withdrawlDto email, password
      * @author 노경준
      */
     @Override
-    public void delete(MemberDeleteDto memberDeleteDto) {
-        String email = memberDeleteDto.getEmail();
-        String dtoPassword = memberDeleteDto.getPassword();
+    public void withdrawal(WithdrawlDto withdrawlDto) {
+        String email = withdrawlDto.getEmail();
+        String dtoPassword = withdrawlDto.getPassword();
 
         Member findMember = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new MemberNotFoundException());

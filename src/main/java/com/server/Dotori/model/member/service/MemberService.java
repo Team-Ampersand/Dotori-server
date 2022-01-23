@@ -13,7 +13,7 @@ public interface MemberService {
     String sendEmailChangePassword(EmailDto emailDto);
     void checkEmailChangePassword(ChangePasswordEmailCheckDto verifiedAuthKeyAndChangePasswordDto);
     void logout();
-    void delete(MemberDeleteDto memberDeleteDto);
+    void withdrawal(WithdrawlDto memberDeleteDto);
 
 
 }

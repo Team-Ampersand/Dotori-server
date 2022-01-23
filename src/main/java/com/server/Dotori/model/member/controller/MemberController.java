@@ -132,17 +132,17 @@ public class MemberController {
 
     /**
      * 회원탈퇴 Controller
-     * @param memberDeleteDto username, password
+     * @param withdrawlDto username, password
      * @return SuccessResult
      * @author 노경준
      */
-    @DeleteMapping("/delete")
+    @PostMapping("/withdrawal")
     @ApiOperation(value="회원탈퇴")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
     })
-    public CommonResult delete(@RequestBody MemberDeleteDto memberDeleteDto){
-        memberService.delete(memberDeleteDto);
+    public CommonResult withdrawal(@RequestBody WithdrawlDto withdrawlDto){
+        memberService.withdrawal(withdrawlDto);
         return responseService.getSuccessResult();
     }
 }
