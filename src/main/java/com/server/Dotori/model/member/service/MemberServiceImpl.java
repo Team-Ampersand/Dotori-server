@@ -97,8 +97,8 @@ public class MemberServiceImpl implements MemberService {
         String email = signInDto.getEmail();
 
         Member findMember = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new MemberNotFoundException()); // email로 유저정보를 가져옴
-        if(!passwordEncoder.matches(signInDto.getPassword(),findMember.getPassword())) throw new MemberPasswordNotMatchingException(); // 비밀번호가 DB에 있는 비밀번호와 입력된 비밀번호가 같은지 체크
+                .orElseThrow(() -> new MemberNotFoundException());
+        if(!passwordEncoder.matches(signInDto.getPassword(),findMember.getPassword())) throw new MemberPasswordNotMatchingException();
 
         Map<String, String> token = createToken(findMember);
 
@@ -179,9 +179,15 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public void delete(MemberDeleteDto memberDeleteDto) {
-        Member findMember = memberRepository.findByEmail(memberDeleteDto.getEmail()).orElseThrow(() -> new MemberNotFoundException());
-        if(!passwordEncoder.matches(memberDeleteDto.getPassword(),findMember.getPassword()))
-            throw new MemberPasswordNotMatchingException();
+        String email = memberDeleteDto.getEmail();
+        String dtoPassword = memberDeleteDto.getPassword();
+
+        Member findMember = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberNotFoundException());
+
+        String entityPassword = findMember.getPassword();
+
+        if(!passwordEncoder.matches(dtoPassword,entityPassword)) throw new MemberPasswordNotMatchingException();
 
         memberRepository.delete(findMember);
     }
@@ -193,13 +199,12 @@ public class MemberServiceImpl implements MemberService {
      * @author 노경준
      */
     private Map<String,String> createToken(Member member) {
-        Map<String,String> map = new HashMap<>(); // Token 을 담을수있는 Hashmap 선언
-        String accessToken = jwtTokenProvider.createToken(member.getEmail(), member.getRoles()); // 유저정보에서 Username : 유저정보에서 Role (Key : Value)
-        String refreshToken = jwtTokenProvider.createRefreshToken();
+        Map<String,String> map = new HashMap<>();
 
+        String accessToken = jwtTokenProvider.createToken(member.getEmail(), member.getRoles());
+        String refreshToken = jwtTokenProvider.createRefreshToken();
         member.updateRefreshToken(refreshToken);
 
-        // map 에 email, accessToken, refreshToken 정보 put
         map.put("email", member.getEmail());
         map.put("accessToken","Bearer " + accessToken);
         map.put("refreshToken","Bearer " + refreshToken);
