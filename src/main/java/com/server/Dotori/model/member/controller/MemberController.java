@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/members")
 public class MemberController {
 
     private final MemberService memberService;
@@ -52,7 +52,7 @@ public class MemberController {
      * @return SingleResult
      * @author 노경준
      */
-    @PostMapping("/change/password")
+    @PutMapping("/password")
     @ApiOperation(value="비밀번호 변경")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
@@ -70,7 +70,7 @@ public class MemberController {
      * @author 노경준
      */
     @ApiOperation(value="비밀번호 찾기 전 이메일로 인증번호 보내기", notes = "비밀번호 찾기 전 이메일로 인증번호 보내기")
-    @PostMapping("/send/change/password/authkey")
+    @PostMapping("/password/email")
     public CommonResult sendAuthKeyForChangePassword(@Valid @RequestBody SendAuthKeyForChangePasswordDto sendAuthKeyForChangePasswordDto){
         memberService.sendAuthKeyForChangePassword(sendAuthKeyForChangePasswordDto);
         return responseService.getSuccessResult();
@@ -83,7 +83,7 @@ public class MemberController {
      * @author 노경준
      */
     @ApiOperation(value="비밀번호 찾기(인증번호 검증, 비밀번호 변경)", notes = "비밀번호 찾기(인증번호 검증, 비밀번호 변경)")
-    @PostMapping("/verified/auth/change/password")
+    @PostMapping("/password/email/check")
     public CommonResult verifiedAuthKeyAndChangePassword(@Valid @RequestBody VerifiedAuthKeyAndChangePasswordDto verifiedAuthKeyAndChangePasswordDto){
         memberService.verifiedAuthKeyAndChangePassword(verifiedAuthKeyAndChangePasswordDto);
         return responseService.getSuccessResult();
