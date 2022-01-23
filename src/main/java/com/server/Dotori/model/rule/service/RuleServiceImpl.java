@@ -4,7 +4,8 @@ import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.model.rule.RuleViolation;
-import com.server.Dotori.model.rule.dto.FindRulesAndDatesDto;
+import com.server.Dotori.model.rule.dto.FindIdAndRuleAndDateDto;
+import com.server.Dotori.model.rule.dto.FindRuleAndDateDto;
 import com.server.Dotori.model.rule.dto.RuleGrantDto;
 import com.server.Dotori.model.rule.dto.RulesCntAndDatesDto;
 import com.server.Dotori.model.rule.enumType.Rule;
@@ -36,9 +37,9 @@ public class RuleServiceImpl implements RuleService{
     }
 
     @Override
-    public HashMap<Rule, RulesCntAndDatesDto> findAllViolationOfTheRules(String stuNum) {
-        HashMap<Rule, RulesCntAndDatesDto> result = new LinkedHashMap<>();
-        List<FindRulesAndDatesDto> findRulesAndDatesDto = ruleRepository.findViolationOfTheRules(stuNum);
+    public HashMap<Rule, RulesCntAndDatesDto> findAllViolationOfTheRule(String stuNum) {
+        HashMap<Rule, RulesCntAndDatesDto> response = new LinkedHashMap<>();
+        List<FindRuleAndDateDto> findRulesAndDatesDto = ruleRepository.findViolationOfTheRule(stuNum);
 
         int cnt = 0;
         for (Rule rule : Rule.values()) {
@@ -50,11 +51,18 @@ public class RuleServiceImpl implements RuleService{
                 }
             }
             RulesCntAndDatesDto rulesCntAndDatesDto = new RulesCntAndDatesDto(cnt, localDateTime);
-            result.put(rule,rulesCntAndDatesDto);
+            response.put(rule,rulesCntAndDatesDto);
             cnt = 0;
         }
 
-        return result;
+        return response;
+    }
+
+    @Override
+    public List<FindIdAndRuleAndDateDto> findViolationOfTheRules(String stuNum) {
+        List<FindIdAndRuleAndDateDto> response = ruleRepository.findViolationOfTheRules(stuNum);
+
+        return response;
     }
 
 }
