@@ -160,7 +160,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Transactional
     public void banSelfStudy(Long id) {
         Member findMember = memberRepository.findById(id)
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(MemberNotFoundException::new);
 
         findMember.updateSelfStudy(IMPOSSIBLE);
         findMember.updateSelfStudyExpiredDate(LocalDateTime.now().plusDays(7));
@@ -175,7 +175,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Transactional
     public void cancelBanSelfStudy(Long id) {
         Member findMember = memberRepository.findById(id)
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(MemberNotFoundException::new);
 
         findMember.updateSelfStudy(CAN);
         findMember.updateSelfStudyExpiredDate(null);
