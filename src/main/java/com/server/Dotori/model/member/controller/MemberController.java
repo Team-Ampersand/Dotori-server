@@ -68,7 +68,7 @@ public class MemberController {
     @PostMapping("/signin")
     @ApiOperation(value="로그인")
     public SingleResult<Map<String, String>> signin(@Valid @RequestBody SignInDto memberLoginDto){
-        Map<String, String> data = memberService.signin(memberLoginDto);
+        Map<String, String> data = memberService.signIn(memberLoginDto);
         return responseService.getSingleResult(data);
     }
 
