@@ -1,6 +1,6 @@
 package com.server.Dotori.model.member.service;
 
-import com.server.Dotori.model.member.dto.MemberDeleteDto;
+import com.server.Dotori.model.member.dto.WithdrawlDto;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.dto.SignInDto;
 import com.server.Dotori.model.member.dto.ChangePasswordDto;
@@ -143,13 +143,13 @@ public class MemberServiceTest {
                 .password("1234")
                 .build();
 
-        MemberDeleteDto memberDeleteDto = new MemberDeleteDto();
+        WithdrawlDto memberDeleteDto = new WithdrawlDto();
         memberDeleteDto.setEmail("s20018@gsm.hs.kr");
         memberDeleteDto.setPassword("1234");
 
         // given
         memberService.signIn(memberLoginDto);
-        memberService.delete(memberDeleteDto);
+        memberService.withdrawal(memberDeleteDto);
 
         // then
         assertThat(memberRepository.findByEmail(memberDeleteDto.getEmail())).isEqualTo(Optional.empty());
