@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MemberLoginDto {
+public class SignInDto {
     @NotBlank
     @Pattern(regexp = "^[a-zA-Z0-9]+@gsm.hs.kr$")
     private String email;
@@ -24,7 +24,7 @@ public class MemberLoginDto {
     private String password;
 
     @Builder
-    public MemberLoginDto(String email, String password){
+    public SignInDto(String email, String password){
         this.email = email;
         this.password = password;
     }
