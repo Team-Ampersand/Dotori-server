@@ -13,7 +13,6 @@ import javax.validation.constraints.Size;
 import java.util.Collections;
 
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
