@@ -1,6 +1,7 @@
 package com.server.Dotori.model.member.service.selfstudy;
 
 import com.server.Dotori.exception.member.exception.MemberNotFoundByClassException;
+import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.exception.selfstudy.exception.*;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -147,5 +149,35 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         map.put("selfStudy_status", currentMemberUtil.getCurrentMember().getSelfStudy().toString());
         map.put("count", String.valueOf(selfStudyRepository.count()));
         return map;
+    }
+
+    /**
+     * 자습신청을 금지시키는 서비스 로직 (사감쌤, 기자위, 개발자 사용가능)
+     * @param id memberId
+     * @author 배태현
+     */
+    @Override
+    @Transactional
+    public void banSelfStudy(Long id) {
+        Member findMember = memberRepository.findById(id)
+                .orElseThrow(MemberNotFoundException::new);
+
+        findMember.updateSelfStudy(IMPOSSIBLE);
+        findMember.updateSelfStudyExpiredDate(LocalDateTime.now().plusDays(7));
+    }
+
+    /**
+     * 자습신청 금지를 취소시키는 서비스 로직 (사감쌤, 기자위, 개발자 사용가능)
+     * @param id memberId
+     * @author 배태현
+     */
+    @Override
+    @Transactional
+    public void cancelBanSelfStudy(Long id) {
+        Member findMember = memberRepository.findById(id)
+                .orElseThrow(MemberNotFoundException::new);
+
+        findMember.updateSelfStudy(CAN);
+        findMember.updateSelfStudyExpiredDate(null);
     }
 }
