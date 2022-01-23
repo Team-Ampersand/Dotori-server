@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class MemberPasswordDto {
+public class ChangePasswordDto {
     @NotBlank
     @Size(min = 4)
     private String currentPassword;
