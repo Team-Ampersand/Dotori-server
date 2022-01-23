@@ -164,7 +164,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
                 .orElseThrow(MemberNotFoundException::new);
 
         findMember.updateSelfStudy(IMPOSSIBLE);
-        findMember.updateSelfStudyExpiredDate(LocalDateTime.now().plusDays(7));
+        findMember.updateSelfStudyExpiredDate(LocalDateTime.now());
     }
 
     /**
