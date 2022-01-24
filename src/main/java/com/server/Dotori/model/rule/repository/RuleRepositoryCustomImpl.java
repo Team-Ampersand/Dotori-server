@@ -47,6 +47,7 @@ public class RuleRepositoryCustomImpl implements RuleRepositoryCustom{
                 .from(ruleViolation)
                 .innerJoin(ruleViolation.member, member)
                 .where(ruleViolation.member.stuNum.eq(stuNum))
+                .orderBy(ruleViolation.createdDate.desc())
                 .fetch();
 
         return result;
