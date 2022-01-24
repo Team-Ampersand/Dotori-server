@@ -2,7 +2,8 @@ package com.server.Dotori.model.rule.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.server.Dotori.model.rule.dto.FindRulesAndDatesDto;
+import com.server.Dotori.model.rule.dto.FindIdAndRuleAndDateDto;
+import com.server.Dotori.model.rule.dto.FindRuleAndDateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -23,14 +24,30 @@ public class RuleRepositoryCustomImpl implements RuleRepositoryCustom{
      * @return result - List<FindRulesAndDatesDto> - rules, date
      */
     @Override
-    public List<FindRulesAndDatesDto> findViolationOfTheRules(String stuNum) {
-        List<FindRulesAndDatesDto> result = queryFactory
-                .select(Projections.constructor(FindRulesAndDatesDto.class,
+    public List<FindRuleAndDateDto> findViolationOfTheRule(String stuNum) {
+        List<FindRuleAndDateDto> result = queryFactory
+                .select(Projections.constructor(FindRuleAndDateDto.class,
                         ruleViolation.rule,
                         ruleViolation.createdDate))
                 .from(ruleViolation)
                 .innerJoin(ruleViolation.member, member)
                 .where(ruleViolation.member.stuNum.eq(stuNum))
+                .fetch();
+
+        return result;
+    }
+
+    @Override
+    public List<FindIdAndRuleAndDateDto> findViolationOfTheRules(String stuNum) {
+        List<FindIdAndRuleAndDateDto> result = queryFactory
+                .select(Projections.constructor(FindIdAndRuleAndDateDto.class,
+                        ruleViolation.id,
+                        ruleViolation.rule,
+                        ruleViolation.createdDate))
+                .from(ruleViolation)
+                .innerJoin(ruleViolation.member, member)
+                .where(ruleViolation.member.stuNum.eq(stuNum))
+                .orderBy(ruleViolation.createdDate.desc())
                 .fetch();
 
         return result;
