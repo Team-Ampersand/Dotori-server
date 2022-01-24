@@ -4,10 +4,7 @@ import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.model.rule.RuleViolation;
-import com.server.Dotori.model.rule.dto.FindIdAndRuleAndDateDto;
-import com.server.Dotori.model.rule.dto.FindRuleAndDateDto;
-import com.server.Dotori.model.rule.dto.RuleGrantDto;
-import com.server.Dotori.model.rule.dto.RulesCntAndDatesDto;
+import com.server.Dotori.model.rule.dto.*;
 import com.server.Dotori.model.rule.enumType.Rule;
 import com.server.Dotori.model.rule.repository.RuleRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,13 +35,15 @@ public class RuleServiceImpl implements RuleService{
 
     @Override
     public HashMap<Rule, RulesCntAndDatesDto> findAllViolationOfTheRule(String stuNum) {
+        if(!memberRepository.existsByStuNum(stuNum)) throw new MemberNotFoundException();
+
         HashMap<Rule, RulesCntAndDatesDto> response = new LinkedHashMap<>();
         List<FindRuleAndDateDto> findRulesAndDatesDto = ruleRepository.findViolationOfTheRule(stuNum);
 
         int cnt = 0;
         for (Rule rule : Rule.values()) {
             List<String> localDateTime = new LinkedList<>();
-            for (int i = 0; i < findRulesAndDatesDto.size(); i++) { // 3
+            for (int i = 0; i < findRulesAndDatesDto.size(); i++) {
                 if(findRulesAndDatesDto.get(i).getRules().equals(rule)){
                     localDateTime.add(findRulesAndDatesDto.get(i).getDates().toString().substring(0,10));
                     cnt++;
@@ -59,8 +58,21 @@ public class RuleServiceImpl implements RuleService{
     }
 
     @Override
-    public List<FindIdAndRuleAndDateDto> findViolationOfTheRules(String stuNum) {
-        List<FindIdAndRuleAndDateDto> response = ruleRepository.findViolationOfTheRules(stuNum);
+    public List<FindViolationOfTheRuleResponseDto> findViolationOfTheRules(String stuNum) {
+        if(!memberRepository.existsByStuNum(stuNum)) throw new MemberNotFoundException();
+
+        List<FindIdAndRuleAndDateDto> result = ruleRepository.findViolationOfTheRules(stuNum);
+        List<FindViolationOfTheRuleResponseDto> response = new LinkedList<>();
+
+        for (FindIdAndRuleAndDateDto dto : result) {
+            FindViolationOfTheRuleResponseDto responseDto = FindViolationOfTheRuleResponseDto.builder()
+                    .id(dto.getId())
+                    .rule(dto.getRule())
+                    .createdDate(dto.getCreatedDate().toString().substring(0, 10))
+                    .build();
+
+            response.add(responseDto);
+        }
 
         return response;
     }
