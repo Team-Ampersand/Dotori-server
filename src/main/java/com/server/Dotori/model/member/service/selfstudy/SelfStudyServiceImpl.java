@@ -128,7 +128,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     }
 
     /**
-     * 자습신청 상태를 '신청가능'으로 변경하고, 자습신청 카운트 초기화 서비스로직 (Schedule)
+     * 자습신청 상태를 '신청가능'으로 변경하고, 자습신청 카운트 초기화, 자습신청 금지 만료기간이 되었다면 다시 신청할 수 있는 상태로 변경해주는 서비스로직 (Schedule)
      * @author 배태현
      */
     @Override
@@ -136,6 +136,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     public void updateSelfStudyStatus() {
         selfStudyRepository.deleteAll();
         memberRepository.updateSelfStudyStatus();
+        memberRepository.updateUnBanSelfStudy();
     }
 
     /**
