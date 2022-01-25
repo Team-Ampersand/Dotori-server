@@ -48,9 +48,9 @@ public class RuleController {
         return responseService.getSingleResult(ruleService.findViolationOfTheRules(stuNum));
     }
 
-    @DeleteMapping("/")
-    public CommonResult deleteViolationOfTheRules(@RequestBody DeleteViolationOfTheRulesDto deleteViolationOfTheRulesDto){
-        ruleService.deleteViolationOfTheRules(deleteViolationOfTheRulesDto);
+    @DeleteMapping("/{id}")
+    public CommonResult deleteViolationOfTheRules(@PathVariable Long id){
+        ruleService.deleteViolationOfTheRules(id);
         return responseService.getSuccessResult();
     }
 
