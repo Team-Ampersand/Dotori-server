@@ -10,6 +10,7 @@ import lombok.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.Collections;
 
 @Getter
@@ -33,12 +34,13 @@ public class MemberDto {
     @Pattern(regexp = "^[a-zA-Z0-9]+@gsm.hs.kr$")
     private String email;
 
-    public Member toEntity(String EncodePassword){
+    public Member toEntity(String encodePassword){
         return Member.builder()
                 .memberName(memberName)
                 .stuNum(stuNum)
-                .password(EncodePassword)
+                .password(encodePassword)
                 .email(email)
+                .massageExpiredDate(LocalDateTime.now())
                 .refreshToken(null)
                 .roles(Collections.singletonList(Role.ROLE_MEMBER))
                 .massage(Massage.CAN)
