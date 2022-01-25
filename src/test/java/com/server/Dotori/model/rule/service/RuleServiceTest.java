@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Transactional
 @SpringBootTest
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class RuleServiceTest {
 
     @Autowired private RuleService ruleService;
@@ -60,7 +61,7 @@ public class RuleServiceTest {
         assertNotNull(memberRepository.findByEmail(memberDto1.getEmail()));
         assertNotNull(memberRepository.findByEmail(memberDto2.getEmail()));
     }
-
+    @Order(value = 2)
     @Test
     @DisplayName("기숙사 규정을 어겨 RuleViolation 테이블에 멤버와 어긴 규정을 저장하는 테스트 코드")
     void grantTest(){
@@ -79,10 +80,10 @@ public class RuleServiceTest {
                 .build());
 
         // then
-        assertThat(ruleRepository.findById(1L).get().getRule()).isEqualTo(Rule.FIREARMS1);
         assertThat(ruleRepository.findById(2L).get().getRule()).isEqualTo(Rule.FIREARMS1);
     }
 
+    @Order(value = 3)
     @Test
     @DisplayName("grant 서비스 로직의 Exception 이 잘 작동하는지 확인하는 테스트")
     void grantExceptionTest(){
@@ -105,6 +106,7 @@ public class RuleServiceTest {
         );
     }
 
+    @Order(value = 4)
     @Test
     @DisplayName("기숙사 규정사항을 어긴 학생의 어떤 규정을 어겼는지 조회하는 테스트")
     void findViolationOfTheRulesTest() {
@@ -125,5 +127,28 @@ public class RuleServiceTest {
 
         // then
         assertThat(violationOfTheRules.get(Rule.FIREARMS1).getCnt()).isEqualTo(1);
+    }
+
+    @Order(value = 1)
+    @Test
+    @DisplayName("기숙사 규정을어긴 리스트에서 삭제를 할 수 있는 테스트 코드")
+    void deleteViolationOfTheRulesTest(){
+        // given
+        List<String> stuNumList = new ArrayList<>() {
+            {
+                add("2206");
+            }
+        };
+
+        ruleService.grant(RuleGrantDto.builder()
+                .stuNum(stuNumList)
+                .rule(Rule.FIREARMS1)
+                .build());
+
+        // when
+        ruleService.deleteViolationOfTheRules(1L);
+
+        // then
+        assertThat(ruleRepository.findById(1L).isEmpty()).isTrue();
     }
 }
