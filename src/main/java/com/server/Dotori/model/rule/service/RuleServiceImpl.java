@@ -77,4 +77,11 @@ public class RuleServiceImpl implements RuleService{
         return response;
     }
 
+    @Override
+    public void deleteViolationOfTheRules(DeleteViolationOfTheRulesDto deleteViolationOfTheRulesDto) {
+        Long id = deleteViolationOfTheRulesDto.getId();
+
+        ruleRepository.deleteById(id);
+    }
+
 }
