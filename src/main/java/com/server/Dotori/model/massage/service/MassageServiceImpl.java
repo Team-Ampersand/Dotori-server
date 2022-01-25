@@ -1,16 +1,13 @@
 package com.server.Dotori.model.massage.service;
 
 import com.server.Dotori.exception.massage.exception.MassageAlreadyException;
-import com.server.Dotori.exception.massage.exception.MassageCantRequestDateException;
-import com.server.Dotori.exception.massage.exception.MassageCantRequestTimeException;
 import com.server.Dotori.exception.massage.exception.MassageOverException;
 import com.server.Dotori.model.massage.repository.MassageRepository;
 import com.server.Dotori.model.member.Member;
-import com.server.Dotori.model.member.enumType.Massage;
+import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,12 +24,13 @@ public class MassageServiceImpl implements MassageService {
 
     private final MassageRepository massageRepository;
     private final CurrentMemberUtil currentMemberUtil;
+    private final MemberRepository memberRepository;
 
     @Override
     public void requestMassage(DayOfWeek dayOfWeek, int hour, int min) {
-        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new MassageCantRequestDateException();
-        if (!(hour >= 20 && hour <= 21)) throw new MassageCantRequestTimeException();
-        if (!(min >= 20)) throw new MassageCantRequestTimeException();
+//        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new MassageCantRequestDateException();
+//        if (!(hour >= 20 && hour <= 21)) throw new MassageCantRequestTimeException();
+//        if (!(min >= 20)) throw new MassageCantRequestTimeException();
 
         long count = massageRepository.count();
 
@@ -54,10 +52,6 @@ public class MassageServiceImpl implements MassageService {
 
     @Override
     public void updateMassageStatus() {
-        Member currentMember = currentMemberUtil.getCurrentMember();
-
-        if (currentMember.getMassageExpiredDate().isBefore(LocalDateTime.now())) {
-            currentMember.updateMassage(CAN);
-        }
+        memberRepository.updateUnBanMassage();
     }
 }
