@@ -16,7 +16,7 @@ import java.util.HashMap;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/v1/rule")
+@RequestMapping("/v1/admin/rule")
 public class RuleController {
 
     private final RuleService ruleService;
