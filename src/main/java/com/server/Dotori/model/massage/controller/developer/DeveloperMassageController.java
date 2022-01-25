@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/v1/develop")
+@RequestMapping("/v1/developer")
 @RequiredArgsConstructor
 public class DeveloperMassageController {
 
