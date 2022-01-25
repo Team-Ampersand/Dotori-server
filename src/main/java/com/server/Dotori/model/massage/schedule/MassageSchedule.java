@@ -12,7 +12,7 @@ public class MassageSchedule {
 
     private final MassageService massageService;
 
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 0 0 * * MON-FRI")
     public void updateMassageStatus() {
         massageService.updateMassageStatus();
     }
