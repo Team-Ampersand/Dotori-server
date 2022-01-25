@@ -61,11 +61,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // 회원 관리
                 .antMatchers("/v1/signup").permitAll()
                 .antMatchers("/v1/signin").permitAll()
-                .antMatchers("/v1/auth").permitAll()
-                .antMatchers("/v1/auth/check").permitAll()
+                .antMatchers("/v1/signup/email").permitAll()
+                .antMatchers("/v1/signup/email/check").permitAll()
                 .antMatchers("/v1/health-check").permitAll()
-                .antMatchers("/v1/send/change/password/authkey").permitAll()
-                .antMatchers("/v1/verified/auth/change/password").permitAll()
+                .antMatchers("/v1/members/password/email").permitAll()
+                .antMatchers("/v1/members/password/email/check").permitAll()
 
                 // 권한 별 url 접근
                 .antMatchers("/v1/admin/**").hasRole("ADMIN")
