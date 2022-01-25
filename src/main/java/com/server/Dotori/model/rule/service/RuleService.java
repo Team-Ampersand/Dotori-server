@@ -1,5 +1,6 @@
 package com.server.Dotori.model.rule.service;
 
+import com.server.Dotori.model.rule.dto.DeleteViolationOfTheRulesDto;
 import com.server.Dotori.model.rule.dto.FindViolationOfTheRuleResponseDto;
 import com.server.Dotori.model.rule.dto.RuleGrantDto;
 import com.server.Dotori.model.rule.dto.RulesCntAndDatesDto;
@@ -12,4 +13,5 @@ public interface RuleService {
     void grant(RuleGrantDto ruleGrantDto);
     HashMap<Rule, RulesCntAndDatesDto> findAllViolationOfTheRule(String stuNum);
     List<FindViolationOfTheRuleResponseDto> findViolationOfTheRules(String stuNum);
+    void deleteViolationOfTheRules(DeleteViolationOfTheRulesDto deleteViolationOfTheRulesDto);
 }
