@@ -41,6 +41,11 @@ public class GenerateMember {
         Member taehyeon = createTaehyeonAccount();
         Member taemin = createTaeminAccount();
         Member kyungjun = createKyungjunAccount();
+        createChanggyuAccount();
+        createTaehwanAccount();
+        createSihyeonAccount();
+        createGihongAccount();
+        createJinguAccount();
 
         loggingAccessToken(admin, developer, councillor, taehyeon, taemin, kyungjun);
     }
@@ -122,6 +127,56 @@ public class GenerateMember {
                         .memberName("노경준")
                         .stuNum("2206")
                         .email("s20018@gsm.hs.kr")
+                        .build().toEntity(passwordEncoder.encode("string"))
+        );
+    }
+
+    private void createChanggyuAccount() {
+        memberRepository.save(
+                MemberDto.builder()
+                        .memberName("임창규")
+                        .stuNum("2215")
+                        .email("s20058@gsm.hs.kr")
+                        .build().toEntity(passwordEncoder.encode("string"))
+        );
+    }
+
+    private void createTaehwanAccount() {
+        memberRepository.save(
+                MemberDto.builder()
+                        .memberName("정태환")
+                        .stuNum("2415")
+                        .email("s20069@gsm.hs.kr")
+                        .build().toEntity(passwordEncoder.encode("string"))
+        );
+    }
+
+    private void createSihyeonAccount() {
+        memberRepository.save(
+                MemberDto.builder()
+                        .memberName("송시현")
+                        .stuNum("2212")
+                        .email("s20040@gsm.hs.kr")
+                        .build().toEntity(passwordEncoder.encode("string"))
+        );
+    }
+
+    private void createGihongAccount() {
+        memberRepository.save(
+                MemberDto.builder()
+                        .memberName("김기홍")
+                        .stuNum("2301")
+                        .email("s20005@gsm.hs.kr")
+                        .build().toEntity(passwordEncoder.encode("string"))
+        );
+    }
+
+    private void createJinguAccount() {
+        memberRepository.save(
+                MemberDto.builder()
+                        .memberName("권진구")
+                        .stuNum("2402")
+                        .email("s20004@gsm.hs.kr")
                         .build().toEntity(passwordEncoder.encode("string"))
         );
     }
