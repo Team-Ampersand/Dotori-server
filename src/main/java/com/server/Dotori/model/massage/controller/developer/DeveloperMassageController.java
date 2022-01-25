@@ -1,4 +1,4 @@
-package com.server.Dotori.model.massage.controller.develop;
+package com.server.Dotori.model.massage.controller.developer;
 
 import com.server.Dotori.model.massage.service.MassageService;
 import com.server.Dotori.response.ResponseService;
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/v1/develop")
 @RequiredArgsConstructor
-public class DevelopMassageController {
+public class DeveloperMassageController {
 
     private final MassageService massageService;
     private final ResponseService responseService;
@@ -30,7 +30,7 @@ public class DevelopMassageController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult requestMassage() {
+    public CommonResult requestMassageDeveloper() {
         LocalDateTime currentTime = LocalDateTime.now();
         massageService.requestMassage(currentTime.getDayOfWeek(), currentTime.getHour(), currentTime.getMinute());
         return responseService.getSuccessResult();
