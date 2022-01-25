@@ -1,6 +1,8 @@
 package com.server.Dotori.model.massage.service;
 
 import com.server.Dotori.exception.massage.exception.MassageAlreadyException;
+import com.server.Dotori.exception.massage.exception.MassageCantRequestDateException;
+import com.server.Dotori.exception.massage.exception.MassageCantRequestTimeException;
 import com.server.Dotori.exception.massage.exception.MassageOverException;
 import com.server.Dotori.model.massage.repository.MassageRepository;
 import com.server.Dotori.model.member.Member;
