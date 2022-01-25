@@ -40,7 +40,6 @@ public class MemberDto {
                 .stuNum(stuNum)
                 .password(encodePassword)
                 .email(email)
-                .massageExpiredDate(LocalDateTime.now())
                 .refreshToken(null)
                 .roles(Collections.singletonList(Role.ROLE_MEMBER))
                 .massage(Massage.CAN)
