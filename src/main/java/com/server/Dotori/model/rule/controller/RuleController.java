@@ -1,5 +1,6 @@
 package com.server.Dotori.model.rule.controller;
 
+import com.server.Dotori.model.rule.dto.DeleteViolationOfTheRulesDto;
 import com.server.Dotori.model.rule.dto.RuleGrantDto;
 import com.server.Dotori.model.rule.dto.RulesCntAndDatesDto;
 import com.server.Dotori.model.rule.enumType.Rule;
@@ -45,6 +46,12 @@ public class RuleController {
     @GetMapping("/{stuNum}")
     public CommonResult findViolationOfTheRules(@PathVariable("stuNum") String stuNum){
         return responseService.getSingleResult(ruleService.findViolationOfTheRules(stuNum));
+    }
+
+    @DeleteMapping("/")
+    public CommonResult deleteViolationOfTheRules(@RequestBody DeleteViolationOfTheRulesDto deleteViolationOfTheRulesDto){
+        ruleService.deleteViolationOfTheRules(deleteViolationOfTheRulesDto);
+        return responseService.getSuccessResult();
     }
 
 }
