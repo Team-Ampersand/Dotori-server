@@ -3,6 +3,7 @@ package com.server.Dotori.model.rule.service;
 import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
+import com.server.Dotori.model.rule.dto.DeleteViolationOfTheRulesDto;
 import com.server.Dotori.model.rule.dto.RuleGrantDto;
 import com.server.Dotori.model.rule.dto.RulesCntAndDatesDto;
 import com.server.Dotori.model.rule.enumType.Rule;
@@ -10,6 +11,7 @@ import com.server.Dotori.model.rule.repository.RuleRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -125,5 +127,34 @@ public class RuleServiceTest {
 
         // then
         assertThat(violationOfTheRules.get(Rule.FIREARMS1).getCnt()).isEqualTo(1);
+    }
+
+
+    @Test
+    @DisplayName("기숙사 규정을어긴 리스트에서 삭제를 할 수 있는 테스트 코드")
+    void deleteViolationOfTheRulesTest(){
+        // given
+        List<String> stuNumList = new ArrayList<>() {
+            {
+                add("2206");
+                add("2212");
+            }
+        };
+
+        ruleService.grant(RuleGrantDto.builder()
+                .stuNum(stuNumList)
+                .rule(Rule.FIREARMS1)
+                .build());
+
+        DeleteViolationOfTheRulesDto deleteViolationOfTheRulesDto =
+                DeleteViolationOfTheRulesDto.builder()
+                .id(1L)
+                .build();
+
+        // when
+        ruleService.deleteViolationOfTheRules(deleteViolationOfTheRulesDto);
+
+        // then
+        assertThat(ruleRepository.findById(1L).isEmpty()).isTrue();
     }
 }
