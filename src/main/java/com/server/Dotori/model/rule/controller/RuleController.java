@@ -1,6 +1,5 @@
 package com.server.Dotori.model.rule.controller;
 
-import com.server.Dotori.model.rule.dto.DeleteViolationOfTheRulesDto;
 import com.server.Dotori.model.rule.dto.RuleGrantDto;
 import com.server.Dotori.model.rule.dto.RulesCntAndDatesDto;
 import com.server.Dotori.model.rule.enumType.Rule;
