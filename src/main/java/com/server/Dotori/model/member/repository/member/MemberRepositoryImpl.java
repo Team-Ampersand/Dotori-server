@@ -169,7 +169,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .update(member)
                 .where(
                         member.massage.eq(Massage.APPLIED)
-                                .and(member.massageExpiredDate.stringValue().substring(0,10).eq(String.valueOf(LocalDate.now().plusMonths(1))))
+                                .and(member.massageExpiredDate.stringValue().substring(0,10).eq(String.valueOf(LocalDate.now())))
                 )
                 .set(member.massage, Massage.CAN)
                 .set(member.massageExpiredDate, (LocalDateTime) null)
