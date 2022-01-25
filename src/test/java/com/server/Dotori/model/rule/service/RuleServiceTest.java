@@ -3,7 +3,6 @@ package com.server.Dotori.model.rule.service;
 import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
-import com.server.Dotori.model.rule.dto.DeleteViolationOfTheRulesDto;
 import com.server.Dotori.model.rule.dto.RuleGrantDto;
 import com.server.Dotori.model.rule.dto.RulesCntAndDatesDto;
 import com.server.Dotori.model.rule.enumType.Rule;
@@ -11,7 +10,6 @@ import com.server.Dotori.model.rule.repository.RuleRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -147,13 +145,8 @@ public class RuleServiceTest {
                 .rule(Rule.FIREARMS1)
                 .build());
 
-        DeleteViolationOfTheRulesDto deleteViolationOfTheRulesDto =
-                DeleteViolationOfTheRulesDto.builder()
-                .id(1L)
-                .build();
-
         // when
-        ruleService.deleteViolationOfTheRules(deleteViolationOfTheRulesDto);
+        ruleService.deleteViolationOfTheRules(1L);
 
         // then
         assertThat(ruleRepository.findById(1L).isEmpty()).isTrue();
