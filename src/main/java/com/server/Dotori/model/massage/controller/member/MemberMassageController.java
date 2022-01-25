@@ -35,4 +35,5 @@ public class MemberMassageController {
         massageService.requestMassage(currentTime.getDayOfWeek(), currentTime.getHour(), currentTime.getMinute());
         return responseService.getSuccessResult();
     }
+
 }
