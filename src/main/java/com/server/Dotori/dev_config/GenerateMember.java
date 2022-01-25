@@ -2,6 +2,7 @@ package com.server.Dotori.dev_config;
 
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
+import com.server.Dotori.model.member.enumType.Massage;
 import com.server.Dotori.model.member.enumType.Music;
 import com.server.Dotori.model.member.enumType.SelfStudy;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
@@ -63,6 +64,7 @@ public class GenerateMember {
                         .roles(singletonList(ROLE_ADMIN))
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
+                        .massage(Massage.CAN)
                         .build()
         );
     }
@@ -80,6 +82,7 @@ public class GenerateMember {
                         .roles(singletonList(ROLE_DEVELOPER))
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
+                        .massage(Massage.CAN)
                         .build()
         );
     }
@@ -97,6 +100,7 @@ public class GenerateMember {
                         .roles(singletonList(ROLE_COUNCILLOR))
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
+                        .massage(Massage.CAN)
                         .build()
         );
     }
@@ -144,6 +148,7 @@ public class GenerateMember {
                         .roles(singletonList(ROLE_DEVELOPER))
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
+                        .massage(Massage.CAN)
                         .build()
         );
     }
@@ -161,6 +166,7 @@ public class GenerateMember {
                         .roles(singletonList(ROLE_DEVELOPER))
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
+                        .massage(Massage.CAN)
                         .build()
         );
     }
@@ -178,6 +184,7 @@ public class GenerateMember {
                         .roles(singletonList(ROLE_DEVELOPER))
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
+                        .massage(Massage.CAN)
                         .build()
         );
     }
@@ -195,6 +202,7 @@ public class GenerateMember {
                         .roles(singletonList(ROLE_DEVELOPER))
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
+                        .massage(Massage.CAN)
                         .build()
         );
     }
@@ -212,6 +220,7 @@ public class GenerateMember {
                         .roles(singletonList(ROLE_DEVELOPER))
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
+                        .massage(Massage.CAN)
                         .build()
         );
     }
