@@ -41,6 +41,11 @@ public class GenerateMember {
         Member taehyeon = createTaehyeonAccount();
         Member taemin = createTaeminAccount();
         Member kyungjun = createKyungjunAccount();
+        createChanggyuAccount();
+        createTaehwanAccount();
+        createSihyeonAccount();
+        createGihongAccount();
+        createJinguAccount();
 
         loggingAccessToken(admin, developer, councillor, taehyeon, taemin, kyungjun);
     }
@@ -123,6 +128,91 @@ public class GenerateMember {
                         .stuNum("2206")
                         .email("s20018@gsm.hs.kr")
                         .build().toEntity(passwordEncoder.encode("string"))
+        );
+    }
+
+    private void createChanggyuAccount() {
+        memberRepository.save(
+                Member.builder()
+                        .id(7L)
+                        .memberName("임창규")
+                        .stuNum("2215")
+                        .email("s20058@gsm.hs.kr")
+                        .password(passwordEncoder.encode("string"))
+                        .point(0L)
+                        .refreshToken(null)
+                        .roles(singletonList(ROLE_DEVELOPER))
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .build()
+        );
+    }
+
+    private void createTaehwanAccount() {
+        memberRepository.save(
+                Member.builder()
+                        .id(8L)
+                        .memberName("정태환")
+                        .stuNum("2415")
+                        .email("s20069@gsm.hs.kr")
+                        .password(passwordEncoder.encode("string"))
+                        .point(0L)
+                        .refreshToken(null)
+                        .roles(singletonList(ROLE_DEVELOPER))
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .build()
+        );
+    }
+
+    private void createSihyeonAccount() {
+        memberRepository.save(
+                Member.builder()
+                        .id(9L)
+                        .memberName("송시현")
+                        .stuNum("2212")
+                        .email("s20040@gsm.hs.kr")
+                        .password(passwordEncoder.encode("string"))
+                        .point(0L)
+                        .refreshToken(null)
+                        .roles(singletonList(ROLE_DEVELOPER))
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .build()
+        );
+    }
+
+    private void createGihongAccount() {
+        memberRepository.save(
+                Member.builder()
+                        .id(10L)
+                        .memberName("김기홍")
+                        .stuNum("2301")
+                        .email("s20005@gsm.hs.kr")
+                        .password(passwordEncoder.encode("string"))
+                        .point(0L)
+                        .refreshToken(null)
+                        .roles(singletonList(ROLE_DEVELOPER))
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .build()
+        );
+    }
+
+    private void createJinguAccount() {
+        memberRepository.save(
+                Member.builder()
+                        .id(11L)
+                        .memberName("권진구")
+                        .stuNum("2402")
+                        .email("s20004@gsm.hs.kr")
+                        .password(passwordEncoder.encode("string"))
+                        .point(0L)
+                        .refreshToken(null)
+                        .roles(singletonList(ROLE_DEVELOPER))
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .build()
         );
     }
 
