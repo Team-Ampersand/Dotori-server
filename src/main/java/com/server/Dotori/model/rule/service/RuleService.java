@@ -13,5 +13,5 @@ public interface RuleService {
     void grant(RuleGrantDto ruleGrantDto);
     HashMap<Rule, RulesCntAndDatesDto> findAllViolationOfTheRule(String stuNum);
     List<FindViolationOfTheRuleResponseDto> findViolationOfTheRules(String stuNum);
-    void deleteViolationOfTheRules(DeleteViolationOfTheRulesDto deleteViolationOfTheRulesDto);
+    void deleteViolationOfTheRules(Long id);
 }
