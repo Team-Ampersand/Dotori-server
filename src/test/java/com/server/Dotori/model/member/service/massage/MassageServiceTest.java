@@ -106,7 +106,7 @@ public class MassageServiceTest {
         long count = scheduledTasks.stream()
                 .filter(scheduledTask -> scheduledTask.getTask() instanceof CronTask)
                 .map(scheduledTask -> (CronTask) scheduledTask.getTask())
-                .filter(cronTask -> cronTask.getExpression().equals("0 0 0 * * ?") && cronTask.toString().equals("com.server.Dotori.model.massage.schedule.MassageSchedule.updateMassageStatus"))
+                .filter(cronTask -> cronTask.getExpression().equals("0 0 0 * * MON-FRI") && cronTask.toString().equals("com.server.Dotori.model.massage.schedule.MassageSchedule.updateMassageStatus"))
                 .count();
         Assertions.assertThat(count).isEqualTo(1L);
     }
