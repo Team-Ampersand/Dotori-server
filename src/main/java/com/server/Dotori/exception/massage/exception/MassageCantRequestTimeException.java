@@ -1,13 +1,13 @@
 package com.server.Dotori.exception.massage.exception;
 
-public class MassageCantRequestTime extends RuntimeException {
-    public MassageCantRequestTime(String msg, Throwable t) {
+public class MassageCantRequestTimeException extends RuntimeException {
+    public MassageCantRequestTimeException(String msg, Throwable t) {
         super(msg, t);
     }
-    public MassageCantRequestTime(String msg) {
+    public MassageCantRequestTimeException(String msg) {
         super(msg);
     }
-    public MassageCantRequestTime() {
+    public MassageCantRequestTimeException() {
         super();
     }
 }
