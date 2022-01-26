@@ -55,5 +55,6 @@ public class MassageServiceImpl implements MassageService {
     @Override
     public void updateMassageStatus() {
         memberRepository.updateUnBanMassage();
+        massageRepository.deleteAll();
     }
 }
