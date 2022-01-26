@@ -4,5 +4,5 @@ import java.time.DayOfWeek;
 
 public interface MassageService {
     void requestMassage(DayOfWeek dayOfWeek, int hour, int min);
-
+    void updateMassageStatus();
 }

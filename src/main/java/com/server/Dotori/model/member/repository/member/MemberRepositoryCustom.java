@@ -23,4 +23,6 @@ public interface MemberRepositoryCustom {
     List<Member> findAllStudentInfo();
 
     void updateUnBanSelfStudy();
+
+    void updateUnBanMassage();
 }

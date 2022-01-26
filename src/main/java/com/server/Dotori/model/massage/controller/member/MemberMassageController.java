@@ -30,9 +30,10 @@ public class MemberMassageController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult requestMassage() {
+    public CommonResult requestMassageMember() {
         LocalDateTime currentTime = LocalDateTime.now();
         massageService.requestMassage(currentTime.getDayOfWeek(), currentTime.getHour(), currentTime.getMinute());
         return responseService.getSuccessResult();
     }
+
 }

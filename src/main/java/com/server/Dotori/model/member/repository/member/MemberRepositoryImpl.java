@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.GetAboutPointDto;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
+import com.server.Dotori.model.member.enumType.Massage;
 import com.server.Dotori.model.member.enumType.SelfStudy;
 import lombok.RequiredArgsConstructor;
 
@@ -161,4 +162,18 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .set(member.selfStudyExpiredDate, (LocalDateTime) null)
                 .execute();
     }
+
+    @Override
+    public void updateUnBanMassage() {
+        queryFactory
+                .update(member)
+                .where(
+                        member.massage.eq(Massage.APPLIED)
+                                .and(member.massageExpiredDate.stringValue().substring(0,10).eq(String.valueOf(LocalDate.now())))
+                )
+                .set(member.massage, Massage.CAN)
+                .set(member.massageExpiredDate, (LocalDateTime) null)
+                .execute();
+    }
+
 }

@@ -153,3 +153,19 @@ music-today-not-requested:
 music-not-request-on-that-date:
   code: "-550"
   msg: "There are no songs requested on that date"
+
+massage-already:
+  code: "-400"
+  msg: "You already apply massage."
+
+massage-over:
+  code: "-410"
+  msg: "The student personal over maximum personal."
+
+massage-cant-request-date:
+  code: "-420"
+  msg: "You can't request massage in this date."
+
+massage-cant-request-time:
+  code: "-430"
+  msg: "You can't request massage in this time.""

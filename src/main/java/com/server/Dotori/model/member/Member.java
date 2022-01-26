@@ -134,7 +134,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
     public void updateMassage(Massage massage) {
         this.massage = massage != null ? massage : this.massage;
     }
-
+    public void updateMassageExpiredDate(LocalDateTime massageExpiredDate) {
+        this.massageExpiredDate = massageExpiredDate;
+    }
     public void updateRole(List<Role> roles) {
         this.roles = roles != null ? roles : this.roles;
     }

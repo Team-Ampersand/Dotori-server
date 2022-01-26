@@ -153,3 +153,19 @@ music-today-not-requested:
 music-not-request-on-that-date:
   code: "-550"
   msg: "해당 날짜에 신청된 노래가 없습니다."
+
+massage-already:
+  code: "-400"
+  msg: "이미 안마의자 신청을 신청하신 회원입니다."
+
+massage-over:
+  code: "-410"
+  msg: "안마의자 신청 인원이 5명을 초과 하였습니다."
+
+massage-cant-request-date:
+  code: "-420"
+  msg: "안마의자 신청을 하실 수 없는 요일입니다."
+
+massage-cant-request-time:
+  code: "-430"
+  msg: "안마의자 신청은 오후 8시부터 오후 10시까지만 신청이 가능합니다."
