@@ -98,7 +98,7 @@ public class MassageServiceTest {
     }
 
     @Test
-    @DisplayName("자정에 안마의자 신청 상태가 변경되는지 확인하는 테스트")
+    @DisplayName("새벽 2시에 안마의자 신청 상태가 변경되는 스케쥴러가 동작하는지 확인하는 테스트")
     public void everyNightMassageStatusChangeTest() {
         Set<ScheduledTask> scheduledTasks = scheduledTaskHolder.getScheduledTasks();
         scheduledTasks.forEach(scheduledTask -> scheduledTask.getTask().getRunnable().getClass().getDeclaredMethods());
