@@ -173,3 +173,7 @@ massage-cant-request-time:
 massage-not-applied-status:
   code: "-440"
   msg: "안마의자 신청을 취소할 수 있는 상태가 아닙니다."
+
+massage-no-theres:
+  code: "-450"
+  msg: "안마의자를 신청한 학생이 없습니다"
