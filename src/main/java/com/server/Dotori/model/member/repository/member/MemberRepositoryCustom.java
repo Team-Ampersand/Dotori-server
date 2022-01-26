@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.repository.member;
 
+import com.server.Dotori.model.massage.dto.MassageStudentsDto;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.GetAboutPointDto;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
@@ -27,4 +28,6 @@ public interface MemberRepositoryCustom {
     void updateUnBanMassage();
 
     void updateMassageStatusCant();
+
+    List<MassageStudentsDto> findByMassageStatus();
 }
