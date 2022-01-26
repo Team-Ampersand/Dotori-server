@@ -168,4 +168,8 @@ massage-cant-request-date:
 
 massage-cant-request-time:
   code: "-430"
-  msg: "You can't request massage in this time.""
+  msg: "You can't request massage in this time."
+
+massage-not-applied-status:
+  code: "-440"
+  msg: "You can't cancel massage cuz your status is not applied"

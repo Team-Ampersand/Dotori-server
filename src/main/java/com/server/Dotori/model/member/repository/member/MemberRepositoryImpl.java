@@ -176,4 +176,15 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .execute();
     }
 
+    @Override
+    public void updateMassageStatusCant() {
+        queryFactory
+                .update(member)
+                .where(
+                        member.massage.eq(Massage.CANT)
+                )
+                .set(member.massage, Massage.CAN)
+                .execute();
+    }
+
 }

@@ -25,4 +25,6 @@ public interface MemberRepositoryCustom {
     void updateUnBanSelfStudy();
 
     void updateUnBanMassage();
+
+    void updateMassageStatusCant();
 }

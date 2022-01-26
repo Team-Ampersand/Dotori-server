@@ -35,4 +35,17 @@ public class CouncillorMassageController {
         massageService.requestMassage(currentTime.getDayOfWeek(), currentTime.getHour(), currentTime.getMinute());
         return responseService.getSuccessResult();
     }
+
+    @PutMapping("/cancel/massage")
+    @ResponseStatus( HttpStatus.OK )
+    @ApiOperation(value = "안마의자 신청 취소", notes = "안마의자 신청 취소")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public CommonResult cancelMassageCouncillor() {
+        LocalDateTime currentTime = LocalDateTime.now();
+        massageService.cancelMassage(currentTime.getDayOfWeek(), currentTime.getHour(), currentTime.getMinute());
+        return responseService.getSuccessResult();
+    }
 }

@@ -1,9 +1,6 @@
 package com.server.Dotori.exception.massage;
 
-import com.server.Dotori.exception.massage.exception.MassageAlreadyException;
-import com.server.Dotori.exception.massage.exception.MassageCantRequestDateException;
-import com.server.Dotori.exception.massage.exception.MassageCantRequestTimeException;
-import com.server.Dotori.exception.massage.exception.MassageOverException;
+import com.server.Dotori.exception.massage.exception.*;
 import com.server.Dotori.response.result.CommonResult;
 import com.server.Dotori.util.ExceptionResponseObjectUtil;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +39,11 @@ public class MassageExceptionHandlerImpl implements MassageExceptionHandler {
     public CommonResult massageCantRequestTimeException(MassageCantRequestTimeException ex) {
         log.debug("=== Massage Cant Request Time Exception 발생 ===");
         return exceptionResponseObjectUtil.getExceptionResponseObject(MASSAGE_CANT_REQUEST_TIME);
+    }
+
+    @Override
+    public CommonResult massageNotAppliedStatusException(MassageNotAppliedStatusException ex) {
+        log.debug("=== Massage Not Applied Status Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(MASSAGE_NOT_APPLIED_STATUS);
     }
 }
