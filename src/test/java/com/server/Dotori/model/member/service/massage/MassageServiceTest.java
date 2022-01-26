@@ -4,6 +4,7 @@ import com.server.Dotori.exception.massage.exception.MassageCantRequestDateExcep
 import com.server.Dotori.exception.massage.exception.MassageCantRequestTimeException;
 import com.server.Dotori.model.massage.repository.MassageRepository;
 import com.server.Dotori.model.massage.service.MassageService;
+import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Massage;
 import com.server.Dotori.model.member.enumType.Role;
@@ -109,5 +110,15 @@ public class MassageServiceTest {
                 .filter(cronTask -> cronTask.getExpression().equals("0 0 2 ? * MON-FRI") && cronTask.toString().equals("com.server.Dotori.model.massage.schedule.MassageSchedule.updateMassageStatus"))
                 .count();
         Assertions.assertThat(count).isEqualTo(1L);
+    }
+
+    @Test
+    @DisplayName("안마의자 신청 취소가 잘 되는지 검증")
+    public void cancelMassageTest() {
+        massageService.requestMassage(DayOfWeek.THURSDAY,20,30);
+        massageService.cancelMassage(DayOfWeek.THURSDAY, 20, 31);
+
+        assertEquals(Massage.CANT, currentMemberUtil.getCurrentMember().getMassage());
+        assertEquals(0, massageRepository.count());
     }
 }
