@@ -46,4 +46,10 @@ public class MassageExceptionHandlerImpl implements MassageExceptionHandler {
         log.debug("=== Massage Not Applied Status Exception 발생 ===");
         return exceptionResponseObjectUtil.getExceptionResponseObject(MASSAGE_NOT_APPLIED_STATUS);
     }
+
+    @Override
+    public CommonResult massageNoTheresException(MassageNoTheresException ex) {
+        log.debug("=== Massage No Theres Exception 발생 ===");
+        return exceptionResponseObjectUtil.getExceptionResponseObject(MASSAGE_NO_THERES);
+    }
 }

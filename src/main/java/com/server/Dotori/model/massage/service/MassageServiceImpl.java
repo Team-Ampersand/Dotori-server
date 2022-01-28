@@ -1,6 +1,7 @@
 package com.server.Dotori.model.massage.service;
 
 import com.server.Dotori.exception.massage.exception.*;
+import com.server.Dotori.model.massage.dto.MassageStudentsDto;
 import com.server.Dotori.model.massage.repository.MassageRepository;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.server.Dotori.model.member.enumType.Massage.*;
 
@@ -67,10 +69,20 @@ public class MassageServiceImpl implements MassageService {
         } else throw new MassageNotAppliedStatusException();
     }
 
+
+
     @Override
     public void updateMassageStatus() {
         memberRepository.updateUnBanMassage();
         memberRepository.updateMassageStatusCant();
         massageRepository.deleteAll();
+    }
+
+    @Override
+    public List<MassageStudentsDto> getMassageStudents() {
+        List<MassageStudentsDto> students = memberRepository.findByMassageStatus();
+        if (students.size() == 0) throw new MassageNoTheresException();
+
+        return students;
     }
 }

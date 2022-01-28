@@ -13,6 +13,7 @@ public interface MassageExceptionHandler {
     String MASSAGE_CANT_REQUEST_DATE = "massage-cant-request-date";
     String MASSAGE_CANT_REQUEST_TIME = "massage-cant-request-time";
     String MASSAGE_NOT_APPLIED_STATUS = "massage-not-applied-status";
+    String MASSAGE_NO_THERES = "massage-no-theres";
 
     @ExceptionHandler(MassageAlreadyException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -33,4 +34,8 @@ public interface MassageExceptionHandler {
     @ExceptionHandler(MassageNotAppliedStatusException.class)
     @ResponseStatus(HttpStatus.ACCEPTED)
     CommonResult massageNotAppliedStatusException(MassageNotAppliedStatusException ex);
+
+    @ExceptionHandler(MassageNoTheresException.class)
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    CommonResult massageNoTheresException(MassageNoTheresException ex);
 }

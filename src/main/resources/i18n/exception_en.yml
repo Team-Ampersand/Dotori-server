@@ -173,3 +173,7 @@ massage-cant-request-time:
 massage-not-applied-status:
   code: "-440"
   msg: "You can't cancel massage cuz your status is not applied"
+
+massage-no-theres:
+  code: "-450"
+  msg: "No theres request massagex"

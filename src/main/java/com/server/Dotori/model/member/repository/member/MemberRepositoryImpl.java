@@ -2,6 +2,7 @@ package com.server.Dotori.model.member.repository.member;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.server.Dotori.model.massage.dto.MassageStudentsDto;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.GetAboutPointDto;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
@@ -185,6 +186,20 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 )
                 .set(member.massage, Massage.CAN)
                 .execute();
+    }
+
+    @Override
+    public List<MassageStudentsDto> findByMassageStatus() {
+        return queryFactory
+                .from(member)
+                .select(Projections.fields(MassageStudentsDto.class,
+                        member.id, member.memberName, member.stuNum)
+                )
+                .where(
+                        member.massage.eq(Massage.APPLIED)
+                )
+                .orderBy(member.stuNum.asc())
+                .fetch();
     }
 
 }

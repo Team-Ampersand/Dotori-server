@@ -35,4 +35,9 @@ public class MassageExceptionController {
         throw new MassageNotAppliedStatusException();
     }
 
+    @GetMapping("/massage-no-theres-status")
+    public CommonResult massageNoTheresException() {
+        throw new MassageNoTheresException();
+    }
+
 }
