@@ -2,6 +2,7 @@ package com.server.Dotori.model.member.service.massage;
 
 import com.server.Dotori.exception.massage.exception.MassageCantRequestDateException;
 import com.server.Dotori.exception.massage.exception.MassageCantRequestTimeException;
+import com.server.Dotori.model.massage.dto.MassageStudentsDto;
 import com.server.Dotori.model.massage.repository.MassageRepository;
 import com.server.Dotori.model.massage.service.MassageService;
 import com.server.Dotori.model.member.Member;
@@ -120,5 +121,15 @@ public class MassageServiceTest {
 
         assertEquals(Massage.CANT, currentMemberUtil.getCurrentMember().getMassage());
         assertEquals(0, massageRepository.count());
+    }
+
+    @Test
+    @DisplayName("안마의자를 신청한 학생 전체조회가 잘 작동하나요?")
+    public void findAllMassageTest() {
+        massageService.requestMassage(DayOfWeek.THURSDAY, 20, 40);
+
+        List<MassageStudentsDto> massageStudents = massageService.getMassageStudents();
+
+        assertEquals(1, massageStudents.size());
     }
 }
