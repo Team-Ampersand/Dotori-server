@@ -76,11 +76,11 @@ public class RuleServiceTest {
         // when
         ruleService.grant(RuleGrantDto.builder()
                 .stuNum(stuNumList)
-                .rule(Rule.FIREARMS1)
+                .rule(Rule.FIREARMS)
                 .build());
 
         // then
-        assertThat(ruleRepository.findById(2L).get().getRule()).isEqualTo(Rule.FIREARMS1);
+        assertThat(ruleRepository.findById(2L).get().getRule()).isEqualTo(Rule.FIREARMS);
     }
 
     @Order(value = 3)
@@ -101,7 +101,7 @@ public class RuleServiceTest {
                 MemberNotFoundException.class,
                 () -> ruleService.grant(RuleGrantDto.builder()
                         .stuNum(stuNumList)
-                        .rule(Rule.FIREARMS1)
+                        .rule(Rule.FIREARMS)
                         .build())
         );
     }
@@ -118,7 +118,7 @@ public class RuleServiceTest {
         ruleService.grant(
             RuleGrantDto.builder()
                     .stuNum(stuNumList)
-                    .rule(Rule.FIREARMS1)
+                    .rule(Rule.FIREARMS)
                     .build()
         );
 
@@ -126,7 +126,7 @@ public class RuleServiceTest {
         HashMap<Rule, RulesCntAndDatesDto> violationOfTheRules = ruleService.findAllViolationOfTheRule("2206");
 
         // then
-        assertThat(violationOfTheRules.get(Rule.FIREARMS1).getCnt()).isEqualTo(1);
+        assertThat(violationOfTheRules.get(Rule.FIREARMS).getCnt()).isEqualTo(1);
     }
 
     @Order(value = 1)
@@ -142,7 +142,7 @@ public class RuleServiceTest {
 
         ruleService.grant(RuleGrantDto.builder()
                 .stuNum(stuNumList)
-                .rule(Rule.FIREARMS1)
+                .rule(Rule.FIREARMS)
                 .build());
 
         // when

@@ -6,10 +6,9 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 public enum Rule {
-    FIREARMS1, WEAPON1, ALCOHOL1, TOBACCO1, MEANDERING_APPARATUS1,
-    FIREARMS2, WEAPON2, ALCOHOL2, TOBACCO2, MEANDERING_APPARATUS2, FOOD,       // 1. 금지 물품 반입
+    FIREARMS, WEAPON, ALCOHOL, TOBACCO, MEANDERING_APPARATUS, FOOD,       // 1. 금지 물품 반입
 
-    MANAGER_GUIDANCE1, MANAGER_GUIDANCE2,                                       // 2. 사감 지도 불이행
+    MANAGER_GUIDANCE,                                       // 2. 사감 지도 불이행
 
     TIME, OUTING, OVERNIGHT_STAY,                                               // 3. 시간 관 소홀 및 이탈 행위 ( 타호실 )
 
