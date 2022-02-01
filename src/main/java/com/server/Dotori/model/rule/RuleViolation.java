@@ -6,6 +6,7 @@ import com.server.Dotori.model.rule.enumType.Rule;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -16,6 +17,9 @@ public class RuleViolation extends BaseTimeEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "rule_violation_id")
     private Long id;
+
+    @Column(name = "rule_violation_date", nullable = false)
+    private LocalDate date;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "rule_violation_rule", nullable = false)
