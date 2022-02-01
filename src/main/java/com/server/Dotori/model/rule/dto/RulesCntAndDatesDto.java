@@ -1,10 +1,9 @@
 package com.server.Dotori.model.rule.dto;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
@@ -12,6 +11,6 @@ import java.util.List;
 public class RulesCntAndDatesDto {
 
     private int cnt;
-    private List<String> date;
+    private List<LocalDate> date;
 
 }
