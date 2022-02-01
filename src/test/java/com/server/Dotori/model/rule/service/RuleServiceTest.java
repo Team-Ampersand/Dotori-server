@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -77,6 +78,7 @@ public class RuleServiceTest {
         ruleService.grant(RuleGrantDto.builder()
                 .stuNum(stuNumList)
                 .rule(Rule.FIREARMS)
+                .date(LocalDate.now())
                 .build());
 
         // then
@@ -119,6 +121,7 @@ public class RuleServiceTest {
             RuleGrantDto.builder()
                     .stuNum(stuNumList)
                     .rule(Rule.FIREARMS)
+                    .date(LocalDate.now())
                     .build()
         );
 
@@ -143,6 +146,7 @@ public class RuleServiceTest {
         ruleService.grant(RuleGrantDto.builder()
                 .stuNum(stuNumList)
                 .rule(Rule.FIREARMS)
+                .date(LocalDate.now())
                 .build());
 
         // when
