@@ -10,6 +10,7 @@ import com.server.Dotori.model.rule.repository.RuleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -25,7 +26,7 @@ public class RuleServiceImpl implements RuleService{
 
         for (String stuNum : ruleGrantDto.getStuNum()){
             Member member = memberRepository.findByStuNum(stuNum).orElseThrow(() -> new MemberNotFoundException());
-            ruleViolations.add(ruleGrantDto.toEntity(member,ruleGrantDto.getRule()));
+            ruleViolations.add(ruleGrantDto.toEntity(member));
         }
 
         for (RuleViolation ruleViolation : ruleViolations) {
@@ -42,14 +43,14 @@ public class RuleServiceImpl implements RuleService{
 
         int cnt = 0;
         for (Rule rule : Rule.values()) {
-            List<String> localDateTime = new LinkedList<>();
+            List<LocalDate> date = new LinkedList<>();
             for (int i = 0; i < findRulesAndDatesDto.size(); i++) {
                 if(findRulesAndDatesDto.get(i).getRules().equals(rule)){
-                    localDateTime.add(findRulesAndDatesDto.get(i).getDates().toString().substring(0,10));
+                    date.add(findRulesAndDatesDto.get(i).getDates());
                     cnt++;
                 }
             }
-            RulesCntAndDatesDto rulesCntAndDatesDto = new RulesCntAndDatesDto(cnt, localDateTime);
+            RulesCntAndDatesDto rulesCntAndDatesDto = new RulesCntAndDatesDto(cnt, date);
             response.put(rule,rulesCntAndDatesDto);
             cnt = 0;
         }
@@ -68,7 +69,7 @@ public class RuleServiceImpl implements RuleService{
             FindViolationOfTheRuleResponseDto responseDto = FindViolationOfTheRuleResponseDto.builder()
                     .id(dto.getId())
                     .rule(dto.getRule())
-                    .createdDate(dto.getCreatedDate().toString().substring(0, 10))
+                    .date(dto.getDate())
                     .build();
 
             response.add(responseDto);
