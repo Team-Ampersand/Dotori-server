@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.server.Dotori.model.member.enumType.Massage.*;
 
@@ -76,6 +78,14 @@ public class MassageServiceImpl implements MassageService {
         memberRepository.updateUnBanMassage();
         memberRepository.updateMassageStatusCant();
         massageRepository.deleteAll();
+    }
+
+    @Override
+    public Map<String, String> getMassageStatusAndCount() {
+        Map<String, String> map = new HashMap<>();
+        map.put("status",currentMemberUtil.getCurrentMember().getMassage().toString());
+        map.put("count", String.valueOf(massageRepository.count()));
+        return map;
     }
 
     @Override

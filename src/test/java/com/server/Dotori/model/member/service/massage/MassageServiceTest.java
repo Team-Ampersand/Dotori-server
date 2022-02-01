@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
@@ -131,5 +132,16 @@ public class MassageServiceTest {
         List<MassageStudentsDto> massageStudents = massageService.getMassageStudents();
 
         assertEquals(1, massageStudents.size());
+    }
+
+    @Test
+    @DisplayName("안마의자를 신청한 학생의 상태와 안마의자 신청 카운트 조회가 잘 되나요?")
+    public void findMassageStatusAndCountTest() {
+        massageService.requestMassage(DayOfWeek.THURSDAY, 20, 40);
+        Map<String, String> find = massageService.getMassageStatusAndCount();
+
+        assertEquals(String.valueOf(Massage.APPLIED), find.get("status"));
+        assertEquals("1", find.get("count"));
+
     }
 }
