@@ -47,6 +47,9 @@ public class RuleController {
         return responseService.getSingleResult(ruleService.findViolationOfTheRules(stuNum));
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header"),
+    })
     @DeleteMapping("/{id}")
     public CommonResult deleteViolationOfTheRules(@PathVariable Long id){
         ruleService.deleteViolationOfTheRules(id);
