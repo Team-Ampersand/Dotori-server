@@ -1,5 +1,6 @@
 package com.server.Dotori.model.massage.controller.councillor;
 
+import com.server.Dotori.model.massage.dto.MassageStudentsDto;
 import com.server.Dotori.model.massage.service.MassageService;
 import com.server.Dotori.response.ResponseService;
 import com.server.Dotori.response.result.CommonResult;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -55,7 +57,7 @@ public class CouncillorMassageController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult getMassageStudentsCouncillor() {
+    public SingleResult<List<MassageStudentsDto>> getMassageStudentsCouncillor() {
         return responseService.getSingleResult(massageService.getMassageStudents());
     }
 
