@@ -28,7 +28,7 @@ public class RuleRepositoryCustomImpl implements RuleRepositoryCustom{
         List<FindRuleAndDateDto> result = queryFactory
                 .select(Projections.constructor(FindRuleAndDateDto.class,
                         ruleViolation.rule,
-                        ruleViolation.createdDate))
+                        ruleViolation.date))
                 .from(ruleViolation)
                 .innerJoin(ruleViolation.member, member)
                 .where(ruleViolation.member.stuNum.eq(stuNum))
@@ -43,11 +43,11 @@ public class RuleRepositoryCustomImpl implements RuleRepositoryCustom{
                 .select(Projections.constructor(FindIdAndRuleAndDateDto.class,
                         ruleViolation.id,
                         ruleViolation.rule,
-                        ruleViolation.createdDate))
+                        ruleViolation.date))
                 .from(ruleViolation)
                 .innerJoin(ruleViolation.member, member)
                 .where(ruleViolation.member.stuNum.eq(stuNum))
-                .orderBy(ruleViolation.createdDate.desc())
+                .orderBy(ruleViolation.date.desc())
                 .fetch();
 
         return result;

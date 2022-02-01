@@ -5,7 +5,7 @@ import com.server.Dotori.model.rule.RuleViolation;
 import com.server.Dotori.model.rule.enumType.Rule;
 import lombok.*;
 
-import java.util.Collection;
+import java.time.LocalDate;
 import java.util.List;
 
 @NoArgsConstructor
@@ -17,11 +17,13 @@ public class RuleGrantDto {
 
     private List<String> stuNum;
     private Rule rule;
+    private LocalDate date;
 
-    public RuleViolation toEntity(Member member, Rule rule){
+    public RuleViolation toEntity(Member member){
         return RuleViolation.builder()
                 .member(member)
                 .rule(rule)
+                .date(date)
                 .build();
     }
 }

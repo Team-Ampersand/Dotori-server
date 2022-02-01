@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -13,5 +15,5 @@ import lombok.NoArgsConstructor;
 public class FindViolationOfTheRuleResponseDto {
     private Long id;
     private Rule rule;
-    private String createdDate;
+    private LocalDate date;
 }
