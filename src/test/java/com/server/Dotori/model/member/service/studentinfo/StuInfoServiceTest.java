@@ -128,4 +128,14 @@ class StuInfoServiceTest {
         //then
         assertNotNull(memberRepository.findByEmail("s20032@gsm.hs.kr"));
     }
+
+    @Test
+    @DisplayName("이름으로 학생정보가 잘 검색되나요?")
+    public void searchMemberByMemberNameTest() {
+        //given //when
+        List<StudentInfoDto> stuInfoByMemberName = stuInfoService.getStuInfoByMemberName("배태현");
+
+        //then
+        assertEquals("배태현", stuInfoByMemberName.get(0).getMemberName());
+    }
 }
