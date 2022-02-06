@@ -42,6 +42,7 @@ public class AdminStuInfoController {
      * 학생정보 변경을 위해 반별로 학생을 조회하는 컨트롤러
      * @param id classId
      * @return SingleResult - List (id, stuNum, username, role)
+     * @author 배태현
      */
     @GetMapping("/info/{classId}")
     @ResponseStatus( HttpStatus.OK )
@@ -58,6 +59,7 @@ public class AdminStuInfoController {
      * 학생 정보 변경 - 권한 변경
      * @param roleUpdateDto (receiverId, role)
      * @return CommonResult - SuccessResult
+     * @author 배태현
      */
     @PutMapping("/info/role")
     @ResponseStatus( HttpStatus.OK )
@@ -75,6 +77,7 @@ public class AdminStuInfoController {
      * 학생 정보 변경 - 학번 변경
      * @param stuNumUpdateDto (receiverId, stuNum)
      * @return CommonResult - SuccessResult
+     * @author 배태현
      */
     @PutMapping("/info/stunum")
     @ResponseStatus( HttpStatus.OK )
@@ -92,6 +95,7 @@ public class AdminStuInfoController {
      * 학생 정보 변경 - 이름 변경
      * @param memberNameUpdateDto (receiverId, memberName)
      * @return CommonResult - SuccessResult
+     * @author 배태현
      */
     @PutMapping("/info/membername")
     @ResponseStatus( HttpStatus.OK )
@@ -103,5 +107,22 @@ public class AdminStuInfoController {
     public CommonResult updateMemberNameAdmin(@RequestBody MemberNameUpdateDto memberNameUpdateDto) {
         stuInfoService.updateMemberName(memberNameUpdateDto);
         return responseService.getSuccessResult();
+    }
+
+    /**
+     * 이름으로 학생들을 검색하는 컨트롤러
+     * @param memberName
+     * @return SingleResult - List<StudentInfoDto>
+     * @author 배태현
+     */
+    @GetMapping(value = "/info/members")
+    @ResponseStatus( HttpStatus.OK )
+    @ApiOperation(value = "학생정보 목록 이름 조회", notes = "학생정보 목록 이름 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public SingleResult getStuInfoByMemberNameAdmin(@RequestParam(value = "membername", required = true) String memberName) {
+        return responseService.getSingleResult(stuInfoService.getStuInfoByMemberName(memberName));
     }
 }
