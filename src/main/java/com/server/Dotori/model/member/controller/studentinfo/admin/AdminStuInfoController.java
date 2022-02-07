@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/v1/admin")
 @RequiredArgsConstructor
@@ -68,7 +70,7 @@ public class AdminStuInfoController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateRoleAdmin(@RequestBody RoleUpdateDto roleUpdateDto) {
+    public CommonResult updateRoleAdmin(@Valid @RequestBody RoleUpdateDto roleUpdateDto) {
         stuInfoService.updateRole(roleUpdateDto);
         return responseService.getSuccessResult();
     }
@@ -86,7 +88,7 @@ public class AdminStuInfoController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateStuNumAdmin(@RequestBody StuNumUpdateDto stuNumUpdateDto) {
+    public CommonResult updateStuNumAdmin(@Valid @RequestBody StuNumUpdateDto stuNumUpdateDto) {
         stuInfoService.updateStuNum(stuNumUpdateDto);
         return responseService.getSuccessResult();
     }
@@ -104,7 +106,7 @@ public class AdminStuInfoController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateMemberNameAdmin(@RequestBody MemberNameUpdateDto memberNameUpdateDto) {
+    public CommonResult updateMemberNameAdmin(@Valid @RequestBody MemberNameUpdateDto memberNameUpdateDto) {
         stuInfoService.updateMemberName(memberNameUpdateDto);
         return responseService.getSuccessResult();
     }
