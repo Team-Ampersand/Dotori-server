@@ -18,4 +18,6 @@ public interface StuInfoService {
     void updateStuNum(StuNumUpdateDto stuNumUpdateDto);
 
     void updateMemberName(MemberNameUpdateDto memberNameUpdateDto);
+
+    List<StudentInfoDto> getStuInfoByMemberName(String memberName);
 }

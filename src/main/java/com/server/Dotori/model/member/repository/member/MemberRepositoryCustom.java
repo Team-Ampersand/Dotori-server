@@ -30,4 +30,6 @@ public interface MemberRepositoryCustom {
     void updateMassageStatusCant();
 
     List<MassageStudentsDto> findByMassageStatus();
+
+    List<Member> findStuInfoByMemberName(String memberName);
 }

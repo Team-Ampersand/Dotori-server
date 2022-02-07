@@ -34,6 +34,7 @@ public class StuInfoServiceImpl implements StuInfoService {
      * @param id classId
      * @exception MemberNotFoundByClassException 해당 반에 해당하는 학생들이 없을 때
      * @return List - StudentInfoDto (id, stuNum, username, roles)
+     * @author 배태현
      */
     @Override
     public List<StudentInfoDto> getStudentInfo(Long id) {
@@ -47,6 +48,7 @@ public class StuInfoServiceImpl implements StuInfoService {
     /**
      * 전체 조회한 학생들 List를 List Dto로 변경후 반환하는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * @return List - StudentInfoDto (id, stuNum, username, roles)
+     * @author 배태현
      */
     @Override
     public List<StudentInfoDto> getAllStudentInfo() {
@@ -60,6 +62,7 @@ public class StuInfoServiceImpl implements StuInfoService {
      * 권한이 업데이트된 사용자는 로그인을 다시 해야한다. (공지를 해야할듯)
      * @param roleUpdateDto (receiverId, roles)
      * @exception MemberNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
+     * @author 배태현
      */
     @Override
     @Transactional
@@ -87,6 +90,7 @@ public class StuInfoServiceImpl implements StuInfoService {
      * @param stuNumUpdateDto (receiverId, stuNum)
      * @exception MemberNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
      * @exception MemberAlreadyJoinThisStunumException 해당 학번으로 이미 가입된 유저가 있을 때
+     * @author 배태현
      */
     @Override
     @Transactional
@@ -104,6 +108,7 @@ public class StuInfoServiceImpl implements StuInfoService {
      * 학생의 이름을 변경시키는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * @param memberNameUpdateDto (receiverId, username)
      * @exception MemberNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
+     * @author 배태현
      */
     @Override
     @Transactional
@@ -112,5 +117,19 @@ public class StuInfoServiceImpl implements StuInfoService {
                 .orElseThrow(() -> new MemberNotFoundException());
 
         findMember.updateMemberName(memberNameUpdateDto.getMemberName());
+    }
+
+    /**
+     * 이름으로 학생정보를 조회하는 로직 (사감쌤, 기자위, 개발자 사용가능)
+     * @param memberName memberName
+     * @exception MemberNotFoundException 검색한 이름로 검색된 학생이 없을 때
+     * @return List<StudentInfoDto>
+     * @author 배태현
+     */
+    @Override
+    public List<StudentInfoDto> getStuInfoByMemberName(String memberName) {
+        List<Member> findMembers = memberRepository.findStuInfoByMemberName(memberName);
+        if (findMembers.isEmpty()) throw new MemberNotFoundException();
+        return objectMapperUtils.mapAll(findMembers, StudentInfoDto.class);
     }
 }

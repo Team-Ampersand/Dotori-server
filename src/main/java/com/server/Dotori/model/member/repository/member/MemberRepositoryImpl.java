@@ -202,4 +202,13 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .fetch();
     }
 
+    @Override
+    public List<Member> findStuInfoByMemberName(String memberName) {
+        return queryFactory.from(member)
+                .select(member)
+                .where(member.memberName.eq(memberName))
+                .orderBy(member.stuNum.asc())
+                .fetch();
+    }
+
 }
