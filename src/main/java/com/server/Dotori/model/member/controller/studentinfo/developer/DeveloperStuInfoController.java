@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.yaml.snakeyaml.util.UriEncoder;
 
+import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
@@ -72,7 +73,7 @@ public class DeveloperStuInfoController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateRoleDeveloper(@RequestBody RoleUpdateDto roleUpdateDto) {
+    public CommonResult updateRoleDeveloper(@Valid @RequestBody RoleUpdateDto roleUpdateDto) {
         stuInfoService.updateRole(roleUpdateDto);
         return responseService.getSuccessResult();
     }
@@ -90,7 +91,7 @@ public class DeveloperStuInfoController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateStuNumDeveloper(@RequestBody StuNumUpdateDto stuNumUpdateDto) {
+    public CommonResult updateStuNumDeveloper(@Valid @RequestBody StuNumUpdateDto stuNumUpdateDto) {
         stuInfoService.updateStuNum(stuNumUpdateDto);
         return responseService.getSuccessResult();
     }
@@ -108,7 +109,7 @@ public class DeveloperStuInfoController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateMemberNameDeveloper(@RequestBody MemberNameUpdateDto memberNameUpdateDto) {
+    public CommonResult updateMemberNameDeveloper(@Valid @RequestBody MemberNameUpdateDto memberNameUpdateDto) {
         stuInfoService.updateMemberName(memberNameUpdateDto);
         return responseService.getSuccessResult();
     }

@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/v1/councillor")
 @RequiredArgsConstructor
@@ -68,7 +70,7 @@ public class CouncillorStuInfoController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateRoleCouncillor(@RequestBody RoleUpdateDto roleUpdateDto) {
+    public CommonResult updateRoleCouncillor(@Valid @RequestBody RoleUpdateDto roleUpdateDto) {
         stuInfoService.updateRole(roleUpdateDto);
         return responseService.getSuccessResult();
     }
@@ -86,7 +88,7 @@ public class CouncillorStuInfoController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateStuNumCouncillor(@RequestBody StuNumUpdateDto stuNumUpdateDto) {
+    public CommonResult updateStuNumCouncillor(@Valid @RequestBody StuNumUpdateDto stuNumUpdateDto) {
         stuInfoService.updateStuNum(stuNumUpdateDto);
         return responseService.getSuccessResult();
     }
@@ -104,7 +106,7 @@ public class CouncillorStuInfoController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult updateMemberNameCouncillor(@RequestBody MemberNameUpdateDto memberNameUpdateDto) {
+    public CommonResult updateMemberNameCouncillor(@Valid @RequestBody MemberNameUpdateDto memberNameUpdateDto) {
         stuInfoService.updateMemberName(memberNameUpdateDto);
         return responseService.getSuccessResult();
     }
