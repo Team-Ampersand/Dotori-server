@@ -29,6 +29,8 @@ public interface MemberRepositoryCustom {
 
     void updateMassageStatusCant();
 
+    void updateMassageStatusImpossible();
+
     List<MassageStudentsDto> findByMassageStatus();
 
     List<Member> findStuInfoByMemberName(String memberName);
