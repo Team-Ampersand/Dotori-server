@@ -71,12 +71,11 @@ public class MassageServiceImpl implements MassageService {
         } else throw new MassageNotAppliedStatusException();
     }
 
-
-
     @Override
     public void updateMassageStatus() {
         memberRepository.updateUnBanMassage();
         memberRepository.updateMassageStatusCant();
+        memberRepository.updateMassageStatusImpossible();
         massageRepository.deleteAll();
     }
 
