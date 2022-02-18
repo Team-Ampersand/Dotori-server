@@ -169,7 +169,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         queryFactory
                 .update(member)
                 .where(
-                        member.massage.eq(Massage.APPLIED)
+                        member.massage.eq(Massage.IMPOSSIBLE)
                                 .and(member.massageExpiredDate.stringValue().substring(0,10).eq(String.valueOf(LocalDate.now())))
                 )
                 .set(member.massage, Massage.CAN)
@@ -185,6 +185,17 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                         member.massage.eq(Massage.CANT)
                 )
                 .set(member.massage, Massage.CAN)
+                .execute();
+    }
+
+    @Override
+    public void updateMassageStatusImpossible() {
+        queryFactory
+                .update(member)
+                .where(
+                        member.massage.eq(Massage.APPLIED)
+                )
+                .set(member.massage, Massage.IMPOSSIBLE)
                 .execute();
     }
 
