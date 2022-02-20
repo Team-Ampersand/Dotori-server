@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
-@Validated
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/admin/rule")
