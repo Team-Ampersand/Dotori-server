@@ -177,3 +177,7 @@ massage-not-applied-status:
 massage-no-theres:
   code: "-450"
   msg: "안마의자를 신청한 학생이 없습니다"
+
+rule-no-history:
+  code: "-300"
+  msg: "규정위반 내역이 없습니다"
