@@ -22,7 +22,7 @@ public class MemberRuleController {
     private final ResponseService responseService;
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
     })
     @GetMapping("/main")
     public SingleResult<List<FindViolationOfTheRuleResponseDto>> findRuleAtMainPage(){
