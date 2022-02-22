@@ -1,6 +1,7 @@
 package com.server.Dotori.model.rule.service;
 
 import com.server.Dotori.exception.member.exception.MemberNotFoundException;
+import com.server.Dotori.exception.rule.exception.RuleNoHistoryException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.model.rule.RuleViolation;
@@ -41,7 +42,7 @@ public class RuleServiceImpl implements RuleService{
         HashMap<Rule, RulesCntAndDatesDto> response = new LinkedHashMap<>();
         List<FindRuleAndDateDto> findRulesAndDatesDtoList = ruleRepository.findViolationOfTheRule(stuNum);
 
-        if (findRulesAndDatesDtoList.isEmpty()) throw new IllegalArgumentException("규정위반 내역이 없습니다.");
+        if (findRulesAndDatesDtoList.isEmpty()) throw new RuleNoHistoryException();
 
         int cnt = 0;
         for (Rule rule : Rule.values()) {
@@ -66,7 +67,7 @@ public class RuleServiceImpl implements RuleService{
 
         List<FindIdAndRuleAndDateDto> result = ruleRepository.findViolationOfTheRules(stuNum);
 
-        if(result.isEmpty()) throw new IllegalArgumentException("규정위반 내역이 없습니다.");
+        if(result.isEmpty()) throw new RuleNoHistoryException();
 
         List<FindViolationOfTheRuleResponseDto> response = new LinkedList<>();
 
