@@ -176,4 +176,8 @@ massage-not-applied-status:
 
 massage-no-theres:
   code: "-450"
-  msg: "No theres request massagex"
+  msg: "No theres request massage"
+
+rule-no-history:
+  code: "-300"
+  msg: "Rule Cant found History"
