@@ -23,6 +23,10 @@ public class AdminMassageController {
     private final MassageService massageService;
     private final ResponseService responseService;
 
+    /**
+     * 안마의자를 신청한 학생 조회
+     * @return SingleResult - (id, stuNum, memberName)
+     */
     @GetMapping("/massage")
     @ResponseStatus( HttpStatus.OK )
     @ApiOperation(value = "안마의자 신청한 학생 전체 조회", notes = "안마의자 신청한 학생 전체 조회")

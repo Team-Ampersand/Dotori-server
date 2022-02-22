@@ -164,6 +164,11 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .execute();
     }
 
+    /**
+     * 안마의자 신청 만료기간이 다 된 학생의 안마의자 신청 상태를 'CAN'으로 변경
+     * 만료기간을 null로 지정(초기화)
+     * @author 김태민
+     */
     @Override
     public void updateUnBanMassage() {
         queryFactory
@@ -177,6 +182,10 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .execute();
     }
 
+    /**
+     * 안마의자 신청을 했다가 취소한 학생들의 상태 'CANT'를 'CAN'으로 바꿔주는 쿼리
+     * @author 김태민
+     */
     @Override
     public void updateMassageStatusCant() {
         queryFactory
@@ -188,6 +197,10 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .execute();
     }
 
+    /**
+     * 안마의자를 신청한 학생들의 상태 'APPLIED'를 'IMPOSSIBLE'로 변경
+     * @author 김태민
+     */
     @Override
     public void updateMassageStatusImpossible() {
         queryFactory
@@ -199,6 +212,11 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .execute();
     }
 
+    /**
+     * 안마의자 신청을 한 학생들을 조회하는 쿼리
+     * @return List<MassageStudentsDto> (id, stuNum, memberName)
+     * @author 김태민
+     */
     @Override
     public List<MassageStudentsDto> findByMassageStatus() {
         return queryFactory

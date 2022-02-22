@@ -24,6 +24,10 @@ public class CouncillorMassageController {
     private final MassageService massageService;
     private final ResponseService responseService;
 
+    /**
+     * 안마의자 신청
+     * @return CommonResult - SuccessResult
+     */
     @PutMapping("/massage")
     @ResponseStatus( HttpStatus.OK )
     @ApiOperation(value = "안마의자 신청", notes = "안마의자 신청")
@@ -37,6 +41,10 @@ public class CouncillorMassageController {
         return responseService.getSuccessResult();
     }
 
+    /**
+     * 안마의자 신청 취소
+     * @return CommonResult - SuccessResult
+     */
     @PutMapping("/cancel/massage")
     @ResponseStatus( HttpStatus.OK )
     @ApiOperation(value = "안마의자 신청 취소", notes = "안마의자 신청 취소")
@@ -50,6 +58,10 @@ public class CouncillorMassageController {
         return responseService.getSuccessResult();
     }
 
+    /**
+     * 안마의자를 신청한 학생 조회
+     * @return SingleResult - (id, stuNum, memberName)
+     */
     @GetMapping("/massage")
     @ResponseStatus( HttpStatus.OK )
     @ApiOperation(value = "안마의자 신청한 학생 전체 조회", notes = "안마의자 신청한 학생 전체 조회")
@@ -61,6 +73,10 @@ public class CouncillorMassageController {
         return responseService.getSingleResult(massageService.getMassageStudents());
     }
 
+    /**
+     * 안마의자를 신청한 학생수와 자신의 신청 상태 조회
+     * @return Map<String count(안마의자 신청을 한 학생수), String massageStatus(자신의 안마의자 신청 상태)>
+     */
     @GetMapping ("/massage/info")
     @ResponseStatus( HttpStatus.OK )
     @ApiOperation(value = "안마의자를 신청한 학생 카운트, 안마의자 신청 상태 조회", notes = "안마의자를 신청한 학생 카운트, 안마의자 신청 상태 조회")
