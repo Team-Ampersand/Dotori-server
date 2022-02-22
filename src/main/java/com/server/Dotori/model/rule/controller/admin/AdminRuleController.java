@@ -1,5 +1,6 @@
-package com.server.Dotori.model.rule.controller;
+package com.server.Dotori.model.rule.controller.admin;
 
+import com.server.Dotori.model.rule.dto.FindViolationOfTheRuleResponseDto;
 import com.server.Dotori.model.rule.dto.RuleGrantDto;
 import com.server.Dotori.model.rule.dto.RulesCntAndDatesDto;
 import com.server.Dotori.model.rule.enumType.Rule;
@@ -13,11 +14,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/admin/rule")
-public class RuleController {
+public class AdminRuleController {
 
     private final RuleService ruleService;
     private final ResponseService responseService;
@@ -56,4 +58,11 @@ public class RuleController {
         return responseService.getSuccessResult();
     }
 
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header"),
+    })
+    @GetMapping("/main")
+    public SingleResult<List<FindViolationOfTheRuleResponseDto>> findRuleAtMainPage(){
+        return responseService.getSingleResult(ruleService.findRuleAtMainPage());
+    }
 }
