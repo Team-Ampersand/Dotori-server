@@ -57,12 +57,4 @@ public class AdminRuleController {
         ruleService.deleteViolationOfTheRules(id);
         return responseService.getSuccessResult();
     }
-
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
-    })
-    @GetMapping("/main")
-    public SingleResult<List<FindViolationOfTheRuleResponseDto>> findRuleAtMainPage(){
-        return responseService.getSingleResult(ruleService.findRuleAtMainPage());
-    }
 }
