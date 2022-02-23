@@ -1,5 +1,6 @@
-package com.server.Dotori.model.rule.controller;
+package com.server.Dotori.model.rule.controller.admin;
 
+import com.server.Dotori.model.rule.dto.FindViolationOfTheRuleResponseDto;
 import com.server.Dotori.model.rule.dto.RuleGrantDto;
 import com.server.Dotori.model.rule.dto.RulesCntAndDatesDto;
 import com.server.Dotori.model.rule.enumType.Rule;
@@ -13,17 +14,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/admin/rule")
-public class RuleController {
+public class AdminRuleController {
 
     private final RuleService ruleService;
     private final ResponseService responseService;
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
     })
     @PostMapping("/")
     public CommonResult insertRule(@RequestBody RuleGrantDto ruleGrantDto){
@@ -32,7 +34,7 @@ public class RuleController {
     }
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
     })
     @GetMapping("/all/{stuNum}")
     public SingleResult<HashMap<Rule, RulesCntAndDatesDto>> findAllViolationOfTheRule(@PathVariable("stuNum") String stuNum){
@@ -40,7 +42,7 @@ public class RuleController {
     }
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
     })
     @GetMapping("/{stuNum}")
     public CommonResult findViolationOfTheRules(@PathVariable("stuNum") String stuNum){
@@ -48,12 +50,11 @@ public class RuleController {
     }
 
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = false, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
     })
     @DeleteMapping("/{id}")
     public CommonResult deleteViolationOfTheRules(@PathVariable Long id){
         ruleService.deleteViolationOfTheRules(id);
         return responseService.getSuccessResult();
     }
-
 }

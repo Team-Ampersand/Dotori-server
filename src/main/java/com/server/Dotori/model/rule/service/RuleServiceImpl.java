@@ -8,6 +8,7 @@ import com.server.Dotori.model.rule.RuleViolation;
 import com.server.Dotori.model.rule.dto.*;
 import com.server.Dotori.model.rule.enumType.Rule;
 import com.server.Dotori.model.rule.repository.RuleRepository;
+import com.server.Dotori.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,7 @@ public class RuleServiceImpl implements RuleService{
 
     private final MemberRepository memberRepository;
     private final RuleRepository ruleRepository;
+    private final CurrentMemberUtil currentMemberUtil;
 
     @Override
     public void grant(RuleGrantDto ruleGrantDto) {
@@ -87,6 +89,29 @@ public class RuleServiceImpl implements RuleService{
     @Override
     public void deleteViolationOfTheRules(Long id) {
         ruleRepository.deleteById(id);
+    }
+
+    @Override
+    public List<FindViolationOfTheRuleResponseDto> findRuleAtMainPage() {
+        String currentMemberStuNum = currentMemberUtil.getCurrentMember().getStuNum();
+
+        List<FindIdAndRuleAndDateDto> result = ruleRepository.findViolationOfTheRules(currentMemberStuNum);
+
+        if(result.isEmpty()) throw new RuleNoHistoryException();
+
+        List<FindViolationOfTheRuleResponseDto> response = new LinkedList<>();
+
+        for (FindIdAndRuleAndDateDto dto : result) {
+            FindViolationOfTheRuleResponseDto responseDto = FindViolationOfTheRuleResponseDto.builder()
+                    .id(dto.getId())
+                    .rule(dto.getRule())
+                    .date(dto.getDate())
+                    .build();
+
+            response.add(responseDto);
+        }
+
+        return response;
     }
 
 }
