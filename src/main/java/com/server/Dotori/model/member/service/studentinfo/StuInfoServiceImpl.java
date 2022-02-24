@@ -117,6 +117,7 @@ public class StuInfoServiceImpl implements StuInfoService {
                 .orElseThrow(() -> new MemberNotFoundException());
 
         findMember.updateMemberName(memberNameUpdateDto.getMemberName());
+
     }
 
     /**
