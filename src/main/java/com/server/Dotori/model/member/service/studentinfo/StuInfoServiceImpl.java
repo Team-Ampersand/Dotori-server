@@ -70,23 +70,19 @@ public class StuInfoServiceImpl implements StuInfoService {
         Member member = memberRepository.findById(roleUpdateDto.getReceiverId())
                 .orElseThrow(() -> new MemberNotFoundException());
 
-        try {
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication(); //기존 계정의 권한정보를 가지고온다.
-            List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication(); //기존 계정의 권한정보를 가지고온다.
+        List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
 
-            updatedAuthorities.add(new SimpleGrantedAuthority(roleUpdateDto.getRoles().toString())); //변경시켜줄 권한 추가
+        updatedAuthorities.add(new SimpleGrantedAuthority(roleUpdateDto.getRoles().toString())); //변경시켜줄 권한 추가
 
-            Authentication newAuth = new UsernamePasswordAuthenticationToken(
-                    auth.getPrincipal(), auth.getCredentials(), updatedAuthorities //추가한 권한정보로 다시 Security가 관리할 수 있는 객체 생성
-            );
+        Authentication newAuth = new UsernamePasswordAuthenticationToken(
+                auth.getPrincipal(), auth.getCredentials(), updatedAuthorities //추가한 권한정보로 다시 Security가 관리할 수 있는 객체 생성
+        );
 
-            SecurityContextHolder.getContext().setAuthentication(newAuth); // Security가 관리하고있는 객체를 변경된 대상으로 변경
+        SecurityContextHolder.getContext().setAuthentication(newAuth); // Security가 관리하고있는 객체를 변경된 대상으로 변경
 
-            member.updateRole(roleUpdateDto.getRoles());
-            member.updateRefreshToken(null); //다시 로그인을 시켜야하기 때문에 refreshtoken을 미리 지워둔다.
-        } catch (NullPointerException e) {
-            throw new IllegalArgumentException("권한이 비어있습니다.");
-        }
+        member.updateRole(roleUpdateDto.getRoles());
+        member.updateRefreshToken(null); //다시 로그인을 시켜야하기 때문에 refreshtoken을 미리 지워둔다.
     }
 
     /**
