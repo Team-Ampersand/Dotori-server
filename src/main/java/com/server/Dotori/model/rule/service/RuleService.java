@@ -1,5 +1,6 @@
 package com.server.Dotori.model.rule.service;
 
+import com.server.Dotori.model.rule.dto.FindStusDto;
 import com.server.Dotori.model.rule.dto.FindViolationOfTheRuleResponseDto;
 import com.server.Dotori.model.rule.dto.RuleGrantDto;
 import com.server.Dotori.model.rule.dto.RulesCntAndDatesDto;
@@ -14,4 +15,7 @@ public interface RuleService {
     List<FindViolationOfTheRuleResponseDto> findViolationOfTheRules(String stuNum);
     void deleteViolationOfTheRules(Long id);
     List<FindViolationOfTheRuleResponseDto> findRuleAtMainPage();
+    List<FindStusDto> findAllStudents();
+    List<FindStusDto> findStusByClassId(Long id);
+    List<FindStusDto> findStusByMemberName(String memberName);
 }

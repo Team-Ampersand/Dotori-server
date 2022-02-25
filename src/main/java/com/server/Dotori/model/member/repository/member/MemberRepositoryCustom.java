@@ -4,6 +4,7 @@ import com.server.Dotori.model.massage.dto.MassageStudentsDto;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.GetAboutPointDto;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
+import com.server.Dotori.model.rule.dto.FindStusDto;
 
 import java.util.List;
 
@@ -34,4 +35,10 @@ public interface MemberRepositoryCustom {
     List<MassageStudentsDto> findByMassageStatus();
 
     List<Member> findStuInfoByMemberName(String memberName);
+
+    List<FindStusDto> findAllStuOfRulePage();
+
+    List<FindStusDto> findStusByClassId(Long classId);
+
+    List<FindStusDto> findStusByMemberName(String memberName);
 }

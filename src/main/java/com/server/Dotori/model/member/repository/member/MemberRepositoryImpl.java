@@ -8,6 +8,7 @@ import com.server.Dotori.model.member.dto.GetAboutPointDto;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 import com.server.Dotori.model.member.enumType.Massage;
 import com.server.Dotori.model.member.enumType.SelfStudy;
+import com.server.Dotori.model.rule.dto.FindStusDto;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
@@ -236,6 +237,38 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         return queryFactory.from(member)
                 .select(member)
                 .where(member.memberName.eq(memberName))
+                .orderBy(member.stuNum.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<FindStusDto> findAllStuOfRulePage() {
+        return queryFactory.from(member)
+                .select(Projections.fields(FindStusDto.class,
+                        member.id,member.memberName,member.stuNum)
+                )
+                .orderBy(member.stuNum.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<FindStusDto> findStusByClassId(Long classId) {
+        return queryFactory.from(member)
+                .select(Projections.fields(FindStusDto.class,
+                        member.id,member.memberName,member.stuNum)
+                )
+                .where(member.stuNum.like(classId+"%"))
+                .orderBy(member.stuNum.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<FindStusDto> findStusByMemberName(String memberName) {
+        return queryFactory.from(member)
+                .select(Projections.fields(FindStusDto.class,
+                        member.id,member.memberName,member.stuNum)
+                )
+                .where(member.memberName.like(memberName))
                 .orderBy(member.stuNum.asc())
                 .fetch();
     }

@@ -114,4 +114,31 @@ public class RuleServiceImpl implements RuleService{
         return response;
     }
 
+    @Override
+    public List<FindStusDto> findAllStudents() {
+        List<FindStusDto> response = memberRepository.findAllStuOfRulePage();
+
+        if (response.isEmpty()) throw new MemberNotFoundException();
+
+        return response;
+    }
+
+    @Override
+    public List<FindStusDto> findStusByClassId(Long classId) {
+        List<FindStusDto> response = memberRepository.findStusByClassId(classId);
+
+        if (response.isEmpty()) throw new MemberNotFoundException();
+
+        return response;
+    }
+
+    @Override
+    public List<FindStusDto> findStusByMemberName(String memberName) {
+        List<FindStusDto> response = memberRepository.findStusByMemberName(memberName);
+
+        if (response.isEmpty()) throw new MemberNotFoundException();
+
+        return response;
+    }
+
 }
