@@ -25,7 +25,7 @@ public class MemberRuleController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
     })
     @GetMapping("/main")
-    public SingleResult<List<FindViolationOfTheRuleResponseDto>> findRuleAtMainPage(){
+    public SingleResult<List<FindViolationOfTheRuleResponseDto>> findRuleAtMainPageMember(){
         return responseService.getSingleResult(ruleService.findRuleAtMainPage());
     }
 }
