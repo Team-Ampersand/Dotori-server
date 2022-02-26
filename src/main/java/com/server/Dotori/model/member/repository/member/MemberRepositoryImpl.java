@@ -268,7 +268,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .select(Projections.fields(FindStusDto.class,
                         member.id,member.memberName,member.stuNum)
                 )
-                .where(member.memberName.like(memberName))
+                .where(member.memberName.like("%"+memberName+"%"))
                 .orderBy(member.stuNum.asc())
                 .fetch();
     }

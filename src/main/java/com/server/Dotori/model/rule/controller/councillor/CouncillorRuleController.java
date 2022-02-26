@@ -25,7 +25,7 @@ public class CouncillorRuleController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
     })
     @GetMapping("/main")
-    public SingleResult<List<FindViolationOfTheRuleResponseDto>> findRuleAtMainPage(){
+    public SingleResult<List<FindViolationOfTheRuleResponseDto>> findRuleAtMainPageCouncillor(){
         return responseService.getSingleResult(ruleService.findRuleAtMainPage());
     }
 }
