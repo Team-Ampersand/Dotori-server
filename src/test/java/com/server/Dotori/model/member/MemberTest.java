@@ -28,8 +28,8 @@ public class MemberTest {
         // Given // When
         Member saveMember = memberRepository.save(
                 Member.builder()
-                        .username("taemin")
-                        .stdNum("2406")
+                        .memberName("taemin")
+                        .stuNum("2406")
                         .password("1234")
                         .email("s20014@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
@@ -41,7 +41,7 @@ public class MemberTest {
 
 
         // Then
-        Assertions.assertThat(saveMember.getUsername()).isEqualTo("taemin");
+        Assertions.assertThat(saveMember.getMemberName()).isEqualTo("taemin");
 
     }
 

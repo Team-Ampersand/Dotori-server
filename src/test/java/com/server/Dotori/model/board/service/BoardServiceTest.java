@@ -8,7 +8,7 @@ import com.server.Dotori.model.board.repository.BoardRepository;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
-import com.server.Dotori.util.CurrentUserUtil;
+import com.server.Dotori.util.CurrentMemberUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,18 +48,21 @@ class BoardServiceTest {
     void currentUser() {
         //given
         MemberDto memberDto = MemberDto.builder()
-                .username("배태현")
-                .stdNum("2409")
+                .memberName("배태현")
+                .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
                 .build();
-        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        memberRepository.save(memberDto.toEntity());
+        memberRepository.save(
+                memberDto.toEntity(
+                        passwordEncoder.encode(memberDto.getPassword())
+                )
+        );
         System.out.println("======== saved =========");
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                memberDto.getUsername(),
+                memberDto.getEmail(),
                 memberDto.getPassword(),
                 List.of(new SimpleGrantedAuthority(Role.ROLE_ADMIN.name())));
         SecurityContext context = SecurityContextHolder.getContext();
@@ -68,8 +71,8 @@ class BoardServiceTest {
         System.out.println(context);
 
         //then
-        String currentUsername = CurrentUserUtil.getCurrentUserNickname();
-        assertEquals("배태현", currentUsername);
+        String currentMemberEmail = CurrentMemberUtil.getCurrentEmail();
+        assertEquals("s20032@gsm.hs.kr", currentMemberEmail);
     }
 
     @Test
@@ -80,7 +83,7 @@ class BoardServiceTest {
                 BoardDto.builder()
                         .title("도토리 공지사항")
                         .content("도토리 공지사항 생성 테스트")
-                        .build()
+                        .build(), null
         );
 
         //then
@@ -93,13 +96,13 @@ class BoardServiceTest {
         //given
         Pageable pageable = Pageable.ofSize(5);
 
-        String currentUsername = CurrentUserUtil.getCurrentUserNickname();
+        String currentMemberEmail = CurrentMemberUtil.getCurrentEmail();
 
         List<Board> boardList = Stream.generate(
                 () -> Board.builder()
                         .title("도토리 공지사항")
                         .content("도토리 공지사항 전체조회 테스트")
-                        .member(memberRepository.findByUsername(currentUsername))
+                        .member(memberRepository.findByEmail(currentMemberEmail).get())
                         .build()
         ).limit(30).collect(Collectors.toList());
         boardRepository.saveAll(boardList);
@@ -119,7 +122,7 @@ class BoardServiceTest {
                 BoardDto.builder()
                         .title("도토리 공지사항")
                         .content("도토리 공지사항 id로 공지사항 조회 테스트")
-                        .build()
+                        .build(), null
         );
 
         //when
@@ -137,7 +140,7 @@ class BoardServiceTest {
                 BoardDto.builder()
                         .title("도토리 공지사항")
                         .content("도토리 공지사항 수정 테스트")
-                        .build()
+                        .build(), null
         );
 
         //when
@@ -161,7 +164,7 @@ class BoardServiceTest {
                 BoardDto.builder()
                         .title("도토리 공지사항")
                         .content("도토리 공지사항 삭제 테스트")
-                        .build()
+                        .build(), null
         );
 
         //when

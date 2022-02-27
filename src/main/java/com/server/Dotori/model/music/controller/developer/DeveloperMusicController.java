@@ -10,12 +10,16 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static org.springframework.format.annotation.DateTimeFormat.*;
 
 /**
  * @since 1.0.0
@@ -47,18 +51,18 @@ public class DeveloperMusicController {
     }
 
     /**
-     * 음악 신청목록 조회 컨트롤러
+     * 음악 신청목록 조회 컨트롤러 (쿼리스트링으로 날짜검색 조건 설정가능)
      * @return SingleResult - List - MusicResDto
      */
     @GetMapping("/music")
     @ResponseStatus( HttpStatus.OK )
-    @ApiOperation(value = "음악 신청목록 전체 조회", notes = "음악 신청목록 전체 조회")
+    @ApiOperation(value = "음악 신청목록 조회", notes = "음악 신청목록 조회")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult<List<MusicResDto>> getAllMusicsDeveloper() {
-        return responseService.getSingleResult(musicService.getAllMusic());
+    public SingleResult<List<MusicResDto>> getAllMusicsDeveloper(@RequestParam(value = "date", required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate date) {
+        return responseService.getSingleResult(musicService.getAllMusic(date));
     }
 
     /**
@@ -76,21 +80,5 @@ public class DeveloperMusicController {
     public CommonResult deleteMusicDeveloper(@PathVariable("id") Long id) {
         musicService.deleteMusic(id);
         return responseService.getSuccessResult();
-    }
-
-    /**
-     * 오늘 신청된 음악목록을 조회하는 컨트롤러
-     * @return SingleResult - List - MusicResDto
-     * @author 배태현
-     */
-    @GetMapping("/music/current")
-    @ResponseStatus( HttpStatus.OK )
-    @ApiOperation(value = "오늘 신청된 음악목록 조회", notes = "오늘 신청된 음악목록 조회")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
-            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
-    })
-    public SingleResult<List<MusicResDto>> findCurrentDateMusicDeveloper() {
-        return responseService.getSingleResult(musicService.getCurrentDateMusic());
     }
 }

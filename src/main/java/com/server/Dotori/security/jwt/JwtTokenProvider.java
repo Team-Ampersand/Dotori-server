@@ -1,7 +1,7 @@
 package com.server.Dotori.security.jwt;
 
 import com.server.Dotori.model.member.enumType.Role;
-import com.server.Dotori.security.authentication.MyUserDetails;
+import com.server.Dotori.security.authentication.MyMemberDetails;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,20 +29,21 @@ public class JwtTokenProvider {
     public static long TOKEN_VALIDATION_SECOND = 1000L * 60 * 60 * 3;  // 3시간을 accessToken 만료 기간으로 잡는다
     public static long REFRESH_TOKEN_VALIDATION_SECOND = TOKEN_VALIDATION_SECOND * 24 * 180; // 6달을 refreshToken 만료 기간으로 잡는다.
 
-    private final MyUserDetails myUserDetails;
+    private final MyMemberDetails myMemberDetails;
 
-    // seceretKey 인코딩
+    // secretKey 인코딩
     @PostConstruct
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
     //
-    public String createToken(String username, List<Role> roles) {
-        Claims claims = Jwts.claims().setSubject(username);
-        claims.put("auth", roles.stream().
-                map(GrantedAuthority::getAuthority).
-                filter(Objects::nonNull).collect(Collectors.toList()));
+    public String createToken(String email, List<Role> roles) {
+        Claims claims = Jwts.claims().setSubject(email);
+        claims.put("auth", roles.stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList()));
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + TOKEN_VALIDATION_SECOND);
@@ -51,7 +52,7 @@ public class JwtTokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SignatureAlgorithm.HS512, secretKey)
                 .compact();
     }
 
@@ -65,16 +66,16 @@ public class JwtTokenProvider {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SignatureAlgorithm.HS512, secretKey)
                 .compact();
     }
 
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = myUserDetails.loadUserByUsername(getUsername(token));
+        UserDetails userDetails = myMemberDetails.loadUserByUsername(getEmail(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public String getUsername(String token) {
+    public String getEmail(String token) {
         return extractAllClaims(token).getSubject();
     }
 

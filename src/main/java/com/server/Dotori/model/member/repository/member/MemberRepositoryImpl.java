@@ -2,12 +2,17 @@ package com.server.Dotori.model.member.repository.member;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.server.Dotori.model.massage.dto.MassageStudentsDto;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.GetAboutPointDto;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
+import com.server.Dotori.model.member.enumType.Massage;
 import com.server.Dotori.model.member.enumType.SelfStudy;
+import com.server.Dotori.model.rule.dto.FindStusDto;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.server.Dotori.model.member.QMember.member;
@@ -28,12 +33,12 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         return queryFactory.from(member)
                 .select(Projections.fields(SelfStudyStudentsDto.class,
                         member.id,
-                        member.stdNum,
-                        member.username)
+                        member.stuNum,
+                        member.memberName)
                 ).where(
                         member.selfStudy.eq(SelfStudy.APPLIED)
                 )
-                .orderBy(member.stdNum.asc())
+                .orderBy(member.stuNum.asc())
                 .fetch();
     }
 
@@ -48,13 +53,13 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         return queryFactory.from(member)
                 .select(Projections.fields(SelfStudyStudentsDto.class,
                         member.id,
-                        member.stdNum,
-                        member.username))
+                        member.stuNum,
+                        member.memberName))
                 .where(
                         member.selfStudy.eq(SelfStudy.APPLIED)
-                        .and(member.stdNum.like(id+"%"))
+                        .and(member.stuNum.like(id+"%"))
                 )
-                .orderBy(member.stdNum.asc())
+                .orderBy(member.stuNum.asc())
                 .fetch();
     }
 
@@ -86,12 +91,12 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         return queryFactory.from(member)
                 .select(Projections.constructor(GetAboutPointDto.class,
                         member.id,
-                        member.stdNum,
-                        member.username,
+                        member.stuNum,
+                        member.memberName,
                         member.point
                         ))
-                .where(member.stdNum.like(id+"%"))
-                .orderBy(member.stdNum.asc())
+                .where(member.stuNum.like(id+"%"))
+                .orderBy(member.stuNum.asc())
                 .fetch();
     }
 
@@ -106,8 +111,8 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         return queryFactory.from(member)
                 .select(Projections.constructor(GetAboutPointDto.class,
                         member.id,
-                        member.stdNum,
-                        member.username,
+                        member.stuNum,
+                        member.memberName,
                         member.point
                 ))
                 .where(member.eq(memberEntity))
@@ -124,8 +129,8 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     public List<Member> findStudentInfo(Long id) {
         return queryFactory.from(member)
                 .select(member)
-                .where(member.stdNum.like(id+"%"))
-                .orderBy(member.stdNum.asc())
+                .where(member.stuNum.like(id+"%"))
+                .orderBy(member.stuNum.asc())
                 .fetch();
     }
 
@@ -138,7 +143,134 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     public List<Member> findAllStudentInfo() {
         return queryFactory.from(member)
                 .select(member)
-                .orderBy(member.stdNum.asc())
+                .orderBy(member.stuNum.asc())
                 .fetch();
     }
+
+    /**
+     * 자습신청 금지 상태이며 자습신청 만료기간이 다 된 학생 <br>
+     * 자습신청 금지를 해제하고 자습신청 만료기간을 초기화하는 쿼리
+     * @author 배태현
+     */
+    @Override
+    public void updateUnBanSelfStudy() {
+        queryFactory
+                .update(member)
+                .where(
+                        member.selfStudy.eq(SelfStudy.IMPOSSIBLE)
+                        .and(member.selfStudyExpiredDate.stringValue().substring(0,10).eq(String.valueOf(LocalDate.now())))
+                )
+                .set(member.selfStudy, SelfStudy.CAN)
+                .set(member.selfStudyExpiredDate, (LocalDateTime) null)
+                .execute();
+    }
+
+    /**
+     * 안마의자 신청 만료기간이 다 된 학생의 안마의자 신청 상태를 'CAN'으로 변경
+     * 만료기간을 null로 지정(초기화)
+     * @author 김태민
+     */
+    @Override
+    public void updateUnBanMassage() {
+        queryFactory
+                .update(member)
+                .where(
+                        member.massage.eq(Massage.IMPOSSIBLE)
+                                .and(member.massageExpiredDate.stringValue().substring(0,10).eq(String.valueOf(LocalDate.now())))
+                )
+                .set(member.massage, Massage.CAN)
+                .set(member.massageExpiredDate, (LocalDateTime) null)
+                .execute();
+    }
+
+    /**
+     * 안마의자 신청을 했다가 취소한 학생들의 상태 'CANT'를 'CAN'으로 바꿔주는 쿼리
+     * @author 김태민
+     */
+    @Override
+    public void updateMassageStatusCant() {
+        queryFactory
+                .update(member)
+                .where(
+                        member.massage.eq(Massage.CANT)
+                )
+                .set(member.massage, Massage.CAN)
+                .execute();
+    }
+
+    /**
+     * 안마의자를 신청한 학생들의 상태 'APPLIED'를 'IMPOSSIBLE'로 변경
+     * @author 김태민
+     */
+    @Override
+    public void updateMassageStatusImpossible() {
+        queryFactory
+                .update(member)
+                .where(
+                        member.massage.eq(Massage.APPLIED)
+                )
+                .set(member.massage, Massage.IMPOSSIBLE)
+                .execute();
+    }
+
+    /**
+     * 안마의자 신청을 한 학생들을 조회하는 쿼리
+     * @return List<MassageStudentsDto> (id, stuNum, memberName)
+     * @author 김태민
+     */
+    @Override
+    public List<MassageStudentsDto> findByMassageStatus() {
+        return queryFactory
+                .from(member)
+                .select(Projections.fields(MassageStudentsDto.class,
+                        member.id, member.memberName, member.stuNum)
+                )
+                .where(
+                        member.massage.eq(Massage.APPLIED)
+                )
+                .orderBy(member.stuNum.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<Member> findStuInfoByMemberName(String memberName) {
+        return queryFactory.from(member)
+                .select(member)
+                .where(member.memberName.eq(memberName))
+                .orderBy(member.stuNum.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<FindStusDto> findAllStuOfRulePage() {
+        return queryFactory.from(member)
+                .select(Projections.fields(FindStusDto.class,
+                        member.id,member.memberName,member.stuNum)
+                )
+                .orderBy(member.stuNum.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<FindStusDto> findStusByClassId(Long classId) {
+        return queryFactory.from(member)
+                .select(Projections.fields(FindStusDto.class,
+                        member.id,member.memberName,member.stuNum)
+                )
+                .where(member.stuNum.like(classId+"%"))
+                .orderBy(member.stuNum.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<FindStusDto> findStusByMemberName(String memberName) {
+        return queryFactory.from(member)
+                .select(Projections.fields(FindStusDto.class,
+                        member.id,member.memberName,member.stuNum)
+                )
+                .where(member.memberName.like("%"+memberName+"%"))
+                .orderBy(member.stuNum.asc())
+                .fetch();
+    }
+
 }

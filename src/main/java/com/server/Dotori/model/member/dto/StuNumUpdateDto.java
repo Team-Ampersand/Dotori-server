@@ -7,5 +7,6 @@ import lombok.*;
 public class StuNumUpdateDto {
 
     private Long receiverId;
+
     private String stuNum;
 }

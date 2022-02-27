@@ -5,20 +5,18 @@ import com.server.Dotori.model.music.dto.MusicApplicationDto;
 import com.server.Dotori.model.music.dto.MusicResDto;
 
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface MusicService {
 
     Music musicApplication(MusicApplicationDto musicApplicationDto, DayOfWeek dayofWeek);
 
-    List<MusicResDto> getAllMusic();
-
-    List<MusicResDto> getCurrentDateMusic();
+    List<MusicResDto> getAllMusic(LocalDate date);
 
     void deleteMusic(Long musicId);
   
     void updateMemberMusicStatus();
 
-    void saturdayMusicDeleteAll();
+    void monthMusicDeleteAll();
 }

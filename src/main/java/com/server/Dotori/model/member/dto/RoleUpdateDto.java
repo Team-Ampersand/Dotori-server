@@ -10,5 +10,6 @@ import java.util.List;
 public class RoleUpdateDto {
 
     private Long receiverId;
+
     private List<Role> roles;
 }

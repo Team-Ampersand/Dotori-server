@@ -1,18 +1,20 @@
 package com.server.Dotori.model.member.service.selfstudy;
 
+import com.server.Dotori.exception.member.exception.MemberNotFoundByClassException;
+import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.exception.selfstudy.exception.*;
-import com.server.Dotori.exception.user.exception.UserNotFoundByClassException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.model.member.repository.selfStudy.SelfStudyRepository;
-import com.server.Dotori.util.CurrentUserUtil;
+import com.server.Dotori.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +26,7 @@ import static com.server.Dotori.model.member.enumType.SelfStudy.*;
 @RequiredArgsConstructor
 public class SelfStudyServiceImpl implements SelfStudyService {
 
-    private final CurrentUserUtil currentUserUtil;
+    private final CurrentMemberUtil currentMemberUtil;
     private final MemberRepository memberRepository;
     private final SelfStudyRepository selfStudyRepository;
 
@@ -48,15 +50,15 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new SelfStudyCantRequestDateException();
         if (!(hour >= 20 && hour < 21)) throw new SelfStudyCantRequestTimeException(); // 20시(8시)부터 21시(9시 (8시 59분)) 사이가 아니라면 자습신청 불가능
 
-        Member currentUser = currentUserUtil.getCurrentUser();
+        Member currentMember = currentMemberUtil.getCurrentMember();
         long count = selfStudyRepository.count();
 
         if (count < 50){
-            if (currentUser.getSelfStudy() == CAN) {
-                currentUser.updateSelfStudy(APPLIED);
+            if (currentMember.getSelfStudy() == CAN) {
+                currentMember.updateSelfStudy(APPLIED);
 
                 selfStudyRepository.save(com.server.Dotori.model.member.SelfStudy.builder()
-                        .member(currentUser)
+                        .member(currentMember)
                         .build());
 
                 log.info("Current Self Study Student Count is {}", count+1);
@@ -84,12 +86,12 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new SelfStudyCantCancelDateException();
         if (!(hour >= 20 && hour < 21)) throw new SelfStudyCantCancelTimeException(); // 20시(8시)부터 21시(9시 (8시 59분)) 사이가 아니라면 자습신청 취소 불가능
 
-        Member currentUser = currentUserUtil.getCurrentUser();
+        Member currentMember = currentMemberUtil.getCurrentMember();
         long count = selfStudyRepository.count();
 
-        if (currentUser.getSelfStudy() == APPLIED) {
-            currentUser.updateSelfStudy(CANT);
-            selfStudyRepository.deleteByMemberId(currentUser.getId());
+        if (currentMember.getSelfStudy() == APPLIED) {
+            currentMember.updateSelfStudy(CANT);
+            selfStudyRepository.deleteByMemberId(currentMember.getId());
             log.info("Current Self Study Student Count is {}", count-1);
         } else
             throw new SelfStudyCantChangeException();
@@ -113,20 +115,20 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * 자습신청한 학생을 학년반별로 조회하는 서비스로직 (로그인된 유저 사용가능)
      * @param id classId
      * @return List - SelfStudyStudentDto (id, stuNum, username)
-     * @exception UserNotFoundByClassException 해당 반에 해당하는 학생이 없을 때
+     * @exception MemberNotFoundByClassException 해당 반에 해당하는 학생이 없을 때
      * @author 배태현
      */
     @Override
     public List<SelfStudyStudentsDto> getSelfStudyStudentsByCategory(Long id) {
         List<SelfStudyStudentsDto> selfStudyCategory = memberRepository.findBySelfStudyCategory(id);
 
-        if (selfStudyCategory.isEmpty()) throw new UserNotFoundByClassException();
+        if (selfStudyCategory.isEmpty()) throw new MemberNotFoundByClassException();
 
         return selfStudyCategory;
     }
 
     /**
-     * 자습신청 상태를 '신청가능'으로 변경하고, 자습신청 카운트 초기화 서비스로직 (Schedule)
+     * 자습신청 상태를 '신청가능'으로 변경하고, 자습신청 카운트 초기화, 자습신청 금지 만료기간이 되었다면 다시 신청할 수 있는 상태로 변경해주는 서비스로직 (Schedule)
      * @author 배태현
      */
     @Override
@@ -134,6 +136,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     public void updateSelfStudyStatus() {
         selfStudyRepository.deleteAll();
         memberRepository.updateSelfStudyStatus();
+        memberRepository.updateUnBanSelfStudy();
     }
 
     /**
@@ -144,8 +147,38 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Override
     public Map<String, String> selfStudyInfo() {
         Map<String,String> map = new HashMap<>();
-        map.put("selfStudy_status", currentUserUtil.getCurrentUser().getSelfStudy().toString());
+        map.put("selfStudy_status", currentMemberUtil.getCurrentMember().getSelfStudy().toString());
         map.put("count", String.valueOf(selfStudyRepository.count()));
         return map;
+    }
+
+    /**
+     * 자습신청을 금지시키는 서비스 로직 (사감쌤, 기자위, 개발자 사용가능)
+     * @param id memberId
+     * @author 배태현
+     */
+    @Override
+    @Transactional
+    public void banSelfStudy(Long id) {
+        Member findMember = memberRepository.findById(id)
+                .orElseThrow(MemberNotFoundException::new);
+
+        findMember.updateSelfStudy(IMPOSSIBLE);
+        findMember.updateSelfStudyExpiredDate(LocalDateTime.now().plusDays(7));
+    }
+
+    /**
+     * 자습신청 금지를 취소시키는 서비스 로직 (사감쌤, 기자위, 개발자 사용가능)
+     * @param id memberId
+     * @author 배태현
+     */
+    @Override
+    @Transactional
+    public void cancelBanSelfStudy(Long id) {
+        Member findMember = memberRepository.findById(id)
+                .orElseThrow(MemberNotFoundException::new);
+
+        findMember.updateSelfStudy(CAN);
+        findMember.updateSelfStudyExpiredDate(null);
     }
 }

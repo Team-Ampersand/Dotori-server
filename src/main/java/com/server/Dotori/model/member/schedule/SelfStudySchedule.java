@@ -16,7 +16,7 @@ public class SelfStudySchedule {
     private final SelfStudyService selfStudyService;
 
     /**
-     * "월 ~ 금 새벽 2시"에 학생들 자습신청 상태를 자동으로 변경해주는 Schedule
+     * "월 ~ 금 새벽 2시"에 학생들 자습신청 상태(금지, 신청함, 신청취소)를 자동으로 변경해주고 자습신청 카운트를 초기화 시키는 Schedule
      * @author 배태현
      */
     @Scheduled(cron = "0 0 2 ? * MON-FRI")

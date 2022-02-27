@@ -14,39 +14,39 @@ not-found:
   code: "-3"
   msg: "API가 존재하지 않습니다."
 
-user-not-found:
+member-not-found:
   code: "-900"
   msg: "해당 유저를 찾을 수 없습니다."
 
-user-already:
+member-already:
   code: "-910"
   msg: "이미 가입된 유저입니다."
 
-user-password-not-matching:
+member-password-not-matching:
   code: "-920"
   msg: "비밀번호가 올바르지 않습니다"
 
-user-not-found-by-class:
+member-not-found-by-class:
   code: "-930"
   msg: "해당반에 해당하는 학생들이 없습니다."
 
-user-authentication-answer-not-matching:
+member-authentication-answer-not-matching:
   code: "-940"
   msg: "인증 답변이 일치하지 않습니다."
 
-user-authentication-key-not-matching:
+member-authentication-key-not-matching:
   code: "-970"
   msg: "인증 키가 일치하지 않습니다."
 
-user-already-join-this-name:
+member-already-join-this-name:
   code: "-950"
   msg: "이미 존재하는 이름입니다."
 
-user-already-join-this-stunum:
+member-already-join-this-stunum:
   code: "-960"
   msg: "이미 존재하는 학번입니다."
 
-user-no-information:
+member-no-information:
   code: "-970"
   msg: "회원 정보가 없습니다."
 
@@ -149,3 +149,35 @@ music-cant-request-date:
 music-today-not-requested:
   code: "-540"
   msg: "오늘 신청된 음악이 없습니다."
+
+music-not-request-on-that-date:
+  code: "-550"
+  msg: "해당 날짜에 신청된 노래가 없습니다."
+
+massage-already:
+  code: "-400"
+  msg: "이미 안마의자 신청을 신청하신 회원입니다."
+
+massage-over:
+  code: "-410"
+  msg: "안마의자 신청 인원이 5명을 초과 하였습니다."
+
+massage-cant-request-date:
+  code: "-420"
+  msg: "안마의자 신청을 하실 수 없는 요일입니다."
+
+massage-cant-request-time:
+  code: "-430"
+  msg: "안마의자 신청은 오후 8시부터 오후 10시까지만 신청이 가능합니다."
+
+massage-not-applied-status:
+  code: "-440"
+  msg: "안마의자 신청을 취소할 수 있는 상태가 아닙니다."
+
+massage-no-theres:
+  code: "-450"
+  msg: "안마의자를 신청한 학생이 없습니다"
+
+rule-no-history:
+  code: "-300"
+  msg: "규정위반 내역이 없습니다"

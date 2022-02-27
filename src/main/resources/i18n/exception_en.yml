@@ -14,41 +14,41 @@ not-found:
   code: "-3"
   msg: "API not exist."
 
-user-not-found:
+member-not-found:
   code: "-900"
-  msg: "User could not be found."
+  msg: "Member could not be found."
 
-user-already:
+member-already:
   code: "-910"
-  msg: "User already join."
+  msg: "Member already join."
 
-user-password-not-matching:
+member-password-not-matching:
   code: "-920"
-  msg: "User password is not matching."
+  msg: "Member password is not matching."
 
-user-not-found-by-class:
+member-not-found-by-class:
   code: "-930"
   msg: "There class not found student."
 
-user-authentication-answer-not-matching:
+member-authentication-answer-not-matching:
   code: "-940"
   msg: "Not matched authentication answer."
 
-user-authentication-key-not-matching:
+member-authentication-key-not-matching:
   code: "-970"
   msg: "Not matched authentication key."
 
-user-already-join-this-name:
+member-already-join-this-name:
   code: "-950"
   msg: "Already join this name."
 
-user-already-join-this-stunum:
+member-already-join-this-stunum:
   code: "-960"
   msg: "Already join this stunum."
 
-user-no-information:
+member-no-information:
   code: "-970"
-  msg: "Can't find information in this user."
+  msg: "Can't find information in this member."
 
 over-certificate-time:
   code: "-980"
@@ -149,3 +149,35 @@ music-cant-request-date:
 music-today-not-requested:
   code: "-540"
   msg: "There's no music requested today."
+
+music-not-request-on-that-date:
+  code: "-550"
+  msg: "There are no songs requested on that date"
+
+massage-already:
+  code: "-400"
+  msg: "You already apply massage."
+
+massage-over:
+  code: "-410"
+  msg: "The student personal over maximum personal."
+
+massage-cant-request-date:
+  code: "-420"
+  msg: "You can't request massage in this date."
+
+massage-cant-request-time:
+  code: "-430"
+  msg: "You can't request massage in this time."
+
+massage-not-applied-status:
+  code: "-440"
+  msg: "You can't cancel massage cuz your status is not applied"
+
+massage-no-theres:
+  code: "-450"
+  msg: "No theres request massage"
+
+rule-no-history:
+  code: "-300"
+  msg: "Rule Cant found History"

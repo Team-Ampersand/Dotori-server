@@ -3,7 +3,7 @@ package com.server.Dotori.model.member.service.role;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
-import com.server.Dotori.util.CurrentUserUtil;
+import com.server.Dotori.util.CurrentMemberUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,18 +34,21 @@ class RoleServiceImplTest {
     void currentUser() {
         //given
         MemberDto memberDto = MemberDto.builder()
-                .username("배태현")
-                .stdNum("2409")
+                .memberName("배태현")
+                .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
                 .build();
-        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        memberRepository.save(memberDto.toEntity());
+        memberRepository.save(
+                memberDto.toEntity(
+                        passwordEncoder.encode(memberDto.getPassword())
+                )
+        );
         System.out.println("======== saved =========");
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                memberDto.getUsername(),
+                memberDto.getEmail(),
                 memberDto.getPassword(),
                 List.of(new SimpleGrantedAuthority(Role.ROLE_ADMIN.name())));
         SecurityContext context = SecurityContextHolder.getContext();
@@ -54,8 +57,8 @@ class RoleServiceImplTest {
         System.out.println(context);
 
         //then
-        String currentUsername = CurrentUserUtil.getCurrentUserNickname();
-        assertEquals("배태현", currentUsername);
+        String currentMemberEmail = CurrentMemberUtil.getCurrentEmail();
+        assertEquals("s20032@gsm.hs.kr", currentMemberEmail);
     }
 
     @Test

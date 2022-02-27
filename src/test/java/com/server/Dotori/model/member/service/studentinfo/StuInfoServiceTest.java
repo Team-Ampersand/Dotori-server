@@ -3,7 +3,7 @@ package com.server.Dotori.model.member.service.studentinfo;
 import com.server.Dotori.model.member.dto.*;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
-import com.server.Dotori.util.CurrentUserUtil;
+import com.server.Dotori.util.CurrentMemberUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ class StuInfoServiceTest {
     @Autowired private StuInfoService stuInfoService;
     @Autowired private MemberRepository memberRepository;
     @Autowired private PasswordEncoder passwordEncoder;
-    @Autowired private CurrentUserUtil currentUserUtil;
+    @Autowired private CurrentMemberUtil currentMemberUtil;
     @Autowired private EntityManager em;
 
     @BeforeEach
@@ -37,18 +37,21 @@ class StuInfoServiceTest {
     void currentUser() {
         //given
         MemberDto memberDto = MemberDto.builder()
-                .username("배태현")
-                .stdNum("2409")
+                .memberName("배태현")
+                .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
                 .build();
-        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        memberRepository.save(memberDto.toEntity());
+        memberRepository.save(
+                memberDto.toEntity(
+                        passwordEncoder.encode(memberDto.getPassword())
+                )
+        );
         System.out.println("======== saved =========");
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                memberDto.getUsername(),
+                memberDto.getEmail(),
                 memberDto.getPassword(),
                 List.of(new SimpleGrantedAuthority(Role.ROLE_ADMIN.name())));
         SecurityContext context = SecurityContextHolder.getContext();
@@ -57,8 +60,8 @@ class StuInfoServiceTest {
         System.out.println(context);
 
         //then
-        String currentUsername = CurrentUserUtil.getCurrentUserNickname();
-        assertEquals("배태현", currentUsername);
+        String currentMemberEmail = CurrentMemberUtil.getCurrentEmail();
+        assertEquals("s20032@gsm.hs.kr", currentMemberEmail);
     }
 
     @Test
@@ -84,7 +87,7 @@ class StuInfoServiceTest {
         //given //when
         stuInfoService.updateRole(
                 RoleUpdateDto.builder()
-                        .receiverId(currentUserUtil.getCurrentUser().getId())
+                        .receiverId(currentMemberUtil.getCurrentMember().getId())
                         .roles(Collections.singletonList(Role.ROLE_COUNCILLOR))
                         .build()
         );
@@ -93,7 +96,7 @@ class StuInfoServiceTest {
         em.clear();
 
         //then
-        assertEquals(memberRepository.findByUsername("배태현").getRoles().toString(), Collections.singletonList(Role.ROLE_COUNCILLOR).toString());
+        assertEquals(memberRepository.findByEmail("s20032@gsm.hs.kr").get().getRoles().toString(), Collections.singletonList(Role.ROLE_COUNCILLOR).toString());
     }
 
     @Test
@@ -102,27 +105,37 @@ class StuInfoServiceTest {
         //given //when
         stuInfoService.updateStuNum(
                 StuNumUpdateDto.builder()
-                        .receiverId(currentUserUtil.getCurrentUser().getId())
+                        .receiverId(currentMemberUtil.getCurrentMember().getId())
                         .stuNum("1111")
                         .build()
         );
 
         //then
-        assertEquals("1111", memberRepository.findById(currentUserUtil.getCurrentUser().getId()).get().getStdNum());
+        assertEquals("1111", memberRepository.findById(currentMemberUtil.getCurrentMember().getId()).get().getStuNum());
     }
 
     @Test
     @DisplayName("이름이 잘 변경되나요?")
-    public void updateUsernameTest() {
+    public void updateMemberNameTest() {
         //given //when
-        stuInfoService.updateUsername(
-                UsernameUpdateDto.builder()
-                        .receiverId(currentUserUtil.getCurrentUser().getId())
-                        .username("배털")
+        stuInfoService.updateMemberName(
+                MemberNameUpdateDto.builder()
+                        .receiverId(currentMemberUtil.getCurrentMember().getId())
+                        .memberName("배털")
                         .build()
         );
 
         //then
-        assertNotNull(memberRepository.findByUsername("배털"));
+        assertNotNull(memberRepository.findByEmail("s20032@gsm.hs.kr"));
+    }
+
+    @Test
+    @DisplayName("이름으로 학생정보가 잘 검색되나요?")
+    public void searchMemberByMemberNameTest() {
+        //given //when
+        List<StudentInfoDto> stuInfoByMemberName = stuInfoService.getStuInfoByMemberName("배태현");
+
+        //then
+        assertEquals("배태현", stuInfoByMemberName.get(0).getMemberName());
     }
 }

@@ -44,7 +44,7 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
 
     /**
      * 신청된 음악을 조회하는 query
-     * @return List-MusicResDto (id, musicUrl, member.username)
+     * @return List-MusicResDto (id, musicUrl, member.username, member.email)
      * @author 배태현
      */
     @Override
@@ -53,10 +53,12 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
                 .select(Projections.fields(MusicResDto.class,
                         music.id,
                         music.url,
-                        music.member.username,
+                        music.member.memberName,
+                        music.member.email,
                         music.createdDate
                         ))
                 .from(music)
+                .innerJoin(music.member, member)
                 .orderBy(music.createdDate.asc())
                 .fetch();
     }
@@ -64,7 +66,7 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
     /**
      * 오늘 신청된 음악을 조회하는 query
      * @param localDate localDate
-     * @return List-MusicResDto (id, musicUrl, member.username)
+     * @return List-MusicResDto (id, musicUrl, member.username, member.email)
      * @author 배태현
      */
     @Override
@@ -73,7 +75,8 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
                 .select(Projections.fields(MusicResDto.class,
                         music.id,
                         music.url,
-                        music.member.username,
+                        music.member.memberName,
+                        music.member.email,
                         music.createdDate
                         ))
                 .from(music)
@@ -81,6 +84,29 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
                         localDate.atStartOfDay(),
                         LocalDateTime.of(LocalDate.now(), LocalTime.MAX).withNano(0)
                 ))
+                .orderBy(music.createdDate.asc())
+                .fetch();
+    }
+
+    /**
+     * 해당하는 날짜에 신청된 음악을 조회하는 query
+     * @param date date
+     * @return List-MusicResDto (id, musicUrl, member.username, member.email)
+     * @author 배태현
+     */
+    @Override
+    public List<MusicResDto> findDateMusic(LocalDate date) {
+        return queryFactory
+                .select(Projections.fields(MusicResDto.class,
+                        music.id,
+                        music.url,
+                        music.member.memberName,
+                        music.member.email,
+                        music.createdDate
+                ))
+                .from(music)
+                .innerJoin(music.member, member)
+                .where(music.createdDate.stringValue().like(date+"%"))
                 .orderBy(music.createdDate.asc())
                 .fetch();
     }

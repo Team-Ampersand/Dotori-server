@@ -6,10 +6,14 @@ import java.util.Map;
 
 public interface MemberService {
     Long signup(MemberDto memberDto);
-    Map<String,String> signin(MemberLoginDto memberLoginDto);
-    String passwordChange(MemberPasswordDto memberPasswordDto);
-    void sendAuthKeyForChangePassword(SendAuthKeyForChangePasswordDto sendAuthKeyForChangePasswordDto);
-    void verifiedAuthKeyAndChangePassword(VerifiedAuthKeyAndChangePasswordDto verifiedAuthKeyAndChangePasswordDto);
+    String sendEmailSignup(EmailDto emailDto);
+    void checkEmailSignup(SignUpEmailCheckDto memberEmailKeyDto);
+    Map<String,String> signIn(SignInDto memberLoginDto);
+    String changePassword(ChangePasswordDto changePasswordDto);
+    String sendEmailChangePassword(EmailDto emailDto);
+    void checkEmailChangePassword(ChangePasswordEmailCheckDto verifiedAuthKeyAndChangePasswordDto);
     void logout();
-    void delete(MemberDeleteDto memberDeleteDto);
+    void withdrawal(WithdrawlDto memberDeleteDto);
+
+
 }

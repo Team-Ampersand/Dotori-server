@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 public class SelfStudyStudentsDto {
 
     private Long id;
-    private String stdNum;
-    private String username;
+    private String stuNum;
+    private String memberName;
 
-    public SelfStudyStudentsDto(Long id, String stdNum, String username) {
+    public SelfStudyStudentsDto(Long id, String stuNum, String memberName) {
         this.id = id;
-        this.stdNum = stdNum;
-        this.username = username;
+        this.stuNum = stuNum;
+        this.memberName = memberName;
     }
 }

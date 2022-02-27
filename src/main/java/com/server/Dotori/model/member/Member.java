@@ -3,6 +3,7 @@ package com.server.Dotori.model.member;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.server.Dotori.model.BaseTimeEntity;
 import com.server.Dotori.model.member.enumType.Music;
+import com.server.Dotori.model.member.enumType.Massage;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.enumType.SelfStudy;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -34,11 +36,11 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "member_username", nullable = false, unique = true)
-    private String username;
+    @Column(name = "member_name", nullable = false)
+    private String memberName;
 
-    @Column(name = "member_stdnum", nullable = false, unique = true)
-    private String stdNum;
+    @Column(name = "member_stuNum", nullable = false, unique = true)
+    private String stuNum;
 
     @Column(name = "member_email", nullable = false, unique = true)
     private String email;
@@ -51,6 +53,12 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     @Column(name = "member_refreshToken")
     private String refreshToken;
+
+    @Column(name = "self_study_expired_date")
+    private LocalDateTime selfStudyExpiredDate;
+
+    @Column(name = "massage_expired_date")
+    private LocalDateTime massageExpiredDate;
 
     @Enumerated(STRING) @Column(name = "Role")
     @ElementCollection(fetch = FetchType.EAGER)
@@ -75,10 +83,14 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Column(name = "member_music", nullable = false)
     private Music music;
 
+    @Enumerated(STRING)
+    @Column(name = "member_massage")
+    private Massage massage;
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public String getUsername() {
-        return this.username;
+        return this.email;
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -119,20 +131,29 @@ public class Member extends BaseTimeEntity implements UserDetails {
     public void updateSelfStudy(SelfStudy selfStudy) {
         this.selfStudy = selfStudy != null ? selfStudy : this.selfStudy;
     }
-
+    public void updateMassage(Massage massage) {
+        this.massage = massage != null ? massage : this.massage;
+    }
+    public void updateMassageExpiredDate(LocalDateTime massageExpiredDate) {
+        this.massageExpiredDate = massageExpiredDate;
+    }
     public void updateRole(List<Role> roles) {
         this.roles = roles != null ? roles : this.roles;
     }
 
-    public void updateStuNum(String stdNum) {
-        this.stdNum = stdNum != null ? stdNum : this.stdNum;
+    public void updateStuNum(String stuNum) {
+        this.stuNum = stuNum != null ? stuNum : this.stuNum;
     }
 
-    public void updateUsername(String username) {
-        this.username = username != null ? username : this.username;
+    public void updateMemberName(String memberName) {
+        this.memberName = memberName != null ? memberName : this.memberName;
     }
 
     public void updateRefreshToken(String refreshToken){
         this.refreshToken = refreshToken;
+    }
+
+    public void updateSelfStudyExpiredDate(LocalDateTime selfStudyExpiredDate) {
+        this.selfStudyExpiredDate = selfStudyExpiredDate;
     }
 }

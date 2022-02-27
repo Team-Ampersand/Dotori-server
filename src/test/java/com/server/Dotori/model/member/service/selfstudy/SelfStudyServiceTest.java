@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.service.selfstudy;
 
+import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.exception.selfstudy.exception.*;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
@@ -8,7 +9,7 @@ import com.server.Dotori.model.member.enumType.SelfStudy;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 import com.server.Dotori.model.member.repository.selfStudy.SelfStudyRepository;
-import com.server.Dotori.util.CurrentUserUtil;
+import com.server.Dotori.util.CurrentMemberUtil;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +40,7 @@ class SelfStudyServiceTest {
 
     @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private MemberRepository memberRepository;
-    @Autowired private CurrentUserUtil currentUserUtil;
+    @Autowired private CurrentMemberUtil currentMemberUtil;
     @Autowired private SelfStudyService selfStudyService;
     @Autowired private SelfStudyRepository selfStudyRepository;
     @Autowired
@@ -49,18 +51,21 @@ class SelfStudyServiceTest {
     void currentUser() {
         //given
         MemberDto memberDto = MemberDto.builder()
-                .username("배태현")
-                .stdNum("2409")
+                .memberName("배태현")
+                .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
                 .build();
-        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        memberRepository.save(memberDto.toEntity());
+        memberRepository.save(
+                memberDto.toEntity(
+                        passwordEncoder.encode(memberDto.getPassword())
+                )
+        );
         System.out.println("======== saved =========");
 
         // when login session 발급
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                memberDto.getUsername(),
+                memberDto.getEmail(),
                 memberDto.getPassword(),
                 List.of(new SimpleGrantedAuthority(Role.ROLE_ADMIN.name())));
         SecurityContext context = SecurityContextHolder.getContext();
@@ -69,8 +74,8 @@ class SelfStudyServiceTest {
         System.out.println(context);
 
         //then
-        String currentUsername = CurrentUserUtil.getCurrentUserNickname();
-        assertEquals("배태현", currentUsername);
+        String currentMemberEmail = CurrentMemberUtil.getCurrentEmail();
+        assertEquals("s20032@gsm.hs.kr", currentMemberEmail);
     }
 
     @Test
@@ -78,7 +83,7 @@ class SelfStudyServiceTest {
     public void requestSelfStudyTest() {
         selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20); // 월요일 8시
 
-        assertEquals(SelfStudy.APPLIED, currentUserUtil.getCurrentUser().getSelfStudy());
+        assertEquals(SelfStudy.APPLIED, currentMemberUtil.getCurrentMember().getSelfStudy());
         assertEquals(1 , selfStudyRepository.findAll().size());
     }
 
@@ -103,7 +108,7 @@ class SelfStudyServiceTest {
         selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20);
         selfStudyService.cancelSelfStudy(DayOfWeek.MONDAY, 20);
 
-        assertEquals(CANT, currentUserUtil.getCurrentUser().getSelfStudy());
+        assertEquals(CANT, currentMemberUtil.getCurrentMember().getSelfStudy());
         assertEquals(0, selfStudyRepository.count());
     }
 
@@ -150,21 +155,21 @@ class SelfStudyServiceTest {
         //given
         memberRepository.save(
                 Member.builder()
-                        .username("qoxogus1")
-                        .stdNum("2410")
+                        .memberName("qoxogus1")
+                        .stuNum("2410")
                         .password("1234")
                         .email("s20033@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
                         .music(CAN)
-                        .selfStudy(SelfStudy.APPLIED)
+                        .selfStudy(APPLIED)
                         .point(0L)
                         .build()
         );
 
         memberRepository.save(
                 Member.builder()
-                        .username("qwer")
-                        .stdNum("2408")
+                        .memberName("qwer")
+                        .stuNum("2408")
                         .password("1234")
                         .email("s20031@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
@@ -176,8 +181,8 @@ class SelfStudyServiceTest {
 
         memberRepository.save(
                 Member.builder()
-                        .username("rewq")
-                        .stdNum("2407")
+                        .memberName("rewq")
+                        .stuNum("2407")
                         .password("1234")
                         .email("s20030@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
@@ -194,9 +199,9 @@ class SelfStudyServiceTest {
         em.clear();
 
         //then
-        assertEquals(SelfStudy.CAN, memberRepository.findByUsername("qoxogus1").getSelfStudy());
-        assertEquals(SelfStudy.CAN, memberRepository.findByUsername("qwer").getSelfStudy());
-        assertEquals(SelfStudy.CAN, memberRepository.findByUsername("rewq").getSelfStudy()); //이 회원은 그대로 CAN
+        assertEquals(SelfStudy.CAN, memberRepository.findByEmail("s20033@gsm.hs.kr").get().getSelfStudy());
+        assertEquals(SelfStudy.CAN, memberRepository.findByEmail("s20031@gsm.hs.kr").get().getSelfStudy());
+        assertEquals(SelfStudy.CAN, memberRepository.findByEmail("s20030@gsm.hs.kr").get().getSelfStudy()); //이 회원은 그대로 CAN
     }
 
     @Test
@@ -211,5 +216,51 @@ class SelfStudyServiceTest {
         //then
         assertEquals(APPLIED.toString(), selfStudyInfo.get("selfStudy_status"));
         assertEquals("1", selfStudyInfo.get("count"));
+    }
+
+    @Test
+    @DisplayName("자습신청 금지가 제대로 됬나요?")
+    public void banSelfStudyTest() {
+        Member currentMember = currentMemberUtil.getCurrentMember();
+
+        // given // when
+        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20);
+        selfStudyService.banSelfStudy(currentMember.getId());
+
+        // then
+        assertEquals(IMPOSSIBLE, currentMember.getSelfStudy());
+        assertEquals(LocalDate.now().plusDays(7).toString(), currentMember.getSelfStudyExpiredDate().toString().substring(0, 10));
+    }
+
+    @Test
+    @DisplayName("자습신청 금지 취소가 잘 되나요?")
+    public void banCancelSelfStudyTest() {
+        Member currentMember = currentMemberUtil.getCurrentMember();
+
+        //given //when
+        selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20);
+        selfStudyService.banSelfStudy(currentMember.getId());
+        selfStudyService.cancelBanSelfStudy(currentMember.getId());
+
+        em.flush();
+        em.clear();
+
+        //then
+        assertEquals(CAN.toString(), currentMemberUtil.getCurrentMember().getSelfStudy().toString());
+        assertEquals(null, currentMemberUtil.getCurrentMember().getSelfStudyExpiredDate());
+    }
+
+    @Test
+    @DisplayName("")
+    public void banAndBanCancelSelfStudyExceptionTest() {
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> selfStudyService.banSelfStudy(0L)
+        );
+
+        assertThrows(
+                MemberNotFoundException.class,
+                () -> selfStudyService.banSelfStudy(0L)
+        );
     }
 }

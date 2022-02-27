@@ -1,5 +1,6 @@
 package com.server.Dotori.model.member.service;
 
+import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.exception.token.exception.LogoutTokenException;
 import com.server.Dotori.exception.token.exception.RefreshTokenFailException;
 import com.server.Dotori.model.member.Member;
@@ -22,16 +23,17 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     private final MemberRepository memberRepository;
 
     /**
-     * RefreshToken으로 AccessToken과 RefreshToken을 재발급 시켜주는 서비스 로직
-     * @param username username
+     * RefreshToken 으로 AccessToken 과 RefreshToken 을 재발급 시켜주는 서비스 로직
+     * @param email email
      * @param refreshToken refreshToken
-     * @return map - username, accessToken, refreshToken
+     * @return map - email, accessToken, refreshToken
      * @author 노경준
      */
     @Transactional
     @Override
-    public Map<String, String> getRefreshToken(String username, String refreshToken) {
-        Member findMember = memberRepository.findByUsername(username);
+    public Map<String, String> getRefreshToken(String email, String refreshToken) {
+        Member findMember = memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberNotFoundException());
 
         if (findMember.getRefreshToken() == null) {
             throw new LogoutTokenException();
@@ -44,10 +46,10 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         String newRefreshToken = null;
 
         if(findMember.getRefreshToken().equals(refreshToken) && jwtTokenProvider.validateToken(refreshToken)){
-            newAccessToken = jwtTokenProvider.createToken(username,roles);
+            newAccessToken = jwtTokenProvider.createToken(email,roles);
             newRefreshToken = jwtTokenProvider.createRefreshToken();
             findMember.updateRefreshToken(newRefreshToken);
-            map.put("username", username);
+            map.put("email", email);
             map.put("NewAccessToken", "Bearer " + newAccessToken); // NewAccessToken 반환
             map.put("NewRefreshToken", "Bearer " + newRefreshToken); // NewRefreshToken 반환
             return map;

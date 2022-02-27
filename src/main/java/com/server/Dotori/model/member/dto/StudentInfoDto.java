@@ -1,6 +1,7 @@
 package com.server.Dotori.model.member.dto;
 
 import com.server.Dotori.model.member.enumType.Role;
+import com.server.Dotori.model.member.enumType.SelfStudy;
 import lombok.*;
 
 import java.util.List;
@@ -10,7 +11,8 @@ import java.util.List;
 public class StudentInfoDto {
 
     private Long id;
-    private String stdNum;
-    private String username;
+    private String stuNum;
+    private String memberName;
     private List<Role> roles;
+    private SelfStudy selfStudy;
 }
