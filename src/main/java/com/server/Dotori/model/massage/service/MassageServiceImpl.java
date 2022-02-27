@@ -46,9 +46,9 @@ public class MassageServiceImpl implements MassageService {
      */
     @Override
     public void requestMassage(DayOfWeek dayOfWeek, int hour, int min) {
-//        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new MassageCantRequestDateException();
-//        if (!(hour >= 20 && hour <= 21)) throw new MassageCantRequestTimeException();
-//        if (!(min >= 20)) throw new MassageCantRequestTimeException();
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new MassageCantRequestDateException();
+        if (!(hour >= 20 && hour < 21)) throw new MassageCantRequestTimeException();
+        if (!(min >= 20)) throw new MassageCantRequestTimeException();
 
         long count = massageRepository.count();
 
@@ -85,9 +85,9 @@ public class MassageServiceImpl implements MassageService {
      */
     @Override
     public void cancelMassage(DayOfWeek dayOfWeek, int hour, int min) {
-//        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new MassageCantRequestDateException();
-//        if (!(hour >= 20 && hour <= 21)) throw new MassageCantRequestTimeException();
-//        if (!(min >= 20)) throw new MassageCantRequestTimeException();
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new MassageCantRequestDateException();
+        if (!(hour >= 20 && hour < 21)) throw new MassageCantRequestTimeException();
+        if (!(min >= 20)) throw new MassageCantRequestTimeException();
 
         long count = massageRepository.count();
         Member currentMember = currentMemberUtil.getCurrentMember();
