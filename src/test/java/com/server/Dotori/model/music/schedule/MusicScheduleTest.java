@@ -19,35 +19,6 @@ class MusicScheduleTest {
     private ScheduledTaskHolder scheduledTaskHolder;
 
     @Test
-    @Disabled
-    @DisplayName("토요일에 모든 음악이 삭제되는 일정이 잘 예약되었는지 확인하는 테스트")
-    public void saturdayMusicDeleteAllTest() {
-        Set<ScheduledTask> scheduledTasks = scheduledTaskHolder.getScheduledTasks();
-        scheduledTasks.forEach(scheduledTask -> scheduledTask.getTask().getRunnable().getClass().getDeclaredMethods());
-
-        long count = scheduledTasks.stream()
-                .filter(scheduledTask -> scheduledTask.getTask() instanceof CronTask)
-                .map(scheduledTask -> (CronTask) scheduledTask.getTask())
-                .filter(cronTask -> cronTask.getExpression().equals("0 59 23 ? * SAT") && cronTask.toString().equals("com.server.Dotori.model.music.schedule.MusicSchedule.saturdayMusicDeleteAll"))
-                .count();
-        Assertions.assertThat(count).isEqualTo(1L);
-    }
-
-    @Test
-    @DisplayName("매 달 1일 새벽 4시에 모든 음악이 삭제되는 일정이 잘 예약되었는지 확인하는 테스트")
-    public void monthMusicDeleteAllTest() {
-        Set<ScheduledTask> scheduledTasks = scheduledTaskHolder.getScheduledTasks();
-        scheduledTasks.forEach(scheduledTask -> scheduledTask.getTask().getRunnable().getClass().getDeclaredMethods());
-
-        long count = scheduledTasks.stream()
-                .filter(scheduledTask -> scheduledTask.getTask() instanceof CronTask)
-                .map(scheduledTask -> (CronTask) scheduledTask.getTask())
-                .filter(cronTask -> cronTask.getExpression().equals("0 0 4 1 1/1 ?") && cronTask.toString().equals("com.server.Dotori.model.music.schedule.MusicSchedule.monthMusicDeleteAll"))
-                .count();
-        Assertions.assertThat(count).isEqualTo(1L);
-    }
-
-    @Test
     @DisplayName("매일 자정에 학생들의 음악신청 상태가 '가능'으로 변경하는 일정이 잘 예약되었는지 확인하는 테스트")
     public void weekdayMusicStatusReset() {
         Set<ScheduledTask> scheduledTasks = scheduledTaskHolder.getScheduledTasks();
