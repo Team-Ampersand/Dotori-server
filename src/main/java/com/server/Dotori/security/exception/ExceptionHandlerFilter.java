@@ -40,10 +40,10 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (ExpiredJwtException ex) {
             log.debug("================= [ ExceptionHandlerFilter ] 에서 ExpiredJwtException 발생 ===================");
-            setErrorResponse(EXPIRED_TOKEN, response);
+            setErrorResponse(TOKEN_EXPIRED, response);
         } catch (JwtException | IllegalArgumentException ex) {
             log.debug("================= [ ExceptionHandlerFilter ] 에서 JwtException 발생 ===================");
-            setErrorResponse(INVALID_TOKEN, response);
+            setErrorResponse(TOKEN_INVALID, response);
         } catch (Exception ex) {
             log.debug("================= [ ExceptionHandlerFilter ] 에서 Exception 발생 ===================");
             setErrorResponse(UNKNOWN_ERROR, response);
