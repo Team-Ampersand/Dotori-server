@@ -21,7 +21,8 @@ public interface TokenExceptionHandler {
 
     @ExceptionHandler(InvalidTokenException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    CommonResult invalidTokenException(InvalidTokenException ex);
+    CommonResult
+    invalidTokenException(InvalidTokenException ex);
 
     @ExceptionHandler(LogoutTokenException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)

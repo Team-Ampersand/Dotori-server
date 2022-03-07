@@ -1,10 +1,11 @@
 package com.server.Dotori.model.massage.service;
 
-import com.server.Dotori.exception.massage.exception.*;
 import com.server.Dotori.model.massage.dto.MassageStudentsDto;
 import com.server.Dotori.model.massage.repository.MassageRepository;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
+import com.server.Dotori.new_exception.DotoriException;
+import com.server.Dotori.new_exception.ErrorCode;
 import com.server.Dotori.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.server.Dotori.model.member.enumType.Massage.*;
+import static com.server.Dotori.new_exception.ErrorCode.*;
 
 @Slf4j
 @Service
@@ -38,17 +40,17 @@ public class MassageServiceImpl implements MassageService {
      * @param dayOfWeek 현재 요일
      * @param hour 현재 시
      * @param min 현재 분
-     * @exception MassageCantRequestDateException 안마의자 신청을 하실 수 없는 요일입니다.
-     * @exception MassageCantRequestTimeException 안마의자 신청은 오후 8시부터 오후 10시까지만 신청이 가능합니다.
-     * @exception MassageAlreadyException 이미 안마의자 신청을 신청하신 회원입니다.
-     * @exception MassageOverException 안마의자 신청 인원이 5명을 초과 하였습니다.
+     * @exception DotoriException (MASSAGE_CANT_REQUEST_THIS_DATE) 안마의자 신청을 하실 수 없는 요일입니다.
+     * @exception DotoriException (MASSAGE_CANT_REQUEST_THIS_TIME) 안마의자 신청은 오후 8시부터 오후 10시까지만 신청이 가능합니다.
+     * @exception DotoriException (MASSAGE_ALREADY) 이미 안마의자 신청을 신청하신 회원입니다.
+     * @exception DotoriException (MASSAGE_OVER) 안마의자 신청 인원이 5명을 초과 하였습니다.
      * @author 김태민
      */
     @Override
     public void requestMassage(DayOfWeek dayOfWeek, int hour, int min) {
-        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new MassageCantRequestDateException();
-        if (!(hour >= 20 && hour < 21)) throw new MassageCantRequestTimeException();
-        if (!(min >= 20)) throw new MassageCantRequestTimeException();
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_DATE);
+        if (!(hour >= 20 && hour < 21)) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_TIME);
+        if (!(min >= 20)) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_TIME);
 
         long count = massageRepository.count();
 
@@ -64,8 +66,8 @@ public class MassageServiceImpl implements MassageService {
                 currentMember.updateMassageExpiredDate(LocalDateTime.now().plusMonths(1));
 
                 log.info("Current MassageRequest Student Count is {}", count+1);
-            } else throw new MassageAlreadyException();
-        } else throw new MassageOverException();
+            } else throw new DotoriException(MASSAGE_ALREADY);
+        } else throw new DotoriException(MASSAGE_OVER);
     }
 
     /**
@@ -78,16 +80,16 @@ public class MassageServiceImpl implements MassageService {
      * @param dayOfWeek 현재 요일
      * @param hour 현재 시
      * @param min 현재 분
-     * @exception MassageCantRequestDateException 안마의자 신청을 하실 수 없는 요일입니다.
-     * @exception MassageCantRequestTimeException 안마의자 신청은 오후 8시부터 오후 10시까지만 신청이 가능합니다.
-     * @exception MassageNotAppliedStatusException 안마의자 신청을 취소할 수 있는 상태가 아닙니다.
+     * @exception DotoriException (MASSAGE_CANT_REQUEST_THIS_DATE) 안마의자 신청을 하실 수 없는 요일입니다.
+     * @exception DotoriException (MASSAGE_CANT_REQUEST_THIS_TIME) 안마의자 신청은 오후 8시부터 오후 10시까지만 신청이 가능합니다.
+     * @exception DotoriException (MASSAGE_CANT_CANCEL_REQUEST) 안마의자 신청을 취소할 수 있는 상태가 아닙니다.
      * @author 김태민
      */
     @Override
     public void cancelMassage(DayOfWeek dayOfWeek, int hour, int min) {
-        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new MassageCantRequestDateException();
-        if (!(hour >= 20 && hour < 21)) throw new MassageCantRequestTimeException();
-        if (!(min >= 20)) throw new MassageCantRequestTimeException();
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_DATE);
+        if (!(hour >= 20 && hour < 21)) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_TIME);
+        if (!(min >= 20)) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_TIME);
 
         long count = massageRepository.count();
         Member currentMember = currentMemberUtil.getCurrentMember();
@@ -98,7 +100,7 @@ public class MassageServiceImpl implements MassageService {
 
             currentMember.updateMassageExpiredDate(null);
             log.info("Current MassageRequest Student Count is {}", count-1);
-        } else throw new MassageNotAppliedStatusException();
+        } else throw new DotoriException(MASSAGE_CANT_CANCEL_REQUEST);
     }
 
     /**
@@ -138,7 +140,7 @@ public class MassageServiceImpl implements MassageService {
     @Override
     public List<MassageStudentsDto> getMassageStudents() {
         List<MassageStudentsDto> students = memberRepository.findByMassageStatus();
-        if (students.size() == 0) throw new MassageNoTheresException();
+        if (students.size() == 0) throw new DotoriException(MASSAGE_ANYONE_NOT_REQUEST);
 
         return students;
     }

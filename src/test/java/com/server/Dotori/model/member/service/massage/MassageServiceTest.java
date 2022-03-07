@@ -1,15 +1,13 @@
 package com.server.Dotori.model.member.service.massage;
 
-import com.server.Dotori.exception.massage.exception.MassageCantRequestDateException;
-import com.server.Dotori.exception.massage.exception.MassageCantRequestTimeException;
 import com.server.Dotori.model.massage.dto.MassageStudentsDto;
 import com.server.Dotori.model.massage.repository.MassageRepository;
 import com.server.Dotori.model.massage.service.MassageService;
-import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Massage;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
+import com.server.Dotori.new_exception.DotoriException;
 import com.server.Dotori.util.CurrentMemberUtil;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -92,11 +90,11 @@ public class MassageServiceTest {
     @DisplayName("안마의자 신청 예외가 제대로 터지나요?")
     public void massageExceptionTest() {
         assertThrows(
-                MassageCantRequestDateException.class,
+                DotoriException.class,
                 () -> massageService.requestMassage(DayOfWeek.FRIDAY, 20, 20));
 
         assertThrows(
-                MassageCantRequestTimeException.class,
+                DotoriException.class,
                 () -> massageService.requestMassage(DayOfWeek.MONDAY, 19, 19));
     }
 
