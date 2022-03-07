@@ -1,10 +1,11 @@
 package com.server.Dotori.model.massage.service;
 
-import com.server.Dotori.exception.massage.exception.*;
 import com.server.Dotori.model.massage.dto.MassageStudentsDto;
 import com.server.Dotori.model.massage.repository.MassageRepository;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
+import com.server.Dotori.new_exception.DotoriException;
+import com.server.Dotori.new_exception.ErrorCode;
 import com.server.Dotori.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,9 +47,9 @@ public class MassageServiceImpl implements MassageService {
      */
     @Override
     public void requestMassage(DayOfWeek dayOfWeek, int hour, int min) {
-        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new MassageCantRequestDateException();
-        if (!(hour >= 20 && hour < 21)) throw new MassageCantRequestTimeException();
-        if (!(min >= 20)) throw new MassageCantRequestTimeException();
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new DotoriException(ErrorCode.MASSAGE_CANT_REQUEST_THIS_DATE);
+        if (!(hour >= 20 && hour < 21)) throw new DotoriException(ErrorCode.MASSAGE_CANT_REQUEST_THIS_TIME);
+        if (!(min >= 20)) throw new DotoriException(ErrorCode.MASSAGE_CANT_REQUEST_THIS_TIME);
 
         long count = massageRepository.count();
 
@@ -64,8 +65,8 @@ public class MassageServiceImpl implements MassageService {
                 currentMember.updateMassageExpiredDate(LocalDateTime.now().plusMonths(1));
 
                 log.info("Current MassageRequest Student Count is {}", count+1);
-            } else throw new MassageAlreadyException();
-        } else throw new MassageOverException();
+            } else throw new DotoriException(ErrorCode.MASSAGE_ALREADY);
+        } else throw new DotoriException(ErrorCode.MASSAGE_OVER);
     }
 
     /**
@@ -85,9 +86,9 @@ public class MassageServiceImpl implements MassageService {
      */
     @Override
     public void cancelMassage(DayOfWeek dayOfWeek, int hour, int min) {
-        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new MassageCantRequestDateException();
-        if (!(hour >= 20 && hour < 21)) throw new MassageCantRequestTimeException();
-        if (!(min >= 20)) throw new MassageCantRequestTimeException();
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new DotoriException(ErrorCode.MASSAGE_CANT_REQUEST_THIS_DATE);
+        if (!(hour >= 20 && hour < 21)) throw new DotoriException(ErrorCode.MASSAGE_CANT_REQUEST_THIS_TIME);
+        if (!(min >= 20)) throw new DotoriException(ErrorCode.MASSAGE_CANT_REQUEST_THIS_TIME);
 
         long count = massageRepository.count();
         Member currentMember = currentMemberUtil.getCurrentMember();
@@ -98,7 +99,7 @@ public class MassageServiceImpl implements MassageService {
 
             currentMember.updateMassageExpiredDate(null);
             log.info("Current MassageRequest Student Count is {}", count-1);
-        } else throw new MassageNotAppliedStatusException();
+        } else throw new DotoriException(ErrorCode.MASSAGE_CANT_CANCEL_REQUEST);
     }
 
     /**
@@ -138,7 +139,7 @@ public class MassageServiceImpl implements MassageService {
     @Override
     public List<MassageStudentsDto> getMassageStudents() {
         List<MassageStudentsDto> students = memberRepository.findByMassageStatus();
-        if (students.size() == 0) throw new MassageNoTheresException();
+        if (students.size() == 0) throw new DotoriException(ErrorCode.MASSAGE_ANYONE_NOT_REQUEST);
 
         return students;
     }
