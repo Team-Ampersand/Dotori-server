@@ -1,11 +1,11 @@
 package com.server.Dotori.model.member.service;
 
-import com.server.Dotori.exception.member.exception.*;
 import com.server.Dotori.model.member.EmailCertificate;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.*;
 import com.server.Dotori.model.member.repository.email.EmailCertificateRepository;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
+import com.server.Dotori.new_exception.DotoriException;
 import com.server.Dotori.security.jwt.JwtTokenProvider;
 import com.server.Dotori.util.CurrentMemberUtil;
 import com.server.Dotori.util.EmailSender;
@@ -19,6 +19,8 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.server.Dotori.new_exception.ErrorCode.*;
 
 
 @RequiredArgsConstructor
@@ -52,10 +54,10 @@ public class MemberServiceImpl implements MemberService {
                             memberDto.toEntity(passwordEncoder.encode(password))
                     );
                     return result.getId();
-                } else throw new MemberAlreadyException();
-            } else throw new EmailHasNotBeenCertificateException();
+                } else throw new DotoriException(MEMBER_ALREADY);
+            } else throw new DotoriException(MEMBER_EMAIL_HAS_NOT_BEEN_CERTIFICATE);
         } catch (DataIntegrityViolationException e) {
-            throw new MemberAlreadyException();
+            throw new DotoriException(MEMBER_ALREADY);
         }
     }
 
@@ -69,7 +71,7 @@ public class MemberServiceImpl implements MemberService {
     public String sendEmailSignup(EmailDto emailDto) {
         String email = emailDto.getEmail();
 
-        if(memberRepository.existsByEmail(email)) throw new MemberAlreadyException();
+        if(memberRepository.existsByEmail(email)) throw new DotoriException(MEMBER_ALREADY);
         return sendEmail(email);
     }
 
@@ -83,7 +85,7 @@ public class MemberServiceImpl implements MemberService {
         String key = signUpEmailCheckDto.getKey();
 
         EmailCertificate emailCertificate = emailCertificateRepository.findByKey(key)
-                .orElseThrow(MemberAuthenticationKeyNotMatchingException::new);
+                .orElseThrow(() -> new DotoriException(MEMBER_AUTHENTICATION_KEY_NOT_MATCHING));
 
         checkEmail(emailCertificate, key);
     }
@@ -100,8 +102,8 @@ public class MemberServiceImpl implements MemberService {
         String email = signInDto.getEmail();
 
         Member findMember = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new MemberNotFoundException());
-        if(!passwordEncoder.matches(signInDto.getPassword(),findMember.getPassword())) throw new MemberPasswordNotMatchingException();
+                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
+        if(!passwordEncoder.matches(signInDto.getPassword(),findMember.getPassword())) throw new DotoriException(MEMBER_PASSWORD_NOT_MATCHING);
 
         Map<String, String> token = createToken(findMember);
 
@@ -123,7 +125,7 @@ public class MemberServiceImpl implements MemberService {
         Member findMember = currentMemberUtil.getCurrentMember();
         String password = findMember.getPassword();
 
-        if (!passwordEncoder.matches(currentPassword, password)) throw new MemberPasswordNotMatchingException();
+        if (!passwordEncoder.matches(currentPassword, password)) throw new DotoriException(MEMBER_PASSWORD_NOT_MATCHING);
         String encodePassword = passwordEncoder.encode(newPassword);
         findMember.updatePassword(encodePassword);
 
@@ -140,7 +142,7 @@ public class MemberServiceImpl implements MemberService {
         String email = emailDto.getEmail();
 
         memberRepository.findByEmail(email)
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
 
         return sendEmail(email);
     }
@@ -156,13 +158,13 @@ public class MemberServiceImpl implements MemberService {
         String dtoKey = changePasswordEmailCheckDto.getKey();
 
         EmailCertificate emailCertificate = emailCertificateRepository.findByKey(dtoKey)
-                .orElseThrow(MemberAuthenticationAnswerNotMatchingException::new);
+                .orElseThrow(() -> new DotoriException(MEMBER_AUTHENTICATION_KEY_NOT_MATCHING));
 
         String key = emailCertificate.getKey();
         String email = emailCertificate.getEmail();
 
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
 
         if(checkEmail(emailCertificate, key)) member.updatePassword(passwordEncoder.encode(changePasswordEmailCheckDto.getNewPassword()));
     }
@@ -187,11 +189,11 @@ public class MemberServiceImpl implements MemberService {
         String dtoPassword = withdrawlDto.getPassword();
 
         Member findMember = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
 
         String entityPassword = findMember.getPassword();
 
-        if(!passwordEncoder.matches(dtoPassword,entityPassword)) throw new MemberPasswordNotMatchingException();
+        if(!passwordEncoder.matches(dtoPassword,entityPassword)) throw new DotoriException(MEMBER_PASSWORD_NOT_MATCHING);
 
         memberRepository.delete(findMember);
     }
@@ -246,7 +248,7 @@ public class MemberServiceImpl implements MemberService {
             return true;
         }else{
             emailCertificateRepository.deleteEmailCertificateByKey(key);
-            throw new OverCertificateTimeException();
+            throw new DotoriException(MEMBER_OVER_CERTIFICATE_TIME);
         }
     }
 
