@@ -1,14 +1,12 @@
 package com.server.Dotori.model.member.service.studentinfo;
 
-import com.server.Dotori.exception.member.exception.MemberAlreadyJoinThisStunumException;
-import com.server.Dotori.exception.member.exception.MemberNotFoundByClassException;
-import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.model.member.Member;
+import com.server.Dotori.model.member.dto.MemberNameUpdateDto;
 import com.server.Dotori.model.member.dto.RoleUpdateDto;
 import com.server.Dotori.model.member.dto.StuNumUpdateDto;
 import com.server.Dotori.model.member.dto.StudentInfoDto;
-import com.server.Dotori.model.member.dto.MemberNameUpdateDto;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
+import com.server.Dotori.new_exception.DotoriException;
 import com.server.Dotori.util.ObjectMapperUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.server.Dotori.new_exception.ErrorCode.*;
+
 @Service
 @RequiredArgsConstructor
 public class StuInfoServiceImpl implements StuInfoService {
@@ -32,7 +32,7 @@ public class StuInfoServiceImpl implements StuInfoService {
     /**
      * 학년반별로 조회한 학생들 List를 List Dto로 변경후 반환하는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * @param id classId
-     * @exception MemberNotFoundByClassException 해당 반에 해당하는 학생들이 없을 때
+     * @exception DotoriException (MEMBER_NOT_FOUND_BY_CLASS) 해당 반에 해당하는 학생들이 없을 때
      * @return List - StudentInfoDto (id, stuNum, username, roles)
      * @author 배태현
      */
@@ -40,7 +40,7 @@ public class StuInfoServiceImpl implements StuInfoService {
     public List<StudentInfoDto> getStudentInfo(Long id) {
         List<Member> studentInfo = memberRepository.findStudentInfo(id);
 
-        if (studentInfo.isEmpty()) throw new MemberNotFoundByClassException();
+        if (studentInfo.isEmpty()) throw new DotoriException(MEMBER_NOT_FOUND_BY_CLASS);
 
         return objectMapperUtils.mapAll(studentInfo, StudentInfoDto.class);
     }
@@ -61,14 +61,14 @@ public class StuInfoServiceImpl implements StuInfoService {
      * 권한을 업데이트하는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * 권한이 업데이트된 사용자는 로그인을 다시 해야한다. (공지를 해야할듯)
      * @param roleUpdateDto (receiverId, roles)
-     * @exception MemberNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
+     * @exception DotoriException (MEMBER_NOT_FOUND) 해당 Id에 해당하는 유저를 찾을 수 없을 때
      * @author 배태현
      */
     @Override
     @Transactional
     public void updateRole(RoleUpdateDto roleUpdateDto) {
         Member member = memberRepository.findById(roleUpdateDto.getReceiverId())
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication(); //기존 계정의 권한정보를 가지고온다.
         List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
@@ -88,18 +88,18 @@ public class StuInfoServiceImpl implements StuInfoService {
     /**
      * 학번을 변경시키는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * @param stuNumUpdateDto (receiverId, stuNum)
-     * @exception MemberNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
-     * @exception MemberAlreadyJoinThisStunumException 해당 학번으로 이미 가입된 유저가 있을 때
+     * @exception DotoriException (MEMBER_NOT_FOUND) 해당 Id에 해당하는 유저를 찾을 수 없을 때
+     * @exception DotoriException (MEMBER_ALREADY_JOIN_THIS_STUNUM) 해당 학번으로 이미 가입된 유저가 있을 때
      * @author 배태현
      */
     @Override
     @Transactional
     public void updateStuNum(StuNumUpdateDto stuNumUpdateDto) {
         Member findMember = memberRepository.findById(stuNumUpdateDto.getReceiverId())
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
 
         if (memberRepository.existsByStuNum(stuNumUpdateDto.getStuNum()))
-            throw new MemberAlreadyJoinThisStunumException();
+            throw new DotoriException(MEMBER_ALREADY_JOIN_THIS_STUNUM);
 
         findMember.updateStuNum(stuNumUpdateDto.getStuNum());
     }
@@ -107,14 +107,14 @@ public class StuInfoServiceImpl implements StuInfoService {
     /**
      * 학생의 이름을 변경시키는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * @param memberNameUpdateDto (receiverId, username)
-     * @exception MemberNotFoundException 해당 Id에 해당하는 유저를 찾을 수 없을 때
+     * @exception DotoriException (MEMBER_NOT_FOUND) 해당 Id에 해당하는 유저를 찾을 수 없을 때
      * @author 배태현
      */
     @Override
     @Transactional
     public void updateMemberName(MemberNameUpdateDto memberNameUpdateDto) {
         Member findMember = memberRepository.findById(memberNameUpdateDto.getReceiverId())
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
 
         findMember.updateMemberName(memberNameUpdateDto.getMemberName());
 
@@ -123,14 +123,14 @@ public class StuInfoServiceImpl implements StuInfoService {
     /**
      * 이름으로 학생정보를 조회하는 로직 (사감쌤, 기자위, 개발자 사용가능)
      * @param memberName memberName
-     * @exception MemberNotFoundException 검색한 이름로 검색된 학생이 없을 때
+     * @exception DotoriException (MEMBER_NOT_FOUND) 검색한 이름로 검색된 학생이 없을 때
      * @return List<StudentInfoDto>
      * @author 배태현
      */
     @Override
     public List<StudentInfoDto> getStuInfoByMemberName(String memberName) {
         List<Member> findMembers = memberRepository.findStuInfoByMemberName(memberName);
-        if (findMembers.isEmpty()) throw new MemberNotFoundException();
+        if (findMembers.isEmpty()) throw new DotoriException(MEMBER_NOT_FOUND);
         return objectMapperUtils.mapAll(findMembers, StudentInfoDto.class);
     }
 }
