@@ -1,17 +1,16 @@
 package com.server.Dotori.model.member.service.selfstudy;
 
 import com.server.Dotori.exception.member.exception.MemberNotFoundException;
-import com.server.Dotori.exception.selfstudy.exception.*;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
+import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.enumType.SelfStudy;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
-import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 import com.server.Dotori.model.member.repository.selfStudy.SelfStudyRepository;
+import com.server.Dotori.new_exception.DotoriException;
 import com.server.Dotori.util.CurrentMemberUtil;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,8 +29,9 @@ import java.util.Map;
 
 import static com.server.Dotori.model.member.enumType.Music.CAN;
 import static com.server.Dotori.model.member.enumType.SelfStudy.*;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.MethodOrderer.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
 @SpringBootTest
 @Transactional
@@ -92,12 +92,12 @@ class SelfStudyServiceTest {
     @DisplayName("적절한 날짜 혹은 시간이 아닐 때 자습신청을 하면 예외가 제대로 터지나요?")
     public void requestSelfStudyExceptionTest() {
         assertThrows(
-                SelfStudyCantRequestDateException.class,
+                DotoriException.class,
                 () -> selfStudyService.requestSelfStudy(DayOfWeek.FRIDAY, 20)
         );
 
         assertThrows(
-                SelfStudyCantRequestTimeException.class,
+                DotoriException.class,
                 () -> selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 19)
         );
     }
@@ -117,12 +117,12 @@ class SelfStudyServiceTest {
     @DisplayName("적절한 날짜 혹은 시간이 아닐 때 자습신청 취소를 하면 예외가 제대로 터지나요?")
     public void cancelSelfStudyExceptionTest() {
         assertThrows(
-                SelfStudyCantCancelDateException.class,
+                DotoriException.class,
                 () -> selfStudyService.cancelSelfStudy(DayOfWeek.FRIDAY, 20)
         );
 
         assertThrows(
-                SelfStudyCantCancelTimeException.class,
+                DotoriException.class,
                 () -> selfStudyService.cancelSelfStudy(DayOfWeek.MONDAY, 19)
         );
     }
