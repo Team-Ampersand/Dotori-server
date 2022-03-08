@@ -1,11 +1,10 @@
 package com.server.Dotori.model.member.service;
 
-import com.server.Dotori.exception.member.exception.MemberNotFoundException;
-import com.server.Dotori.exception.token.exception.LogoutTokenException;
 import com.server.Dotori.exception.token.exception.RefreshTokenFailException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
+import com.server.Dotori.new_exception.DotoriException;
 import com.server.Dotori.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +13,9 @@ import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.server.Dotori.new_exception.ErrorCode.MEMBER_NOT_FOUND;
+import static com.server.Dotori.new_exception.ErrorCode.TOKEN_INVALID;
 
 @RequiredArgsConstructor
 @Service
@@ -33,10 +35,10 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Override
     public Map<String, String> getRefreshToken(String email, String refreshToken) {
         Member findMember = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
 
         if (findMember.getRefreshToken() == null) {
-            throw new LogoutTokenException();
+            throw new DotoriException(TOKEN_INVALID);
         }
 
         List<Role> roles = findMember.getRoles();
