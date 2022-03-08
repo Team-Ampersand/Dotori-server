@@ -1,6 +1,5 @@
 package com.server.Dotori.model.member.service.selfstudy;
 
-import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
@@ -161,7 +160,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Transactional
     public void banSelfStudy(Long id) {
         Member findMember = memberRepository.findById(id)
-                .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
 
         findMember.updateSelfStudy(IMPOSSIBLE);
         findMember.updateSelfStudyExpiredDate(LocalDateTime.now().plusDays(7));
@@ -176,7 +175,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Transactional
     public void cancelBanSelfStudy(Long id) {
         Member findMember = memberRepository.findById(id)
-                .orElseThrow(MemberNotFoundException::new);
+                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
 
         findMember.updateSelfStudy(CAN);
         findMember.updateSelfStudyExpiredDate(null);
