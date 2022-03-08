@@ -1,6 +1,5 @@
 package com.server.Dotori.model.music.service;
 
-import com.server.Dotori.exception.music.exception.MusicCantRequestDateException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.enumType.Role;
@@ -10,8 +9,11 @@ import com.server.Dotori.model.music.Music;
 import com.server.Dotori.model.music.dto.MusicApplicationDto;
 import com.server.Dotori.model.music.dto.MusicResDto;
 import com.server.Dotori.model.music.repository.MusicRepository;
+import com.server.Dotori.new_exception.DotoriException;
 import com.server.Dotori.util.CurrentMemberUtil;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,9 +30,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.server.Dotori.model.member.enumType.Music.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.server.Dotori.model.member.enumType.Music.APPLIED;
+import static com.server.Dotori.model.member.enumType.Music.CAN;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
@@ -92,12 +96,11 @@ class MusicServiceTest {
         assertThat(music.getUrl()).isEqualTo("https://www.youtube.com/watch?v=6h9qmKWK6Io");
     }
 
-    @Disabled
     @Test
     @DisplayName("음악을 신청할 수 없는 요일에 신청했을 때 예외가 터지나요?")
     public void musicApplicationExceptionTest() {
         assertThrows(
-                MusicCantRequestDateException.class,
+                DotoriException.class,
                 () -> musicService.musicApplication(
                         MusicApplicationDto.builder()
                                 .musicUrl("https://www.youtube.com/watch?v=6h9qmKWK6Io")
