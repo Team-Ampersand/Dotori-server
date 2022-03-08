@@ -1,6 +1,5 @@
 package com.server.Dotori.model.member.service.selfstudy;
 
-import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.dto.MemberDto;
 import com.server.Dotori.model.member.dto.SelfStudyStudentsDto;
@@ -254,12 +253,12 @@ class SelfStudyServiceTest {
     @DisplayName("")
     public void banAndBanCancelSelfStudyExceptionTest() {
         assertThrows(
-                MemberNotFoundException.class,
+                DotoriException.class,
                 () -> selfStudyService.banSelfStudy(0L)
         );
 
         assertThrows(
-                MemberNotFoundException.class,
+                DotoriException.class,
                 () -> selfStudyService.banSelfStudy(0L)
         );
     }
