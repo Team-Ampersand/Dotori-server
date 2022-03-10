@@ -1,13 +1,15 @@
 package com.server.Dotori.security.authentication;
 
-import com.server.Dotori.exception.member.exception.MemberNotFoundException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
+import com.server.Dotori.new_exception.DotoriException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import static com.server.Dotori.new_exception.ErrorCode.MEMBER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -18,7 +20,7 @@ public class MyMemberDetails implements UserDetailsService { // UserDetailsServi
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Member member = userRepository.findByEmail(email)
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
 
         return member;
     }
