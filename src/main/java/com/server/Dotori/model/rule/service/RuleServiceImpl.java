@@ -1,19 +1,21 @@
 package com.server.Dotori.model.rule.service;
 
-import com.server.Dotori.exception.member.exception.MemberNotFoundException;
-import com.server.Dotori.exception.rule.exception.RuleNoHistoryException;
 import com.server.Dotori.model.member.Member;
 import com.server.Dotori.model.member.repository.member.MemberRepository;
 import com.server.Dotori.model.rule.RuleViolation;
 import com.server.Dotori.model.rule.dto.*;
 import com.server.Dotori.model.rule.enumType.Rule;
 import com.server.Dotori.model.rule.repository.RuleRepository;
+import com.server.Dotori.new_exception.DotoriException;
 import com.server.Dotori.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+
+import static com.server.Dotori.new_exception.ErrorCode.MEMBER_NOT_FOUND;
+import static com.server.Dotori.new_exception.ErrorCode.RULE_NO_HISTORY;
 
 @RequiredArgsConstructor
 @Service
@@ -28,7 +30,7 @@ public class RuleServiceImpl implements RuleService{
         List<RuleViolation> ruleViolations = new ArrayList<>();
 
         for (String stuNum : ruleGrantDto.getStuNum()){
-            Member member = memberRepository.findByStuNum(stuNum).orElseThrow(() -> new MemberNotFoundException());
+            Member member = memberRepository.findByStuNum(stuNum).orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
             ruleViolations.add(ruleGrantDto.toEntity(member));
         }
 
@@ -39,12 +41,12 @@ public class RuleServiceImpl implements RuleService{
 
     @Override
     public HashMap<Rule, RulesCntAndDatesDto> findAllViolationOfTheRule(String stuNum) {
-        if(!memberRepository.existsByStuNum(stuNum)) throw new MemberNotFoundException();
+        if(!memberRepository.existsByStuNum(stuNum)) throw new DotoriException(MEMBER_NOT_FOUND);
 
         HashMap<Rule, RulesCntAndDatesDto> response = new LinkedHashMap<>();
         List<FindRuleAndDateDto> findRulesAndDatesDtoList = ruleRepository.findViolationOfTheRule(stuNum);
 
-        if (findRulesAndDatesDtoList.isEmpty()) throw new RuleNoHistoryException();
+        if (findRulesAndDatesDtoList.isEmpty()) throw new DotoriException(RULE_NO_HISTORY);
 
         int cnt = 0;
         for (Rule rule : Rule.values()) {
@@ -65,11 +67,11 @@ public class RuleServiceImpl implements RuleService{
 
     @Override
     public List<FindViolationOfTheRuleResponseDto> findViolationOfTheRules(String stuNum) {
-        if(!memberRepository.existsByStuNum(stuNum)) throw new MemberNotFoundException();
+        if(!memberRepository.existsByStuNum(stuNum)) throw new DotoriException(MEMBER_NOT_FOUND);
 
         List<FindIdAndRuleAndDateDto> result = ruleRepository.findViolationOfTheRules(stuNum);
 
-        if(result.isEmpty()) throw new RuleNoHistoryException();
+        if(result.isEmpty()) throw new DotoriException(RULE_NO_HISTORY);
 
         List<FindViolationOfTheRuleResponseDto> response = new LinkedList<>();
 
@@ -97,7 +99,7 @@ public class RuleServiceImpl implements RuleService{
 
         List<FindIdAndRuleAndDateDto> result = ruleRepository.findViolationOfTheRules(currentMemberStuNum);
 
-        if(result.isEmpty()) throw new RuleNoHistoryException();
+        if(result.isEmpty()) throw new DotoriException(RULE_NO_HISTORY);
 
         List<FindViolationOfTheRuleResponseDto> response = new LinkedList<>();
 
@@ -118,7 +120,7 @@ public class RuleServiceImpl implements RuleService{
     public List<FindStusDto> findAllStudents() {
         List<FindStusDto> response = memberRepository.findAllStuOfRulePage();
 
-        if (response.isEmpty()) throw new MemberNotFoundException();
+        if (response.isEmpty()) throw new DotoriException(MEMBER_NOT_FOUND);
 
         return response;
     }
@@ -127,7 +129,7 @@ public class RuleServiceImpl implements RuleService{
     public List<FindStusDto> findStusByClassId(Long classId) {
         List<FindStusDto> response = memberRepository.findStusByClassId(classId);
 
-        if (response.isEmpty()) throw new MemberNotFoundException();
+        if (response.isEmpty()) throw new DotoriException(MEMBER_NOT_FOUND);
 
         return response;
     }
@@ -136,7 +138,7 @@ public class RuleServiceImpl implements RuleService{
     public List<FindStusDto> findStusByMemberName(String memberName) {
         List<FindStusDto> response = memberRepository.findStusByMemberName(memberName);
 
-        if (response.isEmpty()) throw new MemberNotFoundException();
+        if (response.isEmpty()) throw new DotoriException(MEMBER_NOT_FOUND);
 
         return response;
     }
