@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.server.Dotori.new_exception.ErrorCode.BOARD_NOT_FOUND;
 import static com.server.Dotori.new_exception.ErrorCode.MEMBER_NOT_FOUND;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -102,7 +103,7 @@ public class RuleServiceTest {
 
         // when // then
         assertThrows(
-                new DotoriException(MEMBER_NOT_FOUND).getClass(),
+                DotoriException.class,
                 () -> ruleService.grant(RuleGrantDto.builder()
                         .stuNum(stuNumList)
                         .rule(Rule.FIREARMS)
