@@ -2,22 +2,17 @@ package com.server.Dotori.domain.massage.service;
 
 import com.server.Dotori.domain.massage.dto.MassageStudentsDto;
 import com.server.Dotori.domain.massage.repository.MassageRepository;
-import com.server.Dotori.domain.massage.service.MassageService;
 import com.server.Dotori.domain.member.dto.MemberDto;
 import com.server.Dotori.domain.member.enumType.Massage;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.global.exception.DotoriException;
 import com.server.Dotori.global.util.CurrentMemberUtil;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.scheduling.config.CronTask;
-import org.springframework.scheduling.config.ScheduledTask;
 import org.springframework.scheduling.config.ScheduledTaskHolder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,7 +24,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -85,7 +79,6 @@ public class MassageServiceTest {
         assertThat(1).isEqualTo(massageRepository.count());
     }
 
-    @Disabled
     @Test
     @DisplayName("안마의자 신청 예외가 제대로 터지나요?")
     public void massageExceptionTest() {
@@ -96,20 +89,6 @@ public class MassageServiceTest {
         assertThrows(
                 DotoriException.class,
                 () -> massageService.requestMassage(DayOfWeek.MONDAY, 19, 19));
-    }
-
-    @Test
-    @DisplayName("새벽 2시에 안마의자 신청 상태가 변경되는 스케쥴러가 동작하는지 확인하는 테스트")
-    public void everyNightMassageStatusChangeTest() {
-        Set<ScheduledTask> scheduledTasks = scheduledTaskHolder.getScheduledTasks();
-        scheduledTasks.forEach(scheduledTask -> scheduledTask.getTask().getRunnable().getClass().getDeclaredMethods());
-
-        long count = scheduledTasks.stream()
-                .filter(scheduledTask -> scheduledTask.getTask() instanceof CronTask)
-                .map(scheduledTask -> (CronTask) scheduledTask.getTask())
-                .filter(cronTask -> cronTask.getExpression().equals("0 0 2 ? * MON-FRI") && cronTask.toString().equals("com.server.Dotori.model.massage.schedule.MassageSchedule.updateMassageStatus"))
-                .count();
-        Assertions.assertThat(count).isEqualTo(1L);
     }
 
     @Test
