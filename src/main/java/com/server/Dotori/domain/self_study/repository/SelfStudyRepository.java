@@ -1,4 +1,4 @@
-package com.server.Dotori.domain.member.repository.selfStudy;
+package com.server.Dotori.domain.self_study.repository;
 
 import com.server.Dotori.domain.self_study.SelfStudy;
 import org.springframework.data.jpa.repository.JpaRepository;

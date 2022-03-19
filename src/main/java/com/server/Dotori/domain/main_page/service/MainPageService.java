@@ -1,8 +1,8 @@
 package com.server.Dotori.domain.main_page.service;
 
-import com.server.Dotori.domain.main_page.dto.GetAboutPointDto;
+import com.server.Dotori.domain.main_page.dto.GetProfileDto;
 
 public interface MainPageService {
 
-    GetAboutPointDto getMyProfile();
+    GetProfileDto getMyProfile();
 }

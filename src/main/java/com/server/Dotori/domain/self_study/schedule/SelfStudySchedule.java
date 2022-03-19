@@ -1,4 +1,4 @@
-package com.server.Dotori.domain.member.schedule;
+package com.server.Dotori.domain.self_study.schedule;
 
 import com.server.Dotori.domain.self_study.service.SelfStudyService;
 import lombok.RequiredArgsConstructor;

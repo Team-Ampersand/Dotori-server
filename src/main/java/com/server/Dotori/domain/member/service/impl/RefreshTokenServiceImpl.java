@@ -1,8 +1,9 @@
-package com.server.Dotori.domain.member.service;
+package com.server.Dotori.domain.member.service.impl;
 
 import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.member.enumType.Role;
+import com.server.Dotori.domain.member.service.RefreshTokenService;
 import com.server.Dotori.global.exception.DotoriException;
 import com.server.Dotori.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;

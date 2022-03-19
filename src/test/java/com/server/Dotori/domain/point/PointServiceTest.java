@@ -1,7 +1,7 @@
 package com.server.Dotori.domain.point;
 
 import com.server.Dotori.domain.member.Member;
-import com.server.Dotori.domain.main_page.dto.GetAboutPointDto;
+import com.server.Dotori.domain.point.dto.GetAboutPointDto;
 import com.server.Dotori.domain.member.dto.MemberDto;
 import com.server.Dotori.domain.point.dto.PointDto;
 import com.server.Dotori.domain.member.enumType.Role;
