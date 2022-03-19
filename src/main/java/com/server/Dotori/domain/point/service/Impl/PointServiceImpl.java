@@ -1,7 +1,7 @@
 package com.server.Dotori.domain.point.service.Impl;
 
 import com.server.Dotori.domain.member.Member;
-import com.server.Dotori.domain.main_page.dto.GetAboutPointDto;
+import com.server.Dotori.domain.point.dto.GetAboutPointDto;
 import com.server.Dotori.domain.point.dto.PointDto;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.point.service.PointService;

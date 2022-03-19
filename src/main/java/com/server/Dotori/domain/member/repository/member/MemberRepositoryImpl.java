@@ -2,9 +2,10 @@ package com.server.Dotori.domain.member.repository.member;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.server.Dotori.domain.main_page.dto.GetProfileDto;
 import com.server.Dotori.domain.massage.dto.MassageStudentsDto;
 import com.server.Dotori.domain.member.Member;
-import com.server.Dotori.domain.main_page.dto.GetAboutPointDto;
+import com.server.Dotori.domain.point.dto.GetAboutPointDto;
 import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
 import com.server.Dotori.domain.member.enumType.Massage;
 import com.server.Dotori.domain.member.enumType.SelfStudy;
@@ -109,13 +110,12 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
      * @author 배태현
      */
     @Override
-    public GetAboutPointDto findProfileByMember(Member memberEntity) {
+    public GetProfileDto findProfileByMember(Member memberEntity) {
         return queryFactory.from(member)
-                .select(Projections.constructor(GetAboutPointDto.class,
+                .select(Projections.constructor(GetProfileDto.class,
                         member.id,
                         member.stuNum,
-                        member.memberName,
-                        member.point
+                        member.memberName
                 ))
                 .where(member.eq(memberEntity))
                 .fetchOne();

@@ -1,8 +1,9 @@
 package com.server.Dotori.domain.member.repository.member;
 
+import com.server.Dotori.domain.main_page.dto.GetProfileDto;
 import com.server.Dotori.domain.massage.dto.MassageStudentsDto;
 import com.server.Dotori.domain.member.Member;
-import com.server.Dotori.domain.main_page.dto.GetAboutPointDto;
+import com.server.Dotori.domain.point.dto.GetAboutPointDto;
 import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
 import com.server.Dotori.domain.rule.dto.FindStusDto;
 
@@ -18,7 +19,7 @@ public interface MemberRepositoryCustom {
 
     List<GetAboutPointDto> findStudentPoint(Long id);
 
-    GetAboutPointDto findProfileByMember(Member memberEntity);
+    GetProfileDto findProfileByMember(Member memberEntity);
 
     List<Member> findStudentInfo(Long id);
 

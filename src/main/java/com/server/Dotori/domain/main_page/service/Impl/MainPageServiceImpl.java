@@ -1,7 +1,7 @@
 package com.server.Dotori.domain.main_page.service.Impl;
 
+import com.server.Dotori.domain.main_page.dto.GetProfileDto;
 import com.server.Dotori.domain.main_page.service.MainPageService;
-import com.server.Dotori.domain.main_page.dto.GetAboutPointDto;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.global.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class MainPageServiceImpl implements MainPageService {
      */
 
     @Override
-    public GetAboutPointDto getMyProfile() {
+    public GetProfileDto getMyProfile() {
         return memberRepository.findProfileByMember(currentMemberUtil.getCurrentMember());
     }
 }
