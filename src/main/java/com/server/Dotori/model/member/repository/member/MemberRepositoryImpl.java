@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.server.Dotori.model.member.QMember.member;
 
@@ -243,34 +244,45 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     @Override
     public List<FindStusDto> findAllStuOfRulePage() {
-        return queryFactory.from(member)
-                .select(Projections.fields(FindStusDto.class,
-                        member.id,member.memberName,member.stuNum)
-                )
+        List<Member> result = queryFactory.selectFrom(member)
                 .orderBy(member.stuNum.asc())
                 .fetch();
+
+        return this.makeFindStusResponse(result);
     }
 
     @Override
     public List<FindStusDto> findStusByClassId(Long classId) {
-        return queryFactory.from(member)
-                .select(Projections.fields(FindStusDto.class,
-                        member.id,member.memberName,member.stuNum)
-                )
-                .where(member.stuNum.like(classId+"%"))
+        List<Member> result = queryFactory.selectFrom(member)
+                .where(member.stuNum.like(classId + "%"))
                 .orderBy(member.stuNum.asc())
                 .fetch();
+
+        return this.makeFindStusResponse(result);
     }
 
     @Override
     public List<FindStusDto> findStusByMemberName(String memberName) {
-        return queryFactory.from(member)
-                .select(Projections.fields(FindStusDto.class,
-                        member.id,member.memberName,member.stuNum)
-                )
-                .where(member.memberName.like("%"+memberName+"%"))
+        List<Member> result = queryFactory.selectFrom(member)
+                .where(member.memberName.like("%" + memberName + "%"))
                 .orderBy(member.stuNum.asc())
                 .fetch();
+
+        return this.makeFindStusResponse(result);
     }
 
+    private List<FindStusDto> makeFindStusResponse(List<Member> result){
+        return result.stream().map(
+                        m -> new FindStusDto(
+                                m.getId(),
+                                m.getMemberName(),
+                                m.getStuNum(),
+                                m.getRuleViolations().stream()
+                                        .map(r -> r.getRule().getBig())
+                                        .collect(Collectors.toList())
+                                        .stream().distinct()
+                                        .collect(Collectors.toList())
+                        ))
+                .collect(Collectors.toList());
+    }
 }
