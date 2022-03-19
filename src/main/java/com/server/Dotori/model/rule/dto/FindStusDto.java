@@ -1,16 +1,19 @@
 package com.server.Dotori.model.rule.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @AllArgsConstructor
-@NoArgsConstructor
+@Builder
 @Getter
 public class FindStusDto {
 
     private Long id;
     private String memberName;
     private String stuNum;
+    private List<String> ruleBigViolationList;
 
 }

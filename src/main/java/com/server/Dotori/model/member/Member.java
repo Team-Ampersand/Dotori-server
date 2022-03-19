@@ -6,6 +6,7 @@ import com.server.Dotori.model.member.enumType.Music;
 import com.server.Dotori.model.member.enumType.Massage;
 import com.server.Dotori.model.member.enumType.Role;
 import com.server.Dotori.model.member.enumType.SelfStudy;
+import com.server.Dotori.model.rule.RuleViolation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -67,6 +68,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
     private List<Role> roles = new ArrayList<>();
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+
+    @OneToMany(mappedBy = "member")
+    private List<RuleViolation> ruleViolations;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
