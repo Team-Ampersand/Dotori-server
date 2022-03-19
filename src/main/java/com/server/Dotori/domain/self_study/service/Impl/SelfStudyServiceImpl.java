@@ -4,7 +4,7 @@ import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.self_study.SelfStudy;
 import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
-import com.server.Dotori.domain.member.repository.selfStudy.SelfStudyRepository;
+import com.server.Dotori.domain.self_study.repository.SelfStudyRepository;
 import com.server.Dotori.domain.self_study.service.SelfStudyService;
 import com.server.Dotori.global.exception.DotoriException;
 import com.server.Dotori.global.util.CurrentMemberUtil;

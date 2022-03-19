@@ -6,7 +6,7 @@ import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.enumType.SelfStudy;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
-import com.server.Dotori.domain.member.repository.selfStudy.SelfStudyRepository;
+import com.server.Dotori.domain.self_study.repository.SelfStudyRepository;
 import com.server.Dotori.global.exception.DotoriException;
 import com.server.Dotori.global.util.CurrentMemberUtil;
 import org.junit.jupiter.api.*;
@@ -86,7 +86,6 @@ class SelfStudyServiceTest {
         assertEquals(1 , selfStudyRepository.findAll().size());
     }
 
-    @Disabled
     @Test
     @DisplayName("적절한 날짜 혹은 시간이 아닐 때 자습신청을 하면 예외가 제대로 터지나요?")
     public void requestSelfStudyExceptionTest() {
@@ -111,7 +110,6 @@ class SelfStudyServiceTest {
         assertEquals(0, selfStudyRepository.count());
     }
 
-    @Disabled
     @Test
     @DisplayName("적절한 날짜 혹은 시간이 아닐 때 자습신청 취소를 하면 예외가 제대로 터지나요?")
     public void cancelSelfStudyExceptionTest() {

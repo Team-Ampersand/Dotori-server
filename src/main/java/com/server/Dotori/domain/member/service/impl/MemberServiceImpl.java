@@ -1,10 +1,11 @@
-package com.server.Dotori.domain.member.service;
+package com.server.Dotori.domain.member.service.impl;
 
 import com.server.Dotori.domain.member.EmailCertificate;
 import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.dto.*;
 import com.server.Dotori.domain.member.repository.email.EmailCertificateRepository;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
+import com.server.Dotori.domain.member.service.MemberService;
 import com.server.Dotori.global.exception.DotoriException;
 import com.server.Dotori.global.security.jwt.JwtTokenProvider;
 import com.server.Dotori.global.util.CurrentMemberUtil;
