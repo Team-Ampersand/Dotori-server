@@ -66,6 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/health-check").permitAll()
                 .antMatchers("/v1/members/password/email").permitAll()
                 .antMatchers("/v1/members/password/email/check").permitAll()
+                .antMatchers("/v1/refresh").permitAll()
 
                 // 권한 별 url 접근
                 .antMatchers("/v1/admin/**").hasRole("ADMIN")

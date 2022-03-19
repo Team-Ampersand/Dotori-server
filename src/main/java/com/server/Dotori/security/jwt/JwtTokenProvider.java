@@ -56,8 +56,12 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String createRefreshToken(){
-        Claims claims = Jwts.claims().setSubject(null);
+    public String createRefreshToken(String email, List<Role> roles){
+        Claims claims = Jwts.claims().setSubject(email);
+        claims.put("auth", roles.stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList()));
 
         Date now = new Date();
         Date validity = new Date(now.getTime() + REFRESH_TOKEN_VALIDATION_SECOND);

@@ -64,6 +64,7 @@ public enum ErrorCode {
     // *** TOKEN ***
     TOKEN_INVALID(HttpStatus.FORBIDDEN, "변질된 토큰입니다."),
     TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다."),
+    TOKEN_REFRESH_FAIL(HttpStatus.BAD_REQUEST, "토큰 재발급에 실패했습니다."),
 
 
     // *** RULE ***

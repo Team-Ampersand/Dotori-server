@@ -1,20 +1,12 @@
 package com.server.Dotori.security.exception;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.server.Dotori.exception.token.TokenExceptionHandler;
-import com.server.Dotori.exception.token.exception.InvalidTokenException;
-import com.server.Dotori.new_exception.DotoriException;
 import com.server.Dotori.new_exception.ErrorCode;
 import com.server.Dotori.new_exception.ErrorResponse;
-import com.server.Dotori.new_exception.handler.UnknownExceptionHandler;
-import com.server.Dotori.response.result.CommonResult;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.entity.ContentType;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -32,7 +24,6 @@ import static com.server.Dotori.new_exception.ErrorCode.*;
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
     private final ObjectMapper objectMapper;
-    private final UnknownExceptionHandler unknownExceptionHandler;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
