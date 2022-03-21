@@ -43,7 +43,7 @@ public enum Rule {
 
     VIOLATION_OF_STUDY_ROOM_RULES("학습실 면학분위기 저해"),                 // 9. 학습실에서 면학분위기 저해
 
-    OUTSIDER_ENTRY("외부인을 출입 관여");                                   // 10. 외부인 출입 관여
+    OUTSIDER_ENTRY("외부인 출입 관여");                                   // 10. 외부인 출입 관여
 
     private String big;
 
