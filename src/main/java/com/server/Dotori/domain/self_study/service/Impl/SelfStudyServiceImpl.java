@@ -113,6 +113,20 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     }
 
     /**
+     * 자습신청 한 학생들 자습신청 한 순서대로 전체조회하는 서비스 로직 (로그인된 유저 사용가능)
+     * @return List - SelfStudyStudentDto (id, stuNum, username)
+     * @exception DotoriException (SELF_STUDY_NOT_FOUND) 자습신청한 학생이 없을 때
+     * @author 배태현
+     */
+    @Override
+    public List<SelfStudyStudentsDto> getSelfStudyStudentsByCreateDate() {
+        List<SelfStudyStudentsDto> selfStudyStudents = selfStudyRepository.findByCreateDate();
+
+        if (selfStudyStudents.isEmpty()) throw new DotoriException(SELF_STUDY_NOT_FOUND);
+        return selfStudyStudents;
+    }
+
+    /**
      * 자습신청한 학생을 학년반별로 조회하는 서비스로직 (로그인된 유저 사용가능)
      * @param id classId
      * @return List - SelfStudyStudentDto (id, stuNum, username)
