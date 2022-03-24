@@ -41,18 +41,22 @@ public class GenerateMember {
         Member developer = createDeveloperAccount();
         Member councillor = createCouncillorAccount();
 
-        // server developer
+        // 4기 server developer
         Member taehyeon = createTaehyeonAccount();
         Member taemin = createTaeminAccount();
         Member kyungjun = createKyungjunAccount();
-        Member seoungone = createSeoungOneAccount();
-        Member jaeyoung = createJaeYoungAccount();
 
-        // client developer
+        // 4기 client developer
         createChanggyuAccount();
         createTaehwanAccount();
         createGihongAccount();
         createJinguAccount();
+
+        // 5기 server developer
+        Member seoungone = createSeoungOneAccount();
+        Member jaeyoung = createJaeYoungAccount();
+
+        // 5기 client developer
         createHwanBinAccount();
         createJeongMinAccount();
         createKyeoungMinAccount();
