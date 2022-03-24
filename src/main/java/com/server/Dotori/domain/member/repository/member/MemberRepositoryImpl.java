@@ -5,11 +5,11 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.server.Dotori.domain.main_page.dto.GetProfileDto;
 import com.server.Dotori.domain.massage.dto.MassageStudentsDto;
 import com.server.Dotori.domain.member.Member;
-import com.server.Dotori.domain.point.dto.GetAboutPointDto;
-import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
 import com.server.Dotori.domain.member.enumType.Massage;
 import com.server.Dotori.domain.member.enumType.SelfStudy;
+import com.server.Dotori.domain.point.dto.GetAboutPointDto;
 import com.server.Dotori.domain.rule.dto.FindStusDto;
+import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
@@ -32,7 +32,6 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
      */
     @Override
     public List<SelfStudyStudentsDto> findBySelfStudyAPLLIED() {
-
         return queryFactory.from(member)
                 .select(Projections.fields(SelfStudyStudentsDto.class,
                         member.id,

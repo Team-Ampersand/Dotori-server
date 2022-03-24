@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SelfStudyRepository extends JpaRepository<SelfStudy, Long> {
+public interface SelfStudyRepository extends JpaRepository<SelfStudy, Long>, SelfStudyRepositoryCustom {
     void deleteByMemberId(Long id);
 }
