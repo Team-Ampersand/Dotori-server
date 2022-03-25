@@ -1,6 +1,7 @@
 package com.server.Dotori.domain.member.service.impl;
 
 import com.server.Dotori.domain.member.Member;
+import com.server.Dotori.domain.member.dto.RefreshTokenDto;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.service.RefreshTokenService;
@@ -31,8 +32,8 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
      */
     @Transactional
     @Override
-    public Map<String, String> getRefreshToken(String refreshToken) {
-        String email = jwtTokenProvider.getEmail(refreshToken);
+    public Map<String, String> refreshToken(String refreshToken, RefreshTokenDto refreshTokenDto) {
+        String email = refreshTokenDto.getEmail();
 
         Member findMember = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
@@ -49,11 +50,11 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
         if(findMember.getRefreshToken().equals(refreshToken) && jwtTokenProvider.validateToken(refreshToken)){
             newAccessToken = jwtTokenProvider.createToken(email, roles);
-            newRefreshToken = jwtTokenProvider.createRefreshToken(email, roles);
+            newRefreshToken = jwtTokenProvider.createRefreshToken();
             findMember.updateRefreshToken(newRefreshToken);
             map.put("email", email);
-            map.put("NewAccessToken", "Bearer " + newAccessToken); // NewAccessToken 반환
-            map.put("NewRefreshToken", "Bearer " + newRefreshToken); // NewRefreshToken 반환
+            map.put("NewAccessToken", "Bearer " + newAccessToken);
+            map.put("NewRefreshToken", "Bearer " + newRefreshToken);
             return map;
         }
 
