@@ -209,7 +209,7 @@ public class MemberServiceImpl implements MemberService {
         Map<String,String> map = new HashMap<>();
 
         String accessToken = jwtTokenProvider.createToken(member.getEmail(), member.getRoles());
-        String refreshToken = jwtTokenProvider.createRefreshToken(member.getEmail(), member.getRoles());
+        String refreshToken = jwtTokenProvider.createRefreshToken();
         member.updateRefreshToken(refreshToken);
 
         map.put("email", member.getEmail());
