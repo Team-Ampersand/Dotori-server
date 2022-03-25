@@ -3,7 +3,7 @@ package com.server.Dotori.domain.member.dto;
 import lombok.Getter;
 
 @Getter
-public class TokenRefreshDto {
+public class RefreshTokenDto {
 
     private String email;
 
