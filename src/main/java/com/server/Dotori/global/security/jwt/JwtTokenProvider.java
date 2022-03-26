@@ -25,19 +25,16 @@ public class JwtTokenProvider {
     @Value("${security.jwt.token.secretKey}")
     private String secretKey;
 
-    // 토큰 만료 시간
     public static long TOKEN_VALIDATION_SECOND = 1000L * 60 * 60 * 3;  // 3시간을 accessToken 만료 기간으로 잡는다
     public static long REFRESH_TOKEN_VALIDATION_SECOND = TOKEN_VALIDATION_SECOND * 24 * 180; // 6달을 refreshToken 만료 기간으로 잡는다.
 
     private final MyMemberDetails myMemberDetails;
 
-    // secretKey 인코딩
     @PostConstruct
     protected void init() {
         secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 
-    //
     public String createToken(String email, List<Role> roles) {
         Claims claims = Jwts.claims().setSubject(email);
         claims.put("auth", roles.stream()
@@ -56,18 +53,11 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public String createRefreshToken(String email, List<Role> roles){
-        Claims claims = Jwts.claims().setSubject(email);
-        claims.put("auth", roles.stream()
-                .map(GrantedAuthority::getAuthority)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList()));
-
+    public String createRefreshToken(){
         Date now = new Date();
         Date validity = new Date(now.getTime() + REFRESH_TOKEN_VALIDATION_SECOND);
 
         return Jwts.builder()
-                .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(validity)
                 .signWith(SignatureAlgorithm.HS512, secretKey)
@@ -111,7 +101,7 @@ public class JwtTokenProvider {
 
     public boolean isTokenExpired(String token) {
         final Date expiration = extractAllClaims(token).getExpiration();
-        return expiration.before(new Date()); // 유효하면 true 아니면 false
+        return expiration.before(new Date());
     }
 
     public boolean validateToken(String token) {
