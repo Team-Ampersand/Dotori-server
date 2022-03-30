@@ -32,8 +32,8 @@ public enum ErrorCode {
     // *** MEMBER ***
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 유저를 찾을 수 없습니다."),
     MEMBER_ALREADY(HttpStatus.CONFLICT, "이미 가입된 유저입니다."),
-    MEMBER_PASSWORD_NOT_MATCHING(HttpStatus.CONFLICT, "비밀번호가 올바르지 않습니다."),
-    MEMBER_AUTHENTICATION_KEY_NOT_MATCHING(HttpStatus.CONFLICT, "인증 키가 일치하지 않습니다."),
+    MEMBER_PASSWORD_NOT_MATCHING(HttpStatus.BAD_REQUEST, "비밀번호가 올바르지 않습니다."),
+    MEMBER_AUTHENTICATION_KEY_NOT_MATCHING(HttpStatus.BAD_REQUEST, "인증 키가 일치하지 않습니다."),
     MEMBER_ALREADY_JOIN_THIS_STUNUM(HttpStatus.CONFLICT, "이미 존재하는 학번입니다."),
     MEMBER_NOT_FOUND_BY_CLASS(HttpStatus.ACCEPTED, "해당반에 해당하는 학생들이 없습니다."),
     MEMBER_NO_INFORMATION(HttpStatus.ACCEPTED, "회원 정보가 없습니다."),
