@@ -10,6 +10,7 @@ import com.server.Dotori.global.exception.DotoriException;
 import com.server.Dotori.global.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,19 +55,23 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         Member currentMember = currentMemberUtil.getCurrentMember();
         long count = selfStudyRepository.count();
 
-        if (count < 50){
-            if (currentMember.getSelfStudy() == CAN) {
-                currentMember.updateSelfStudy(APPLIED);
+        try {
+            if (count < 50) {
+                if (currentMember.getSelfStudy() == CAN) {
+                    currentMember.updateSelfStudy(APPLIED);
 
-                selfStudyRepository.save(SelfStudy.builder()
-                        .member(currentMember)
-                        .build());
+                    selfStudyRepository.save(SelfStudy.builder()
+                            .member(currentMember)
+                            .build());
 
-                log.info("Current Self Study Student Count is {}", count+1);
+                    log.info("Current Self Study Student Count is {}", count + 1);
+                } else
+                    throw new DotoriException(SELF_STUDY_ALREADY);
             } else
-                throw new DotoriException(SELF_STUDY_ALREADY);
-        } else
-            throw new DotoriException(SELF_STUDY_OVER);
+                throw new DotoriException(SELF_STUDY_OVER);
+        } catch (DataIntegrityViolationException e) {
+            throw new DotoriException(SELF_STUDY_ALREADY);
+        }
     }
 
     /**
@@ -105,6 +110,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * @author 배태현
      */
     @Override
+    @Transactional(readOnly = true)
     public List<SelfStudyStudentsDto> getSelfStudyStudents() {
         List<SelfStudyStudentsDto> selfStudyAPLLIED = memberRepository.findBySelfStudyAPLLIED();
 
@@ -119,6 +125,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * @author 배태현
      */
     @Override
+    @Transactional(readOnly = true)
     public List<SelfStudyStudentsDto> getSelfStudyStudentsByCreateDate() {
         List<SelfStudyStudentsDto> selfStudyStudents = selfStudyRepository.findByCreateDate();
 
@@ -134,6 +141,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * @author 배태현
      */
     @Override
+    @Transactional(readOnly = true)
     public List<SelfStudyStudentsDto> getSelfStudyStudentsByCategory(Long id) {
         List<SelfStudyStudentsDto> selfStudyCategory = memberRepository.findBySelfStudyCategory(id);
 
@@ -160,6 +168,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * @author 배태현
      */
     @Override
+    @Transactional(readOnly = true)
     public Map<String, String> selfStudyInfo() {
         Map<String,String> map = new HashMap<>();
         map.put("selfStudy_status", currentMemberUtil.getCurrentMember().getSelfStudy().toString());
