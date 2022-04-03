@@ -10,6 +10,7 @@ import com.server.Dotori.global.exception.DotoriException;
 import com.server.Dotori.global.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +25,6 @@ import static com.server.Dotori.global.exception.ErrorCode.*;
 
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class MassageServiceImpl implements MassageService {
 
@@ -48,27 +48,31 @@ public class MassageServiceImpl implements MassageService {
      * @author 김태민
      */
     @Override
+    @Transactional
     public void requestMassage(DayOfWeek dayOfWeek, int hour, int min) {
         if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_DATE);
         if (!(hour >= 20 && hour < 21)) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_TIME);
         if (!(min >= 20)) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_TIME);
 
         long count = massageRepository.count();
+        try{
+            if (count < 5) {
+                Member currentMember = currentMemberUtil.getCurrentMember();
 
-        if (count < 5) {
-            Member currentMember = currentMemberUtil.getCurrentMember();
+                if (currentMember.getMassage() == CAN) {
+                    massageRepository.save(Massage.builder()
+                            .member(currentMember)
+                            .build()
+                    );
+                    currentMember.updateMassage(APPLIED);
+                    currentMember.updateMassageExpiredDate(LocalDateTime.now().plusMonths(1));
 
-            if (currentMember.getMassage() == CAN) {
-                massageRepository.save(Massage.builder()
-                    .member(currentMember)
-                    .build()
-                );
-                currentMember.updateMassage(APPLIED);
-                currentMember.updateMassageExpiredDate(LocalDateTime.now().plusMonths(1));
-
-                log.info("Current MassageRequest Student Count is {}", count+1);
-            } else throw new DotoriException(MASSAGE_ALREADY);
-        } else throw new DotoriException(MASSAGE_OVER);
+                    log.info("Current MassageRequest Student Count is {}", count+1);
+                } else throw new DotoriException(MASSAGE_ALREADY);
+            } else throw new DotoriException(MASSAGE_OVER);
+        } catch (DataIntegrityViolationException e){
+            throw new DotoriException(MASSAGE_ALREADY);
+        }
     }
 
     /**
@@ -87,6 +91,7 @@ public class MassageServiceImpl implements MassageService {
      * @author 김태민
      */
     @Override
+    @Transactional
     public void cancelMassage(DayOfWeek dayOfWeek, int hour, int min) {
         if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_DATE);
         if (!(hour >= 20 && hour < 21)) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_TIME);
@@ -113,6 +118,7 @@ public class MassageServiceImpl implements MassageService {
      * @author 김태민
      */
     @Override
+    @Transactional
     public void updateMassageStatus() {
         memberRepository.updateUnBanMassage();
         memberRepository.updateMassageStatusCant();
@@ -126,6 +132,7 @@ public class MassageServiceImpl implements MassageService {
      * @author 김태민
      */
     @Override
+    @Transactional(readOnly = true)
     public Map<String, String> getMassageStatusAndCount() {
         Map<String, String> map = new HashMap<>();
         map.put("status",currentMemberUtil.getCurrentMember().getMassage().toString());
@@ -139,6 +146,7 @@ public class MassageServiceImpl implements MassageService {
      * @author 김태민
      */
     @Override
+    @Transactional(readOnly = true)
     public List<MassageStudentsDto> getMassageStudents() {
         List<MassageStudentsDto> students = memberRepository.findByMassageStatus();
         if (students.size() == 0) throw new DotoriException(MASSAGE_ANYONE_NOT_REQUEST);

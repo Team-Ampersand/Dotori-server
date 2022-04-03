@@ -22,7 +22,7 @@ public class Massage extends BaseTimeEntity {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false)
+    @JoinColumn(name = "member_id", nullable = false, unique = true)
     private Member member;
 
 }
