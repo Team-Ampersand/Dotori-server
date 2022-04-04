@@ -1,5 +1,6 @@
 package com.server.Dotori.domain.board.repository;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.server.Dotori.domain.board.Board;
 import lombok.RequiredArgsConstructor;
@@ -19,15 +20,19 @@ public class BoardRepositoryImpl implements BoardRepositoryCustom {
 
     @Override
     public Page<Board> getAllBoardCreateDateDesc(Pageable pageable) {
-        List<Board> boardList = queryFactory
+        QueryResults<Board> boardQueryResults = queryFactory
                 .select(board)
                 .from(board)
                 .innerJoin(board.member, member)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .orderBy(board.createdDate.desc())
-                .fetch();
+                .fetchResults();
 
-        return new PageImpl<>(boardList, pageable, boardList.size());
+        List<Board> content = boardQueryResults.getResults();
+
+        long total = boardQueryResults.getTotal();
+
+        return new PageImpl<>(content, pageable, total);
     }
 }
