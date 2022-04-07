@@ -6,7 +6,6 @@ import com.server.Dotori.domain.rule.dto.RuleGrantDto;
 import com.server.Dotori.domain.rule.dto.RulesCntAndDatesDto;
 import com.server.Dotori.domain.rule.enumType.Rule;
 import com.server.Dotori.domain.rule.repository.RuleRepository;
-import com.server.Dotori.domain.rule.service.RuleService;
 import com.server.Dotori.global.exception.DotoriException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +41,7 @@ public class RuleServiceTest {
                 .password("1234")
                 .email("s20018@gsm.hs.kr")
                 .build();
+
         memberRepository.save(
                 memberDto1.toEntity(
                         passwordEncoder.encode(memberDto1.getPassword())
@@ -78,7 +78,7 @@ public class RuleServiceTest {
         // when
         ruleService.grant(RuleGrantDto.builder()
                 .stuNum(stuNumList)
-                .rule(Rule.FIREARMS)
+                .rule(List.of(Rule.FIREARMS))
                 .date(LocalDate.now())
                 .build());
 
@@ -104,7 +104,8 @@ public class RuleServiceTest {
                 DotoriException.class,
                 () -> ruleService.grant(RuleGrantDto.builder()
                         .stuNum(stuNumList)
-                        .rule(Rule.FIREARMS)
+                        .rule(List.of(Rule.FIREARMS))
+                        .date(LocalDate.now())
                         .build())
         );
     }
@@ -121,7 +122,7 @@ public class RuleServiceTest {
         ruleService.grant(
             RuleGrantDto.builder()
                     .stuNum(stuNumList)
-                    .rule(Rule.FIREARMS)
+                    .rule(List.of(Rule.FIREARMS))
                     .date(LocalDate.now())
                     .build()
         );
@@ -146,7 +147,7 @@ public class RuleServiceTest {
 
         ruleService.grant(RuleGrantDto.builder()
                 .stuNum(stuNumList)
-                .rule(Rule.FIREARMS)
+                .rule(List.of(Rule.FIREARMS))
                 .date(LocalDate.now())
                 .build());
 

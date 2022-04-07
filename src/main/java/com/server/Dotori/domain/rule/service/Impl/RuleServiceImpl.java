@@ -28,15 +28,17 @@ public class RuleServiceImpl implements RuleService {
 
     @Override
     public void grant(RuleGrantDto ruleGrantDto) {
-        List<RuleViolation> ruleViolations = new ArrayList<>();
-
         for (String stuNum : ruleGrantDto.getStuNum()){
             Member member = memberRepository.findByStuNum(stuNum).orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
-            ruleViolations.add(ruleGrantDto.toEntity(member));
-        }
-
-        for (RuleViolation ruleViolation : ruleViolations) {
-            ruleRepository.save(ruleViolation);
+            for (Rule rule : ruleGrantDto.getRule()) {
+                ruleRepository.save(
+                        RuleViolation.builder()
+                                .member(member)
+                                .rule(rule)
+                                .date(ruleGrantDto.getDate())
+                                .build()
+                );
+            }
         }
     }
 
