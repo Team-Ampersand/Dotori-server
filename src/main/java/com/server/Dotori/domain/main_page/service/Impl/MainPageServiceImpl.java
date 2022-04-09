@@ -19,7 +19,6 @@ public class MainPageServiceImpl implements MainPageService {
      * @return GetAboutPointDto (id, username, stNum, point)
      * @author 배태현
      */
-
     @Override
     public GetProfileDto getMyProfile() {
         return memberRepository.findProfileByMember(currentMemberUtil.getCurrentMember());
