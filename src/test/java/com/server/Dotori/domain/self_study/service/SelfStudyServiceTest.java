@@ -55,10 +55,11 @@ class SelfStudyServiceTest {
                 .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
         memberRepository.save(
                 memberDto.toEntity(
-                        passwordEncoder.encode(memberDto.getPassword()), Gender.MAN
+                        passwordEncoder.encode(memberDto.getPassword())
                 )
         );
         System.out.println("======== saved =========");
@@ -171,6 +172,7 @@ class SelfStudyServiceTest {
                         .music(CAN)
                         .selfStudy(APPLIED)
                         .point(0L)
+                        .gender(Gender.MAN)
                         .build()
         );
 
@@ -184,6 +186,7 @@ class SelfStudyServiceTest {
                         .music(CAN)
                         .selfStudy(CANT)
                         .point(0L)
+                        .gender(Gender.MAN)
                         .build()
         );
 
@@ -197,6 +200,7 @@ class SelfStudyServiceTest {
                         .music(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
+                        .gender(Gender.MAN)
                         .build()
         );
 

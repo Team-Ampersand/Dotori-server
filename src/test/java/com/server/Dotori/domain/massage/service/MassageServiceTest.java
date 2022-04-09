@@ -48,10 +48,11 @@ public class MassageServiceTest {
                 .stuNum("2406")
                 .password("1234")
                 .email("s20014@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
         memberRepository.save(
                 memberDto.toEntity(
-                        passwordEncoder.encode(memberDto.getPassword()), Gender.MAN
+                        passwordEncoder.encode(memberDto.getPassword())
                 )
         );
         System.out.println("======== saved =========");

@@ -41,11 +41,12 @@ public class RuleServiceTest {
                 .stuNum("2206")
                 .password("1234")
                 .email("s20018@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
 
         memberRepository.save(
                 memberDto1.toEntity(
-                        passwordEncoder.encode(memberDto1.getPassword()), Gender.MAN
+                        passwordEncoder.encode(memberDto1.getPassword())
                 )
         );
 
@@ -54,10 +55,11 @@ public class RuleServiceTest {
                 .stuNum("2212")
                 .password("1234")
                 .email("s20040@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
         memberRepository.save(
                 memberDto2.toEntity(
-                        passwordEncoder.encode(memberDto2.getPassword()), Gender.MAN
+                        passwordEncoder.encode(memberDto2.getPassword())
                 )
         );
 

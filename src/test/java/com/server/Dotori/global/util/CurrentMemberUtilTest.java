@@ -40,10 +40,11 @@ class CurrentMemberUtilTest {
                 .stuNum("2206")
                 .password("1234")
                 .email("s20018@gmail.com")
+                .gender(Gender.MAN)
                 .build();
         memberRepository.save(
                 memberDto.toEntity(
-                        passwordEncoder.encode(memberDto.getPassword()), Gender.MAN
+                        passwordEncoder.encode(memberDto.getPassword())
                 )
         );
 

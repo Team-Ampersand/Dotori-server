@@ -59,9 +59,10 @@ class MusicServiceTest {
                 .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
         memberRepository.save(
-                memberDto.toEntity(memberDto.getPassword(), Gender.MAN)
+                memberDto.toEntity(memberDto.getPassword())
         );
         System.out.println("======== saved =========");
 
@@ -168,6 +169,7 @@ class MusicServiceTest {
                         .music(APPLIED)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
+                        .gender(Gender.MAN)
                         .build()
         );
 
@@ -181,6 +183,7 @@ class MusicServiceTest {
                         .music(APPLIED)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
+                        .gender(Gender.MAN)
                         .build()
         );
 
@@ -194,6 +197,7 @@ class MusicServiceTest {
                         .music(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
+                        .gender(Gender.MAN)
                         .build()
         );
 

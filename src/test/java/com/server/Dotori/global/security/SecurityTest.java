@@ -23,10 +23,11 @@ public class SecurityTest {
                 .stuNum("2206")
                 .password("1234")
                 .email("s20018@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
 
         // when
-        String accessToken = jwtTokenProvider.createToken(memberDto.getEmail(), memberDto.toEntity(memberDto.getPassword(), Gender.MAN).getRoles());
+        String accessToken = jwtTokenProvider.createToken(memberDto.getEmail(), memberDto.toEntity(memberDto.getPassword()).getRoles());
 
         // then
         if (accessToken != null && jwtTokenProvider.validateToken(accessToken)){

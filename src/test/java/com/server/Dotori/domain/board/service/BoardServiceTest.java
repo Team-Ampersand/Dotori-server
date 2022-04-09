@@ -54,10 +54,11 @@ class BoardServiceTest {
                 .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
         memberRepository.save(
                 memberDto.toEntity(
-                        passwordEncoder.encode(memberDto.getPassword()), Gender.MAN
+                        passwordEncoder.encode(memberDto.getPassword())
                 )
         );
         System.out.println("======== saved =========");

@@ -53,7 +53,7 @@ public class MemberServiceTest {
                 .build();
 
         memberRepository.save(
-                memberDto.toEntity(passwordEncoder.encode(memberDto.getPassword()),memberDto.getGender())
+                memberDto.toEntity(passwordEncoder.encode(memberDto.getPassword()))
         );
 
         // when login session 발급

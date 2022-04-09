@@ -52,10 +52,11 @@ class PointServiceTest {
                 .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
         memberRepository.save(
                 memberDto.toEntity(
-                        passwordEncoder.encode(memberDto.getPassword()), Gender.MAN
+                        passwordEncoder.encode(memberDto.getPassword())
                 )
         );
         System.out.println("======== saved =========");
@@ -89,6 +90,7 @@ class PointServiceTest {
                         .music(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
+                        .gender(Gender.MAN)
                         .build()
         );
 
@@ -120,6 +122,7 @@ class PointServiceTest {
                         .music(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(-2L)
+                        .gender(Gender.MAN)
                         .build()
         );
 
@@ -133,6 +136,7 @@ class PointServiceTest {
                         .music(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(-13L)
+                        .gender(Gender.MAN)
                         .build()
         );
 
