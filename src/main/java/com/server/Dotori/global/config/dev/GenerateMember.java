@@ -2,6 +2,7 @@ package com.server.Dotori.global.config.dev;
 
 import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.dto.MemberDto;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.enumType.Massage;
 import com.server.Dotori.domain.member.enumType.Music;
 import com.server.Dotori.domain.member.enumType.SelfStudy;
@@ -42,26 +43,45 @@ public class GenerateMember {
         Member councillor = createCouncillorAccount();
 
         // 4기 server developer
-        Member taehyeon = createTaehyeonAccount();
-        Member taemin = createTaeminAccount();
-        Member kyungjun = createKyungjunAccount();
+        Member taehyeon = createAccount(3L,"배태현", "3311", "s20032@gsm.hs.kr", Gender.MAN);
+        Member taemin = createAccount(4L,"김태민", "3405", "s20014@gsm.hs.kr", Gender.MAN);
+        Member kyungjun = createAccount(5L,"노경준", "3203", "s20018@gsm.hs.kr", Gender.MAN);
 
         // 4기 client developer
-        createChanggyuAccount();
-        createTaehwanAccount();
-        createGihongAccount();
-        createJinguAccount();
+        createAccount(6L,"임창규","3214","s20058@gsm.hs.kr", Gender.MAN);
+        createAccount(7L,"정태환","3415","s20069@gsm.hs.kr", Gender.MAN);
+        createAccount(8L,"김기홍","3302","s20005@gsm.hs.kr", Gender.MAN);
+        createAccount(9L,"권진구","3401","s20004@gsm.hs.kr", Gender.MAN);
 
         // 5기 server developer
-        Member seoungone = createSeoungOneAccount();
-        Member jaeyoung = createJaeYoungAccount();
+        Member seoungone = createAccount(10L,"전승원", "2218","s21034@gsm.hs.kr", Gender.MAN);
+        Member jaeyoung = createAccount(11L,"조재영", "2116", "s21053@gsm.hs.kr", Gender.MAN);
 
         // 5기 client developer
-        createHwanBinAccount();
-        createJeongMinAccount();
-        createKyeoungMinAccount();
+        createAccount(12L,"유환빈", "2308", "s21067@gsm.hs.kr", Gender.MAN);
+        createAccount(13L,"손정민", "2215", "s21062@gsm.hs.kr", Gender.MAN);
+        createAccount(14L,"강경민", "2201", "s21038@gsm.hs.kr", Gender.MAN);
 
         loggingAccessToken(admin, developer, councillor, taehyeon, taemin, kyungjun, seoungone, jaeyoung);
+    }
+
+    private Member createAccount(Long id, String name, String stuNum, String email, Gender gender) {
+        return memberRepository.save(
+                Member.builder()
+                        .id(id)
+                        .memberName(name)
+                        .stuNum(stuNum)
+                        .email(email)
+                        .password(passwordEncoder.encode("string"))
+                        .point(0L)
+                        .refreshToken(null)
+                        .roles(singletonList(ROLE_DEVELOPER))
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .massage(Massage.CAN)
+                        .gender(gender)
+                        .build()
+        );
     }
 
     private Member createAdminAccount() {
@@ -78,6 +98,7 @@ public class GenerateMember {
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
                         .massage(Massage.CAN)
+                        .gender(Gender.WAIT)
                         .build()
         );
     }
@@ -96,6 +117,7 @@ public class GenerateMember {
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
                         .massage(Massage.CAN)
+                        .gender(Gender.WAIT)
                         .build()
         );
     }
@@ -114,182 +136,7 @@ public class GenerateMember {
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
                         .massage(Massage.CAN)
-                        .build()
-        );
-    }
-
-    private Member createTaehyeonAccount() {
-        return memberRepository.save(
-                MemberDto.builder()
-                .memberName("배태현")
-                .stuNum("3311")
-                .email("s20032@gsm.hs.kr")
-                .build().toEntity(passwordEncoder.encode("string"))
-        );
-    }
-
-    private Member createTaeminAccount() {
-        return memberRepository.save(
-                MemberDto.builder()
-                        .memberName("김태민")
-                        .stuNum("3405")
-                        .email("s20014@gsm.hs.kr")
-                        .build().toEntity(passwordEncoder.encode("string"))
-        );
-    }
-
-    private Member createKyungjunAccount() {
-        return memberRepository.save(
-                MemberDto.builder()
-                        .memberName("노경준")
-                        .stuNum("3203")
-                        .email("s20018@gsm.hs.kr")
-                        .build().toEntity(passwordEncoder.encode("string"))
-        );
-    }
-
-    private void createChanggyuAccount() {
-        memberRepository.save(
-                Member.builder()
-                        .id(7L)
-                        .memberName("임창규")
-                        .stuNum("3214")
-                        .email("s20058@gsm.hs.kr")
-                        .password(passwordEncoder.encode("string"))
-                        .point(0L)
-                        .refreshToken(null)
-                        .roles(singletonList(ROLE_DEVELOPER))
-                        .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
-                        .massage(Massage.CAN)
-                        .build()
-        );
-    }
-
-    private void createTaehwanAccount() {
-        memberRepository.save(
-                Member.builder()
-                        .id(8L)
-                        .memberName("정태환")
-                        .stuNum("3415")
-                        .email("s20069@gsm.hs.kr")
-                        .password(passwordEncoder.encode("string"))
-                        .point(0L)
-                        .refreshToken(null)
-                        .roles(singletonList(ROLE_DEVELOPER))
-                        .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
-                        .massage(Massage.CAN)
-                        .build()
-        );
-    }
-
-    private void createGihongAccount() {
-        memberRepository.save(
-                Member.builder()
-                        .id(9L)
-                        .memberName("김기홍")
-                        .stuNum("3302")
-                        .email("s20005@gsm.hs.kr")
-                        .password(passwordEncoder.encode("string"))
-                        .point(0L)
-                        .refreshToken(null)
-                        .roles(singletonList(ROLE_DEVELOPER))
-                        .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
-                        .massage(Massage.CAN)
-                        .build()
-        );
-    }
-
-    private void createJinguAccount() {
-        memberRepository.save(
-                Member.builder()
-                        .id(10L)
-                        .memberName("권진구")
-                        .stuNum("3401")
-                        .email("s20004@gsm.hs.kr")
-                        .password(passwordEncoder.encode("string"))
-                        .point(0L)
-                        .refreshToken(null)
-                        .roles(singletonList(ROLE_DEVELOPER))
-                        .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
-                        .massage(Massage.CAN)
-                        .build()
-        );
-    }
-
-    private Member createSeoungOneAccount() {
-        return memberRepository.save(
-                MemberDto.builder()
-                        .memberName("전승원")
-                        .stuNum("2218")
-                        .email("s21034@gsm.hs.kr")
-                        .build().toEntity(passwordEncoder.encode("string"))
-        );
-    }
-
-    private Member createJaeYoungAccount() {
-        return memberRepository.save(
-                MemberDto.builder()
-                        .memberName("조재영")
-                        .stuNum("2116")
-                        .email("s21053@gsm.hs.kr")
-                        .build().toEntity(passwordEncoder.encode("string"))
-        );
-    }
-
-    private void createHwanBinAccount() {
-        memberRepository.save(
-                Member.builder()
-                        .id(13L)
-                        .memberName("유환빈")
-                        .stuNum("2308")
-                        .email("s21067@gsm.hs.kr")
-                        .password(passwordEncoder.encode("string"))
-                        .point(0L)
-                        .refreshToken(null)
-                        .roles(singletonList(ROLE_DEVELOPER))
-                        .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
-                        .massage(Massage.CAN)
-                        .build()
-        );
-    }
-
-    private void createJeongMinAccount() {
-        memberRepository.save(
-                Member.builder()
-                        .id(14L)
-                        .memberName("손정민")
-                        .stuNum("2215")
-                        .email("s21062@gsm.hs.kr")
-                        .password(passwordEncoder.encode("string"))
-                        .point(0L)
-                        .refreshToken(null)
-                        .roles(singletonList(ROLE_DEVELOPER))
-                        .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
-                        .massage(Massage.CAN)
-                        .build()
-        );
-    }
-
-    private void createKyeoungMinAccount() {
-        memberRepository.save(
-                Member.builder()
-                        .id(15L)
-                        .memberName("강경민")
-                        .stuNum("2201")
-                        .email("s21038@gsm.hs.kr")
-                        .password(passwordEncoder.encode("string"))
-                        .point(0L)
-                        .refreshToken(null)
-                        .roles(singletonList(ROLE_DEVELOPER))
-                        .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
-                        .massage(Massage.CAN)
+                        .gender(Gender.WAIT)
                         .build()
         );
     }
