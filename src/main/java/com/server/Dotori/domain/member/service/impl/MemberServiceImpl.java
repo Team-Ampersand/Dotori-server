@@ -199,6 +199,14 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.delete(findMember);
     }
 
+    @Transactional
+    @Override
+    public void setGender(SetGenderDto setGenderDto) {
+        Member member = memberRepository.findById(setGenderDto.getMemberId()).get();
+
+        member.updateMemberGender(setGenderDto.getGender());
+    }
+
     /**
      * 토큰을 생성하는 private 메서드
      * @param member
