@@ -33,7 +33,6 @@ public class MemberDto {
     @Pattern(regexp = "^[a-zA-Z0-9]+@gsm.hs.kr$")
     private String email;
 
-    @NotBlank
     private Gender gender;
 
     public Member toEntity(String encodePassword, Gender gender){
