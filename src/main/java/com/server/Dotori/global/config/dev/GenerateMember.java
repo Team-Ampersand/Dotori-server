@@ -97,7 +97,7 @@ public class GenerateMember {
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
                         .massage(Massage.CAN)
-                        .gender(Gender.WAIT)
+                        .gender(Gender.PENDING)
                         .build()
         );
     }
@@ -116,7 +116,7 @@ public class GenerateMember {
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
                         .massage(Massage.CAN)
-                        .gender(Gender.WAIT)
+                        .gender(Gender.PENDING)
                         .build()
         );
     }
@@ -135,7 +135,7 @@ public class GenerateMember {
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
                         .massage(Massage.CAN)
-                        .gender(Gender.WAIT)
+                        .gender(Gender.PENDING)
                         .build()
         );
     }
