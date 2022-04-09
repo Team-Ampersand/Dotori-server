@@ -1,7 +1,6 @@
 package com.server.Dotori.global.config.dev;
 
 import com.server.Dotori.domain.member.Member;
-import com.server.Dotori.domain.member.dto.MemberDto;
 import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.enumType.Massage;
 import com.server.Dotori.domain.member.enumType.Music;
