@@ -114,7 +114,8 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .select(Projections.constructor(GetProfileDto.class,
                         member.id,
                         member.stuNum,
-                        member.memberName
+                        member.memberName,
+                        member.gender
                 ))
                 .where(member.eq(memberEntity))
                 .fetchOne();
