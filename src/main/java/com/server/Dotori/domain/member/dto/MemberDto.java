@@ -1,10 +1,7 @@
 package com.server.Dotori.domain.member.dto;
 
 import com.server.Dotori.domain.member.Member;
-import com.server.Dotori.domain.member.enumType.Massage;
-import com.server.Dotori.domain.member.enumType.Music;
-import com.server.Dotori.domain.member.enumType.Role;
-import com.server.Dotori.domain.member.enumType.SelfStudy;
+import com.server.Dotori.domain.member.enumType.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,7 +33,10 @@ public class MemberDto {
     @Pattern(regexp = "^[a-zA-Z0-9]+@gsm.hs.kr$")
     private String email;
 
-    public Member toEntity(String encodePassword){
+    @NotBlank
+    private Gender gender;
+
+    public Member toEntity(String encodePassword, Gender gender){
         return Member.builder()
                 .memberName(memberName)
                 .stuNum(stuNum)
@@ -48,6 +48,7 @@ public class MemberDto {
                 .music(Music.CAN)
                 .selfStudy(SelfStudy.CAN)
                 .point(0L)
+                .gender(gender)
                 .build();
     }
 }
