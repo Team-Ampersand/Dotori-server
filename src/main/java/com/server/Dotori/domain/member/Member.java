@@ -1,16 +1,14 @@
 package com.server.Dotori.domain.member;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.server.Dotori.domain.member.enumType.*;
 import com.server.Dotori.global.entity.BaseTimeEntity;
-import com.server.Dotori.domain.member.enumType.Massage;
-import com.server.Dotori.domain.member.enumType.Music;
-import com.server.Dotori.domain.member.enumType.Role;
-import com.server.Dotori.domain.member.enumType.SelfStudy;
 import com.server.Dotori.domain.rule.RuleViolation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,6 +28,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Builder @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@DynamicUpdate
 public class Member extends BaseTimeEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = IDENTITY)
@@ -59,6 +58,10 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     @Column(name = "massage_expired_date")
     private LocalDateTime massageExpiredDate;
+
+    @Enumerated(STRING)
+    @Column(name = "member_gender")
+    private Gender gender;
 
     @Enumerated(STRING) @Column(name = "Role")
     @ElementCollection(fetch = FetchType.EAGER)
@@ -158,5 +161,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     public void updateSelfStudyExpiredDate(LocalDateTime selfStudyExpiredDate) {
         this.selfStudyExpiredDate = selfStudyExpiredDate;
+    }
+
+    public void updateMemberGender(Gender gender) {
+        this.gender = gender;
     }
 }

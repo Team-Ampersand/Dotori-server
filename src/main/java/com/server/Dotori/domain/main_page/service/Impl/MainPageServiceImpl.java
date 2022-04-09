@@ -16,10 +16,9 @@ public class MainPageServiceImpl implements MainPageService {
 
     /**
      * 메인페이지를 조회했을 때 프로필정보를 반환해주는 서비스로직 (로그인된 유저 사용가능)
-     * @return GetAboutPointDto (id, username, stNum, point)
-     * @author 배태현
+     * @return GetAboutPointDto (id, username, stNum, gender)
+     * @author 배태현, 노경준
      */
-
     @Override
     public GetProfileDto getMyProfile() {
         return memberRepository.findProfileByMember(currentMemberUtil.getCurrentMember());

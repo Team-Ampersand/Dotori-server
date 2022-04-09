@@ -1,9 +1,6 @@
 package com.server.Dotori.domain.member.controller;
 
-import com.server.Dotori.domain.member.dto.ChangePasswordDto;
-import com.server.Dotori.domain.member.dto.ChangePasswordEmailCheckDto;
-import com.server.Dotori.domain.member.dto.EmailDto;
-import com.server.Dotori.domain.member.dto.WithdrawlDto;
+import com.server.Dotori.domain.member.dto.*;
 import com.server.Dotori.domain.member.service.MemberService;
 import com.server.Dotori.global.response.ResponseService;
 import com.server.Dotori.global.response.result.CommonResult;
@@ -94,6 +91,13 @@ public class MemberController {
     })
     public CommonResult withdrawal(@RequestBody WithdrawlDto withdrawlDto){
         memberService.withdrawal(withdrawlDto);
+        return responseService.getSuccessResult();
+    }
+
+    @PutMapping("/gender")
+    @ApiOperation(value="성별설정")
+    public CommonResult setGender(@RequestBody SetGenderDto setGenderDto){
+        memberService.setGender(setGenderDto);
         return responseService.getSuccessResult();
     }
 }

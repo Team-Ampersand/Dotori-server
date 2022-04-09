@@ -14,6 +14,5 @@ public interface MemberService {
     void checkEmailChangePassword(ChangePasswordEmailCheckDto verifiedAuthKeyAndChangePasswordDto);
     void logout();
     void withdrawal(WithdrawlDto memberDeleteDto);
-
-
+    void setGender(SetGenderDto setGenderDto);
 }

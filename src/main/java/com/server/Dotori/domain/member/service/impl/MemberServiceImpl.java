@@ -3,6 +3,7 @@ package com.server.Dotori.domain.member.service.impl;
 import com.server.Dotori.domain.member.EmailCertificate;
 import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.dto.*;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.repository.email.EmailCertificateRepository;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.member.service.MemberService;
@@ -22,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.server.Dotori.global.exception.ErrorCode.*;
-
 
 @RequiredArgsConstructor
 @Service
@@ -47,12 +47,13 @@ public class MemberServiceImpl implements MemberService {
         String stuNum = memberDto.getStuNum();
         String password = memberDto.getPassword();
         String email = memberDto.getEmail();
+        Gender gender = memberDto.getGender();
 
         try {
             if(!emailCertificateRepository.existsByEmail(email)){
                 if (!memberRepository.existsByEmailAndStuNum(email, stuNum)) {
                     Member result = memberRepository.save(
-                            memberDto.toEntity(passwordEncoder.encode(password))
+                            memberDto.toEntity(passwordEncoder.encode(password), gender)
                     );
                     return result.getId();
                 } else throw new DotoriException(MEMBER_ALREADY);
@@ -197,6 +198,14 @@ public class MemberServiceImpl implements MemberService {
         if(!passwordEncoder.matches(dtoPassword,entityPassword)) throw new DotoriException(MEMBER_PASSWORD_NOT_MATCHING);
 
         memberRepository.delete(findMember);
+    }
+
+    @Transactional
+    @Override
+    public void setGender(SetGenderDto setGenderDto) {
+        Member member = memberRepository.findById(setGenderDto.getMemberId()).get();
+
+        member.updateMemberGender(setGenderDto.getGender());
     }
 
     /**
