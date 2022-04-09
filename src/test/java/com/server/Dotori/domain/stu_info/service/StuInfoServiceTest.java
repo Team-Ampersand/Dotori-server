@@ -1,6 +1,7 @@
 package com.server.Dotori.domain.stu_info.service;
 
 import com.server.Dotori.domain.member.dto.*;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.stu_info.dto.MemberNameUpdateDto;
 import com.server.Dotori.domain.stu_info.dto.RoleUpdateDto;
 import com.server.Dotori.domain.stu_info.dto.StuNumUpdateDto;
@@ -49,7 +50,7 @@ class StuInfoServiceTest {
                 .build();
         memberRepository.save(
                 memberDto.toEntity(
-                        passwordEncoder.encode(memberDto.getPassword())
+                        passwordEncoder.encode(memberDto.getPassword()), Gender.MAN
                 )
         );
         System.out.println("======== saved =========");

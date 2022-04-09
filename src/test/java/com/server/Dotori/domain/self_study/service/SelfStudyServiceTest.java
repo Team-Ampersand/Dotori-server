@@ -2,6 +2,7 @@ package com.server.Dotori.domain.self_study.service;
 
 import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.dto.MemberDto;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.enumType.SelfStudy;
@@ -57,7 +58,7 @@ class SelfStudyServiceTest {
                 .build();
         memberRepository.save(
                 memberDto.toEntity(
-                        passwordEncoder.encode(memberDto.getPassword())
+                        passwordEncoder.encode(memberDto.getPassword()), Gender.MAN
                 )
         );
         System.out.println("======== saved =========");

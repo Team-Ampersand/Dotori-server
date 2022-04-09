@@ -1,6 +1,7 @@
 package com.server.Dotori.global.security;
 
 import com.server.Dotori.domain.member.dto.MemberDto;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.global.security.jwt.JwtTokenProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -25,7 +26,7 @@ public class SecurityTest {
                 .build();
 
         // when
-        String accessToken = jwtTokenProvider.createToken(memberDto.getEmail(), memberDto.toEntity(memberDto.getPassword()).getRoles());
+        String accessToken = jwtTokenProvider.createToken(memberDto.getEmail(), memberDto.toEntity(memberDto.getPassword(), Gender.MAN).getRoles());
 
         // then
         if (accessToken != null && jwtTokenProvider.validateToken(accessToken)){

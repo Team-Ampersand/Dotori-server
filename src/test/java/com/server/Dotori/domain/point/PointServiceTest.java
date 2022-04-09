@@ -1,6 +1,7 @@
 package com.server.Dotori.domain.point;
 
 import com.server.Dotori.domain.member.Member;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.point.dto.GetAboutPointDto;
 import com.server.Dotori.domain.member.dto.MemberDto;
 import com.server.Dotori.domain.point.dto.PointDto;
@@ -54,7 +55,7 @@ class PointServiceTest {
                 .build();
         memberRepository.save(
                 memberDto.toEntity(
-                        passwordEncoder.encode(memberDto.getPassword())
+                        passwordEncoder.encode(memberDto.getPassword()), Gender.MAN
                 )
         );
         System.out.println("======== saved =========");

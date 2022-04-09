@@ -1,6 +1,7 @@
 package com.server.Dotori.domain.main_page.role.service;
 
 import com.server.Dotori.domain.member.dto.MemberDto;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.main_page.service.RoleService;
@@ -42,7 +43,7 @@ class RoleServiceImplTest {
                 .build();
         memberRepository.save(
                 memberDto.toEntity(
-                        passwordEncoder.encode(memberDto.getPassword())
+                        passwordEncoder.encode(memberDto.getPassword()), Gender.MAN
                 )
         );
         System.out.println("======== saved =========");

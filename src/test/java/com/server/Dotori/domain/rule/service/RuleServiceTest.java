@@ -1,6 +1,7 @@
 package com.server.Dotori.domain.rule.service;
 
 import com.server.Dotori.domain.member.dto.MemberDto;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.rule.dto.RuleGrantDto;
 import com.server.Dotori.domain.rule.dto.RulesCntAndDatesDto;
@@ -44,7 +45,7 @@ public class RuleServiceTest {
 
         memberRepository.save(
                 memberDto1.toEntity(
-                        passwordEncoder.encode(memberDto1.getPassword())
+                        passwordEncoder.encode(memberDto1.getPassword()), Gender.MAN
                 )
         );
 
@@ -56,7 +57,7 @@ public class RuleServiceTest {
                 .build();
         memberRepository.save(
                 memberDto2.toEntity(
-                        passwordEncoder.encode(memberDto2.getPassword())
+                        passwordEncoder.encode(memberDto2.getPassword()), Gender.MAN
                 )
         );
 
