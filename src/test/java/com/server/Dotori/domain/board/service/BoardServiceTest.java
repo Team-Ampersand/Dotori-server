@@ -6,6 +6,7 @@ import com.server.Dotori.domain.board.dto.BoardGetDto;
 import com.server.Dotori.domain.board.dto.BoardGetIdDto;
 import com.server.Dotori.domain.board.repository.BoardRepository;
 import com.server.Dotori.domain.member.dto.MemberDto;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.global.util.CurrentMemberUtil;
@@ -53,6 +54,7 @@ class BoardServiceTest {
                 .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
         memberRepository.save(
                 memberDto.toEntity(

@@ -2,6 +2,7 @@ package com.server.Dotori.global.util;
 
 import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.dto.MemberDto;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.member.service.MemberService;
@@ -39,6 +40,7 @@ class CurrentMemberUtilTest {
                 .stuNum("2206")
                 .password("1234")
                 .email("s20018@gmail.com")
+                .gender(Gender.MAN)
                 .build();
         memberRepository.save(
                 memberDto.toEntity(

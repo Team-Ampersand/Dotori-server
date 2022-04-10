@@ -1,12 +1,12 @@
 package com.server.Dotori.domain.rule.service;
 
 import com.server.Dotori.domain.member.dto.MemberDto;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.rule.dto.RuleGrantDto;
 import com.server.Dotori.domain.rule.dto.RulesCntAndDatesDto;
 import com.server.Dotori.domain.rule.enumType.Rule;
 import com.server.Dotori.domain.rule.repository.RuleRepository;
-import com.server.Dotori.domain.rule.service.RuleService;
 import com.server.Dotori.global.exception.DotoriException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,9 @@ public class RuleServiceTest {
                 .stuNum("2206")
                 .password("1234")
                 .email("s20018@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
+
         memberRepository.save(
                 memberDto1.toEntity(
                         passwordEncoder.encode(memberDto1.getPassword())
@@ -53,6 +55,7 @@ public class RuleServiceTest {
                 .stuNum("2212")
                 .password("1234")
                 .email("s20040@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
         memberRepository.save(
                 memberDto2.toEntity(
@@ -78,7 +81,7 @@ public class RuleServiceTest {
         // when
         ruleService.grant(RuleGrantDto.builder()
                 .stuNum(stuNumList)
-                .rule(Rule.FIREARMS)
+                .rule(List.of(Rule.FIREARMS))
                 .date(LocalDate.now())
                 .build());
 
@@ -104,7 +107,8 @@ public class RuleServiceTest {
                 DotoriException.class,
                 () -> ruleService.grant(RuleGrantDto.builder()
                         .stuNum(stuNumList)
-                        .rule(Rule.FIREARMS)
+                        .rule(List.of(Rule.FIREARMS))
+                        .date(LocalDate.now())
                         .build())
         );
     }
@@ -121,7 +125,7 @@ public class RuleServiceTest {
         ruleService.grant(
             RuleGrantDto.builder()
                     .stuNum(stuNumList)
-                    .rule(Rule.FIREARMS)
+                    .rule(List.of(Rule.FIREARMS))
                     .date(LocalDate.now())
                     .build()
         );
@@ -146,7 +150,7 @@ public class RuleServiceTest {
 
         ruleService.grant(RuleGrantDto.builder()
                 .stuNum(stuNumList)
-                .rule(Rule.FIREARMS)
+                .rule(List.of(Rule.FIREARMS))
                 .date(LocalDate.now())
                 .build());
 

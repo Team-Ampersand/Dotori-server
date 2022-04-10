@@ -1,6 +1,7 @@
 package com.server.Dotori.domain.point;
 
 import com.server.Dotori.domain.member.Member;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.point.dto.GetAboutPointDto;
 import com.server.Dotori.domain.member.dto.MemberDto;
 import com.server.Dotori.domain.point.dto.PointDto;
@@ -51,6 +52,7 @@ class PointServiceTest {
                 .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
         memberRepository.save(
                 memberDto.toEntity(
@@ -88,6 +90,7 @@ class PointServiceTest {
                         .music(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
+                        .gender(Gender.MAN)
                         .build()
         );
 
@@ -119,6 +122,7 @@ class PointServiceTest {
                         .music(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(-2L)
+                        .gender(Gender.MAN)
                         .build()
         );
 
@@ -132,6 +136,7 @@ class PointServiceTest {
                         .music(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(-13L)
+                        .gender(Gender.MAN)
                         .build()
         );
 

@@ -56,7 +56,7 @@ public class BoardServiceImpl implements BoardService {
      */
     @Override
     public Page<BoardGetDto> getAllBoard(Pageable pageable) {
-        Page<Board> boardPage = boardRepository.findAll(pageable);
+        Page<Board> boardPage = boardRepository.getAllBoardCreateDateDesc(pageable);
 
         if (boardPage.isEmpty()) throw new DotoriException(BOARD_EMPTY);
 

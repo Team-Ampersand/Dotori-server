@@ -66,6 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/health-check").permitAll()
                 .antMatchers("/v1/members/password/email").permitAll()
                 .antMatchers("/v1/members/password/email/check").permitAll()
+                .antMatchers("/v1/members/gender").permitAll()
                 .antMatchers("/v1/refresh").permitAll()
                 .antMatchers("/v1/board/count").permitAll()
 

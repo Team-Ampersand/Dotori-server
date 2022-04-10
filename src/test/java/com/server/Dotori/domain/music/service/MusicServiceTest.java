@@ -2,6 +2,7 @@ package com.server.Dotori.domain.music.service;
 
 import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.dto.MemberDto;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.enumType.SelfStudy;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
@@ -58,11 +59,10 @@ class MusicServiceTest {
                 .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
         memberRepository.save(
-                memberDto.toEntity(
-                        memberDto.getPassword()
-                )
+                memberDto.toEntity(memberDto.getPassword())
         );
         System.out.println("======== saved =========");
 
@@ -169,6 +169,7 @@ class MusicServiceTest {
                         .music(APPLIED)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
+                        .gender(Gender.MAN)
                         .build()
         );
 
@@ -182,6 +183,7 @@ class MusicServiceTest {
                         .music(APPLIED)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
+                        .gender(Gender.MAN)
                         .build()
         );
 
@@ -195,6 +197,7 @@ class MusicServiceTest {
                         .music(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
+                        .gender(Gender.MAN)
                         .build()
         );
 
