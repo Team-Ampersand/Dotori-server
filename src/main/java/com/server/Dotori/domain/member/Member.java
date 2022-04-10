@@ -28,7 +28,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Builder @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@DynamicUpdate
 public class Member extends BaseTimeEntity implements UserDetails {
 
     @Id @GeneratedValue(strategy = IDENTITY)
