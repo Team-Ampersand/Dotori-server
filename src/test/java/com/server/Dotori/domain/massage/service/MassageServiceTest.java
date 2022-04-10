@@ -3,6 +3,7 @@ package com.server.Dotori.domain.massage.service;
 import com.server.Dotori.domain.massage.dto.MassageStudentsDto;
 import com.server.Dotori.domain.massage.repository.MassageRepository;
 import com.server.Dotori.domain.member.dto.MemberDto;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.enumType.Massage;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
@@ -47,6 +48,7 @@ public class MassageServiceTest {
                 .stuNum("2406")
                 .password("1234")
                 .email("s20014@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
         memberRepository.save(
                 memberDto.toEntity(

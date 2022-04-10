@@ -1,6 +1,7 @@
 package com.server.Dotori.global.security;
 
 import com.server.Dotori.domain.member.dto.MemberDto;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.global.security.jwt.JwtTokenProvider;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
@@ -22,6 +23,7 @@ public class SecurityTest {
                 .stuNum("2206")
                 .password("1234")
                 .email("s20018@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
 
         // when

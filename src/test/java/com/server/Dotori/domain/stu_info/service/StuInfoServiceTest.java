@@ -1,6 +1,7 @@
 package com.server.Dotori.domain.stu_info.service;
 
 import com.server.Dotori.domain.member.dto.*;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.stu_info.dto.MemberNameUpdateDto;
 import com.server.Dotori.domain.stu_info.dto.RoleUpdateDto;
 import com.server.Dotori.domain.stu_info.dto.StuNumUpdateDto;
@@ -46,6 +47,7 @@ class StuInfoServiceTest {
                 .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
         memberRepository.save(
                 memberDto.toEntity(

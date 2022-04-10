@@ -42,29 +42,48 @@ public class GenerateMember {
         Member councillor = createCouncillorAccount();
 
         // 4기 server developer
-        Member taehyeon = createAccount(3L,"배태현", "3311", "s20032@gsm.hs.kr", Gender.MAN);
-        Member taemin = createAccount(4L,"김태민", "3405", "s20014@gsm.hs.kr", Gender.MAN);
-        Member kyungjun = createAccount(5L,"노경준", "3203", "s20018@gsm.hs.kr", Gender.MAN);
+        Member taehyeon = createServerAccount(4L,"배태현", "3311", "s20032@gsm.hs.kr", Gender.MAN);
+        Member taemin = createServerAccount(5L,"김태민", "3405", "s20014@gsm.hs.kr", Gender.MAN);
+        Member kyungjun = createServerAccount(6L,"노경준", "3203", "s20018@gsm.hs.kr", Gender.MAN);
 
         // 4기 client developer
-        createAccount(6L,"임창규","3214","s20058@gsm.hs.kr", Gender.MAN);
-        createAccount(7L,"정태환","3415","s20069@gsm.hs.kr", Gender.MAN);
-        createAccount(8L,"김기홍","3302","s20005@gsm.hs.kr", Gender.MAN);
-        createAccount(9L,"권진구","3401","s20004@gsm.hs.kr", Gender.MAN);
+        createClientAccount(7L,"임창규","3214","s20058@gsm.hs.kr", Gender.MAN);
+        createClientAccount(8L,"정태환","3415","s20069@gsm.hs.kr", Gender.MAN);
+        createClientAccount(9L,"김기홍","3302","s20005@gsm.hs.kr", Gender.MAN);
+        createClientAccount(10L,"권진구","3401","s20004@gsm.hs.kr", Gender.MAN);
 
         // 5기 server developer
-        Member seoungone = createAccount(10L,"전승원", "2218","s21034@gsm.hs.kr", Gender.MAN);
-        Member jaeyoung = createAccount(11L,"조재영", "2116", "s21053@gsm.hs.kr", Gender.MAN);
+        Member seoungone = createServerAccount(11L,"전승원", "2218","s21034@gsm.hs.kr", Gender.MAN);
+        Member jaeyoung = createServerAccount(12L,"조재영", "2116", "s21053@gsm.hs.kr", Gender.MAN);
 
         // 5기 client developer
-        createAccount(12L,"유환빈", "2308", "s21067@gsm.hs.kr", Gender.MAN);
-        createAccount(13L,"손정민", "2215", "s21062@gsm.hs.kr", Gender.MAN);
-        createAccount(14L,"강경민", "2201", "s21038@gsm.hs.kr", Gender.MAN);
+        createClientAccount(13L,"유환빈", "2308", "s21067@gsm.hs.kr", Gender.MAN);
+        createClientAccount(14L,"손정민", "2215", "s21062@gsm.hs.kr", Gender.MAN);
+        createClientAccount(15L,"강경민", "2201", "s21038@gsm.hs.kr", Gender.MAN);
 
         loggingAccessToken(admin, developer, councillor, taehyeon, taemin, kyungjun, seoungone, jaeyoung);
     }
 
-    private Member createAccount(Long id, String name, String stuNum, String email, Gender gender) {
+    private Member createServerAccount(Long id, String name, String stuNum, String email, Gender gender) {
+        return memberRepository.save(
+                Member.builder()
+                        .id(id)
+                        .memberName(name)
+                        .stuNum(stuNum)
+                        .email(email)
+                        .password(passwordEncoder.encode("string"))
+                        .point(0L)
+                        .refreshToken(null)
+                        .roles(singletonList(ROLE_MEMBER))
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .massage(Massage.CAN)
+                        .gender(gender)
+                        .build()
+        );
+    }
+
+    private Member createClientAccount(Long id, String name, String stuNum, String email, Gender gender) {
         return memberRepository.save(
                 Member.builder()
                         .id(id)

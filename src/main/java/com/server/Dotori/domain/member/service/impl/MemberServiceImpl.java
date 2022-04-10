@@ -47,13 +47,12 @@ public class MemberServiceImpl implements MemberService {
         String stuNum = memberDto.getStuNum();
         String password = memberDto.getPassword();
         String email = memberDto.getEmail();
-        Gender gender = memberDto.getGender();
 
         try {
             if(!emailCertificateRepository.existsByEmail(email)){
                 if (!memberRepository.existsByEmailAndStuNum(email, stuNum)) {
                     Member result = memberRepository.save(
-                            memberDto.toEntity(passwordEncoder.encode(password), gender)
+                            memberDto.toEntity(passwordEncoder.encode(password))
                     );
                     return result.getId();
                 } else throw new DotoriException(MEMBER_ALREADY);

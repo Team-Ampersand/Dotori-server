@@ -4,9 +4,9 @@ import com.server.Dotori.domain.member.dto.ChangePasswordDto;
 import com.server.Dotori.domain.member.dto.MemberDto;
 import com.server.Dotori.domain.member.dto.SignInDto;
 import com.server.Dotori.domain.member.dto.WithdrawlDto;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
-import com.server.Dotori.domain.member.service.MemberService;
 import com.server.Dotori.global.util.CurrentMemberUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -49,11 +49,11 @@ public class MemberServiceTest {
                 .stuNum("2206")
                 .password("1234")
                 .email("s20018@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
+
         memberRepository.save(
-                memberDto.toEntity(
-                        passwordEncoder.encode(memberDto.getPassword())
-                )
+                memberDto.toEntity(passwordEncoder.encode(memberDto.getPassword()))
         );
 
         // when login session 발급
@@ -78,6 +78,7 @@ public class MemberServiceTest {
                 .stuNum("1111")
                 .password("1234")
                 .email("s20000@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
 
         // when

@@ -35,7 +35,7 @@ public class MemberDto {
 
     private Gender gender;
 
-    public Member toEntity(String encodePassword, Gender gender){
+    public Member toEntity(String encodePassword){
         return Member.builder()
                 .memberName(memberName)
                 .stuNum(stuNum)

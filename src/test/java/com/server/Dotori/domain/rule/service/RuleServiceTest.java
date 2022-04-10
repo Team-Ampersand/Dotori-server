@@ -1,6 +1,7 @@
 package com.server.Dotori.domain.rule.service;
 
 import com.server.Dotori.domain.member.dto.MemberDto;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.rule.dto.RuleGrantDto;
 import com.server.Dotori.domain.rule.dto.RulesCntAndDatesDto;
@@ -40,6 +41,7 @@ public class RuleServiceTest {
                 .stuNum("2206")
                 .password("1234")
                 .email("s20018@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
 
         memberRepository.save(
@@ -53,6 +55,7 @@ public class RuleServiceTest {
                 .stuNum("2212")
                 .password("1234")
                 .email("s20040@gsm.hs.kr")
+                .gender(Gender.MAN)
                 .build();
         memberRepository.save(
                 memberDto2.toEntity(
