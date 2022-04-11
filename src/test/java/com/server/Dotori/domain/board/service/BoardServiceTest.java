@@ -177,20 +177,4 @@ class BoardServiceTest {
         List<Board> findAll = boardRepository.findAll();
         assertTrue(findAll.size() == 0);
     }
-
-    @Test
-    @DisplayName("공지사항 카운트 조회 테스트")
-    public void countBoardTest() {
-        // given // when
-        boardService.createBoard(
-            BoardDto.builder()
-                    .title("도토리 공지사항")
-                    .content("도토리 공지사항 생성 테스트")
-                    .build(), null
-        );
-        Long boardCount = boardService.countBoard();
-
-        // then
-        assertTrue(boardCount.equals(1L));
-    }
 }

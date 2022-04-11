@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long>, BoardRepositoryCustom {
+    Board findTop1ByOrderByCreatedDateDesc(); // 제일 마지막에 등록된 공지사항을 불러온다.
 }
