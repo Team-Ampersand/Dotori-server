@@ -1,4 +1,4 @@
-package com.server.Dotori.global.security.config.prod;
+package com.server.Dotori.global.security;
 
 import com.server.Dotori.global.security.exception.ExceptionHandlerFilter;
 import com.server.Dotori.global.security.exception.ExceptionHandlerFilterConfig;
@@ -20,7 +20,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Profile(value = {"prod"})
 @RequiredArgsConstructor
 @EnableWebSecurity(debug = false)
 @Configuration
