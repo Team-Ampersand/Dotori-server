@@ -1,4 +1,4 @@
-package com.server.Dotori.global.security;
+package com.server.Dotori.global.security.config.dev;
 
 import com.server.Dotori.global.security.exception.ExceptionHandlerFilter;
 import com.server.Dotori.global.security.exception.ExceptionHandlerFilterConfig;
@@ -10,6 +10,7 @@ import com.server.Dotori.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -19,6 +20,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@Profile(value = {"dev"})
 @RequiredArgsConstructor
 @EnableWebSecurity(debug = true)
 @Configuration
