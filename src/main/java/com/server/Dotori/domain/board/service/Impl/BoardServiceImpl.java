@@ -126,14 +126,4 @@ public class BoardServiceImpl implements BoardService {
             boardRepository.deleteById(board.getId());
         }
     }
-
-    /**
-     * 공지사항 카운트 서비스 로직 (로그인 되지 않은 유저 사용가능)
-     * @return board count
-     * @author 배태현
-     */
-    @Override
-    public Long countBoard() {
-        return boardRepository.count();
-    }
 }

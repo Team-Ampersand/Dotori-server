@@ -19,6 +19,4 @@ public interface BoardService {
     Board updateBoard(Long boardId, BoardDto boardUpdateDto);
 
     void deleteBoard(Long boardId);
-
-    Long countBoard();
 }

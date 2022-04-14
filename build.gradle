@@ -130,6 +130,8 @@ jacocoTestReport {
 			fileTree(dir: it, exclude: [
 					'**/exception/**' // 테스트 커버리지 측정 대상에서 제거
 					,'**/dto/**' // 테스트 커버리지 측정 대상에서 제거
+					,'**/config/**'
+					,'**/health_check/**'
 					,'**/Dotori/DotoriApplication*'
 					,'**/Dotori/**/Q*' // Qclass 테스트 커버리지 측정 대상에서 제거
 			])

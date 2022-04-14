@@ -10,6 +10,7 @@ import com.server.Dotori.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -20,7 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @RequiredArgsConstructor
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity(debug = false)
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -68,7 +69,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/members/password/email/check").permitAll()
                 .antMatchers("/v1/members/gender").permitAll()
                 .antMatchers("/v1/refresh").permitAll()
-                .antMatchers("/v1/board/count").permitAll()
 
                 // 권한 별 url 접근
                 .antMatchers("/v1/admin/**").hasRole("ADMIN")
