@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,12 @@ public class MassageServiceImpl implements MassageService {
     private final MassageRepository massageRepository;
     private final CurrentMemberUtil currentMemberUtil;
     private final MemberRepository memberRepository;
+
+    private void timeValidate(DayOfWeek dayOfWeek, int hour, int min) {
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_DATE);
+        if (!(hour >= 20 && hour < 21)) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_TIME);
+        if (!(min >= 20)) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_TIME);
+    }
 
     /**
      * 안마의자를 신청하는 로직
@@ -50,12 +57,10 @@ public class MassageServiceImpl implements MassageService {
     @Override
     @Transactional
     public void requestMassage(DayOfWeek dayOfWeek, int hour, int min) {
-        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_DATE);
-        if (!(hour >= 20 && hour < 21)) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_TIME);
-        if (!(min >= 20)) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_TIME);
+        timeValidate(dayOfWeek, hour, min);
 
         long count = massageRepository.count();
-        try{
+        try {
             if (count < 5) {
                 Member currentMember = currentMemberUtil.getCurrentMember();
 
@@ -67,10 +72,10 @@ public class MassageServiceImpl implements MassageService {
                     currentMember.updateMassage(APPLIED);
                     currentMember.updateMassageExpiredDate(LocalDateTime.now().plusMonths(1));
 
-                    log.info("Current MassageRequest Student Count is {}", count+1);
+                    log.info("Current MassageRequest Student Count is {}", count + 1);
                 } else throw new DotoriException(MASSAGE_ALREADY);
             } else throw new DotoriException(MASSAGE_OVER);
-        } catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
             throw new DotoriException(MASSAGE_ALREADY);
         }
     }
@@ -93,9 +98,7 @@ public class MassageServiceImpl implements MassageService {
     @Override
     @Transactional
     public void cancelMassage(DayOfWeek dayOfWeek, int hour, int min) {
-        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_DATE);
-        if (!(hour >= 20 && hour < 21)) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_TIME);
-        if (!(min >= 20)) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_TIME);
+        timeValidate(dayOfWeek, hour, min);
 
         long count = massageRepository.count();
         Member currentMember = currentMemberUtil.getCurrentMember();
@@ -127,16 +130,17 @@ public class MassageServiceImpl implements MassageService {
     }
 
     /**
-     * 안마의자 신청을 한 학생수와 현재 자신의 안마의자 신청 상태를 조회하는 로직
-     * @return Map <String massageStatus(안마의자 신청 상태), String count(안마의자 신청 카운트)>
+     * 안마의자 신청을 한 학생수와 현재 자신의 안마의자 신청 상태와 안마의자 신청 금지 만료일을 조회하는 로직
+     * @return Map <String massageStatus(안마의자 신청 상태), String count(안마의자 신청 카운트), String expiredTime(안마의자 신청 금지 만료일)>
      * @author 김태민
      */
     @Override
     @Transactional(readOnly = true)
-    public Map<String, String> getMassageStatusAndCount() {
+    public Map<String, String> getMassageInfo() {
         Map<String, String> map = new HashMap<>();
         map.put("status",currentMemberUtil.getCurrentMember().getMassage().toString());
         map.put("count", String.valueOf(massageRepository.count()));
+        map.put("expiredTime", currentMemberUtil.getCurrentMember().getMassageExpiredDate().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         return map;
     }
 
