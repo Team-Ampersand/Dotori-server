@@ -50,6 +50,6 @@ public class AdminMassageController {
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public SingleResult<Map<String, String>> getMassageStatusAndCountAdmin() {
-        return responseService.getSingleResult(massageService.getMassageStatusAndCount());
+        return responseService.getSingleResult(massageService.getMassageInfo());
     }
 }

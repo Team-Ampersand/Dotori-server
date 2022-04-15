@@ -85,6 +85,6 @@ public class DeveloperMassageController {
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public SingleResult<Map<String, String>> getMassageStatusAndCountDeveloper() {
-        return responseService.getSingleResult(massageService.getMassageStatusAndCount());
+        return responseService.getSingleResult(massageService.getMassageInfo());
     }
 }

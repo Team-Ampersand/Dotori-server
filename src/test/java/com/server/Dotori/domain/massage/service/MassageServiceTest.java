@@ -117,7 +117,7 @@ public class MassageServiceTest {
     @DisplayName("안마의자를 신청한 학생의 상태와 안마의자 신청 카운트 조회가 잘 되나요?")
     public void findMassageStatusAndCountTest() {
         massageService.requestMassage(DayOfWeek.THURSDAY, 20, 40);
-        Map<String, String> find = massageService.getMassageStatusAndCount();
+        Map<String, String> find = massageService.getMassageInfo();
 
         assertEquals(String.valueOf(Massage.APPLIED), find.get("status"));
         assertEquals("1", find.get("count"));
