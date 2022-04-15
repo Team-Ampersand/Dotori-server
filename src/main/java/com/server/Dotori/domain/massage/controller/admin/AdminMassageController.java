@@ -39,17 +39,17 @@ public class AdminMassageController {
     }
 
     /**
-     * 안마의자를 신청한 학생수와 자신의 신청 상태 조회
-     * @return Map<String count(안마의자 신청을 한 학생수), String massageStatus(자신의 안마의자 신청 상태)>
+     * 안마의자를 신청한 학생수와 자신의 신청 상태와 안마의자 신청 금지 만료일 조회
+     * @return Map<String count(안마의자 신청을 한 학생수), String massageStatus(자신의 안마의자 신청 상태), String expiredTime(안마의자 신청 금지 만료일)>
      */
     @GetMapping ("/massage/info")
     @ResponseStatus( HttpStatus.OK )
-    @ApiOperation(value = "안마의자를 신청한 학생 카운트, 안마의자 신청 상태 조회", notes = "안마의자를 신청한 학생 카운트, 안마의자 신청 상태 조회")
+    @ApiOperation(value = "안마의자를 신청한 학생 카운트, 안마의자 신청 상태 조회, 안마의자 신청 금지 만료일", notes = "안마의자를 신청한 학생 카운트, 안마의자 신청 상태 조회, 안마의자 신청 금지 만료일")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult<Map<String, String>> getMassageStatusAndCountAdmin() {
+    public SingleResult<Map<String, String>> getMassageInfoAdmin() {
         return responseService.getSingleResult(massageService.getMassageInfo());
     }
 }

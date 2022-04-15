@@ -11,5 +11,5 @@ public interface MassageService {
     void cancelMassage(DayOfWeek dayOfWeek, int hour, int min);
     void updateMassageStatus();
     List<MassageStudentsDto> getMassageStudents();
-    Map<String, String> getMassageStatusAndCount();
+    Map<String, String> getMassageInfo();
 }
