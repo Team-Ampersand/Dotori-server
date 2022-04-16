@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 public class SetGenderDto {
-    private Long memberId;
+    private String email;
     private Gender gender;
 }
