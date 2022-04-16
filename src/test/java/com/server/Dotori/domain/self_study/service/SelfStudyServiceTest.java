@@ -2,11 +2,10 @@ package com.server.Dotori.domain.self_study.service;
 
 import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.dto.MemberDto;
-import com.server.Dotori.domain.member.enumType.Gender;
-import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.enumType.SelfStudy;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
+import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
 import com.server.Dotori.domain.self_study.repository.SelfStudyRepository;
 import com.server.Dotori.global.exception.DotoriException;
 import com.server.Dotori.global.util.CurrentMemberUtil;
@@ -27,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static com.server.Dotori.domain.member.enumType.Gender.MAN;
 import static com.server.Dotori.domain.member.enumType.Music.CAN;
 import static com.server.Dotori.domain.member.enumType.SelfStudy.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -55,7 +55,7 @@ class SelfStudyServiceTest {
                 .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
-                .gender(Gender.MAN)
+                .gender(MAN)
                 .build();
         memberRepository.save(
                 memberDto.toEntity(
@@ -135,9 +135,11 @@ class SelfStudyServiceTest {
 
         //then
         assertEquals(1, selfStudyStudents.size());
+        assertEquals(MAN, selfStudyStudents.get(0).getGender());
     }
 
     @Test
+    @DisplayName("자습을 신청한 순서대로 자습신청한 학생들 목록이 잘 조회 되나요 ?")
     public void getSelfStudyByCreateDate() {
         //given //when
         selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20);
@@ -145,6 +147,7 @@ class SelfStudyServiceTest {
 
         //then
         assertEquals(1, students.size());
+        assertEquals(MAN, students.get(0).getGender());
     }
 
     @Test
@@ -156,6 +159,7 @@ class SelfStudyServiceTest {
 
         //then
         assertEquals(1, selfStudyStudentsByCategory.size());
+        assertEquals(MAN, selfStudyStudentsByCategory.get(0).getGender());
     }
 
     @Test
@@ -172,7 +176,7 @@ class SelfStudyServiceTest {
                         .music(CAN)
                         .selfStudy(APPLIED)
                         .point(0L)
-                        .gender(Gender.MAN)
+                        .gender(MAN)
                         .build()
         );
 
@@ -186,7 +190,7 @@ class SelfStudyServiceTest {
                         .music(CAN)
                         .selfStudy(CANT)
                         .point(0L)
-                        .gender(Gender.MAN)
+                        .gender(MAN)
                         .build()
         );
 
@@ -200,7 +204,7 @@ class SelfStudyServiceTest {
                         .music(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
-                        .gender(Gender.MAN)
+                        .gender(MAN)
                         .build()
         );
 
@@ -263,13 +267,8 @@ class SelfStudyServiceTest {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("자습신청 금지 때 회원을 찾을 수 없음 예외가 잘 터지나요 ?")
     public void banAndBanCancelSelfStudyExceptionTest() {
-        assertThrows(
-                DotoriException.class,
-                () -> selfStudyService.banSelfStudy(0L)
-        );
-
         assertThrows(
                 DotoriException.class,
                 () -> selfStudyService.banSelfStudy(0L)

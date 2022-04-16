@@ -22,7 +22,9 @@ public class SelfStudyRepositoryImpl implements SelfStudyRepositoryCustom {
                 .select(Projections.fields(SelfStudyStudentsDto.class,
                         selfStudy.member.id,
                         selfStudy.member.stuNum,
-                        selfStudy.member.memberName)
+                        selfStudy.member.memberName,
+                        selfStudy.member.gender
+                        )
                 )
                 .where(
                         selfStudy.member.selfStudy.eq(SelfStudy.APPLIED)
