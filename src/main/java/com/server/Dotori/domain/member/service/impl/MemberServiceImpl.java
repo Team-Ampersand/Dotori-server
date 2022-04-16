@@ -3,7 +3,6 @@ package com.server.Dotori.domain.member.service.impl;
 import com.server.Dotori.domain.member.EmailCertificate;
 import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.dto.*;
-import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.repository.email.EmailCertificateRepository;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.member.service.MemberService;
@@ -99,16 +98,16 @@ public class MemberServiceImpl implements MemberService {
      */
     @Transactional
     @Override
-    public Map<String,String> signIn(SignInDto signInDto) {
+    public SignInResponseDto signIn(SignInDto signInDto) {
         String email = signInDto.getEmail();
 
         Member findMember = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
         if(!passwordEncoder.matches(signInDto.getPassword(),findMember.getPassword())) throw new DotoriException(MEMBER_PASSWORD_NOT_MATCHING);
 
-        Map<String, String> token = createToken(findMember);
+        SignInResponseDto signInResponseDto = new SignInResponseDto(createToken(findMember),findMember.getGender());
 
-        return token;
+        return signInResponseDto;
     }
 
     /**
@@ -174,6 +173,7 @@ public class MemberServiceImpl implements MemberService {
      * 로그아웃 하는 서비스 로직
      * @author 노경준
      */
+    @Transactional
     @Override
     public void logout() {
         currentMemberUtil.getCurrentMember().updateRefreshToken(null);
@@ -202,7 +202,8 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public void setGender(SetGenderDto setGenderDto) {
-        Member member = memberRepository.findById(setGenderDto.getMemberId()).get();
+        Member member = memberRepository.findByEmail(setGenderDto.getEmail())
+                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
 
         member.updateMemberGender(setGenderDto.getGender());
     }

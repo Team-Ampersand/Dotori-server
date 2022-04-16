@@ -36,7 +36,9 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .select(Projections.fields(SelfStudyStudentsDto.class,
                         member.id,
                         member.stuNum,
-                        member.memberName)
+                        member.memberName,
+                        member.gender
+                        )
                 ).where(
                         member.selfStudy.eq(SelfStudy.APPLIED)
                 )
@@ -56,7 +58,10 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .select(Projections.fields(SelfStudyStudentsDto.class,
                         member.id,
                         member.stuNum,
-                        member.memberName))
+                        member.memberName,
+                        member.gender
+                        )
+                )
                 .where(
                         member.selfStudy.eq(SelfStudy.APPLIED)
                         .and(member.stuNum.like(id+"%"))

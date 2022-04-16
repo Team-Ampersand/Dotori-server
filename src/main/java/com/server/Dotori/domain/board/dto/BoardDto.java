@@ -17,7 +17,7 @@ public class BoardDto {
     private String title;
 
     @NotBlank
-    @Size(min = 1, max = 800)
+    @Size(min = 1, max = 5000)
     private String content;
 
     public Board saveToEntity(Member member, String url) {

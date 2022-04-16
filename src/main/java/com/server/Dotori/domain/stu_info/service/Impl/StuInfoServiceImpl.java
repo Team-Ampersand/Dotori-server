@@ -1,10 +1,7 @@
 package com.server.Dotori.domain.stu_info.service.Impl;
 
 import com.server.Dotori.domain.member.Member;
-import com.server.Dotori.domain.stu_info.dto.MemberNameUpdateDto;
-import com.server.Dotori.domain.stu_info.dto.RoleUpdateDto;
-import com.server.Dotori.domain.stu_info.dto.StuNumUpdateDto;
-import com.server.Dotori.domain.stu_info.dto.StudentInfoDto;
+import com.server.Dotori.domain.stu_info.dto.*;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.stu_info.service.StuInfoService;
 import com.server.Dotori.global.exception.DotoriException;
@@ -34,7 +31,7 @@ public class StuInfoServiceImpl implements StuInfoService {
      * 학년반별로 조회한 학생들 List를 List Dto로 변경후 반환하는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * @param id classId
      * @exception DotoriException (MEMBER_NOT_FOUND_BY_CLASS) 해당 반에 해당하는 학생들이 없을 때
-     * @return List - StudentInfoDto (id, stuNum, username, roles)
+     * @return List - StudentInfoDto (id, stuNum, username, roles, gender)
      * @author 배태현
      */
     @Override
@@ -48,7 +45,7 @@ public class StuInfoServiceImpl implements StuInfoService {
 
     /**
      * 전체 조회한 학생들 List를 List Dto로 변경후 반환하는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
-     * @return List - StudentInfoDto (id, stuNum, username, roles)
+     * @return List - StudentInfoDto (id, stuNum, username, roles, gender)
      * @author 배태현
      */
     @Override
@@ -119,6 +116,21 @@ public class StuInfoServiceImpl implements StuInfoService {
 
         findMember.updateMemberName(memberNameUpdateDto.getMemberName());
 
+    }
+
+    /**
+     * 학생의 성별을 변경시키는 서비스 로직 (사감쌤, 개발자, 자치위원 사용가능)
+     * @param genderUpdateDto (receiverId, gender)
+     * @exception DotoriException (MEMBER_NOT_FOUND) 해당 Id에 해당하는 유저를 찾을 수 없을 때
+     * @author 배태현
+     */
+    @Override
+    @Transactional
+    public void updateGender(GenderUpdateDto genderUpdateDto) {
+        Member member = memberRepository.findById(genderUpdateDto.getReceiverId())
+                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
+
+        member.updateMemberGender(genderUpdateDto.getGender());
     }
 
     /**
