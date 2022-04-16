@@ -173,6 +173,7 @@ public class MemberServiceImpl implements MemberService {
      * 로그아웃 하는 서비스 로직
      * @author 노경준
      */
+    @Transactional
     @Override
     public void logout() {
         currentMemberUtil.getCurrentMember().updateRefreshToken(null);
