@@ -49,8 +49,8 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Override
     @Transactional
     public void requestSelfStudy(DayOfWeek dayOfWeek, int hour) {
-        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new DotoriException(SELF_STUDY_CANT_REQUEST_DATE);
-        if (!(hour >= 20 && hour < 21)) throw new DotoriException(SELF_STUDY_CANT_REQUEST_TIME); // 20시(8시)부터 21시(9시 (8시 59분)) 사이가 아니라면 자습신청 불가능
+//        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new DotoriException(SELF_STUDY_CANT_REQUEST_DATE);
+//        if (!(hour >= 20 && hour < 21)) throw new DotoriException(SELF_STUDY_CANT_REQUEST_TIME); // 20시(8시)부터 21시(9시 (8시 59분)) 사이가 아니라면 자습신청 불가능
 
         Member currentMember = currentMemberUtil.getCurrentMember();
         long count = selfStudyRepository.count();
