@@ -49,8 +49,8 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Override
     @Transactional
     public void requestSelfStudy(DayOfWeek dayOfWeek, int hour) {
-//        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new DotoriException(SELF_STUDY_CANT_REQUEST_DATE);
-//        if (!(hour >= 20 && hour < 21)) throw new DotoriException(SELF_STUDY_CANT_REQUEST_TIME); // 20시(8시)부터 21시(9시 (8시 59분)) 사이가 아니라면 자습신청 불가능
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new DotoriException(SELF_STUDY_CANT_REQUEST_DATE);
+        if (!(hour >= 20 && hour < 21)) throw new DotoriException(SELF_STUDY_CANT_REQUEST_TIME); // 20시(8시)부터 21시(9시 (8시 59분)) 사이가 아니라면 자습신청 불가능
 
         Member currentMember = currentMemberUtil.getCurrentMember();
         long count = selfStudyRepository.count();
@@ -105,7 +105,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
 
     /**
      * 자습신청한 학생을 전체 조회하는 서비스로직 (로그인된 유저 사용가능)
-     * @return List - SelfStudyStudentDto (id, stuNum, username)
+     * @return List - SelfStudyStudentDto (id, stuNum, username, gender)
      * @exception DotoriException (SELF_STUDY_NOT_FOUND) 자습신청한 학생이 없을 때
      * @author 배태현
      */
@@ -120,7 +120,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
 
     /**
      * 자습신청 한 학생들 자습신청 한 순서대로 전체조회하는 서비스 로직 (로그인된 유저 사용가능)
-     * @return List - SelfStudyStudentDto (id, stuNum, username)
+     * @return List - SelfStudyStudentDto (id, stuNum, username, gender)
      * @exception DotoriException (SELF_STUDY_NOT_FOUND) 자습신청한 학생이 없을 때
      * @author 배태현
      */
@@ -136,7 +136,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     /**
      * 자습신청한 학생을 학년반별로 조회하는 서비스로직 (로그인된 유저 사용가능)
      * @param id classId
-     * @return List - SelfStudyStudentDto (id, stuNum, username)
+     * @return List - SelfStudyStudentDto (id, stuNum, username, gender)
      * @exception DotoriException (MEMBER_NOT_FOUND_BY_CLASS) 해당 반에 해당하는 학생이 없을 때
      * @author 배태현
      */
