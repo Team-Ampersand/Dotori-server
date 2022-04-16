@@ -31,7 +31,7 @@ public class StuInfoServiceImpl implements StuInfoService {
      * 학년반별로 조회한 학생들 List를 List Dto로 변경후 반환하는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * @param id classId
      * @exception DotoriException (MEMBER_NOT_FOUND_BY_CLASS) 해당 반에 해당하는 학생들이 없을 때
-     * @return List - StudentInfoDto (id, stuNum, username, roles)
+     * @return List - StudentInfoDto (id, stuNum, username, roles, gender)
      * @author 배태현
      */
     @Override
@@ -45,7 +45,7 @@ public class StuInfoServiceImpl implements StuInfoService {
 
     /**
      * 전체 조회한 학생들 List를 List Dto로 변경후 반환하는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
-     * @return List - StudentInfoDto (id, stuNum, username, roles)
+     * @return List - StudentInfoDto (id, stuNum, username, roles, gender)
      * @author 배태현
      */
     @Override
@@ -118,6 +118,12 @@ public class StuInfoServiceImpl implements StuInfoService {
 
     }
 
+    /**
+     * 학생의 성별을 변경시키는 서비스 로직 (사감쌤, 개발자, 자치위원 사용가능)
+     * @param genderUpdateDto (receiverId, gender)
+     * @exception DotoriException (MEMBER_NOT_FOUND) 해당 Id에 해당하는 유저를 찾을 수 없을 때
+     * @author 배태현
+     */
     @Override
     @Transactional
     public void updateGender(GenderUpdateDto genderUpdateDto) {
