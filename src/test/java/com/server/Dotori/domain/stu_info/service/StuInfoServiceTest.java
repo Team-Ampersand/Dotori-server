@@ -1,13 +1,9 @@
 package com.server.Dotori.domain.stu_info.service;
 
-import com.server.Dotori.domain.member.dto.*;
-import com.server.Dotori.domain.member.enumType.Gender;
-import com.server.Dotori.domain.stu_info.dto.MemberNameUpdateDto;
-import com.server.Dotori.domain.stu_info.dto.RoleUpdateDto;
-import com.server.Dotori.domain.stu_info.dto.StuNumUpdateDto;
-import com.server.Dotori.domain.stu_info.dto.StudentInfoDto;
+import com.server.Dotori.domain.member.dto.MemberDto;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
+import com.server.Dotori.domain.stu_info.dto.*;
 import com.server.Dotori.global.util.CurrentMemberUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,6 +21,8 @@ import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 
+import static com.server.Dotori.domain.member.enumType.Gender.MAN;
+import static com.server.Dotori.domain.member.enumType.Gender.WOMAN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -47,7 +45,7 @@ class StuInfoServiceTest {
                 .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
-                .gender(Gender.MAN)
+                .gender(MAN)
                 .build();
         memberRepository.save(
                 memberDto.toEntity(
@@ -134,6 +132,21 @@ class StuInfoServiceTest {
 
         //then
         assertNotNull(memberRepository.findByEmail("s20032@gsm.hs.kr"));
+    }
+
+    @Test
+    @DisplayName("학생의 성별이 잘 변경되나요 ?")
+    public void updateGenderTest() {
+        //given //when
+        stuInfoService.updateGender(
+                GenderUpdateDto.builder()
+                        .receiverId(currentMemberUtil.getCurrentMember().getId())
+                        .gender(WOMAN)
+                        .build()
+        );
+
+        //then
+        assertEquals(WOMAN, memberRepository.findByEmail("s20032@gsm.hs.kr").get().getGender());
     }
 
     @Test
