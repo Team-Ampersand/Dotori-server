@@ -1,5 +1,6 @@
 package com.server.Dotori.domain.stu_info.controller.councillor;
 
+import com.server.Dotori.domain.stu_info.dto.GenderUpdateDto;
 import com.server.Dotori.domain.stu_info.dto.MemberNameUpdateDto;
 import com.server.Dotori.domain.stu_info.dto.RoleUpdateDto;
 import com.server.Dotori.domain.stu_info.dto.StuNumUpdateDto;
@@ -108,6 +109,24 @@ public class CouncillorStuInfoController {
     })
     public CommonResult updateMemberNameCouncillor(@Valid @RequestBody MemberNameUpdateDto memberNameUpdateDto) {
         stuInfoService.updateMemberName(memberNameUpdateDto);
+        return responseService.getSuccessResult();
+    }
+
+    /**
+     * 학생 정보 변경 - 성별 변경
+     * @param genderUpdateDto (receiverId, gender)
+     * @return CommonResult - SuccessResult
+     * @author 배태현
+     */
+    @PutMapping("/info/gender")
+    @ResponseStatus( HttpStatus.OK )
+    @ApiOperation(value = "성별 변경", notes = "성별 변경")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public CommonResult updateGenderCouncillor(@Valid @RequestBody GenderUpdateDto genderUpdateDto) {
+        stuInfoService.updateGender(genderUpdateDto);
         return responseService.getSuccessResult();
     }
 

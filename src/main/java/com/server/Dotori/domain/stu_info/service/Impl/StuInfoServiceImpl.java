@@ -1,10 +1,7 @@
 package com.server.Dotori.domain.stu_info.service.Impl;
 
 import com.server.Dotori.domain.member.Member;
-import com.server.Dotori.domain.stu_info.dto.MemberNameUpdateDto;
-import com.server.Dotori.domain.stu_info.dto.RoleUpdateDto;
-import com.server.Dotori.domain.stu_info.dto.StuNumUpdateDto;
-import com.server.Dotori.domain.stu_info.dto.StudentInfoDto;
+import com.server.Dotori.domain.stu_info.dto.*;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.stu_info.service.StuInfoService;
 import com.server.Dotori.global.exception.DotoriException;
@@ -119,6 +116,15 @@ public class StuInfoServiceImpl implements StuInfoService {
 
         findMember.updateMemberName(memberNameUpdateDto.getMemberName());
 
+    }
+
+    @Override
+    @Transactional
+    public void updateGender(GenderUpdateDto genderUpdateDto) {
+        Member member = memberRepository.findById(genderUpdateDto.getReceiverId())
+                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
+
+        member.updateMemberGender(genderUpdateDto.getGender());
     }
 
     /**

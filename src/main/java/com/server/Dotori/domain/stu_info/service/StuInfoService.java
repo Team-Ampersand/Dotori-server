@@ -1,9 +1,6 @@
 package com.server.Dotori.domain.stu_info.service;
 
-import com.server.Dotori.domain.stu_info.dto.MemberNameUpdateDto;
-import com.server.Dotori.domain.stu_info.dto.RoleUpdateDto;
-import com.server.Dotori.domain.stu_info.dto.StuNumUpdateDto;
-import com.server.Dotori.domain.stu_info.dto.StudentInfoDto;
+import com.server.Dotori.domain.stu_info.dto.*;
 
 import java.util.List;
 
@@ -18,6 +15,8 @@ public interface StuInfoService {
     void updateStuNum(StuNumUpdateDto stuNumUpdateDto);
 
     void updateMemberName(MemberNameUpdateDto memberNameUpdateDto);
+
+    void updateGender(GenderUpdateDto genderUpdateDto);
 
     List<StudentInfoDto> getStuInfoByMemberName(String memberName);
 }
