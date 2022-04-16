@@ -202,7 +202,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public void setGender(SetGenderDto setGenderDto) {
-        Member member = memberRepository.findById(setGenderDto.getMemberId()).get();
+        Member member = memberRepository.findByEmail(setGenderDto.getEmail()).get();
 
         member.updateMemberGender(setGenderDto.getGender());
     }
