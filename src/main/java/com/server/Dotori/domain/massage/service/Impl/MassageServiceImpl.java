@@ -140,10 +140,9 @@ public class MassageServiceImpl implements MassageService {
         Map<String, String> map = new HashMap<>();
         map.put("status",currentMemberUtil.getCurrentMember().getMassage().toString());
         map.put("count", String.valueOf(massageRepository.count()));
-        if (currentMemberUtil.getCurrentMember().getMassageExpiredDate() == null) {
-            return map;
+        if (!(currentMemberUtil.getCurrentMember().getMassageExpiredDate() == null)) {
+            map.put("expiredTime", currentMemberUtil.getCurrentMember().getMassageExpiredDate().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         }
-        map.put("expiredTime", currentMemberUtil.getCurrentMember().getMassageExpiredDate().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
         return map;
     }
 
