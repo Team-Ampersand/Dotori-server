@@ -1,9 +1,6 @@
 package com.server.Dotori.domain.member.controller;
 
-import com.server.Dotori.domain.member.dto.EmailDto;
-import com.server.Dotori.domain.member.dto.MemberDto;
-import com.server.Dotori.domain.member.dto.SignInDto;
-import com.server.Dotori.domain.member.dto.SignUpEmailCheckDto;
+import com.server.Dotori.domain.member.dto.*;
 import com.server.Dotori.domain.member.service.MemberService;
 import com.server.Dotori.global.response.ResponseService;
 import com.server.Dotori.global.response.result.CommonResult;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -73,8 +69,8 @@ public class SignController {
      */
     @PostMapping("/signin")
     @ApiOperation(value="로그인")
-    public SingleResult<Map<String, String>> signin(@Valid @RequestBody SignInDto memberLoginDto){
-        Map<String, String> data = memberService.signIn(memberLoginDto);
+    public SingleResult<SignInResponseDto> signin(@Valid @RequestBody SignInDto memberLoginDto){
+        SignInResponseDto data = memberService.signIn(memberLoginDto);
         return responseService.getSingleResult(data);
     }
 }

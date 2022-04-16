@@ -1,9 +1,6 @@
 package com.server.Dotori.domain.member.service;
 
-import com.server.Dotori.domain.member.dto.ChangePasswordDto;
-import com.server.Dotori.domain.member.dto.MemberDto;
-import com.server.Dotori.domain.member.dto.SignInDto;
-import com.server.Dotori.domain.member.dto.WithdrawlDto;
+import com.server.Dotori.domain.member.dto.*;
 import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
@@ -21,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -98,11 +94,11 @@ public class MemberServiceTest {
                 .build();
 
         // when
-        Map<String,String> result = memberService.signIn(memberLoginDto);
+        SignInResponseDto result = memberService.signIn(memberLoginDto);
 
         // then
         assertNotNull(result);
-        assertThat(result.get("email")).isEqualTo(memberRepository.findByEmail(memberLoginDto.getEmail()).orElseThrow().getEmail());
+        assertThat(result.getGender()).isEqualTo(Gender.MAN);
     }
 
     @Test
