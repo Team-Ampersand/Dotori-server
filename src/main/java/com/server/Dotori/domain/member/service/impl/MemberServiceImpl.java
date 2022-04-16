@@ -202,7 +202,8 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public void setGender(SetGenderDto setGenderDto) {
-        Member member = memberRepository.findById(setGenderDto.getMemberId()).get();
+        Member member = memberRepository.findByEmail(setGenderDto.getEmail())
+                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
 
         member.updateMemberGender(setGenderDto.getGender());
     }
