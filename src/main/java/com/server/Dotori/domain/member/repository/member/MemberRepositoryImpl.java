@@ -177,7 +177,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
      * @author 김태민
      */
     @Override
-    public void updateMassageStatusCant() {
+    public void updateMassageStatus() {
         queryFactory
                 .update(member)
                 .where(

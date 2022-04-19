@@ -56,7 +56,7 @@ public class MassageServiceImpl implements MassageService {
     @Override
     @Transactional
     public void requestMassage(DayOfWeek dayOfWeek, int hour, int min) {
-//        timeValidate(dayOfWeek, hour, min);
+        timeValidate(dayOfWeek, hour, min);
 
         long count = massageRepository.count();
         try {
@@ -95,7 +95,7 @@ public class MassageServiceImpl implements MassageService {
     @Override
     @Transactional
     public void cancelMassage(DayOfWeek dayOfWeek, int hour, int min) {
-//        timeValidate(dayOfWeek, hour, min);
+        timeValidate(dayOfWeek, hour, min);
 
         long count = massageRepository.count();
         Member currentMember = currentMemberUtil.getCurrentMember();
@@ -117,7 +117,7 @@ public class MassageServiceImpl implements MassageService {
     @Override
     @Transactional
     public void updateMassageStatus() {
-        memberRepository.updateMassageStatusCant();
+        memberRepository.updateMassageStatus();
         massageRepository.deleteAll();
     }
 
