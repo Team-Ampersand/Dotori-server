@@ -33,4 +33,22 @@ public class SelfStudyRepositoryImpl implements SelfStudyRepositoryCustom {
                 .orderBy(selfStudy.createdDate.asc())
                 .fetch();
     }
+
+    @Override
+    public SelfStudyStudentsDto findByMemberName(String memberName) {
+        return queryFactory.from(selfStudy)
+                .select(Projections.fields(SelfStudyStudentsDto.class,
+                        selfStudy.member.id,
+                        selfStudy.member.stuNum,
+                        selfStudy.member.memberName,
+                        selfStudy.member.gender
+                        )
+                )
+                .where(
+                        selfStudy.member.selfStudy.eq(SelfStudy.APPLIED)
+                        .and(selfStudy.member.memberName.like("%" + memberName + "%"))
+                )
+                .innerJoin(selfStudy.member, member)
+                .fetchOne();
+    }
 }
