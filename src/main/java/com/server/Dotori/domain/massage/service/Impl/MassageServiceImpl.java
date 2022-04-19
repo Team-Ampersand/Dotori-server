@@ -57,7 +57,7 @@ public class MassageServiceImpl implements MassageService {
     @Override
     @Transactional
     public void requestMassage(DayOfWeek dayOfWeek, int hour, int min) {
-        timeValidate(dayOfWeek, hour, min);
+//        timeValidate(dayOfWeek, hour, min);
 
         long count = massageRepository.count();
         try {
@@ -70,7 +70,6 @@ public class MassageServiceImpl implements MassageService {
                             .build()
                     );
                     currentMember.updateMassage(APPLIED);
-                    currentMember.updateMassageExpiredDate(LocalDateTime.now().plusMonths(1));
 
                     log.info("Current MassageRequest Student Count is {}", count + 1);
                 } else throw new DotoriException(MASSAGE_ALREADY);
@@ -98,7 +97,7 @@ public class MassageServiceImpl implements MassageService {
     @Override
     @Transactional
     public void cancelMassage(DayOfWeek dayOfWeek, int hour, int min) {
-        timeValidate(dayOfWeek, hour, min);
+//        timeValidate(dayOfWeek, hour, min);
 
         long count = massageRepository.count();
         Member currentMember = currentMemberUtil.getCurrentMember();
@@ -107,7 +106,6 @@ public class MassageServiceImpl implements MassageService {
             currentMember.updateMassage(CANT);
             massageRepository.deleteByMemberId(currentMember.getId());
 
-            currentMember.updateMassageExpiredDate(null);
             log.info("Current MassageRequest Student Count is {}", count-1);
         } else throw new DotoriException(MASSAGE_CANT_CANCEL_REQUEST);
     }
@@ -140,9 +138,6 @@ public class MassageServiceImpl implements MassageService {
         Map<String, String> map = new HashMap<>();
         map.put("status",currentMemberUtil.getCurrentMember().getMassage().toString());
         map.put("count", String.valueOf(massageRepository.count()));
-        if (!(currentMemberUtil.getCurrentMember().getMassageExpiredDate() == null)) {
-            map.put("expiredTime", currentMemberUtil.getCurrentMember().getMassageExpiredDate().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-        }
         return map;
     }
 
