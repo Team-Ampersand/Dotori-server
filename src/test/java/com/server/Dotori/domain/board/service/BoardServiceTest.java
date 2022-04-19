@@ -9,6 +9,7 @@ import com.server.Dotori.domain.member.dto.MemberDto;
 import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
+import com.server.Dotori.global.exception.DotoriException;
 import com.server.Dotori.global.util.CurrentMemberUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -29,8 +30,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -115,6 +115,21 @@ class BoardServiceTest {
 
         //then
         assertThat(pageBoard.getSize() == 30);
+    }
+
+    @Test
+    @DisplayName("공지사항이 모두 비어있을 때 예외가 제대로 터지나요 ?")
+    public void getAllBoardExceptionTest() {
+        //given
+        Pageable pageable = Pageable.ofSize(5);
+
+        // boardList는 아무 값도 세팅하지 않음
+
+        //when // then
+        assertThrows(
+                DotoriException.class,
+                () -> boardService.getAllBoard(pageable)
+        );
     }
 
     @Test
