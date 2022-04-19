@@ -365,7 +365,7 @@ class SelfStudyServiceTest {
         em.clear();
 
         //then
-        assertEquals(Music.CAN.toString(), currentMemberUtil.getCurrentMember().getSelfStudy().toString());
+        assertEquals(CAN.toString(), currentMemberUtil.getCurrentMember().getSelfStudy().toString());
         assertEquals(null, currentMemberUtil.getCurrentMember().getSelfStudyExpiredDate());
     }
 
