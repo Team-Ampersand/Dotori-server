@@ -59,12 +59,11 @@ public class MusicServiceImpl implements MusicService {
     }
 
     /**
-     * 신청된 모든 음악을 조회하는 서비스 로직 (로그인된 유저 사용가능) <br>
-     * 쿼리 파라미터로 날짜가 넘어왔다면 해당 날짜에 신청된 음악목록을 조회한다.
+     * 쿼리 파라미터로 넘어온 날짜가를 이용해서 해당 날짜에 신청된 음악목록을 조회하는 서비스 로직 (로그인된 유저 사용가능) <br>
      * @exception DotoriException (MUSIC_NOT_REQUESTED) 신청된 음악이 없을 때
      * @return List-MusicResDto
      * @author 배태현
-     * @param date
+     * @param date 날짜
      */
     @Override
     public List<MusicResDto> getMusicListByDate(LocalDate date) {
