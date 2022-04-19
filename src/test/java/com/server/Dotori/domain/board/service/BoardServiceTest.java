@@ -151,6 +151,16 @@ class BoardServiceTest {
     }
 
     @Test
+    @DisplayName("공지사항을 찾지 못할 때 예외가 제대로 터지나요 ?")
+    public void boardNotFoundExceptionTest() {
+        //when //then
+        assertThrows(
+                DotoriException.class,
+                () -> boardService.getBoardById(0L)
+        );
+    }
+
+    @Test
     @DisplayName("공지사항 수정 테스트")
     public void updateBoardTest() {
         //given
