@@ -121,9 +121,7 @@ public class MassageServiceImpl implements MassageService {
     @Override
     @Transactional
     public void updateMassageStatus() {
-        memberRepository.updateUnBanMassage();
         memberRepository.updateMassageStatusCant();
-        memberRepository.updateMassageStatusImpossible();
         massageRepository.deleteAll();
     }
 
@@ -149,7 +147,7 @@ public class MassageServiceImpl implements MassageService {
     @Override
     @Transactional(readOnly = true)
     public List<MassageStudentsDto> getMassageStudents() {
-        List<MassageStudentsDto> students = memberRepository.findByMassageStatus();
+        List<MassageStudentsDto> students = memberRepository.findMemberByMassageStatus();
         if (students.size() == 0) throw new DotoriException(MASSAGE_ANYONE_NOT_REQUEST);
 
         return students;

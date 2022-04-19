@@ -173,7 +173,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     }
 
     /**
-     * 안마의자 신청을 했다가 취소한 학생들의 상태 'CANT'를 'CAN'으로 바꿔주는 쿼리
+     * 안마의자 신청을 한 학생들의 상태를 CAN으로 변경해주는 쿼리
      * @author 김태민
      */
     @Override
@@ -182,6 +182,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .update(member)
                 .where(
                         member.massage.eq(Massage.CANT)
+                        .or(member.massage.eq(Massage.APPLIED))
                 )
                 .set(member.massage, Massage.CAN)
                 .execute();
@@ -193,7 +194,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
      * @author 김태민
      */
     @Override
-    public List<MassageStudentsDto> findByMassageStatus() {
+    public List<MassageStudentsDto> findMemberByMassageStatus() {
         return queryFactory
                 .from(member)
                 .select(Projections.fields(MassageStudentsDto.class,
