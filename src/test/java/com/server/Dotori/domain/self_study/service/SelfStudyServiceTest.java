@@ -200,15 +200,26 @@ class SelfStudyServiceTest {
     }
 
     @Test
-    @DisplayName("자습 신청한 학생들 목록이 잘 조회 되나요?")
-    public void getSelfStudyStudents() {
+    @DisplayName("자습 신청한 학생 이름으로 잘 검색 되나요?")
+    public void getSelfStudyStudentByMemberNameTest() {
         //given //when
         selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20);
-        List<SelfStudyStudentsDto> selfStudyStudents = selfStudyService.getSelfStudyStudents();
 
-        //then
-        assertEquals(1, selfStudyStudents.size());
-        assertEquals(MAN, selfStudyStudents.get(0).getGender());
+        SelfStudyStudentsDto findSelfStudyAppliedStudent = selfStudyService.getSelfStudyStudentByMemberName("배태현");
+
+        assertEquals("배태현", findSelfStudyAppliedStudent.getMemberName());
+        assertEquals("2409", findSelfStudyAppliedStudent.getStuNum());
+        assertEquals(MAN, findSelfStudyAppliedStudent.getGender());
+    }
+
+    @Test
+    @DisplayName("자습 신청한 학생 이름으로 검색했을 때 결과가 없다면 예외가 제대로 터지나요 ?")
+    public void getSelfStudyStudentByMemberNameExceptionTest() {
+        //when //then
+        assertThrows(
+                DotoriException.class,
+                () -> selfStudyService.getSelfStudyStudentByMemberName("없는사람")
+        );
     }
 
     @Test
@@ -217,7 +228,7 @@ class SelfStudyServiceTest {
         //when //then
         assertThrows(
                 DotoriException.class,
-                () -> selfStudyService.getSelfStudyStudents()
+                () -> selfStudyService.getSelfStudyStudentsByCreateDate()
         );
     }
 
