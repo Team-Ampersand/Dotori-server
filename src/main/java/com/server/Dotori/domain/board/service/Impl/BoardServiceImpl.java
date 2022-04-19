@@ -39,6 +39,7 @@ public class BoardServiceImpl implements BoardService {
     public Board createBoard(BoardDto boardDto, MultipartFile multipartFileList) {
         Member currentMember = currentMemberUtil.getCurrentMember();
         String uploadFile = null;
+
         try {
             uploadFile = s3Service.uploadFile(multipartFileList);
             return boardRepository.save(boardDto.saveToEntity(currentMember, uploadFile));
@@ -78,9 +79,7 @@ public class BoardServiceImpl implements BoardService {
      */
     @Override
     public BoardGetIdDto getBoardById(Long boardId) {
-
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new DotoriException(BOARD_NOT_FOUND));
+        Board board = getBoard(boardId);
 
         ModelMapper modelMapper = new ModelMapper();
         BoardGetIdDto map = modelMapper.map(board, BoardGetIdDto.class);
@@ -100,8 +99,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public Board updateBoard(Long boardId, BoardDto boardUpdateDto) {
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new DotoriException(BOARD_NOT_FOUND));
+        Board board = getBoard(boardId);
 
         board.updateBoard(boardUpdateDto.getTitle(), boardUpdateDto.getContent());
 
@@ -116,8 +114,7 @@ public class BoardServiceImpl implements BoardService {
      */
     @Override
     public void deleteBoard(Long boardId) {
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new DotoriException(BOARD_NOT_FOUND));
+        Board board = getBoard(boardId);
 
         try {
             s3Service.deleteFile(board.getUrl().substring(54));
@@ -125,5 +122,16 @@ public class BoardServiceImpl implements BoardService {
         } catch (NullPointerException e) {
             boardRepository.deleteById(board.getId());
         }
+    }
+
+    /**
+     * board가 존재하는지 check 해준 뒤 존재하다면 Board를 반환해주는 메서드
+     * @param boardId
+     * @return Board Entity
+     * @author 배태현
+     */
+    private Board getBoard(Long boardId) {
+        return boardRepository.findById(boardId)
+                .orElseThrow(() -> new DotoriException(BOARD_NOT_FOUND));
     }
 }
