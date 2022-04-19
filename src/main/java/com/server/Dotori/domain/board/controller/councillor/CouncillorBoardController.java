@@ -51,7 +51,7 @@ public class CouncillorBoardController {
 
     /**
      * 공지사항 전체 조회 컨트롤러
-     * @param pageable 7
+     * @param pageable 6
      * @return SingleResult (Page-BoardGetDto)
      * @author 배태현
      */
