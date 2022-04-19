@@ -55,9 +55,6 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @Column(name = "self_study_expired_date")
     private LocalDateTime selfStudyExpiredDate;
 
-    @Column(name = "massage_expired_date")
-    private LocalDateTime massageExpiredDate;
-
     @Enumerated(STRING)
     @Column(name = "member_gender")
     private Gender gender;
