@@ -27,11 +27,7 @@ public interface MemberRepositoryCustom {
 
     void updateUnBanSelfStudy();
 
-    void updateUnBanMassage();
-
     void updateMassageStatusCant();
-
-    void updateMassageStatusImpossible();
 
     List<MassageStudentsDto> findByMassageStatus();
 
