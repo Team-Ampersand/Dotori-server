@@ -2,9 +2,10 @@ package com.server.Dotori.domain.self_study.service;
 
 import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.dto.MemberDto;
+import com.server.Dotori.domain.member.enumType.Music;
 import com.server.Dotori.domain.member.enumType.Role;
-import com.server.Dotori.domain.member.enumType.SelfStudy;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
+import com.server.Dotori.domain.self_study.SelfStudy;
 import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
 import com.server.Dotori.domain.self_study.repository.SelfStudyRepository;
 import com.server.Dotori.global.exception.DotoriException;
@@ -25,9 +26,10 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.server.Dotori.domain.member.enumType.Gender.MAN;
-import static com.server.Dotori.domain.member.enumType.Music.CAN;
 import static com.server.Dotori.domain.member.enumType.SelfStudy.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -98,7 +100,78 @@ class SelfStudyServiceTest {
 
         assertThrows(
                 DotoriException.class,
+                () -> selfStudyService.requestSelfStudy(DayOfWeek.SATURDAY, 20)
+        );
+
+        assertThrows(
+                DotoriException.class,
+                () -> selfStudyService.requestSelfStudy(DayOfWeek.SUNDAY, 20)
+        );
+
+        assertThrows(
+                DotoriException.class,
                 () -> selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 19)
+        );
+    }
+
+    @Test
+    @DisplayName("자습 신청/자습 신청 취소를 할 수 있는 상태가 아닐 때 예외가 제대로 터지나요 ?")
+    public void requestSelfStudyStatusExceptionTest() {
+        //given
+        Member currentMember = currentMemberUtil.getCurrentMember();
+
+        //when
+        currentMember.updateSelfStudy(APPLIED);
+
+        //then
+        assertThrows(
+                DotoriException.class,
+                () -> selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20)
+        );
+
+        //when
+        currentMember.updateSelfStudy(CAN);
+
+        // then
+        assertThrows(
+                DotoriException.class,
+                () -> selfStudyService.cancelSelfStudy(DayOfWeek.MONDAY, 20)
+        );
+    }
+
+    @Test
+    @DisplayName("자습신청 요청이 두개가 동시에 들어왔을 때 제대로 예외가 터지나요 ?")
+    public void twoRequestSelfStudyExceptionTest() {
+        //given
+        selfStudyRepository.save(
+                SelfStudy.builder()
+                .member(currentMemberUtil.getCurrentMember())
+                .build()
+        );
+
+        //when //then
+        assertThrows(
+                DotoriException.class,
+                () -> selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20)
+        );
+    }
+    
+    @Test
+    @DisplayName("50명 이상이 자습을 신청했을 때 자습을 신청하면 제대로 예외가 터지나요 ?")
+    public void fiftyOverSelfStudyExceptionTest() {
+        //given
+        List<com.server.Dotori.domain.self_study.SelfStudy> selfStudyList = Stream.generate(
+                () -> com.server.Dotori.domain.self_study.SelfStudy.builder()
+                        .member(null)
+                        .build()
+        ).limit(50).collect(Collectors.toList());
+
+        selfStudyRepository.saveAll(selfStudyList);
+
+        //when //then
+        assertThrows(
+                DotoriException.class,
+                () -> selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20)
         );
     }
 
@@ -127,15 +200,36 @@ class SelfStudyServiceTest {
     }
 
     @Test
-    @DisplayName("자습 신청한 학생들 목록이 잘 조회 되나요?")
-    public void getSelfStudyStudents() {
+    @DisplayName("자습 신청한 학생 이름으로 잘 검색 되나요?")
+    public void getSelfStudyStudentByMemberNameTest() {
         //given //when
         selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20);
-        List<SelfStudyStudentsDto> selfStudyStudents = selfStudyService.getSelfStudyStudents();
 
-        //then
-        assertEquals(1, selfStudyStudents.size());
-        assertEquals(MAN, selfStudyStudents.get(0).getGender());
+        SelfStudyStudentsDto findSelfStudyAppliedStudent = selfStudyService.getSelfStudyStudentByMemberName("배태현");
+
+        assertEquals("배태현", findSelfStudyAppliedStudent.getMemberName());
+        assertEquals("2409", findSelfStudyAppliedStudent.getStuNum());
+        assertEquals(MAN, findSelfStudyAppliedStudent.getGender());
+    }
+
+    @Test
+    @DisplayName("자습 신청한 학생 이름으로 검색했을 때 결과가 없다면 예외가 제대로 터지나요 ?")
+    public void getSelfStudyStudentByMemberNameExceptionTest() {
+        //when //then
+        assertThrows(
+                DotoriException.class,
+                () -> selfStudyService.getSelfStudyStudentByMemberName("없는사람")
+        );
+    }
+
+    @Test
+    @DisplayName("자습 신청한 학생들 목록이 비어있을 때 예외가 잘 터지나요 ?")
+    public void selfStudyStudentsListEmptyExceptionTest() {
+        //when //then
+        assertThrows(
+                DotoriException.class,
+                () -> selfStudyService.getSelfStudyStudentsByCreateDate()
+        );
     }
 
     @Test
@@ -149,6 +243,16 @@ class SelfStudyServiceTest {
         assertEquals(1, students.size());
         assertEquals(MAN, students.get(0).getGender());
     }
+    
+    @Test
+    @DisplayName("자습을 신청한 순서대로 자습신청한 학생들 목록이 비어있을 때 예외가 잘 터지나요 ?")
+    public void getSelfStudyByCreateDateExceptionTest() {
+        //when //then
+        assertThrows(
+                DotoriException.class,
+                () -> selfStudyService.getSelfStudyStudentsByCreateDate()
+        );
+    }
 
     @Test
     @DisplayName("자습신청한 학생들의 목록이 학년반별 카테고리 목록으로 조회 되나요?")
@@ -160,6 +264,16 @@ class SelfStudyServiceTest {
         //then
         assertEquals(1, selfStudyStudentsByCategory.size());
         assertEquals(MAN, selfStudyStudentsByCategory.get(0).getGender());
+    }
+    
+    @Test
+    @DisplayName("자습신청한 학생을 학년반별로 조회할 때 자습신청한 학생이 없다면 예외가 터지나요 ?")
+    public void getClassNumSelfStudyStudentsExceptionTest() {
+        //when //then
+        assertThrows(
+                DotoriException.class,
+                () -> selfStudyService.getSelfStudyStudentsByCategory(9L)
+        );
     }
 
     @Test
@@ -173,7 +287,7 @@ class SelfStudyServiceTest {
                         .password("1234")
                         .email("s20033@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
-                        .music(CAN)
+                        .music(Music.CAN)
                         .selfStudy(APPLIED)
                         .point(0L)
                         .gender(MAN)
@@ -187,7 +301,7 @@ class SelfStudyServiceTest {
                         .password("1234")
                         .email("s20031@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
-                        .music(CAN)
+                        .music(Music.CAN)
                         .selfStudy(CANT)
                         .point(0L)
                         .gender(MAN)
@@ -201,8 +315,8 @@ class SelfStudyServiceTest {
                         .password("1234")
                         .email("s20030@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
-                        .music(CAN)
-                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .selfStudy(CAN)
                         .point(0L)
                         .gender(MAN)
                         .build()
@@ -215,9 +329,9 @@ class SelfStudyServiceTest {
         em.clear();
 
         //then
-        assertEquals(SelfStudy.CAN, memberRepository.findByEmail("s20033@gsm.hs.kr").get().getSelfStudy());
-        assertEquals(SelfStudy.CAN, memberRepository.findByEmail("s20031@gsm.hs.kr").get().getSelfStudy());
-        assertEquals(SelfStudy.CAN, memberRepository.findByEmail("s20030@gsm.hs.kr").get().getSelfStudy()); //이 회원은 그대로 CAN
+        assertEquals(CAN, memberRepository.findByEmail("s20033@gsm.hs.kr").get().getSelfStudy());
+        assertEquals(CAN, memberRepository.findByEmail("s20031@gsm.hs.kr").get().getSelfStudy());
+        assertEquals(CAN, memberRepository.findByEmail("s20030@gsm.hs.kr").get().getSelfStudy()); //이 회원은 그대로 CAN
     }
 
     @Test

@@ -59,19 +59,19 @@ public class DeveloperSelfStudyController {
     }
 
     /**
-     * 자습신청한 학생 전체 조회 컨트롤러
-     * @return SingleResult (id, stuNum, username)
+     * 자습신청한 학생 이름 검색 컨트롤러
+     * @return SingleResult (id, stuNum, username, gender)
      * @author 배태현
      */
     @GetMapping("/selfstudy")
     @ResponseStatus( HttpStatus.OK )
-    @ApiOperation(value = "자습신청한 학생 전체 조회", notes = "자습신청한 학생 전체 조회")
+    @ApiOperation(value = "자습신청한 학생 이름 검색", notes = "자습신청한 학생 이름 검색")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult getSelfStudyStudentsDeveloper() {
-        return responseService.getSingleResult(selfStudyService.getSelfStudyStudents());
+    public SingleResult getSelfStudyStudentByMemberNameDeveloper(@RequestParam(value = "memberName") String memberName) {
+        return responseService.getSingleResult(selfStudyService.getSelfStudyStudentByMemberName(memberName));
     }
 
     /**
