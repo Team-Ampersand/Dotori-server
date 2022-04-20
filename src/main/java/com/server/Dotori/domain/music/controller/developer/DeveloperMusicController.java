@@ -51,7 +51,7 @@ public class DeveloperMusicController {
     }
 
     /**
-     * 음악 신청목록 조회 컨트롤러 (쿼리스트링으로 날짜검색 조건 설정가능)
+     * 음악 신청목록 조회 컨트롤러 (쿼리스트링으로 날짜검색 조건 설정)
      * @return SingleResult - List - MusicResDto
      */
     @GetMapping("/music")
@@ -61,8 +61,8 @@ public class DeveloperMusicController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public SingleResult<List<MusicResDto>> getAllMusicsDeveloper(@RequestParam(value = "date", required = false) @DateTimeFormat(iso = ISO.DATE) LocalDate date) {
-        return responseService.getSingleResult(musicService.getAllMusic(date));
+    public SingleResult<List<MusicResDto>> getMusicListByDateDeveloper(@RequestParam(value = "date", required = true) @DateTimeFormat(iso = ISO.DATE) LocalDate date) {
+        return responseService.getSingleResult(musicService.getMusicListByDate(date));
     }
 
     /**
