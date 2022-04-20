@@ -1,9 +1,9 @@
 package com.server.Dotori.domain.member.service;
 
 import com.server.Dotori.domain.member.EmailCertificate;
+import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.dto.*;
-import com.server.Dotori.domain.member.enumType.Gender;
-import com.server.Dotori.domain.member.enumType.Role;
+import com.server.Dotori.domain.member.enumType.*;
 import com.server.Dotori.domain.member.repository.email.EmailCertificateRepository;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.global.util.CurrentMemberUtil;
@@ -141,6 +141,30 @@ public class MemberServiceTest {
 
         // then
         assertEquals(true,passwordEncoder.matches(changePasswordDto.getNewPassword(),result));
+    }
+
+    @Test
+    public void sendEmailChangePasswordTest(){
+        // given
+        memberRepository.save(
+                Member.builder()
+                        .memberName("노경준")
+                        .stuNum("1000")
+                        .email("test@test.com")
+                        .password("1234")
+                        .point(1L)
+                        .refreshToken(null)
+                        .gender(Gender.MAN)
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .massage(Massage.CAN)
+                        .build()
+        );
+
+        EmailDto emailDto = new EmailDto("test@test.com");
+
+        // when, then
+        assertDoesNotThrow(() -> memberService.sendEmailChangePassword(emailDto));
     }
 
     @Test
