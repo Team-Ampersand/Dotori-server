@@ -1,9 +1,17 @@
 package com.server.Dotori.domain.member.exception;
 
 import com.server.Dotori.domain.member.EmailCertificate;
+import com.server.Dotori.domain.member.Member;
+import com.server.Dotori.domain.member.dto.EmailDto;
 import com.server.Dotori.domain.member.dto.MemberDto;
+import com.server.Dotori.domain.member.dto.SignInDto;
+import com.server.Dotori.domain.member.dto.SignUpEmailCheckDto;
 import com.server.Dotori.domain.member.enumType.Gender;
+import com.server.Dotori.domain.member.enumType.Massage;
+import com.server.Dotori.domain.member.enumType.Music;
+import com.server.Dotori.domain.member.enumType.SelfStudy;
 import com.server.Dotori.domain.member.repository.email.EmailCertificateRepository;
+import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.member.service.MemberService;
 import com.server.Dotori.global.exception.DotoriException;
 import org.junit.jupiter.api.Assertions;
@@ -21,6 +29,7 @@ public class MemberExceptionTest {
 
     @Autowired private MemberService memberService;
     @Autowired private EmailCertificateRepository emailCertificateRepository;
+    @Autowired private MemberRepository memberRepository;
 
     @Test
     @DisplayName("이미 가입된 이메일 Exception")
@@ -89,5 +98,76 @@ public class MemberExceptionTest {
 
         // then
         Assertions.assertThrows(DotoriException.class, () -> memberService.signup(memberDto));
+    }
+
+    @Test
+    void signup_email_exception(){
+        memberRepository.save(
+                Member.builder()
+                        .memberName("노경준")
+                        .stuNum("3203")
+                        .email("s20018@gsm.hs.kr")
+                        .password("1234")
+                        .point(1L)
+                        .refreshToken(null)
+                        .gender(Gender.MAN)
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .massage(Massage.CAN)
+                        .build()
+        );
+
+        EmailDto emailDto = new EmailDto("s20018@gsm.hs.kr");
+
+        Assertions.assertThrows(DotoriException.class,() -> memberService.sendEmailSignup(emailDto));
+    }
+
+    @Test
+    void signup_email_check_exception(){
+        emailCertificateRepository.save(
+                EmailCertificate.builder()
+                        .email("test@test.com")
+                        .key("123456")
+                        .expiredTime(LocalDateTime.now().plusMinutes(5))
+                        .build()
+        );
+
+        SignUpEmailCheckDto signUpEmailCheckDto = new SignUpEmailCheckDto("000000");
+        Assertions.assertThrows(DotoriException.class,() -> memberService.checkEmailSignup(signUpEmailCheckDto));
+    }
+
+    @Test
+    void signin_member_not_found(){
+        SignInDto signInDto = SignInDto.builder()
+                .email("s20018@gsm.hs.kr")
+                .password("1234")
+                .build();
+
+        Assertions.assertThrows(DotoriException.class,() -> memberService.signIn(signInDto));
+    }
+
+    @Test
+    void signin_password_not_matching(){
+        memberRepository.save(
+                Member.builder()
+                        .memberName("노경준")
+                        .stuNum("3203")
+                        .email("s20018@gsm.hs.kr")
+                        .password("1234")
+                        .point(1L)
+                        .refreshToken(null)
+                        .gender(Gender.MAN)
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .massage(Massage.CAN)
+                        .build()
+        );
+
+        SignInDto signInDto = SignInDto.builder()
+                .email("s20018@gsm.hs.kr")
+                .password("0000")
+                .build();
+
+        Assertions.assertThrows(DotoriException.class,() -> memberService.signIn(signInDto));
     }
 }
