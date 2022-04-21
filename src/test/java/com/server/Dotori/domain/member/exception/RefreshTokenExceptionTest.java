@@ -70,7 +70,8 @@ public class RefreshTokenExceptionTest {
     }
 
     @Test
-    void refreshToken_MEMBER_NOT_FOUND(){
+    @DisplayName("토큰 리프레시 시 토큰 이메일 불일치 Exception 테스트")
+    void refreshToken_memberNotFoundExceptionTest(){
         String refreshToken = jwtTokenProvider.createRefreshToken();
 
         RefreshTokenDto refreshTokenDto = new RefreshTokenDto("s20019@gsm.hs.kr");
@@ -78,7 +79,8 @@ public class RefreshTokenExceptionTest {
     }
 
     @Test
-    void refreshToken_TOKEN_INVALID(){
+    @DisplayName("토큰 리프레시 시 토큰 만료 Exception 테스트")
+    void refreshToken_tokenInvalidExceptionTest(){
         String refreshToken = currentMemberUtil.getCurrentMember().getRefreshToken();
 
         RefreshTokenDto refreshTokenDto = new RefreshTokenDto("s20018@gsm.hs.kr");
@@ -86,7 +88,8 @@ public class RefreshTokenExceptionTest {
     }
 
     @Test
-    void refreshToken_TOKEN_REFRESH_FAIL(){
+    @DisplayName("토큰 리프레시 시 토큰 불일치 Exception 테스트")
+    void refreshToken_tokenRefreshFailExceptionTest(){
         SignInDto signInDto = SignInDto.builder()
                 .email("s20018@gsm.hs.kr")
                 .password("1234")
