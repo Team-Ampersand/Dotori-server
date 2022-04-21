@@ -1,6 +1,5 @@
 package com.server.Dotori.domain.member;
 
-import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.enumType.Music;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.enumType.SelfStudy;
@@ -45,7 +44,5 @@ public class MemberTest {
         Assertions.assertThat(saveMember.getMemberName()).isEqualTo("taemin");
 
     }
-
-
 
 }
