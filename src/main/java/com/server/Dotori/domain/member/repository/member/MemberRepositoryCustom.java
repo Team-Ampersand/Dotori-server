@@ -27,13 +27,9 @@ public interface MemberRepositoryCustom {
 
     void updateUnBanSelfStudy();
 
-    void updateUnBanMassage();
+    void updateMassageStatus();
 
-    void updateMassageStatusCant();
-
-    void updateMassageStatusImpossible();
-
-    List<MassageStudentsDto> findByMassageStatus();
+    List<MassageStudentsDto> findMemberByMassageStatus();
 
     List<Member> findStuInfoByMemberName(String memberName);
 

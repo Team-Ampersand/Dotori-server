@@ -39,6 +39,7 @@ public class BoardServiceImpl implements BoardService {
     public Board createBoard(BoardDto boardDto, MultipartFile multipartFileList) {
         Member currentMember = currentMemberUtil.getCurrentMember();
         String uploadFile = null;
+
         try {
             uploadFile = s3Service.uploadFile(multipartFileList);
             return boardRepository.save(boardDto.saveToEntity(currentMember, uploadFile));
@@ -72,15 +73,12 @@ public class BoardServiceImpl implements BoardService {
     /**
      * 공지사항 상세조회 서비스 로직 (로그인 되어있을 시 사용가능)
      * @param boardId boardId
-     * @exception DotoriException (BOARD_NOT_FOUND) 해당 Id의 공지사항을 찾을 수 없을 때
      * @return BoardGetDto (id, title, content,  roles, createdDate, modifiedDate)
      * @author 배태현
      */
     @Override
     public BoardGetIdDto getBoardById(Long boardId) {
-
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new DotoriException(BOARD_NOT_FOUND));
+        Board board = getBoard(boardId);
 
         ModelMapper modelMapper = new ModelMapper();
         BoardGetIdDto map = modelMapper.map(board, BoardGetIdDto.class);
@@ -93,15 +91,13 @@ public class BoardServiceImpl implements BoardService {
      * 공지사항 수정 서비스 로직 (기자위, 사감쌤, 개발자 권한 사용가능)
      * @param boardId boardId
      * @param boardUpdateDto boardUpdateDto (title, content)
-     * @exception DotoriException (BOARD_NOT_FOUND) 해당 Id의 공지사항을 찾을 수 없을 때
      * @return Board
      * @author 배태현
      */
     @Override
     @Transactional
     public Board updateBoard(Long boardId, BoardDto boardUpdateDto) {
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new DotoriException(BOARD_NOT_FOUND));
+        Board board = getBoard(boardId);
 
         board.updateBoard(boardUpdateDto.getTitle(), boardUpdateDto.getContent());
 
@@ -111,13 +107,11 @@ public class BoardServiceImpl implements BoardService {
     /**
      * 공지사항 삭제 서비스 로직 (기자위, 사감쌤, 개발자 권한 사용가능)
      * @param boardId boardId
-     * @exception DotoriException (BOARD_NOT_FOUND) 해당 Id의 공지사항을 찾을 수 없을 때
      * @author 배태현
      */
     @Override
     public void deleteBoard(Long boardId) {
-        Board board = boardRepository.findById(boardId)
-                .orElseThrow(() -> new DotoriException(BOARD_NOT_FOUND));
+        Board board = getBoard(boardId);
 
         try {
             s3Service.deleteFile(board.getUrl().substring(54));
@@ -125,5 +119,17 @@ public class BoardServiceImpl implements BoardService {
         } catch (NullPointerException e) {
             boardRepository.deleteById(board.getId());
         }
+    }
+
+    /**
+     * board가 존재하는지 check 해준 뒤 존재하다면 Board를 반환해주는 메서드
+     * @param boardId
+     * @exception DotoriException (BOARD_NOT_FOUND) 해당 Id의 공지사항을 찾을 수 없을 때
+     * @return Board Entity
+     * @author 배태현
+     */
+    private Board getBoard(Long boardId) {
+        return boardRepository.findById(boardId)
+                .orElseThrow(() -> new DotoriException(BOARD_NOT_FOUND));
     }
 }

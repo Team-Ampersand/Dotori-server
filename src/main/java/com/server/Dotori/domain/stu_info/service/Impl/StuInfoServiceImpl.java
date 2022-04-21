@@ -65,8 +65,7 @@ public class StuInfoServiceImpl implements StuInfoService {
     @Override
     @Transactional
     public void updateRole(RoleUpdateDto roleUpdateDto) {
-        Member member = memberRepository.findById(roleUpdateDto.getReceiverId())
-                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
+        Member member = getMember(roleUpdateDto.getReceiverId());
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication(); //기존 계정의 권한정보를 가지고온다.
         List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
@@ -93,8 +92,7 @@ public class StuInfoServiceImpl implements StuInfoService {
     @Override
     @Transactional
     public void updateStuNum(StuNumUpdateDto stuNumUpdateDto) {
-        Member findMember = memberRepository.findById(stuNumUpdateDto.getReceiverId())
-                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
+        Member findMember = getMember(stuNumUpdateDto.getReceiverId());
 
         if (memberRepository.existsByStuNum(stuNumUpdateDto.getStuNum()))
             throw new DotoriException(MEMBER_ALREADY_JOIN_THIS_STUNUM);
@@ -111,11 +109,9 @@ public class StuInfoServiceImpl implements StuInfoService {
     @Override
     @Transactional
     public void updateMemberName(MemberNameUpdateDto memberNameUpdateDto) {
-        Member findMember = memberRepository.findById(memberNameUpdateDto.getReceiverId())
-                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
+        Member findMember = getMember(memberNameUpdateDto.getReceiverId());
 
         findMember.updateMemberName(memberNameUpdateDto.getMemberName());
-
     }
 
     /**
@@ -127,8 +123,7 @@ public class StuInfoServiceImpl implements StuInfoService {
     @Override
     @Transactional
     public void updateGender(GenderUpdateDto genderUpdateDto) {
-        Member member = memberRepository.findById(genderUpdateDto.getReceiverId())
-                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
+        Member member = getMember(genderUpdateDto.getReceiverId());
 
         member.updateMemberGender(genderUpdateDto.getGender());
     }
@@ -145,5 +140,16 @@ public class StuInfoServiceImpl implements StuInfoService {
         List<Member> findMembers = memberRepository.findStuInfoByMemberName(memberName);
         if (findMembers.isEmpty()) throw new DotoriException(MEMBER_NOT_FOUND);
         return objectMapperUtils.mapAll(findMembers, StudentInfoDto.class);
+    }
+
+    /**
+     * 회원이 존재하는지 체크하고 회원을 반환해주는 메서드
+     * @param receiverId memberId
+     * @exception DotoriException (MEMBER_NOT_FOUND) id로 회원을 찾지 못했을 때
+     * @return Member Entity
+     */
+    private Member getMember(Long receiverId) {
+        return memberRepository.findById(receiverId)
+                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
     }
 }

@@ -7,4 +7,6 @@ import java.util.List;
 public interface SelfStudyRepositoryCustom {
 
     List<SelfStudyStudentsDto> findByCreateDate();
+
+    SelfStudyStudentsDto findByMemberName(String memberName);
 }

@@ -1,9 +1,11 @@
 package com.server.Dotori.domain.member.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.validation.constraints.Size;
 
+@AllArgsConstructor
 @Getter
 public class ChangePasswordEmailCheckDto {
 

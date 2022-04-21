@@ -10,7 +10,6 @@ import com.server.Dotori.domain.music.Music;
 import com.server.Dotori.domain.music.dto.MusicApplicationDto;
 import com.server.Dotori.domain.music.dto.MusicResDto;
 import com.server.Dotori.domain.music.repository.MusicRepository;
-import com.server.Dotori.domain.music.service.MusicService;
 import com.server.Dotori.global.exception.DotoriException;
 import com.server.Dotori.global.util.CurrentMemberUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,7 +62,9 @@ class MusicServiceTest {
                 .gender(Gender.MAN)
                 .build();
         memberRepository.save(
-                memberDto.toEntity(memberDto.getPassword())
+                memberDto.toEntity(
+                        passwordEncoder.encode(memberDto.getPassword())
+                )
         );
         System.out.println("======== saved =========");
 
@@ -109,11 +111,42 @@ class MusicServiceTest {
                         DayOfWeek.FRIDAY // 금요일
                 )
         );
+
+        assertThrows(
+                DotoriException.class,
+                () -> musicService.musicApplication(
+                        MusicApplicationDto.builder()
+                                .musicUrl("https://www.youtube.com/watch?v=6h9qmKWK6Io")
+                                .build(),
+                        DayOfWeek.SATURDAY // 금요일
+                )
+        );
+    }
+    
+    @Test
+    @DisplayName("음악 신청 시 음악 신청 상태가 CAN이 아닐 때 예외가 잘 터지나요 ?")
+    public void musicApplicationMusicStatusException() {
+        //given
+        Member currentMember = currentMemberUtil.getCurrentMember();
+
+        //when
+        currentMember.updateMusic(APPLIED);
+
+        //then
+        assertThrows(
+                DotoriException.class,
+                () -> musicService.musicApplication(
+                        MusicApplicationDto.builder()
+                                .musicUrl("https://www.youtube.com/watch?v=6h9qmKWK6Io")
+                                .build(),
+                        DayOfWeek.MONDAY // 금요일
+                )
+        );
     }
 
     @Test
     @DisplayName("신청된 모든 음악 목록이 잘 조회되는지 확인하는 테스트")
-    public void getAllMusicTest() {
+    public void getMusicListByDateTest() {
         //given
         Member currentMember = currentMemberUtil.getCurrentMember();
 
@@ -127,10 +160,20 @@ class MusicServiceTest {
         musicRepository.saveAll(musicList);
 
         //when
-        List<MusicResDto> getAllMusic = musicService.getAllMusic(null);
+        List<MusicResDto> musicListByDate = musicService.getMusicListByDate(LocalDate.now());
 
         //then
-        assertEquals(getAllMusic.size(), 30);
+        assertEquals(musicListByDate.size(), 30);
+    }
+
+    @Test
+    @DisplayName("음악 목록이 비어있을 때 예외가 잘 터지나요 ?")
+    public void getMusicListByDateExceptionTest() {
+        //when //then
+        assertThrows(
+                DotoriException.class,
+                () -> musicService.getMusicListByDate(LocalDate.now())
+        );
     }
 
     @Test
@@ -153,6 +196,16 @@ class MusicServiceTest {
 
         //then
         assertEquals(9, musicRepository.findAll().size());
+    }
+
+    @Test
+    @DisplayName("해당하는 음악을 찾을 수 없을 때 예외가 제대로 터지나요 ?")
+    public void musicNotFoundExceptionTest() {
+        //when //then
+        assertThrows(
+                DotoriException.class,
+                () -> musicService.deleteMusic(0L)
+        );
     }
 
     @Test

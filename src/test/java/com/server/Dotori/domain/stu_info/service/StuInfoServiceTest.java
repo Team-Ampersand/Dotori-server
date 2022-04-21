@@ -4,6 +4,7 @@ import com.server.Dotori.domain.member.dto.MemberDto;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.stu_info.dto.*;
+import com.server.Dotori.global.exception.DotoriException;
 import com.server.Dotori.global.util.CurrentMemberUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,8 +24,7 @@ import java.util.List;
 
 import static com.server.Dotori.domain.member.enumType.Gender.MAN;
 import static com.server.Dotori.domain.member.enumType.Gender.WOMAN;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -87,6 +87,16 @@ class StuInfoServiceTest {
     }
 
     @Test
+    @DisplayName("해당 반에 해당하는 학생정보가 없을 때 예외가 터지나요 ?")
+    public void findAllStudentInfoExceptionTest() {
+        //when //then
+        assertThrows(
+                DotoriException.class,
+                () -> stuInfoService.getStudentInfo(0L)
+        );
+    }
+
+    @Test
     @DisplayName("권한이 제대로 변경되나요?")
     public void updateRole() {
         //given //when
@@ -105,6 +115,21 @@ class StuInfoServiceTest {
     }
 
     @Test
+    @DisplayName("권한을 변경할 때 회원을 찾지 못하면 예외가 터지나요 ?")
+    public void updateRoleExceptionTest() {
+        //when //then
+        assertThrows(
+                DotoriException.class,
+                () -> stuInfoService.updateRole(
+                        RoleUpdateDto.builder()
+                        .receiverId(0L)
+                        .roles(Collections.singletonList(Role.ROLE_COUNCILLOR))
+                        .build()
+                )
+        );
+    }
+
+    @Test
     @DisplayName("학번이 잘 변경되나요?")
     public void updateStuNum() {
         //given //when
@@ -117,6 +142,36 @@ class StuInfoServiceTest {
 
         //then
         assertEquals("1111", memberRepository.findById(currentMemberUtil.getCurrentMember().getId()).get().getStuNum());
+    }
+
+    @Test
+    @DisplayName("학번을 변경할 때 회원의 id로 회원을 찾지 못했을 때 예외가 터지나요 ?")
+    public void updateStuNumException1Test() {
+        //when //then
+        assertThrows(
+                DotoriException.class,
+                () -> stuInfoService.updateStuNum(
+                        StuNumUpdateDto.builder()
+                                .receiverId(0L)
+                                .stuNum("1111")
+                                .build()
+                )
+        );
+    }
+    
+    @Test
+    @DisplayName("학번을 변경할 때 해당 학번에 해당하는 학생이 이미 있으면 예외가 터지나요 ?")
+    public void updateStuNumException2Test() {
+        //when //then
+        assertThrows(
+                DotoriException.class,
+                () -> stuInfoService.updateStuNum(
+                        StuNumUpdateDto.builder()
+                                .receiverId(currentMemberUtil.getCurrentMember().getId())
+                                .stuNum("2409")
+                                .build()
+                )
+        );
     }
 
     @Test
@@ -157,5 +212,15 @@ class StuInfoServiceTest {
 
         //then
         assertEquals("배태현", stuInfoByMemberName.get(0).getMemberName());
+    }
+
+    @Test
+    @DisplayName("이름으로 학생정보를 검색했을 때 결과가 없다면 예외가 터지나요 ?")
+    public void searchMemberByMemberNameExceptionTest() {
+        //when //then
+        assertThrows(
+                DotoriException.class,
+                () -> stuInfoService.getStuInfoByMemberName("없는사람")
+        );
     }
 }

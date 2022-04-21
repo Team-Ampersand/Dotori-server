@@ -12,11 +12,9 @@ public interface MusicService {
 
     Music musicApplication(MusicApplicationDto musicApplicationDto, DayOfWeek dayofWeek);
 
-    List<MusicResDto> getAllMusic(LocalDate date);
+    List<MusicResDto> getMusicListByDate(LocalDate date);
 
     void deleteMusic(Long musicId);
   
     void updateMemberMusicStatus();
-
-    void monthMusicDeleteAll();
 }

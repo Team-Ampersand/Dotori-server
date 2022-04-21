@@ -130,6 +130,8 @@ jacocoTestReport {
 			fileTree(dir: it, exclude: [
 					'**/exception/**' // 테스트 커버리지 측정 대상에서 제거
 					,'**/dto/**' // 테스트 커버리지 측정 대상에서 제거
+					,'**/controller/**' // 권한별 컨트롤러 구조 변경 후 컨트롤러 테스트 코드 작성 예정
+					,'**/repository/**'
 					,'**/config/**'
 					,'**/health_check/**'
 					,'**/Dotori/DotoriApplication*'

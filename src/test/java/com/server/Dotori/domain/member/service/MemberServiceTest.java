@@ -1,10 +1,13 @@
 package com.server.Dotori.domain.member.service;
 
+import com.server.Dotori.domain.member.EmailCertificate;
+import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.dto.*;
-import com.server.Dotori.domain.member.enumType.Gender;
-import com.server.Dotori.domain.member.enumType.Role;
+import com.server.Dotori.domain.member.enumType.*;
+import com.server.Dotori.domain.member.repository.email.EmailCertificateRepository;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.global.util.CurrentMemberUtil;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +39,9 @@ public class MemberServiceTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private EmailCertificateRepository emailCertificateRepository;
 
     @BeforeEach
     @DisplayName("로그인 되어있는 유저를 확인하는 테스트")
@@ -67,6 +74,7 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("회원가입 테스트")
     void signup(){
         // given
         MemberDto memberDto = MemberDto.builder()
@@ -84,8 +92,31 @@ public class MemberServiceTest {
         assertThat(result).isEqualTo(memberRepository.findByEmail(memberDto.getEmail()).orElseThrow().getId());
     }
 
+    @Test
+    @DisplayName("회원가입 시 이메일 인증 보내기 테스트")
+    void sendEmailSignup(){
+        EmailDto emailDto = new EmailDto("test@test.com");
+
+        Assertions.assertDoesNotThrow(() -> memberService.sendEmailSignup(emailDto));
+    }
 
     @Test
+    @DisplayName("회원가입 시 이메일 인증 확인 테스트")
+    void checkEmailSignup(){
+        emailCertificateRepository.save(
+                EmailCertificate.builder()
+                        .email("test@test.com")
+                        .key("123456")
+                        .expiredTime(LocalDateTime.now().plusMinutes(5))
+                        .build()
+        );
+
+        SignUpEmailCheckDto signUpEmailCheckDto = new SignUpEmailCheckDto("123456");
+        Assertions.assertDoesNotThrow(() -> memberService.checkEmailSignup(signUpEmailCheckDto));
+    }
+
+    @Test
+    @DisplayName("로그인 테스트")
     void signin(){
         // given
         SignInDto memberLoginDto = SignInDto.builder()
@@ -102,6 +133,7 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("비밀번호 변경 테스트")
     void passwordChange(){
         // given
         ChangePasswordDto changePasswordDto = ChangePasswordDto.builder()
@@ -117,7 +149,88 @@ public class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("로그아웃")
+    @DisplayName("비밀번호 변경 시 이메일 인증 보내기 테스트")
+    void sendEmailChangePasswordTest(){
+        // given
+        memberRepository.save(
+                Member.builder()
+                        .memberName("노경준")
+                        .stuNum("1000")
+                        .email("test@test.com")
+                        .password("1234")
+                        .point(1L)
+                        .refreshToken(null)
+                        .gender(Gender.MAN)
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .massage(Massage.CAN)
+                        .build()
+        );
+
+        EmailDto emailDto = new EmailDto("test@test.com");
+
+        // when, then
+        assertDoesNotThrow(() -> memberService.sendEmailChangePassword(emailDto));
+    }
+
+    @Test
+    @DisplayName("비밀번호 변경 시 이메일 인증 확인 테스트")
+    void checkEmailChangePassword(){
+        // given
+        memberRepository.save(
+                Member.builder()
+                        .memberName("노경준")
+                        .stuNum("1000")
+                        .email("test@test.com")
+                        .password("1234")
+                        .point(1L)
+                        .refreshToken(null)
+                        .gender(Gender.MAN)
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .massage(Massage.CAN)
+                        .build()
+        );
+
+        emailCertificateRepository.save(
+                EmailCertificate.builder()
+                        .member(null)
+                        .email("test@test.com")
+                        .key("123456")
+                        .expiredTime(LocalDateTime.now().plusMinutes(5))
+                        .build()
+        );
+
+        ChangePasswordEmailCheckDto changePasswordEmailCheckDto = new ChangePasswordEmailCheckDto("123456","12345");
+
+        assertDoesNotThrow(() -> memberService.checkEmailChangePassword(changePasswordEmailCheckDto));
+    }
+
+    @Test
+    @DisplayName("성별 변경 테스트")
+    void setGender(){
+        memberRepository.save(
+                Member.builder()
+                        .memberName("노경준")
+                        .stuNum("1000")
+                        .email("test@test.com")
+                        .password("1234")
+                        .point(1L)
+                        .refreshToken(null)
+                        .gender(Gender.PENDING)
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .massage(Massage.CAN)
+                        .build()
+        );
+
+        SetGenderDto setGenderDto = new SetGenderDto("test@test.com",Gender.MAN);
+
+        assertDoesNotThrow(() -> memberService.setGender(setGenderDto));
+    }
+
+    @Test
+    @DisplayName("로그아웃 테스트")
     void logout(){
         // when
         SignInDto signInDto = SignInDto.builder()
@@ -134,7 +247,7 @@ public class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("회원탈퇴")
+    @DisplayName("회원탈퇴 테스트")
     void delete(){
         // when
         SignInDto memberLoginDto = SignInDto.builder()
@@ -151,4 +264,5 @@ public class MemberServiceTest {
         // then
         assertThat(memberRepository.findByEmail(withdrawlDto.getEmail())).isEqualTo(Optional.empty());
     }
+
 }

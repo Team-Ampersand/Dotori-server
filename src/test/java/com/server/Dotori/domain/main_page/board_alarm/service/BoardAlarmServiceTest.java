@@ -7,6 +7,7 @@ import com.server.Dotori.domain.main_page.service.BoardAlarmService;
 import com.server.Dotori.domain.member.dto.MemberDto;
 import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
+import com.server.Dotori.global.exception.DotoriException;
 import com.server.Dotori.global.util.CurrentMemberUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -26,6 +27,7 @@ import java.util.List;
 import static com.server.Dotori.domain.member.enumType.Role.ROLE_ADMIN;
 import static com.server.Dotori.domain.member.enumType.Role.ROLE_MEMBER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Transactional
 @SpringBootTest
@@ -86,5 +88,15 @@ class BoardAlarmServiceTest {
         assertEquals("도토리 공지사항", boardAlarmInfo.getTitle());
         assertEquals(ROLE_MEMBER.name(), boardAlarmInfo.getWriterRole().get(0).name());
         assertEquals(LocalDate.now(), boardAlarmInfo.getLastBoardWriteDate());
+    }
+
+    @Test
+    @DisplayName("가장 마지막에 등록된 공지사항 즉, 공지사항들이 비어있을 때 예외가 터지나요 ?")
+    public void boardAlarmExceptionTest() {
+        //when //then
+        assertThrows(
+                DotoriException.class,
+                () -> boardAlarmService.getBoardAlarmInfo()
+        );
     }
 }
