@@ -74,6 +74,7 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("회원가입 테스트")
     void signup(){
         // given
         MemberDto memberDto = MemberDto.builder()
@@ -92,6 +93,7 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("회원가입 시 이메일 인증 보내기 테스트")
     void sendEmailSignup(){
         EmailDto emailDto = new EmailDto("test@test.com");
 
@@ -99,6 +101,7 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("회원가입 시 이메일 인증 확인 테스트")
     void checkEmailSignup(){
         emailCertificateRepository.save(
                 EmailCertificate.builder()
@@ -113,6 +116,7 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("로그인 테스트")
     void signin(){
         // given
         SignInDto memberLoginDto = SignInDto.builder()
@@ -129,6 +133,7 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("비밀번호 변경 테스트")
     void passwordChange(){
         // given
         ChangePasswordDto changePasswordDto = ChangePasswordDto.builder()
@@ -144,6 +149,7 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("비밀번호 변경 시 이메일 인증 보내기 테스트")
     void sendEmailChangePasswordTest(){
         // given
         memberRepository.save(
@@ -168,6 +174,7 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("비밀번호 변경 시 이메일 인증 확인 테스트")
     void checkEmailChangePassword(){
         // given
         memberRepository.save(
@@ -200,6 +207,7 @@ public class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("성별 변경 테스트")
     void setGender(){
         memberRepository.save(
                 Member.builder()
@@ -222,7 +230,7 @@ public class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("로그아웃")
+    @DisplayName("로그아웃 테스트")
     void logout(){
         // when
         SignInDto signInDto = SignInDto.builder()
@@ -239,7 +247,7 @@ public class MemberServiceTest {
     }
 
     @Test
-    @DisplayName("회원탈퇴")
+    @DisplayName("회원탈퇴 테스트")
     void delete(){
         // when
         SignInDto memberLoginDto = SignInDto.builder()
@@ -256,6 +264,5 @@ public class MemberServiceTest {
         // then
         assertThat(memberRepository.findByEmail(withdrawlDto.getEmail())).isEqualTo(Optional.empty());
     }
-
 
 }
