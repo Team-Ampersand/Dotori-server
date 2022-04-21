@@ -241,4 +241,100 @@ public class MemberExceptionTest {
         // when, then
         assertThrows(DotoriException.class,() -> memberService.sendEmailChangePassword(emailDto));
     }
+
+    @Test
+    void MEMBER_AUTHENTICATION_KEY_NOT_MATCHING(){
+        // given
+        memberRepository.save(
+                Member.builder()
+                        .memberName("노경준")
+                        .stuNum("1000")
+                        .email("test@test.com")
+                        .password("1234")
+                        .point(1L)
+                        .refreshToken(null)
+                        .gender(Gender.MAN)
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .massage(Massage.CAN)
+                        .build()
+        );
+
+        emailCertificateRepository.save(
+                EmailCertificate.builder()
+                        .member(null)
+                        .email("test@test.com")
+                        .key("123456")
+                        .expiredTime(LocalDateTime.now().plusMinutes(5))
+                        .build()
+        );
+
+        ChangePasswordEmailCheckDto changePasswordEmailCheckDto = new ChangePasswordEmailCheckDto("000000","12345");
+
+        assertThrows(DotoriException.class, ()-> memberService.checkEmailChangePassword(changePasswordEmailCheckDto));
+    }
+
+    @Test
+    void checkEmail_MEMBER_NOT_FOUND(){
+        // given
+        memberRepository.save(
+                Member.builder()
+                        .memberName("노경준")
+                        .stuNum("1000")
+                        .email("test@test.com")
+                        .password("1234")
+                        .point(1L)
+                        .refreshToken(null)
+                        .gender(Gender.MAN)
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .massage(Massage.CAN)
+                        .build()
+        );
+
+        emailCertificateRepository.save(
+                EmailCertificate.builder()
+                        .member(null)
+                        .email("test2@test.com")
+                        .key("123456")
+                        .expiredTime(LocalDateTime.now().plusMinutes(5))
+                        .build()
+        );
+
+        ChangePasswordEmailCheckDto changePasswordEmailCheckDto = new ChangePasswordEmailCheckDto("123456","12345");
+
+        assertThrows(DotoriException.class, ()-> memberService.checkEmailChangePassword(changePasswordEmailCheckDto));
+    }
+
+    @Test
+    void checkEmail_MEMBER_OVER_CERTIFICATE_TIME(){
+// given
+        memberRepository.save(
+                Member.builder()
+                        .memberName("노경준")
+                        .stuNum("1000")
+                        .email("test@test.com")
+                        .password("1234")
+                        .point(1L)
+                        .refreshToken(null)
+                        .gender(Gender.MAN)
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .massage(Massage.CAN)
+                        .build()
+        );
+
+        emailCertificateRepository.save(
+                EmailCertificate.builder()
+                        .member(null)
+                        .email("test@test.com")
+                        .key("123456")
+                        .expiredTime(LocalDateTime.now())
+                        .build()
+        );
+
+        ChangePasswordEmailCheckDto changePasswordEmailCheckDto = new ChangePasswordEmailCheckDto("123456","12345");
+
+        assertThrows(DotoriException.class, ()-> memberService.checkEmailChangePassword(changePasswordEmailCheckDto));
+    }
 }
