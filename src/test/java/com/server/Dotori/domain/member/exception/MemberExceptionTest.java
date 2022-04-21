@@ -67,8 +67,8 @@ public class MemberExceptionTest {
     }
 
     @Test
-    @DisplayName("이미 가입된 이메일 Exception")
-    void signup_DataIntegrityViolationException(){
+    @DisplayName("회원가입 동일한 이메일 Exception 테스트")
+    void signup_sameEmailExceptionTest(){
         // given
         MemberDto memberDto1 = MemberDto.builder()
                 .memberName("노경준")
@@ -94,8 +94,8 @@ public class MemberExceptionTest {
     }
 
     @Test
-    @DisplayName("인증이 되지 않은 유저 Exception")
-    void signup_MEMBER_EMAIL_HAS_NOT_BEEN_CERTIFICATE_Exception(){
+    @DisplayName("회원가입 시 이메일 인증이 되지 않은 멤버 Exception 테스트")
+    void signup_emailUnauthorizedMemberExceptionTest(){
         // given
         emailCertificateRepository.save(
                 EmailCertificate.builder()
@@ -119,8 +119,8 @@ public class MemberExceptionTest {
     }
 
     @Test
-    @DisplayName("이미 가입된 Email 과 stuNum Exception")
-    void signup_existsByEmailAndStuNumException(){
+    @DisplayName("회원가입과 이미 가입된 Email 과 stuNum Exception 테스트")
+    void signup_existsByEmailAndStuNumExceptionTest(){
         // given
         MemberDto memberDto = MemberDto.builder()
                 .memberName("노경준")
@@ -138,29 +138,16 @@ public class MemberExceptionTest {
     }
 
     @Test
-    void signup_email_exception(){
-        memberRepository.save(
-                Member.builder()
-                        .memberName("노경준")
-                        .stuNum("1000")
-                        .email("s20019@gsm.hs.kr")
-                        .password("1234")
-                        .point(1L)
-                        .refreshToken(null)
-                        .gender(Gender.MAN)
-                        .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
-                        .massage(Massage.CAN)
-                        .build()
-        );
-
+    @DisplayName("회원가입 이메일 인증 시 동일한 이메일 Exception 테스트")
+    void sendEmailSignup_emailNotExceptionTest(){
         EmailDto emailDto = new EmailDto("s20018@gsm.hs.kr");
 
         Assertions.assertThrows(DotoriException.class,() -> memberService.sendEmailSignup(emailDto));
     }
 
     @Test
-    void signup_email_check_exception(){
+    @DisplayName("회원가입 이메일 인증 시 이메일 인증번호 불일치 Exception 테스트")
+    void sendEmailSignup_keyNotSameExceptionTest(){
         emailCertificateRepository.save(
                 EmailCertificate.builder()
                         .email("test@test.com")
@@ -174,7 +161,8 @@ public class MemberExceptionTest {
     }
 
     @Test
-    void signin_member_not_found(){
+    @DisplayName("로그인 시 이메일 불일치 Exception 테스트")
+    void signin_emailNotMatchingExceptionTest(){
         SignInDto signInDto = SignInDto.builder()
                 .email("s20019@gsm.hs.kr")
                 .password("1234")
@@ -184,22 +172,8 @@ public class MemberExceptionTest {
     }
 
     @Test
-    void signin_password_not_matching(){
-        memberRepository.save(
-                Member.builder()
-                        .memberName("노경준")
-                        .stuNum("1000")
-                        .email("s20019@gsm.hs.kr")
-                        .password("1234")
-                        .point(1L)
-                        .refreshToken(null)
-                        .gender(Gender.MAN)
-                        .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
-                        .massage(Massage.CAN)
-                        .build()
-        );
-
+    @DisplayName("로그인 시 비밀번호 불일치 Exception 테스트")
+    void signin_passwordNotMatchingExceptionTest(){
         SignInDto signInDto = SignInDto.builder()
                 .email("s20018@gsm.hs.kr")
                 .password("0000")
@@ -209,22 +183,8 @@ public class MemberExceptionTest {
     }
 
     @Test
-    void changePasswordException(){
-        memberRepository.save(
-                Member.builder()
-                        .memberName("노경준")
-                        .stuNum("1000")
-                        .email("s20019@gsm.hs.kr")
-                        .password("1234")
-                        .point(1L)
-                        .refreshToken(null)
-                        .gender(Gender.MAN)
-                        .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
-                        .massage(Massage.CAN)
-                        .build()
-        );
-
+    @DisplayName("비밀번호 변경 시 비밀번호 불일치 Exception 테스트")
+    void changePassword_passwordNotMatchingExceptionTest(){
         ChangePasswordDto changePasswordDto = ChangePasswordDto.builder()
                 .currentPassword("0000")
                 .newPassword("12345")
@@ -234,7 +194,8 @@ public class MemberExceptionTest {
     }
 
     @Test
-    public void sendEmailChangePasswordTest(){
+    @DisplayName("비밀번호 변경 시 이메일 인증에서 멤버를 찾을 수 없는 Exception 테스트")
+    public void sendEmailChangePassword_MemberNotFoundTest(){
         // given
         EmailDto emailDto = new EmailDto("test@test.com");
 
@@ -243,7 +204,8 @@ public class MemberExceptionTest {
     }
 
     @Test
-    void MEMBER_AUTHENTICATION_KEY_NOT_MATCHING(){
+    @DisplayName("비밀번호 변경 시 이메일 인증 키 불일치 Exception 테스트")
+    void sendEmailChangePassword_keyNotMatchingExceptionTest(){
         // given
         memberRepository.save(
                 Member.builder()
@@ -275,7 +237,8 @@ public class MemberExceptionTest {
     }
 
     @Test
-    void checkEmail_MEMBER_NOT_FOUND(){
+    @DisplayName("비밀번호 변경 시 이메일 비밀번호 불일치 Exception 테스트")
+    void checkEmailPasswordChange_passwordNotMatchingExceptionTest(){
         // given
         memberRepository.save(
                 Member.builder()
@@ -307,23 +270,8 @@ public class MemberExceptionTest {
     }
 
     @Test
-    void checkEmail_MEMBER_OVER_CERTIFICATE_TIME(){
-// given
-        memberRepository.save(
-                Member.builder()
-                        .memberName("노경준")
-                        .stuNum("1000")
-                        .email("test@test.com")
-                        .password("1234")
-                        .point(1L)
-                        .refreshToken(null)
-                        .gender(Gender.MAN)
-                        .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
-                        .massage(Massage.CAN)
-                        .build()
-        );
-
+    @DisplayName("비밀번호 변경 시 이메일 인증기간 만료 Exception 테스트")
+    void checkEmailPasswordChange_authTimeExpiredExceptionTest(){
         emailCertificateRepository.save(
                 EmailCertificate.builder()
                         .member(null)
@@ -339,7 +287,8 @@ public class MemberExceptionTest {
     }
 
     @Test
-    void delete_MEMBER_NOT_FOUND(){
+    @DisplayName("회원탈퇴 시 찾을 수 없는 이메일 Exception 테스트")
+    void delete_EmailNotFoundExceptionTest(){
         WithdrawlDto withdrawlDto = WithdrawlDto.builder()
                 .email("test@test.com")
                 .password("1234")
@@ -349,22 +298,8 @@ public class MemberExceptionTest {
     }
 
     @Test
-    void delete_MEMBER_PASSWORD_NOT_MATCHING(){
-        // given
-        memberRepository.save(
-                Member.builder()
-                        .memberName("노경준")
-                        .stuNum("1000")
-                        .email("test@test.com")
-                        .password("1234")
-                        .point(1L)
-                        .refreshToken(null)
-                        .gender(Gender.MAN)
-                        .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
-                        .massage(Massage.CAN)
-                        .build()
-        );
+    @DisplayName("회원탈퇴 시 비밀번호 불일치 Exception 테스트")
+    void delete_PasswordNotMatchingExceptionTest(){
         WithdrawlDto withdrawlDto = WithdrawlDto.builder()
                 .email("test@test.com")
                 .password("0000")
@@ -374,7 +309,8 @@ public class MemberExceptionTest {
     }
 
     @Test
-    void setGender_MEMBER_NOT_FOUND(){
+    @DisplayName("성별 변경 시 이메일 불일치 Exception 테스트")
+    void setGender_emailNotMatchingExceptionTest(){
         SetGenderDto setGenderDto = new SetGenderDto("test@test.com",Gender.MAN);
 
         assertThrows(DotoriException.class, () -> memberService.setGender(setGenderDto));
