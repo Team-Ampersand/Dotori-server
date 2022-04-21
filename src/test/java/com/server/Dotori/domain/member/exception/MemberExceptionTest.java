@@ -272,6 +272,22 @@ public class MemberExceptionTest {
     @Test
     @DisplayName("비밀번호 변경 시 이메일 인증기간 만료 Exception 테스트")
     void checkEmailPasswordChange_authTimeExpiredExceptionTest(){
+        // given
+        memberRepository.save(
+                Member.builder()
+                        .memberName("노경준")
+                        .stuNum("1000")
+                        .email("test@test.com")
+                        .password("1234")
+                        .point(1L)
+                        .refreshToken(null)
+                        .gender(Gender.MAN)
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .massage(Massage.CAN)
+                        .build()
+        );
+
         emailCertificateRepository.save(
                 EmailCertificate.builder()
                         .member(null)
@@ -301,7 +317,7 @@ public class MemberExceptionTest {
     @DisplayName("회원탈퇴 시 비밀번호 불일치 Exception 테스트")
     void delete_PasswordNotMatchingExceptionTest(){
         WithdrawlDto withdrawlDto = WithdrawlDto.builder()
-                .email("test@test.com")
+                .email("s20018@gsm.hs.kr")
                 .password("0000")
                 .build();
 
