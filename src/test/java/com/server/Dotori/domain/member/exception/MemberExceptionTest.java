@@ -337,4 +337,46 @@ public class MemberExceptionTest {
 
         assertThrows(DotoriException.class, ()-> memberService.checkEmailChangePassword(changePasswordEmailCheckDto));
     }
+
+    @Test
+    void delete_MEMBER_NOT_FOUND(){
+        WithdrawlDto withdrawlDto = WithdrawlDto.builder()
+                .email("test@test.com")
+                .password("1234")
+                .build();
+
+        assertThrows(DotoriException.class, () -> memberService.withdrawal(withdrawlDto));
+    }
+
+    @Test
+    void delete_MEMBER_PASSWORD_NOT_MATCHING(){
+        // given
+        memberRepository.save(
+                Member.builder()
+                        .memberName("노경준")
+                        .stuNum("1000")
+                        .email("test@test.com")
+                        .password("1234")
+                        .point(1L)
+                        .refreshToken(null)
+                        .gender(Gender.MAN)
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .massage(Massage.CAN)
+                        .build()
+        );
+        WithdrawlDto withdrawlDto = WithdrawlDto.builder()
+                .email("test@test.com")
+                .password("0000")
+                .build();
+
+        assertThrows(DotoriException.class, () -> memberService.withdrawal(withdrawlDto));
+    }
+
+    @Test
+    void setGender_MEMBER_NOT_FOUND(){
+        SetGenderDto setGenderDto = new SetGenderDto("test@test.com",Gender.MAN);
+
+        assertThrows(DotoriException.class, () -> memberService.setGender(setGenderDto));
+    }
 }

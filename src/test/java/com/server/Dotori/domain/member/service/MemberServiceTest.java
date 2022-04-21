@@ -200,6 +200,28 @@ public class MemberServiceTest {
     }
 
     @Test
+    void setGender(){
+        memberRepository.save(
+                Member.builder()
+                        .memberName("노경준")
+                        .stuNum("1000")
+                        .email("test@test.com")
+                        .password("1234")
+                        .point(1L)
+                        .refreshToken(null)
+                        .gender(Gender.PENDING)
+                        .selfStudy(SelfStudy.CAN)
+                        .music(Music.CAN)
+                        .massage(Massage.CAN)
+                        .build()
+        );
+
+        SetGenderDto setGenderDto = new SetGenderDto("test@test.com",Gender.MAN);
+
+        assertDoesNotThrow(() -> memberService.setGender(setGenderDto));
+    }
+
+    @Test
     @DisplayName("로그아웃")
     void logout(){
         // when
