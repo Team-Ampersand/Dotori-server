@@ -67,7 +67,8 @@ public class RefreshTokenServiceTest {
     }
 
     @Test
-    void refreshToken(){
+    @DisplayName("토큰 리프레시 테스트")
+    void refreshTokenTest(){
         SignInDto signInDto = SignInDto.builder()
                 .email("s20018@gsm.hs.kr")
                 .password("1234")
