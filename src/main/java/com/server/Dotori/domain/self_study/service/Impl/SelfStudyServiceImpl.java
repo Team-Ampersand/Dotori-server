@@ -210,6 +210,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * @param selfStudy selfStudyStatus
      * @return boolean
      * @exception DotoriException (SELF_STUDY_ALREADY) 자습신청 상태가 CAN(가능)이 아닐 때 (자습신청을 할 수 없는 상태)
+     * @exception DotoriException (SELF_STUDY_CANT_CANCEL) 자습신청 상태가 APPLIED(신청됨)이 아닐 때 (자습신청을 취소할 수 없는 상태)
      * @author 배태현
      */
     private boolean isVerifiedSelfStudy(com.server.Dotori.domain.member.enumType.SelfStudy selfStudy, ErrorCode errorCode) {
