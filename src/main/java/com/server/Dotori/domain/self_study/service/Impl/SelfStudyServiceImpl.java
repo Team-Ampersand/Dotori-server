@@ -41,8 +41,6 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * 자습신청 할 시 '신청함'으로 상태변경 <br>
      * @param dayOfWeek 현재 요일
      * @param hour 현재 시
-     * @exception DotoriException (SELF_STUDY_ALREADY) 자습신청 상태가 CAN(가능)이 아닐 때 (자습신청을 할 수 없는 상태)
-     * @exception DotoriException (SELF_STUDY_OVER) 자습신청 인원이 50명이 넘었을 때
      * @author 배태현
      */
     @Override
@@ -51,21 +49,19 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         validDayOfWeekAndHour(dayOfWeek, hour, SELF_STUDY_CANT_REQUEST_DATE, SELF_STUDY_CANT_REQUEST_TIME);
 
         Member currentMember = currentMemberUtil.getCurrentMember();
-        long count = selfStudyRepository.count();
+        long count = selfStudyRepository.count(); // 비관적 잠금이 걸린 count query
+
+        isSmallerThanFifty(count); // count가 50 미만인지 checking
+        isVerifiedSelfStudy(CAN, SELF_STUDY_ALREADY); // 회원의 자습신청 상태가 CAN인지 checking
 
         try {
-            if (isSmallerThanFifty(count)) {
-                if (isVerifiedSelfStudy(CAN)) {
-                    currentMember.updateSelfStudy(APPLIED);
+            currentMember.updateSelfStudy(APPLIED);
 
-                    selfStudyRepository.save(SelfStudy.builder()
-                            .member(currentMember)
-                            .build());
-                } else
-                    throw new DotoriException(SELF_STUDY_ALREADY);
-            } else
-                throw new DotoriException(SELF_STUDY_OVER);
-        } catch (DataIntegrityViolationException e) {
+            selfStudyRepository.save(SelfStudy.builder()
+                    .member(currentMember)
+                    .build());
+
+        } catch (DataIntegrityViolationException e) { // TODO : 로깅 레벨에서 다시한번 체크 해야함
             throw new DotoriException(SELF_STUDY_ALREADY);
         }
     }
@@ -77,9 +73,6 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * 자습신청을 취소할 시 그 날 자습신청 불가능
      * @param dayOfWeek 현재 요일
      * @param hour 현재 시
-     * @exception DotoriException (SELF_STUDY_CANT_CANCEL_DATE) 금요일, 토요일, 일요일에 자습신청 취소를 했을 때
-     * @exception DotoriException (SELF_STUDY_CANT_CANCEL_TIME) 오후 8시에서 오후 9시 사이가 아닌 시간에 자습신청 취소를 했을 때
-     * @exception DotoriException (SELF_STUDY_CANT_CANCEL) 자습신청 상태가 APPLIED(신청됨)가 아닐 때 (자습신청 취소를 할 수 없는 상태)
      * @author 배태현
      */
     @Override
@@ -89,11 +82,10 @@ public class SelfStudyServiceImpl implements SelfStudyService {
 
         Member currentMember = currentMemberUtil.getCurrentMember();
 
-        if (isVerifiedSelfStudy(APPLIED)) {
-            currentMember.updateSelfStudy(CANT);
-            selfStudyRepository.deleteByMemberId(currentMember.getId());
-        } else
-            throw new DotoriException(SELF_STUDY_CANT_CANCEL);
+        isVerifiedSelfStudy(APPLIED, SELF_STUDY_CANT_CANCEL); // 회원의 자습신청 상태가 APPLIED인지 checking
+
+        currentMember.updateSelfStudy(CANT);
+        selfStudyRepository.deleteByMemberId(currentMember.getId());
     }
 
     /**
@@ -217,20 +209,24 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * 현재 로그인 된 유저(요청을 보낸 유저)의 자습신청 상태를 확인해주는 메서드
      * @param selfStudy selfStudyStatus
      * @return boolean
+     * @exception DotoriException (SELF_STUDY_ALREADY) 자습신청 상태가 CAN(가능)이 아닐 때 (자습신청을 할 수 없는 상태)
      * @author 배태현
      */
-    private boolean isVerifiedSelfStudy(com.server.Dotori.domain.member.enumType.SelfStudy selfStudy) {
-        return currentMemberUtil.getCurrentMember().getSelfStudy() == selfStudy;
+    private boolean isVerifiedSelfStudy(com.server.Dotori.domain.member.enumType.SelfStudy selfStudy, ErrorCode errorCode) {
+        if (currentMemberUtil.getCurrentMember().getSelfStudy() != selfStudy) throw new DotoriException(errorCode);
+        return true;
     }
 
     /**
      * 카운트가 50 미만인지 체크해주는 메서드
      * @param count selfstudy count
      * @return boolean
+     * @exception DotoriException (SELF_STUDY_OVER) 자습신청 인원이 50명이 넘었을 때
      * @author 배태현
      */
     private boolean isSmallerThanFifty(long count) {
-        return count < 50;
+        if (count >= 50) throw new DotoriException(SELF_STUDY_OVER);
+        return true;
     }
 
     /**
