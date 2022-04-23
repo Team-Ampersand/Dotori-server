@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 @TestMethodOrder(OrderAnnotation.class)
 class SelfStudyServiceTest {
 
-    private int THREAD_CNT = 60;
+    private int THREAD_CNT = 100;
     private ExecutorService ex = Executors.newFixedThreadPool(THREAD_CNT);
     private CountDownLatch latch = new CountDownLatch(THREAD_CNT);
 
@@ -98,9 +98,10 @@ class SelfStudyServiceTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("자습신청 동시성 테스트")
     public void requestSelfStudyMultiThreadTest() throws InterruptedException {
-        for (int i = 0; i < 60; i++) {
+        for (int i = 0; i < THREAD_CNT; i++) {
             ex.execute(() -> {
                 selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20);
                 latch.countDown();
@@ -109,7 +110,9 @@ class SelfStudyServiceTest {
 
         latch.await();
 
+        long count = selfStudyRepository.count();
 
+        System.out.println("count = " + count);
     }
 
     @Test
