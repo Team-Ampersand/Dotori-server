@@ -26,6 +26,9 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -39,6 +42,10 @@ import static org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 @Transactional
 @TestMethodOrder(OrderAnnotation.class)
 class SelfStudyServiceTest {
+
+    private int THREAD_CNT = 60;
+    private ExecutorService ex = Executors.newFixedThreadPool(THREAD_CNT);
+    private CountDownLatch latch = new CountDownLatch(THREAD_CNT);
 
     @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private MemberRepository memberRepository;
@@ -91,6 +98,21 @@ class SelfStudyServiceTest {
     }
 
     @Test
+    @DisplayName("자습신청 동시성 테스트")
+    public void requestSelfStudyMultiThreadTest() throws InterruptedException {
+        for (int i = 0; i < 60; i++) {
+            ex.execute(() -> {
+                selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20);
+                latch.countDown();
+            });
+        }
+
+        latch.await();
+
+
+    }
+
+    @Test
     @DisplayName("적절한 날짜 혹은 시간이 아닐 때 자습신청을 하면 예외가 제대로 터지나요?")
     public void requestSelfStudyExceptionTest() {
         assertThrows(
@@ -140,7 +162,7 @@ class SelfStudyServiceTest {
     }
 
     @Test
-    @DisplayName("자습신청 요청이 두개가 동시에 들어왔을 때 제대로 예외가 터지나요 ?")
+    @DisplayName("유저로부터 자습신청 요청이 두번 들어왔을 때 제대로 예외가 터지나요 ?")
     public void twoRequestSelfStudyExceptionTest() {
         //given
         selfStudyRepository.save(
