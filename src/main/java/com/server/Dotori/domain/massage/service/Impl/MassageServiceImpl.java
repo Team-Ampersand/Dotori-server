@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +53,7 @@ public class MassageServiceImpl implements MassageService {
      */
     @Override
     @Transactional
-    public void requestMassage(DayOfWeek dayOfWeek, int hour, int min) {
+    public synchronized void requestMassage(DayOfWeek dayOfWeek, int hour, int min) {
         timeValidate(dayOfWeek, hour, min);
 
         long count = massageRepository.count();
