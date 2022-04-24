@@ -19,7 +19,7 @@ public enum Rule {
     DRINKING_ALCOHOL("금지 물품 사용"),
     USE_TOBACCO("금지 물품 사용"),
     USE_MEANDERING_APPARATUS("금지 물품 사용"),
-    EAT_FOOT("금지 물품 사용"),                                               // 2. 금지 물품 사용
+    EAT_FOOD("금지 물품 사용"),                                               // 2. 금지 물품 사용
 
     MANAGER_GUIDANCE("사감 지도 불이행"),                                     // 3. 사감 지도 불이행
 
