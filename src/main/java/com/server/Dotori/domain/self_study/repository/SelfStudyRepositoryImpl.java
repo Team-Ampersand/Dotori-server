@@ -35,7 +35,7 @@ public class SelfStudyRepositoryImpl implements SelfStudyRepositoryCustom {
     }
 
     @Override
-    public SelfStudyStudentsDto findByMemberName(String memberName) {
+    public List<SelfStudyStudentsDto> findByMemberName(String memberName) {
         return queryFactory.from(selfStudy)
                 .select(Projections.fields(SelfStudyStudentsDto.class,
                         selfStudy.member.id,
@@ -49,6 +49,6 @@ public class SelfStudyRepositoryImpl implements SelfStudyRepositoryCustom {
                         .and(selfStudy.member.memberName.like("%" + memberName + "%"))
                 )
                 .innerJoin(selfStudy.member, member)
-                .fetchOne();
+                .fetch();
     }
 }

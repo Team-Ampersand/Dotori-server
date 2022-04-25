@@ -230,11 +230,11 @@ class SelfStudyServiceTest {
         //given //when
         selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20);
 
-        SelfStudyStudentsDto findSelfStudyAppliedStudent = selfStudyService.getSelfStudyStudentByMemberName("배태현");
+        List<SelfStudyStudentsDto> findSelfStudyAppliedStudent = selfStudyService.getSelfStudyStudentByMemberName("배태현");
 
-        assertEquals("배태현", findSelfStudyAppliedStudent.getMemberName());
-        assertEquals("2409", findSelfStudyAppliedStudent.getStuNum());
-        assertEquals(MAN, findSelfStudyAppliedStudent.getGender());
+        assertEquals("배태현", findSelfStudyAppliedStudent.get(0).getMemberName());
+        assertEquals("2409", findSelfStudyAppliedStudent.get(0).getStuNum());
+        assertEquals(MAN, findSelfStudyAppliedStudent.get(0).getGender());
     }
 
     @Test

@@ -12,7 +12,7 @@ public interface SelfStudyService {
 
     void cancelSelfStudy(DayOfWeek dayOfWeek, int hour);
 
-    SelfStudyStudentsDto getSelfStudyStudentByMemberName(String memberName);
+    List<SelfStudyStudentsDto> getSelfStudyStudentByMemberName(String memberName);
 
     List<SelfStudyStudentsDto> getSelfStudyStudentsByCreateDate();
 
