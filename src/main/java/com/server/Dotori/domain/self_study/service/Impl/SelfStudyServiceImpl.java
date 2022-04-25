@@ -96,10 +96,10 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      */
     @Override
     @Transactional(readOnly = true)
-    public SelfStudyStudentsDto getSelfStudyStudentByMemberName(String memberName) {
-        SelfStudyStudentsDto findSelfStudyAppliedStudent = selfStudyRepository.findByMemberName(memberName);
+    public List<SelfStudyStudentsDto> getSelfStudyStudentByMemberName(String memberName) {
+        List<SelfStudyStudentsDto> findSelfStudyAppliedStudent = selfStudyRepository.findByMemberName(memberName);
 
-        if (findSelfStudyAppliedStudent == null) throw new DotoriException(SELF_STUDY_NOT_FOUND);
+        if (findSelfStudyAppliedStudent.isEmpty()) throw new DotoriException(SELF_STUDY_NOT_FOUND);
 
         return findSelfStudyAppliedStudent;
     }
