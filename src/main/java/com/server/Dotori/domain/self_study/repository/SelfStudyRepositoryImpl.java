@@ -27,7 +27,7 @@ public class SelfStudyRepositoryImpl implements SelfStudyRepositoryCustom {
                         )
                 )
                 .where(
-                        selfStudy.member.selfStudy.eq(SelfStudyStatus.APPLIED)
+                        selfStudy.member.selfStudyStatus.eq(SelfStudyStatus.APPLIED)
                 )
                 .innerJoin(selfStudy.member, member)
                 .orderBy(selfStudy.createdDate.asc())
@@ -45,7 +45,7 @@ public class SelfStudyRepositoryImpl implements SelfStudyRepositoryCustom {
                         )
                 )
                 .where(
-                        selfStudy.member.selfStudy.eq(SelfStudyStatus.APPLIED)
+                        selfStudy.member.selfStudyStatus.eq(SelfStudyStatus.APPLIED)
                         .and(selfStudy.member.memberName.like("%" + memberName + "%"))
                 )
                 .innerJoin(selfStudy.member, member)

@@ -33,9 +33,9 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
         queryFactory
                 .update(member)
                 .where(
-                        member.music.eq(MusicStatus.APPLIED)
+                        member.musicStatus.eq(MusicStatus.APPLIED)
                 )
-                .set(member.music, MusicStatus.CAN)
+                .set(member.musicStatus, MusicStatus.CAN)
                 .execute();
     }
 

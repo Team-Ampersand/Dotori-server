@@ -40,7 +40,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                         member.gender
                         )
                 ).where(
-                        member.selfStudy.eq(SelfStudyStatus.APPLIED)
+                        member.selfStudyStatus.eq(SelfStudyStatus.APPLIED)
                 )
                 .orderBy(member.stuNum.asc())
                 .fetch();
@@ -63,7 +63,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                         )
                 )
                 .where(
-                        member.selfStudy.eq(SelfStudyStatus.APPLIED)
+                        member.selfStudyStatus.eq(SelfStudyStatus.APPLIED)
                         .and(member.stuNum.like(id+"%"))
                 )
                 .orderBy(member.stuNum.asc())
@@ -80,10 +80,10 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         queryFactory
                 .update(member)
                 .where(
-                        member.selfStudy.eq(SelfStudyStatus.APPLIED)
-                                .or(member.selfStudy.eq(SelfStudyStatus.CANT))
+                        member.selfStudyStatus.eq(SelfStudyStatus.APPLIED)
+                                .or(member.selfStudyStatus.eq(SelfStudyStatus.CANT))
                 )
-                .set(member.selfStudy, SelfStudyStatus.CAN)
+                .set(member.selfStudyStatus, SelfStudyStatus.CAN)
                 .execute();
     }
 
@@ -164,10 +164,10 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         queryFactory
                 .update(member)
                 .where(
-                        member.selfStudy.eq(SelfStudyStatus.IMPOSSIBLE)
+                        member.selfStudyStatus.eq(SelfStudyStatus.IMPOSSIBLE)
                         .and(member.selfStudyExpiredDate.stringValue().substring(0,10).eq(String.valueOf(LocalDate.now())))
                 )
-                .set(member.selfStudy, SelfStudyStatus.CAN)
+                .set(member.selfStudyStatus, SelfStudyStatus.CAN)
                 .set(member.selfStudyExpiredDate, (LocalDateTime) null)
                 .execute();
     }
@@ -181,10 +181,10 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         queryFactory
                 .update(member)
                 .where(
-                        member.massage.eq(MassageStatus.CANT)
-                        .or(member.massage.eq(MassageStatus.APPLIED))
+                        member.massageStatus.eq(MassageStatus.CANT)
+                        .or(member.massageStatus.eq(MassageStatus.APPLIED))
                 )
-                .set(member.massage, MassageStatus.CAN)
+                .set(member.massageStatus, MassageStatus.CAN)
                 .execute();
     }
 
@@ -201,7 +201,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                         member.id, member.memberName, member.stuNum)
                 )
                 .where(
-                        member.massage.eq(MassageStatus.APPLIED)
+                        member.massageStatus.eq(MassageStatus.APPLIED)
                 )
                 .orderBy(member.stuNum.asc())
                 .fetch();
