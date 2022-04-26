@@ -12,7 +12,7 @@ import org.springframework.scheduling.config.ScheduledTaskHolder;
 import java.util.Set;
 
 @SpringBootTest
-class SelfStudyScheduleTest {
+class SelfStudyStatusScheduleTest {
 
 
     @Autowired

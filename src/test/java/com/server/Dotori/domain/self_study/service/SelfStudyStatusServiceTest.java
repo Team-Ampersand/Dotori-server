@@ -2,7 +2,7 @@ package com.server.Dotori.domain.self_study.service;
 
 import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.dto.MemberDto;
-import com.server.Dotori.domain.member.enumType.Music;
+import com.server.Dotori.domain.member.enumType.MusicStatus;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.self_study.SelfStudy;
@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.server.Dotori.domain.member.enumType.Gender.MAN;
-import static com.server.Dotori.domain.member.enumType.SelfStudy.*;
+import static com.server.Dotori.domain.member.enumType.SelfStudyStatus.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 @SpringBootTest
 @Transactional
 @TestMethodOrder(OrderAnnotation.class)
-class SelfStudyServiceTest {
+class SelfStudyStatusServiceTest {
 
     private int THREAD_CNT = 100;
     private ExecutorService ex = Executors.newFixedThreadPool(THREAD_CNT);
@@ -93,7 +93,7 @@ class SelfStudyServiceTest {
     public void requestSelfStudyTest() {
         selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20); // 월요일 8시
 
-        assertEquals(APPLIED, currentMemberUtil.getCurrentMember().getSelfStudy());
+        assertEquals(APPLIED, currentMemberUtil.getCurrentMember().getSelfStudyStatus());
         assertEquals(1 , selfStudyRepository.findAll().size());
     }
 
@@ -206,7 +206,7 @@ class SelfStudyServiceTest {
         selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20);
         selfStudyService.cancelSelfStudy(DayOfWeek.MONDAY, 20);
 
-        assertEquals(CANT, currentMemberUtil.getCurrentMember().getSelfStudy());
+        assertEquals(CANT, currentMemberUtil.getCurrentMember().getSelfStudyStatus());
         assertEquals(0, selfStudyRepository.count());
     }
 
@@ -312,8 +312,8 @@ class SelfStudyServiceTest {
                         .password("1234")
                         .email("s20033@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
-                        .music(Music.CAN)
-                        .selfStudy(APPLIED)
+                        .musicStatus(MusicStatus.CAN)
+                        .selfStudyStatus(APPLIED)
                         .point(0L)
                         .gender(MAN)
                         .build()
@@ -326,8 +326,8 @@ class SelfStudyServiceTest {
                         .password("1234")
                         .email("s20031@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
-                        .music(Music.CAN)
-                        .selfStudy(CANT)
+                        .musicStatus(MusicStatus.CAN)
+                        .selfStudyStatus(CANT)
                         .point(0L)
                         .gender(MAN)
                         .build()
@@ -340,8 +340,8 @@ class SelfStudyServiceTest {
                         .password("1234")
                         .email("s20030@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
-                        .music(Music.CAN)
-                        .selfStudy(CAN)
+                        .musicStatus(MusicStatus.CAN)
+                        .selfStudyStatus(CAN)
                         .point(0L)
                         .gender(MAN)
                         .build()
@@ -354,9 +354,9 @@ class SelfStudyServiceTest {
         em.clear();
 
         //then
-        assertEquals(CAN, memberRepository.findByEmail("s20033@gsm.hs.kr").get().getSelfStudy());
-        assertEquals(CAN, memberRepository.findByEmail("s20031@gsm.hs.kr").get().getSelfStudy());
-        assertEquals(CAN, memberRepository.findByEmail("s20030@gsm.hs.kr").get().getSelfStudy()); //이 회원은 그대로 CAN
+        assertEquals(CAN, memberRepository.findByEmail("s20033@gsm.hs.kr").get().getSelfStudyStatus());
+        assertEquals(CAN, memberRepository.findByEmail("s20031@gsm.hs.kr").get().getSelfStudyStatus());
+        assertEquals(CAN, memberRepository.findByEmail("s20030@gsm.hs.kr").get().getSelfStudyStatus()); //이 회원은 그대로 CAN
     }
 
     @Test
@@ -383,7 +383,7 @@ class SelfStudyServiceTest {
         selfStudyService.banSelfStudy(currentMember.getId());
 
         // then
-        assertEquals(IMPOSSIBLE, currentMember.getSelfStudy());
+        assertEquals(IMPOSSIBLE, currentMember.getSelfStudyStatus());
         assertEquals(LocalDate.now().plusDays(7).toString(), currentMember.getSelfStudyExpiredDate().toString().substring(0, 10));
     }
 
@@ -401,7 +401,7 @@ class SelfStudyServiceTest {
         em.clear();
 
         //then
-        assertEquals(CAN.toString(), currentMemberUtil.getCurrentMember().getSelfStudy().toString());
+        assertEquals(CAN.toString(), currentMemberUtil.getCurrentMember().getSelfStudyStatus().toString());
         assertEquals(null, currentMemberUtil.getCurrentMember().getSelfStudyExpiredDate());
     }
 

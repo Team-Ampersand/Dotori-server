@@ -43,9 +43,9 @@ public class MemberDto {
                 .email(email)
                 .refreshToken(null)
                 .roles(Collections.singletonList(Role.ROLE_MEMBER))
-                .massage(Massage.CAN)
-                .music(Music.CAN)
-                .selfStudy(SelfStudy.CAN)
+                .massageStatus(MassageStatus.CAN)
+                .musicStatus(MusicStatus.CAN)
+                .selfStudyStatus(SelfStudyStatus.CAN)
                 .point(0L)
                 .gender(gender)
                 .build();

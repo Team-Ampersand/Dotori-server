@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -79,15 +78,15 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "member_selfstudy", nullable = false)
-    private SelfStudy selfStudy;
+    private SelfStudyStatus selfStudyStatus;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "member_music", nullable = false)
-    private Music music;
+    private MusicStatus musicStatus;
 
     @Enumerated(STRING)
     @Column(name = "member_massage")
-    private Massage massage;
+    private MassageStatus massageStatus;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
@@ -119,8 +118,8 @@ public class Member extends BaseTimeEntity implements UserDetails {
         return true;
     }
 
-    public void updateMusic(Music music) {
-        this.music = music != null ? music : this.music;
+    public void updateMusic(MusicStatus musicStatus) {
+        this.musicStatus = musicStatus != null ? musicStatus : this.musicStatus;
     }
 
     public void updatePassword(String password) {
@@ -130,11 +129,11 @@ public class Member extends BaseTimeEntity implements UserDetails {
     public void updatePoint(Long point) {
         this.point = point != null ? point : this.point;
     }
-    public void updateSelfStudy(SelfStudy selfStudy) {
-        this.selfStudy = selfStudy != null ? selfStudy : this.selfStudy;
+    public void updateSelfStudy(SelfStudyStatus selfStudyStatus) {
+        this.selfStudyStatus = selfStudyStatus != null ? selfStudyStatus : this.selfStudyStatus;
     }
-    public void updateMassage(Massage massage) {
-        this.massage = massage != null ? massage : this.massage;
+    public void updateMassage(MassageStatus massageStatus) {
+        this.massageStatus = massageStatus != null ? massageStatus : this.massageStatus;
     }
 
     public void updateRole(List<Role> roles) {
