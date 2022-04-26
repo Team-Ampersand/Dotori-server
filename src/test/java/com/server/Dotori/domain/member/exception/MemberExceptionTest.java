@@ -217,7 +217,7 @@ public class MemberExceptionTest {
                         .refreshToken(null)
                         .gender(Gender.MAN)
                         .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
+                        .musicStatus(MusicStatus.CAN)
                         .massageStatus(MassageStatus.CAN)
                         .build()
         );
@@ -250,7 +250,7 @@ public class MemberExceptionTest {
                         .refreshToken(null)
                         .gender(Gender.MAN)
                         .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
+                        .musicStatus(MusicStatus.CAN)
                         .massageStatus(MassageStatus.CAN)
                         .build()
         );
@@ -283,7 +283,7 @@ public class MemberExceptionTest {
                         .refreshToken(null)
                         .gender(Gender.MAN)
                         .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
+                        .musicStatus(MusicStatus.CAN)
                         .massageStatus(MassageStatus.CAN)
                         .build()
         );

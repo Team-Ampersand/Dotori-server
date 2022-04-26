@@ -17,8 +17,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.server.Dotori.domain.member.enumType.Music.APPLIED;
-import static com.server.Dotori.domain.member.enumType.Music.CAN;
+import static com.server.Dotori.domain.member.enumType.MusicStatus.APPLIED;
+import static com.server.Dotori.domain.member.enumType.MusicStatus.CAN;
 import static com.server.Dotori.global.exception.ErrorCode.*;
 
 /**
@@ -119,7 +119,7 @@ public class MusicServiceImpl implements MusicService {
      * @author 배태현
      */
     private boolean isCanApplyMusicStatus() {
-        return currentMemberUtil.getCurrentMember().getMusic() == CAN;
+        return currentMemberUtil.getCurrentMember().getMusicStatus() == CAN;
     }
 
     /**

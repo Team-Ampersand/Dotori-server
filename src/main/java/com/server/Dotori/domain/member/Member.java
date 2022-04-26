@@ -82,7 +82,7 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "member_music", nullable = false)
-    private Music music;
+    private MusicStatus musicStatus;
 
     @Enumerated(STRING)
     @Column(name = "member_massage")
@@ -118,8 +118,8 @@ public class Member extends BaseTimeEntity implements UserDetails {
         return true;
     }
 
-    public void updateMusic(Music music) {
-        this.music = music != null ? music : this.music;
+    public void updateMusic(MusicStatus musicStatus) {
+        this.musicStatus = musicStatus != null ? musicStatus : this.musicStatus;
     }
 
     public void updatePassword(String password) {

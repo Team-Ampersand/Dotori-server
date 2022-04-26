@@ -2,7 +2,7 @@ package com.server.Dotori.domain.music.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.server.Dotori.domain.member.enumType.Music;
+import com.server.Dotori.domain.member.enumType.MusicStatus;
 import com.server.Dotori.domain.music.dto.MusicResDto;
 import lombok.RequiredArgsConstructor;
 
@@ -33,9 +33,9 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
         queryFactory
                 .update(member)
                 .where(
-                        member.music.eq(Music.APPLIED)
+                        member.music.eq(MusicStatus.APPLIED)
                 )
-                .set(member.music, Music.CAN)
+                .set(member.music, MusicStatus.CAN)
                 .execute();
     }
 

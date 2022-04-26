@@ -26,7 +26,7 @@ import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 
-import static com.server.Dotori.domain.member.enumType.Music.CAN;
+import static com.server.Dotori.domain.member.enumType.MusicStatus.CAN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -87,7 +87,7 @@ class PointServiceTest {
                         .password("1234")
                         .email("s20043@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_MEMBER))
-                        .music(CAN)
+                        .musicStatus(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
                         .gender(Gender.MAN)
@@ -119,7 +119,7 @@ class PointServiceTest {
                         .password("1234")
                         .email("s20013@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_MEMBER))
-                        .music(CAN)
+                        .musicStatus(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(-2L)
                         .gender(Gender.MAN)
@@ -133,7 +133,7 @@ class PointServiceTest {
                         .password("1234")
                         .email("s20083@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_MEMBER))
-                        .music(CAN)
+                        .musicStatus(CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(-13L)
                         .gender(Gender.MAN)

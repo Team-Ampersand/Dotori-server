@@ -12,7 +12,7 @@ import org.springframework.scheduling.config.ScheduledTaskHolder;
 import java.util.Set;
 
 @SpringBootTest
-class MusicScheduleTest {
+class MusicStatusScheduleTest {
 
     @Autowired
     private ScheduledTaskHolder scheduledTaskHolder;

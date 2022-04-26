@@ -2,7 +2,7 @@ package com.server.Dotori.domain.self_study.service;
 
 import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.dto.MemberDto;
-import com.server.Dotori.domain.member.enumType.Music;
+import com.server.Dotori.domain.member.enumType.MusicStatus;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.self_study.SelfStudy;
@@ -312,7 +312,7 @@ class SelfStudyServiceTest {
                         .password("1234")
                         .email("s20033@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
-                        .music(Music.CAN)
+                        .musicStatus(MusicStatus.CAN)
                         .selfStudy(APPLIED)
                         .point(0L)
                         .gender(MAN)
@@ -326,7 +326,7 @@ class SelfStudyServiceTest {
                         .password("1234")
                         .email("s20031@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
-                        .music(Music.CAN)
+                        .musicStatus(MusicStatus.CAN)
                         .selfStudy(CANT)
                         .point(0L)
                         .gender(MAN)
@@ -340,7 +340,7 @@ class SelfStudyServiceTest {
                         .password("1234")
                         .email("s20030@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
-                        .music(Music.CAN)
+                        .musicStatus(MusicStatus.CAN)
                         .selfStudy(CAN)
                         .point(0L)
                         .gender(MAN)

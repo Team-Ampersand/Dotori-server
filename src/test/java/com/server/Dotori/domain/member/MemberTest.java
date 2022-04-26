@@ -1,6 +1,6 @@
 package com.server.Dotori.domain.member;
 
-import com.server.Dotori.domain.member.enumType.Music;
+import com.server.Dotori.domain.member.enumType.MusicStatus;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.enumType.SelfStudy;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
@@ -33,7 +33,7 @@ public class MemberTest {
                         .password("1234")
                         .email("s20014@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
-                        .music(Music.CAN)
+                        .musicStatus(MusicStatus.CAN)
                         .selfStudy(SelfStudy.CAN)
                         .point(0L)
                         .build()

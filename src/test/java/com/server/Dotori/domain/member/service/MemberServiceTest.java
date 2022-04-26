@@ -162,7 +162,7 @@ public class MemberServiceTest {
                         .refreshToken(null)
                         .gender(Gender.MAN)
                         .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
+                        .musicStatus(MusicStatus.CAN)
                         .massageStatus(MassageStatus.CAN)
                         .build()
         );
@@ -187,7 +187,7 @@ public class MemberServiceTest {
                         .refreshToken(null)
                         .gender(Gender.MAN)
                         .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
+                        .musicStatus(MusicStatus.CAN)
                         .massageStatus(MassageStatus.CAN)
                         .build()
         );
@@ -219,7 +219,7 @@ public class MemberServiceTest {
                         .refreshToken(null)
                         .gender(Gender.PENDING)
                         .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
+                        .musicStatus(MusicStatus.CAN)
                         .massageStatus(MassageStatus.CAN)
                         .build()
         );
