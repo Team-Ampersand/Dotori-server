@@ -12,7 +12,7 @@ import org.springframework.scheduling.config.ScheduledTaskHolder;
 import java.util.Set;
 
 @SpringBootTest
-public class MassageScheduleTest {
+public class MassageStatusScheduleTest {
 
     @Autowired
     private ScheduledTaskHolder scheduledTaskHolder;

@@ -218,7 +218,7 @@ public class MemberExceptionTest {
                         .gender(Gender.MAN)
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
-                        .massage(Massage.CAN)
+                        .massageStatus(MassageStatus.CAN)
                         .build()
         );
 
@@ -251,7 +251,7 @@ public class MemberExceptionTest {
                         .gender(Gender.MAN)
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
-                        .massage(Massage.CAN)
+                        .massageStatus(MassageStatus.CAN)
                         .build()
         );
 
@@ -284,7 +284,7 @@ public class MemberExceptionTest {
                         .gender(Gender.MAN)
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
-                        .massage(Massage.CAN)
+                        .massageStatus(MassageStatus.CAN)
                         .build()
         );
 

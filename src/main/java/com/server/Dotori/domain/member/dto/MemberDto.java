@@ -43,7 +43,7 @@ public class MemberDto {
                 .email(email)
                 .refreshToken(null)
                 .roles(Collections.singletonList(Role.ROLE_MEMBER))
-                .massage(Massage.CAN)
+                .massageStatus(MassageStatus.CAN)
                 .music(Music.CAN)
                 .selfStudy(SelfStudy.CAN)
                 .point(0L)

@@ -2,7 +2,7 @@ package com.server.Dotori.global.config.dev;
 
 import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.enumType.Gender;
-import com.server.Dotori.domain.member.enumType.Massage;
+import com.server.Dotori.domain.member.enumType.MassageStatus;
 import com.server.Dotori.domain.member.enumType.Music;
 import com.server.Dotori.domain.member.enumType.SelfStudy;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
@@ -77,7 +77,7 @@ public class GenerateMember {
                         .roles(singletonList(ROLE_MEMBER))
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
-                        .massage(Massage.CAN)
+                        .massageStatus(MassageStatus.CAN)
                         .gender(gender)
                         .build()
         );
@@ -96,7 +96,7 @@ public class GenerateMember {
                         .roles(singletonList(ROLE_DEVELOPER))
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
-                        .massage(Massage.CAN)
+                        .massageStatus(MassageStatus.CAN)
                         .gender(gender)
                         .build()
         );
@@ -115,7 +115,7 @@ public class GenerateMember {
                         .roles(singletonList(ROLE_ADMIN))
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
-                        .massage(Massage.CAN)
+                        .massageStatus(MassageStatus.CAN)
                         .gender(Gender.PENDING)
                         .build()
         );
@@ -134,7 +134,7 @@ public class GenerateMember {
                         .roles(singletonList(ROLE_DEVELOPER))
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
-                        .massage(Massage.CAN)
+                        .massageStatus(MassageStatus.CAN)
                         .gender(Gender.PENDING)
                         .build()
         );
@@ -153,7 +153,7 @@ public class GenerateMember {
                         .roles(singletonList(ROLE_COUNCILLOR))
                         .selfStudy(SelfStudy.CAN)
                         .music(Music.CAN)
-                        .massage(Massage.CAN)
+                        .massageStatus(MassageStatus.CAN)
                         .gender(Gender.PENDING)
                         .build()
         );

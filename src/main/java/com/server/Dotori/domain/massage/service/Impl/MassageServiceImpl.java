@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.server.Dotori.domain.member.enumType.Massage.*;
+import static com.server.Dotori.domain.member.enumType.MassageStatus.*;
 import static com.server.Dotori.global.exception.ErrorCode.*;
 
 @Slf4j
@@ -61,7 +61,7 @@ public class MassageServiceImpl implements MassageService {
             if (count < 5) {
                 Member currentMember = currentMemberUtil.getCurrentMember();
 
-                if (currentMember.getMassage() == CAN) {
+                if (currentMember.getMassageStatus() == CAN) {
                     massageRepository.save(Massage.builder()
                             .member(currentMember)
                             .build()
@@ -98,7 +98,7 @@ public class MassageServiceImpl implements MassageService {
         long count = massageRepository.count();
         Member currentMember = currentMemberUtil.getCurrentMember();
 
-        if (currentMember.getMassage() == APPLIED) {
+        if (currentMember.getMassageStatus() == APPLIED) {
             currentMember.updateMassage(CANT);
             massageRepository.deleteByMemberId(currentMember.getId());
 
@@ -128,7 +128,7 @@ public class MassageServiceImpl implements MassageService {
     @Transactional(readOnly = true)
     public Map<String, String> getMassageInfo() {
         Map<String, String> map = new HashMap<>();
-        map.put("status",currentMemberUtil.getCurrentMember().getMassage().toString());
+        map.put("status",currentMemberUtil.getCurrentMember().getMassageStatus().toString());
         map.put("count", String.valueOf(massageRepository.count()));
         return map;
     }

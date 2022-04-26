@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -87,7 +86,7 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     @Enumerated(STRING)
     @Column(name = "member_massage")
-    private Massage massage;
+    private MassageStatus massageStatus;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
@@ -133,8 +132,8 @@ public class Member extends BaseTimeEntity implements UserDetails {
     public void updateSelfStudy(SelfStudy selfStudy) {
         this.selfStudy = selfStudy != null ? selfStudy : this.selfStudy;
     }
-    public void updateMassage(Massage massage) {
-        this.massage = massage != null ? massage : this.massage;
+    public void updateMassage(MassageStatus massageStatus) {
+        this.massageStatus = massageStatus != null ? massageStatus : this.massageStatus;
     }
 
     public void updateRole(List<Role> roles) {
