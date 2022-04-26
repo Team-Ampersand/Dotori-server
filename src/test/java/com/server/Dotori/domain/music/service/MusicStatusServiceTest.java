@@ -4,7 +4,7 @@ import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.dto.MemberDto;
 import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.enumType.Role;
-import com.server.Dotori.domain.member.enumType.SelfStudy;
+import com.server.Dotori.domain.member.enumType.SelfStudyStatus;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.music.Music;
 import com.server.Dotori.domain.music.dto.MusicApplicationDto;
@@ -220,7 +220,7 @@ class MusicStatusServiceTest {
                         .email("s20033@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
                         .musicStatus(APPLIED)
-                        .selfStudy(SelfStudy.CAN)
+                        .selfStudyStatus(SelfStudyStatus.CAN)
                         .point(0L)
                         .gender(Gender.MAN)
                         .build()
@@ -234,7 +234,7 @@ class MusicStatusServiceTest {
                         .email("s20031@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
                         .musicStatus(APPLIED)
-                        .selfStudy(SelfStudy.CAN)
+                        .selfStudyStatus(SelfStudyStatus.CAN)
                         .point(0L)
                         .gender(Gender.MAN)
                         .build()
@@ -248,7 +248,7 @@ class MusicStatusServiceTest {
                         .email("s20030@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
                         .musicStatus(CAN)
-                        .selfStudy(SelfStudy.CAN)
+                        .selfStudyStatus(SelfStudyStatus.CAN)
                         .point(0L)
                         .gender(Gender.MAN)
                         .build()

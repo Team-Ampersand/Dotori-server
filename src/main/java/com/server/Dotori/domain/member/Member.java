@@ -78,7 +78,7 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "member_selfstudy", nullable = false)
-    private SelfStudy selfStudy;
+    private SelfStudyStatus selfStudyStatus;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "member_music", nullable = false)
@@ -129,8 +129,8 @@ public class Member extends BaseTimeEntity implements UserDetails {
     public void updatePoint(Long point) {
         this.point = point != null ? point : this.point;
     }
-    public void updateSelfStudy(SelfStudy selfStudy) {
-        this.selfStudy = selfStudy != null ? selfStudy : this.selfStudy;
+    public void updateSelfStudy(SelfStudyStatus selfStudyStatus) {
+        this.selfStudyStatus = selfStudyStatus != null ? selfStudyStatus : this.selfStudyStatus;
     }
     public void updateMassage(MassageStatus massageStatus) {
         this.massageStatus = massageStatus != null ? massageStatus : this.massageStatus;

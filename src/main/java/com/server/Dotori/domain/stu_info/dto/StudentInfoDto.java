@@ -2,7 +2,7 @@ package com.server.Dotori.domain.stu_info.dto;
 
 import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.enumType.Role;
-import com.server.Dotori.domain.member.enumType.SelfStudy;
+import com.server.Dotori.domain.member.enumType.SelfStudyStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +18,6 @@ public class StudentInfoDto {
     private String stuNum;
     private String memberName;
     private List<Role> roles;
-    private SelfStudy selfStudy;
+    private SelfStudyStatus selfStudyStatus;
     private Gender gender;
 }

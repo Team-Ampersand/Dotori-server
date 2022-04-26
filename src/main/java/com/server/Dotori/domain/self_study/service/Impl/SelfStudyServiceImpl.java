@@ -1,6 +1,7 @@
 package com.server.Dotori.domain.self_study.service.Impl;
 
 import com.server.Dotori.domain.member.Member;
+import com.server.Dotori.domain.member.enumType.SelfStudyStatus;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.self_study.SelfStudy;
 import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
@@ -21,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.server.Dotori.domain.member.enumType.SelfStudy.*;
+import static com.server.Dotori.domain.member.enumType.SelfStudyStatus.*;
 import static com.server.Dotori.global.exception.ErrorCode.*;
 
 @Slf4j
@@ -156,7 +157,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Transactional(readOnly = true)
     public Map<String, String> selfStudyInfo() {
         Map<String,String> map = new HashMap<>();
-        map.put("selfStudy_status", currentMemberUtil.getCurrentMember().getSelfStudy().toString());
+        map.put("selfStudy_status", currentMemberUtil.getCurrentMember().getSelfStudyStatus().toString());
         map.put("count", String.valueOf(selfStudyRepository.count()));
 
         return map;
@@ -207,14 +208,14 @@ public class SelfStudyServiceImpl implements SelfStudyService {
 
     /**
      * 현재 로그인 된 유저(요청을 보낸 유저)의 자습신청 상태를 확인해주는 메서드
-     * @param selfStudy selfStudyStatus
+     * @param selfStudyStatus selfStudyStatus
      * @return boolean
      * @exception DotoriException (SELF_STUDY_ALREADY) 자습신청 상태가 CAN(가능)이 아닐 때 (자습신청을 할 수 없는 상태)
      * @exception DotoriException (SELF_STUDY_CANT_CANCEL) 자습신청 상태가 APPLIED(신청됨)이 아닐 때 (자습신청을 취소할 수 없는 상태)
      * @author 배태현
      */
-    private boolean isVerifiedSelfStudy(com.server.Dotori.domain.member.enumType.SelfStudy selfStudy, ErrorCode errorCode) {
-        if (currentMemberUtil.getCurrentMember().getSelfStudy() != selfStudy) throw new DotoriException(errorCode);
+    private boolean isVerifiedSelfStudy(SelfStudyStatus selfStudyStatus, ErrorCode errorCode) {
+        if (currentMemberUtil.getCurrentMember().getSelfStudyStatus() != selfStudyStatus) throw new DotoriException(errorCode);
         return true;
     }
 
@@ -245,12 +246,12 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     /**
      * 자습 신청 금지/금지 취소를 시킬 때 selfStudy 상태와 ExpiredDate를 변경해주는 메서드
      * @param findMember findMember
-     * @param selfStudy selfStudyStatus
+     * @param selfStudyStatus selfStudyStatus
      * @param localDateTime localDateTime
      * @author 배태현
      */
-    private void updateSelfStudyAndExpiredDate(Member findMember, com.server.Dotori.domain.member.enumType.SelfStudy selfStudy, LocalDateTime localDateTime) {
-        findMember.updateSelfStudy(selfStudy);
+    private void updateSelfStudyAndExpiredDate(Member findMember, SelfStudyStatus selfStudyStatus, LocalDateTime localDateTime) {
+        findMember.updateSelfStudy(selfStudyStatus);
         findMember.updateSelfStudyExpiredDate(localDateTime);
     }
 }

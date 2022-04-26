@@ -4,7 +4,7 @@ import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.enumType.MassageStatus;
 import com.server.Dotori.domain.member.enumType.MusicStatus;
-import com.server.Dotori.domain.member.enumType.SelfStudy;
+import com.server.Dotori.domain.member.enumType.SelfStudyStatus;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -75,7 +75,7 @@ public class GenerateMember {
                         .point(0L)
                         .refreshToken(null)
                         .roles(singletonList(ROLE_MEMBER))
-                        .selfStudy(SelfStudy.CAN)
+                        .selfStudyStatus(SelfStudyStatus.CAN)
                         .musicStatus(MusicStatus.CAN)
                         .massageStatus(MassageStatus.CAN)
                         .gender(gender)
@@ -94,7 +94,7 @@ public class GenerateMember {
                         .point(0L)
                         .refreshToken(null)
                         .roles(singletonList(ROLE_DEVELOPER))
-                        .selfStudy(SelfStudy.CAN)
+                        .selfStudyStatus(SelfStudyStatus.CAN)
                         .musicStatus(MusicStatus.CAN)
                         .massageStatus(MassageStatus.CAN)
                         .gender(gender)
@@ -113,7 +113,7 @@ public class GenerateMember {
                         .point(0L)
                         .refreshToken(null)
                         .roles(singletonList(ROLE_ADMIN))
-                        .selfStudy(SelfStudy.CAN)
+                        .selfStudyStatus(SelfStudyStatus.CAN)
                         .musicStatus(MusicStatus.CAN)
                         .massageStatus(MassageStatus.CAN)
                         .gender(Gender.PENDING)
@@ -132,7 +132,7 @@ public class GenerateMember {
                         .point(0L)
                         .refreshToken(null)
                         .roles(singletonList(ROLE_DEVELOPER))
-                        .selfStudy(SelfStudy.CAN)
+                        .selfStudyStatus(SelfStudyStatus.CAN)
                         .musicStatus(MusicStatus.CAN)
                         .massageStatus(MassageStatus.CAN)
                         .gender(Gender.PENDING)
@@ -151,7 +151,7 @@ public class GenerateMember {
                         .point(0L)
                         .refreshToken(null)
                         .roles(singletonList(ROLE_COUNCILLOR))
-                        .selfStudy(SelfStudy.CAN)
+                        .selfStudyStatus(SelfStudyStatus.CAN)
                         .musicStatus(MusicStatus.CAN)
                         .massageStatus(MassageStatus.CAN)
                         .gender(Gender.PENDING)
