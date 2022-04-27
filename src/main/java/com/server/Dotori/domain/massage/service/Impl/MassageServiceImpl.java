@@ -74,7 +74,7 @@ public class MassageServiceImpl implements MassageService {
      * 안마의자 신청을 취소한 학생은 MASSAGE 테이블에서 삭제
      * @param hour 현재 시
      * @param min 현재 분
-     * @exception DotoriException (MASSAGE_CANT_CANCEL_THIS_TIME) 안마의자 신천 취소는 오후 8시부터 오후 10시까지만 신청 취소가 가능합니다.
+     * @exception DotoriException (MASSAGE_CANT_CANCEL_THIS_TIME) 안마의자 신청 취소는 오후 8시부터 오후 10시까지만 신청 취소가 가능합니다.
      * @exception DotoriException (MASSAGE_CANT_CANCEL_REQUEST) 안마의자 신청을 취소할 수 있는 상태가 아닙니다.
      * @author 김태민
      */
