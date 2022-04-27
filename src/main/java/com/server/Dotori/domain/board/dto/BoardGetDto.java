@@ -6,10 +6,8 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static lombok.AccessLevel.PROTECTED;
-
 @Getter @Setter @Builder
-@NoArgsConstructor(access = PROTECTED) @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED) @AllArgsConstructor
 public class BoardGetDto {
 
     private Long id;
