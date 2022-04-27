@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface MassageService {
     void requestMassage(DayOfWeek dayOfWeek, int hour, int min);
-    void cancelMassage(DayOfWeek dayOfWeek, int hour, int min);
+    void cancelMassage(int hour, int min);
     void updateMassageStatus();
     List<MassageStudentsDto> getMassageStudents();
     Map<String, String> getMassageInfo();

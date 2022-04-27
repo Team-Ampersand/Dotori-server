@@ -47,11 +47,11 @@ public class MassageServiceImpl implements MassageService {
     @Override
     @Transactional
     public synchronized void requestMassage(DayOfWeek dayOfWeek, int hour, int min) {
-
-        timeValidate(dayOfWeek, hour, min);
-        countValidate();
+        timeValidateRequestMassage(dayOfWeek, hour, min);
+        long count = massageRepository.count();
+        countValidate(count);
         Member currentMember = currentMemberUtil.getCurrentMember();
-        massageStatusValidate(currentMember);
+        massageStatusValidate(currentMember, MassageStatus.CAN);
 
         try {
             massageRepository.save(Massage.builder()
@@ -61,7 +61,7 @@ public class MassageServiceImpl implements MassageService {
         } catch (DataIntegrityViolationException e) {
             throw new DotoriException(ErrorCode.MASSAGE_ALREADY);
         }
-
+        log.info("Current MassageRequest Student Count is {}", count+1);
     }
 
     /**
@@ -70,7 +70,6 @@ public class MassageServiceImpl implements MassageService {
      * 주중 금토일을 제외한 20시 20분 ~ 21시 사이에 취소가능
      * 안마의자 신청 취소시 상태가 "APPLIED"에서 "CANT"로 변경
      * 안마의자 신청을 취소한 학생은 MASSAGE 테이블에서 삭제
-     * @param dayOfWeek 현재 요일
      * @param hour 현재 시
      * @param min 현재 분
      * @exception DotoriException (MASSAGE_CANT_REQUEST_THIS_DATE) 안마의자 신청을 하실 수 없는 요일입니다.
@@ -78,20 +77,19 @@ public class MassageServiceImpl implements MassageService {
      * @exception DotoriException (MASSAGE_CANT_CANCEL_REQUEST) 안마의자 신청을 취소할 수 있는 상태가 아닙니다.
      * @author 김태민
      */
+
     @Override
     @Transactional
-    public void cancelMassage(DayOfWeek dayOfWeek, int hour, int min) {
-        timeValidate(dayOfWeek, hour, min);
-
-        long count = massageRepository.count();
+    public void cancelMassage(int hour, int min) {
+        timeValidateCancelMassage(hour, min);
         Member currentMember = currentMemberUtil.getCurrentMember();
+        massageStatusValidate(currentMember, MassageStatus.APPLIED);
+        long count = massageRepository.count();
 
-        if (currentMember.getMassageStatus() == MassageStatus.APPLIED) {
-            currentMember.updateMassage(MassageStatus.CANT);
-            massageRepository.deleteByMemberId(currentMember.getId());
+        currentMember.updateMassage(MassageStatus.CANT);
+        massageRepository.deleteByMemberId(currentMember.getId());
 
-            log.info("Current MassageRequest Student Count is {}", count-1);
-        } else throw new DotoriException(ErrorCode.MASSAGE_CANT_CANCEL_REQUEST);
+        log.info("Current MassageRequest Student Count is {}", count-1);
     }
 
     /**
@@ -135,18 +133,22 @@ public class MassageServiceImpl implements MassageService {
         return students;
     }
 
-    private void timeValidate(DayOfWeek dayOfWeek, int hour, int min) {
-        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_DATE);
+    private void timeValidateRequestMassage(DayOfWeek dayOfWeek, int hour, int min) {
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new DotoriException(ErrorCode.MASSAGE_CANT_REQUEST_THIS_DATE);
         if (!(hour >= 20 && hour < 21)) throw new DotoriException(ErrorCode.MASSAGE_CANT_REQUEST_THIS_TIME);
         if (!(min >= 20)) throw new DotoriException(ErrorCode.MASSAGE_CANT_REQUEST_THIS_TIME);
     }
 
-    private void countValidate() {
-        long count = massageRepository.count();
+    private void timeValidateCancelMassage(int hour, int min) {
+        if (!(hour >= 20 && hour < 21)) throw new DotoriException(ErrorCode.MASSAGE_CANT_CANCEL_THIS_TIME);
+        if (!(min >= 20)) throw new DotoriException(ErrorCode.MASSAGE_CANT_CANCEL_THIS_TIME);
+    }
+
+    private void countValidate(long count) {
         if (count > 5) throw new DotoriException(ErrorCode.MASSAGE_OVER);
     }
 
-    private void massageStatusValidate(Member currentMember) {
-        if (!currentMember.getMassageStatus().equals(MassageStatus.CAN)) throw new DotoriException(ErrorCode.MASSAGE_ALREADY);
+    private void massageStatusValidate(Member currentMember, MassageStatus massageStatus) {
+        if (!currentMember.getMassageStatus().equals(massageStatus)) throw new DotoriException(ErrorCode.MASSAGE_ALREADY);
     }
 }
