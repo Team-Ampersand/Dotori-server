@@ -32,8 +32,9 @@ public class MassageServiceImpl implements MassageService {
 
     /**
      * 안마의자를 신청하는 로직
-     * 5명이 신청가능, 안마의자 신청 상태가 'CAN'일때만 신청가능, 금토일은 신청 불가능
-     * 주중 금토일을 제외한 20시 20분 ~ 21시 사이에 신청가능
+     * timeValidateRequestMassage(dayOfWeek, hour, min): 안마의자 신청을 할 수 있는 시간과 요일인지 검증
+     * countValidate(count): 안마의자를 신청한 학생이 5명 미만인지 검증
+     * massageStatusValidate(currentMember, MassageStatus.CAN): 안마의자 신청 상태가 CAN인지 검증
      * 안마의자 신청시 상태가 'CAN'에서 'APPLIED'로 변경
      * @param dayOfWeek 현재 요일
      * @param hour 현재 시
@@ -61,13 +62,14 @@ public class MassageServiceImpl implements MassageService {
         } catch (DataIntegrityViolationException e) {
             throw new DotoriException(ErrorCode.MASSAGE_ALREADY);
         }
+        currentMember.updateMassage(MassageStatus.APPLIED);
         log.info("Current MassageRequest Student Count is {}", count+1);
     }
 
     /**
      * 안마의자 신청 취소하는 로직
-     * 5명이 신청가능, 안마의자 신청 상태가 'APPLIED'일때만 취소가능, 금토일은 신청 불가능
-     * 주중 금토일을 제외한 20시 20분 ~ 21시 사이에 취소가능
+     * timeValidateRequestMassage(hour, min): 안마의자 신청을 할 수 있는 시간과 요일인지 검증
+     * massageStatusValidate(currentMember, MassageStatus.APPLIED): 안마의자 신청 상태가 APPLIED인지 검증
      * 안마의자 신청 취소시 상태가 "APPLIED"에서 "CANT"로 변경
      * 안마의자 신청을 취소한 학생은 MASSAGE 테이블에서 삭제
      * @param hour 현재 시
@@ -86,8 +88,8 @@ public class MassageServiceImpl implements MassageService {
         massageStatusValidate(currentMember, MassageStatus.APPLIED);
         long count = massageRepository.count();
 
-        currentMember.updateMassage(MassageStatus.CANT);
         massageRepository.deleteByMemberId(currentMember.getId());
+        currentMember.updateMassage(MassageStatus.CANT);
 
         log.info("Current MassageRequest Student Count is {}", count-1);
     }
