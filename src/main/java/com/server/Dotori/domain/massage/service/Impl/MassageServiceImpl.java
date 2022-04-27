@@ -5,8 +5,10 @@ import com.server.Dotori.domain.massage.dto.MassageStudentsDto;
 import com.server.Dotori.domain.massage.repository.MassageRepository;
 import com.server.Dotori.domain.massage.service.MassageService;
 import com.server.Dotori.domain.member.Member;
+import com.server.Dotori.domain.member.enumType.MassageStatus;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.global.exception.DotoriException;
+import com.server.Dotori.global.exception.ErrorCode;
 import com.server.Dotori.global.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.server.Dotori.domain.member.enumType.MassageStatus.*;
-import static com.server.Dotori.global.exception.ErrorCode.*;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -30,12 +29,6 @@ public class MassageServiceImpl implements MassageService {
     private final MassageRepository massageRepository;
     private final CurrentMemberUtil currentMemberUtil;
     private final MemberRepository memberRepository;
-
-    private void timeValidate(DayOfWeek dayOfWeek, int hour, int min) {
-        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_DATE);
-        if (!(hour >= 20 && hour < 21)) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_TIME);
-        if (!(min >= 20)) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_TIME);
-    }
 
     /**
      * 안마의자를 신청하는 로직
@@ -54,26 +47,21 @@ public class MassageServiceImpl implements MassageService {
     @Override
     @Transactional
     public synchronized void requestMassage(DayOfWeek dayOfWeek, int hour, int min) {
+
         timeValidate(dayOfWeek, hour, min);
+        countValidate();
+        Member currentMember = currentMemberUtil.getCurrentMember();
+        massageStatusValidate(currentMember);
 
-        long count = massageRepository.count();
         try {
-            if (count < 5) {
-                Member currentMember = currentMemberUtil.getCurrentMember();
-
-                if (currentMember.getMassageStatus() == CAN) {
-                    massageRepository.save(Massage.builder()
-                            .member(currentMember)
-                            .build()
-                    );
-                    currentMember.updateMassage(APPLIED);
-
-                    log.info("Current MassageRequest Student Count is {}", count + 1);
-                } else throw new DotoriException(MASSAGE_ALREADY);
-            } else throw new DotoriException(MASSAGE_OVER);
+            massageRepository.save(Massage.builder()
+                    .member(currentMember)
+                    .build()
+            );
         } catch (DataIntegrityViolationException e) {
-            throw new DotoriException(MASSAGE_ALREADY);
+            throw new DotoriException(ErrorCode.MASSAGE_ALREADY);
         }
+
     }
 
     /**
@@ -98,12 +86,12 @@ public class MassageServiceImpl implements MassageService {
         long count = massageRepository.count();
         Member currentMember = currentMemberUtil.getCurrentMember();
 
-        if (currentMember.getMassageStatus() == APPLIED) {
-            currentMember.updateMassage(CANT);
+        if (currentMember.getMassageStatus() == MassageStatus.APPLIED) {
+            currentMember.updateMassage(MassageStatus.CANT);
             massageRepository.deleteByMemberId(currentMember.getId());
 
             log.info("Current MassageRequest Student Count is {}", count-1);
-        } else throw new DotoriException(MASSAGE_CANT_CANCEL_REQUEST);
+        } else throw new DotoriException(ErrorCode.MASSAGE_CANT_CANCEL_REQUEST);
     }
 
     /**
@@ -142,8 +130,23 @@ public class MassageServiceImpl implements MassageService {
     @Transactional(readOnly = true)
     public List<MassageStudentsDto> getMassageStudents() {
         List<MassageStudentsDto> students = memberRepository.findMemberByMassageStatus();
-        if (students.size() == 0) throw new DotoriException(MASSAGE_ANYONE_NOT_REQUEST);
+        if (students.size() == 0) throw new DotoriException(ErrorCode.MASSAGE_ANYONE_NOT_REQUEST);
 
         return students;
+    }
+
+    private void timeValidate(DayOfWeek dayOfWeek, int hour, int min) {
+        if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new DotoriException(MASSAGE_CANT_REQUEST_THIS_DATE);
+        if (!(hour >= 20 && hour < 21)) throw new DotoriException(ErrorCode.MASSAGE_CANT_REQUEST_THIS_TIME);
+        if (!(min >= 20)) throw new DotoriException(ErrorCode.MASSAGE_CANT_REQUEST_THIS_TIME);
+    }
+
+    private void countValidate() {
+        long count = massageRepository.count();
+        if (count > 5) throw new DotoriException(ErrorCode.MASSAGE_OVER);
+    }
+
+    private void massageStatusValidate(Member currentMember) {
+        if (!currentMember.getMassageStatus().equals(MassageStatus.CAN)) throw new DotoriException(ErrorCode.MASSAGE_ALREADY);
     }
 }
