@@ -9,6 +9,7 @@ import com.server.Dotori.domain.board.service.BoardService;
 import com.server.Dotori.domain.board.service.S3Service;
 import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.global.exception.DotoriException;
+import com.server.Dotori.global.exception.ErrorCode;
 import com.server.Dotori.global.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -17,9 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
-import static com.server.Dotori.global.exception.ErrorCode.BOARD_EMPTY;
-import static com.server.Dotori.global.exception.ErrorCode.BOARD_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +57,7 @@ public class BoardServiceImpl implements BoardService {
     public Page<BoardGetDto> getAllBoard(Pageable pageable) {
         Page<Board> boardPage = boardRepository.getAllBoardCreateDateDesc(pageable);
 
-        if (boardPage.isEmpty()) throw new DotoriException(BOARD_EMPTY);
+        if (boardPage.isEmpty()) throw new DotoriException(ErrorCode.BOARD_EMPTY);
 
         return boardPage.map(board -> {
             ModelMapper mapper = new ModelMapper();
@@ -130,6 +128,6 @@ public class BoardServiceImpl implements BoardService {
      */
     private Board getBoard(Long boardId) {
         return boardRepository.findById(boardId)
-                .orElseThrow(() -> new DotoriException(BOARD_NOT_FOUND));
+                .orElseThrow(() -> new DotoriException(ErrorCode.BOARD_NOT_FOUND));
     }
 }

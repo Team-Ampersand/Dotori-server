@@ -1,10 +1,11 @@
 package com.server.Dotori.domain.stu_info.service.Impl;
 
 import com.server.Dotori.domain.member.Member;
-import com.server.Dotori.domain.stu_info.dto.*;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
+import com.server.Dotori.domain.stu_info.dto.*;
 import com.server.Dotori.domain.stu_info.service.StuInfoService;
 import com.server.Dotori.global.exception.DotoriException;
+import com.server.Dotori.global.exception.ErrorCode;
 import com.server.Dotori.global.util.ObjectMapperUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,8 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.server.Dotori.global.exception.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +37,7 @@ public class StuInfoServiceImpl implements StuInfoService {
     public List<StudentInfoDto> getStudentInfo(Long id) {
         List<Member> studentInfo = memberRepository.findStudentInfo(id);
 
-        if (studentInfo.isEmpty()) throw new DotoriException(MEMBER_NOT_FOUND_BY_CLASS);
+        if (studentInfo.isEmpty()) throw new DotoriException(ErrorCode.MEMBER_NOT_FOUND_BY_CLASS);
 
         return objectMapperUtils.mapAll(studentInfo, StudentInfoDto.class);
     }
@@ -95,7 +94,7 @@ public class StuInfoServiceImpl implements StuInfoService {
         Member findMember = getMember(stuNumUpdateDto.getReceiverId());
 
         if (memberRepository.existsByStuNum(stuNumUpdateDto.getStuNum()))
-            throw new DotoriException(MEMBER_ALREADY_JOIN_THIS_STUNUM);
+            throw new DotoriException(ErrorCode.MEMBER_ALREADY_JOIN_THIS_STUNUM);
 
         findMember.updateStuNum(stuNumUpdateDto.getStuNum());
     }
@@ -138,7 +137,7 @@ public class StuInfoServiceImpl implements StuInfoService {
     @Override
     public List<StudentInfoDto> getStuInfoByMemberName(String memberName) {
         List<Member> findMembers = memberRepository.findStuInfoByMemberName(memberName);
-        if (findMembers.isEmpty()) throw new DotoriException(MEMBER_NOT_FOUND);
+        if (findMembers.isEmpty()) throw new DotoriException(ErrorCode.MEMBER_NOT_FOUND);
         return objectMapperUtils.mapAll(findMembers, StudentInfoDto.class);
     }
 
@@ -150,6 +149,6 @@ public class StuInfoServiceImpl implements StuInfoService {
      */
     private Member getMember(Long receiverId) {
         return memberRepository.findById(receiverId)
-                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new DotoriException(ErrorCode.MEMBER_NOT_FOUND));
     }
 }

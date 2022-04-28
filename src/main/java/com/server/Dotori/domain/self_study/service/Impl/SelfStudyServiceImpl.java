@@ -22,9 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.server.Dotori.domain.member.enumType.SelfStudyStatus.*;
-import static com.server.Dotori.global.exception.ErrorCode.*;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -47,23 +44,23 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Override
     @Transactional
     public synchronized void requestSelfStudy(DayOfWeek dayOfWeek, int hour) {
-        validDayOfWeekAndHour(dayOfWeek, hour, SELF_STUDY_CANT_REQUEST_DATE, SELF_STUDY_CANT_REQUEST_TIME);
+        validDayOfWeekAndHour(dayOfWeek, hour, ErrorCode.SELF_STUDY_CANT_REQUEST_DATE, ErrorCode.SELF_STUDY_CANT_REQUEST_TIME);
 
         Member currentMember = currentMemberUtil.getCurrentMember();
         long count = selfStudyRepository.count(); // 비관적 잠금이 걸린 count query
 
         isSmallerThanFifty(count); // count가 50 미만인지 checking
-        isVerifiedSelfStudy(CAN, SELF_STUDY_ALREADY); // 회원의 자습신청 상태가 CAN인지 checking
+        isVerifiedSelfStudy(SelfStudyStatus.CAN, ErrorCode.SELF_STUDY_ALREADY); // 회원의 자습신청 상태가 CAN인지 checking
 
         try {
-            currentMember.updateSelfStudy(APPLIED);
+            currentMember.updateSelfStudy(SelfStudyStatus.APPLIED);
 
             selfStudyRepository.save(SelfStudy.builder()
                     .member(currentMember)
                     .build());
 
         } catch (DataIntegrityViolationException e) { // TODO : 로깅 레벨에서 다시한번 체크 해야함
-            throw new DotoriException(SELF_STUDY_ALREADY);
+            throw new DotoriException(ErrorCode.SELF_STUDY_ALREADY);
         }
     }
 
@@ -79,13 +76,13 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Override
     @Transactional
     public void cancelSelfStudy(DayOfWeek dayOfWeek, int hour) {
-        validDayOfWeekAndHour(dayOfWeek, hour, SELF_STUDY_CANT_CANCEL_DATE, SELF_STUDY_CANT_CANCEL_TIME);
+        validDayOfWeekAndHour(dayOfWeek, hour, ErrorCode.SELF_STUDY_CANT_CANCEL_DATE, ErrorCode.SELF_STUDY_CANT_CANCEL_TIME);
 
         Member currentMember = currentMemberUtil.getCurrentMember();
 
-        isVerifiedSelfStudy(APPLIED, SELF_STUDY_CANT_CANCEL); // 회원의 자습신청 상태가 APPLIED인지 checking
+        isVerifiedSelfStudy(SelfStudyStatus.APPLIED, ErrorCode.SELF_STUDY_CANT_CANCEL); // 회원의 자습신청 상태가 APPLIED인지 checking
 
-        currentMember.updateSelfStudy(CANT);
+        currentMember.updateSelfStudy(SelfStudyStatus.CANT);
         selfStudyRepository.deleteByMemberId(currentMember.getId());
     }
 
@@ -100,7 +97,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     public List<SelfStudyStudentsDto> getSelfStudyStudentByMemberName(String memberName) {
         List<SelfStudyStudentsDto> findSelfStudyAppliedStudent = selfStudyRepository.findByMemberName(memberName);
 
-        if (findSelfStudyAppliedStudent.isEmpty()) throw new DotoriException(SELF_STUDY_NOT_FOUND);
+        if (findSelfStudyAppliedStudent.isEmpty()) throw new DotoriException(ErrorCode.SELF_STUDY_NOT_FOUND);
 
         return findSelfStudyAppliedStudent;
     }
@@ -116,7 +113,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     public List<SelfStudyStudentsDto> getSelfStudyStudentsByCreateDate() {
         List<SelfStudyStudentsDto> selfStudyStudents = selfStudyRepository.findByCreateDate();
 
-        if (selfStudyStudents.isEmpty()) throw new DotoriException(SELF_STUDY_NOT_FOUND);
+        if (selfStudyStudents.isEmpty()) throw new DotoriException(ErrorCode.SELF_STUDY_NOT_FOUND);
         return selfStudyStudents;
     }
 
@@ -132,7 +129,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     public List<SelfStudyStudentsDto> getSelfStudyStudentsByCategory(Long id) {
         List<SelfStudyStudentsDto> selfStudyCategory = memberRepository.findBySelfStudyCategory(id);
 
-        if (selfStudyCategory.isEmpty()) throw new DotoriException(MEMBER_NOT_FOUND_BY_CLASS);
+        if (selfStudyCategory.isEmpty()) throw new DotoriException(ErrorCode.MEMBER_NOT_FOUND_BY_CLASS);
         return selfStudyCategory;
     }
 
@@ -171,7 +168,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Override
     @Transactional
     public void banSelfStudy(Long id) {
-        updateSelfStudyAndExpiredDate(getMember(id), IMPOSSIBLE, LocalDateTime.now().plusDays(7));
+        updateSelfStudyAndExpiredDate(getMember(id), SelfStudyStatus.IMPOSSIBLE, LocalDateTime.now().plusDays(7));
     }
 
     /**
@@ -182,7 +179,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Override
     @Transactional
     public void cancelBanSelfStudy(Long id) {
-        updateSelfStudyAndExpiredDate(getMember(id), CAN, null);
+        updateSelfStudyAndExpiredDate(getMember(id), SelfStudyStatus.CAN, null);
     }
 
     /**
@@ -227,7 +224,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      * @author 배태현
      */
     private boolean isSmallerThanFifty(long count) {
-        if (count >= 50) throw new DotoriException(SELF_STUDY_OVER);
+        if (count >= 50) throw new DotoriException(ErrorCode.SELF_STUDY_OVER);
         return true;
     }
 
@@ -240,7 +237,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      */
     private Member getMember(Long id) {
         return memberRepository.findById(id)
-                .orElseThrow(() -> new DotoriException(MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new DotoriException(ErrorCode.MEMBER_NOT_FOUND));
     }
 
     /**
