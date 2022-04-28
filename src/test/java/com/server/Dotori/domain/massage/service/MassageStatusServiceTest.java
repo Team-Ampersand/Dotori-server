@@ -97,7 +97,7 @@ public class MassageStatusServiceTest {
     @DisplayName("안마의자 신청 취소가 잘 되는지 검증")
     public void cancelMassageTest() {
         massageService.requestMassage(DayOfWeek.THURSDAY,20,30);
-        massageService.cancelMassage(DayOfWeek.THURSDAY, 20, 31);
+        massageService.cancelMassage(20, 31);
 
         assertEquals(MassageStatus.CANT, currentMemberUtil.getCurrentMember().getMassageStatus());
         assertEquals(0, massageRepository.count());
