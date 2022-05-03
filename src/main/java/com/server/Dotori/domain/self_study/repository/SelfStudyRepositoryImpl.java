@@ -2,7 +2,6 @@ package com.server.Dotori.domain.self_study.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.server.Dotori.domain.member.enumType.SelfStudyStatus;
 import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
 import lombok.RequiredArgsConstructor;
 
@@ -26,9 +25,9 @@ public class SelfStudyRepositoryImpl implements SelfStudyRepositoryCustom {
                         selfStudy.member.gender
                         )
                 )
-                .where(
-                        selfStudy.member.selfStudyStatus.eq(SelfStudyStatus.APPLIED)
-                )
+//                .where(
+//                        selfStudy.member.selfStudyStatus.eq(SelfStudyStatus.APPLIED)
+//                )
                 .innerJoin(selfStudy.member, member)
                 .orderBy(selfStudy.createdDate.asc())
                 .fetch();
@@ -45,8 +44,9 @@ public class SelfStudyRepositoryImpl implements SelfStudyRepositoryCustom {
                         )
                 )
                 .where(
-                        selfStudy.member.selfStudyStatus.eq(SelfStudyStatus.APPLIED)
-                        .and(selfStudy.member.memberName.like("%" + memberName + "%"))
+//                        selfStudy.member.selfStudyStatus.eq(SelfStudyStatus.APPLIED)
+//                        .and(selfStudy.member.memberName.like("%" + memberName + "%"))
+                    selfStudy.member.memberName.like("%" + memberName + "%")
                 )
                 .innerJoin(selfStudy.member, member)
                 .fetch();
