@@ -2,13 +2,11 @@ package com.server.Dotori.domain.music.repository;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.server.Dotori.domain.member.enumType.Music;
+import com.server.Dotori.domain.member.enumType.MusicStatus;
 import com.server.Dotori.domain.music.dto.MusicResDto;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 import static com.server.Dotori.domain.member.QMember.member;
@@ -33,56 +31,10 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
         queryFactory
                 .update(member)
                 .where(
-                        member.music.eq(Music.APPLIED)
+                        member.musicStatus.eq(MusicStatus.APPLIED)
                 )
-                .set(member.music, Music.CAN)
+                .set(member.musicStatus, MusicStatus.CAN)
                 .execute();
-    }
-
-    /**
-     * 신청된 음악을 조회하는 query
-     * @return List-MusicResDto (id, musicUrl, member.username, member.email)
-     * @author 배태현
-     */
-    @Override
-    public List<MusicResDto> findAllMusic() {
-        return queryFactory
-                .select(Projections.fields(MusicResDto.class,
-                        music.id,
-                        music.url,
-                        music.member.memberName,
-                        music.member.email,
-                        music.createdDate
-                        ))
-                .from(music)
-                .innerJoin(music.member, member)
-                .orderBy(music.createdDate.asc())
-                .fetch();
-    }
-
-    /**
-     * 오늘 신청된 음악을 조회하는 query
-     * @param localDate localDate
-     * @return List-MusicResDto (id, musicUrl, member.username, member.email)
-     * @author 배태현
-     */
-    @Override
-    public List<MusicResDto> findCurrentDateMusic(LocalDate localDate) {
-        return queryFactory
-                .select(Projections.fields(MusicResDto.class,
-                        music.id,
-                        music.url,
-                        music.member.memberName,
-                        music.member.email,
-                        music.createdDate
-                        ))
-                .from(music)
-                .where(music.createdDate.between(
-                        localDate.atStartOfDay(),
-                        LocalDateTime.of(LocalDate.now(), LocalTime.MAX).withNano(0)
-                ))
-                .orderBy(music.createdDate.asc())
-                .fetch();
     }
 
     /**

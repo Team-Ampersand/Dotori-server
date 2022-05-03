@@ -9,9 +9,5 @@ public interface MusicRepositoryCustom {
 
     void updateMusicStatusMemberByMember();
 
-    List<MusicResDto> findAllMusic();
-
-    List<MusicResDto> findCurrentDateMusic(LocalDate localDate);
-
     List<MusicResDto> findDateMusic(LocalDate date);
 }

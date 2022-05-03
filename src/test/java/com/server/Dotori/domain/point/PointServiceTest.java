@@ -2,11 +2,11 @@ package com.server.Dotori.domain.point;
 
 import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.enumType.Gender;
+import com.server.Dotori.domain.member.enumType.SelfStudyStatus;
 import com.server.Dotori.domain.point.dto.GetAboutPointDto;
 import com.server.Dotori.domain.member.dto.MemberDto;
 import com.server.Dotori.domain.point.dto.PointDto;
 import com.server.Dotori.domain.member.enumType.Role;
-import com.server.Dotori.domain.member.enumType.SelfStudy;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.point.service.PointService;
 import com.server.Dotori.global.util.CurrentMemberUtil;
@@ -26,7 +26,7 @@ import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 
-import static com.server.Dotori.domain.member.enumType.Music.CAN;
+import static com.server.Dotori.domain.member.enumType.MusicStatus.CAN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -87,8 +87,8 @@ class PointServiceTest {
                         .password("1234")
                         .email("s20043@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_MEMBER))
-                        .music(CAN)
-                        .selfStudy(SelfStudy.CAN)
+                        .musicStatus(CAN)
+                        .selfStudyStatus(SelfStudyStatus.CAN)
                         .point(0L)
                         .gender(Gender.MAN)
                         .build()
@@ -119,8 +119,8 @@ class PointServiceTest {
                         .password("1234")
                         .email("s20013@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_MEMBER))
-                        .music(CAN)
-                        .selfStudy(SelfStudy.CAN)
+                        .musicStatus(CAN)
+                        .selfStudyStatus(SelfStudyStatus.CAN)
                         .point(-2L)
                         .gender(Gender.MAN)
                         .build()
@@ -133,8 +133,8 @@ class PointServiceTest {
                         .password("1234")
                         .email("s20083@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_MEMBER))
-                        .music(CAN)
-                        .selfStudy(SelfStudy.CAN)
+                        .musicStatus(CAN)
+                        .selfStudyStatus(SelfStudyStatus.CAN)
                         .point(-13L)
                         .gender(Gender.MAN)
                         .build()

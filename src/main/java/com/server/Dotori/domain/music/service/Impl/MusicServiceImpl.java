@@ -1,6 +1,7 @@
 package com.server.Dotori.domain.music.service.Impl;
 
 import com.server.Dotori.domain.member.Member;
+import com.server.Dotori.domain.member.enumType.MusicStatus;
 import com.server.Dotori.domain.music.Music;
 import com.server.Dotori.domain.music.dto.MusicApplicationDto;
 import com.server.Dotori.domain.music.dto.MusicResDto;
@@ -16,10 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
-
-import static com.server.Dotori.domain.member.enumType.Music.APPLIED;
-import static com.server.Dotori.domain.member.enumType.Music.CAN;
-import static com.server.Dotori.global.exception.ErrorCode.*;
 
 /**
  * @since 1.0.0
@@ -44,17 +41,17 @@ public class MusicServiceImpl implements MusicService {
     @Override
     @Transactional
     public Music musicApplication(MusicApplicationDto musicApplicationDto, DayOfWeek dayOfWeek) {
-        validDayOfWeek(dayOfWeek, MUSIC_CANT_REQUEST_DATE);
+        validDayOfWeek(dayOfWeek, ErrorCode.MUSIC_CANT_REQUEST_DATE);
 
         Member currentMember = currentMemberUtil.getCurrentMember();
 
         if (isCanApplyMusicStatus()) {
             Music music = musicRepository.save(musicApplicationDto.saveToEntity(currentMember));
-            currentMember.updateMusic(APPLIED);
+            currentMember.updateMusic(MusicStatus.APPLIED);
             return music;
 
         } else {
-            throw new DotoriException(MUSIC_ALREADY);
+            throw new DotoriException(ErrorCode.MUSIC_ALREADY);
         }
     }
 
@@ -69,7 +66,7 @@ public class MusicServiceImpl implements MusicService {
     public List<MusicResDto> getMusicListByDate(LocalDate date) {
         List<MusicResDto> musicList = musicRepository.findDateMusic(date);
 
-        if (musicList.isEmpty()) throw new DotoriException(MUSIC_NOT_REQUESTED);
+        if (musicList.isEmpty()) throw new DotoriException(ErrorCode.MUSIC_NOT_REQUESTED);
         return musicList;
     }
 
@@ -84,10 +81,10 @@ public class MusicServiceImpl implements MusicService {
     @Transactional
     public void deleteMusic(Long musicId) {
         Music music = musicRepository.findById(musicId)
-                .orElseThrow(() -> new DotoriException(MUSIC_NOT_FOUND));
+                .orElseThrow(() -> new DotoriException(ErrorCode.MUSIC_NOT_FOUND));
 
         if (isNowDate(music)) {
-            music.getMember().updateMusic(CAN);
+            music.getMember().updateMusic(MusicStatus.CAN);
         }
         musicRepository.deleteById(music.getId());
     }
@@ -119,7 +116,7 @@ public class MusicServiceImpl implements MusicService {
      * @author 배태현
      */
     private boolean isCanApplyMusicStatus() {
-        return currentMemberUtil.getCurrentMember().getMusic() == CAN;
+        return currentMemberUtil.getCurrentMember().getMusicStatus() == MusicStatus.CAN;
     }
 
     /**

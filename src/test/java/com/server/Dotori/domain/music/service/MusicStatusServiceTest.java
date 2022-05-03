@@ -3,8 +3,9 @@ package com.server.Dotori.domain.music.service;
 import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.dto.MemberDto;
 import com.server.Dotori.domain.member.enumType.Gender;
+import com.server.Dotori.domain.member.enumType.MusicStatus;
 import com.server.Dotori.domain.member.enumType.Role;
-import com.server.Dotori.domain.member.enumType.SelfStudy;
+import com.server.Dotori.domain.member.enumType.SelfStudyStatus;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.music.Music;
 import com.server.Dotori.domain.music.dto.MusicApplicationDto;
@@ -32,15 +33,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.server.Dotori.domain.member.enumType.Music.APPLIED;
-import static com.server.Dotori.domain.member.enumType.Music.CAN;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
-class MusicServiceTest {
+class MusicStatusServiceTest {
 
     @Autowired private MusicService musicService;
     @Autowired private MusicRepository musicRepository;
@@ -95,7 +94,7 @@ class MusicServiceTest {
         );
 
         //then
-        assertThat(music.getMember().getMusic()).isEqualTo(APPLIED);
+        assertThat(music.getMember().getMusicStatus()).isEqualTo(MusicStatus.APPLIED);
         assertThat(music.getUrl()).isEqualTo("https://www.youtube.com/watch?v=6h9qmKWK6Io");
     }
 
@@ -130,7 +129,7 @@ class MusicServiceTest {
         Member currentMember = currentMemberUtil.getCurrentMember();
 
         //when
-        currentMember.updateMusic(APPLIED);
+        currentMember.updateMusic(MusicStatus.APPLIED);
 
         //then
         assertThrows(
@@ -219,8 +218,8 @@ class MusicServiceTest {
                         .password("1234")
                         .email("s20033@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
-                        .music(APPLIED)
-                        .selfStudy(SelfStudy.CAN)
+                        .musicStatus(MusicStatus.APPLIED)
+                        .selfStudyStatus(SelfStudyStatus.CAN)
                         .point(0L)
                         .gender(Gender.MAN)
                         .build()
@@ -233,8 +232,8 @@ class MusicServiceTest {
                         .password("1234")
                         .email("s20031@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
-                        .music(APPLIED)
-                        .selfStudy(SelfStudy.CAN)
+                        .musicStatus(MusicStatus.APPLIED)
+                        .selfStudyStatus(SelfStudyStatus.CAN)
                         .point(0L)
                         .gender(Gender.MAN)
                         .build()
@@ -247,8 +246,8 @@ class MusicServiceTest {
                         .password("1234")
                         .email("s20030@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
-                        .music(CAN)
-                        .selfStudy(SelfStudy.CAN)
+                        .musicStatus(MusicStatus.CAN)
+                        .selfStudyStatus(SelfStudyStatus.CAN)
                         .point(0L)
                         .gender(Gender.MAN)
                         .build()
@@ -261,8 +260,8 @@ class MusicServiceTest {
         em.clear();
 
         //then
-        assertEquals(CAN, memberRepository.findByEmail("s20033@gsm.hs.kr").get().getMusic());
-        assertEquals(CAN, memberRepository.findByEmail("s20031@gsm.hs.kr").get().getMusic());
-        assertEquals(CAN, memberRepository.findByEmail("s20030@gsm.hs.kr").get().getMusic()); //이 회원은 그대로 CAN
+        assertEquals(MusicStatus.CAN, memberRepository.findByEmail("s20033@gsm.hs.kr").get().getMusicStatus());
+        assertEquals(MusicStatus.CAN, memberRepository.findByEmail("s20031@gsm.hs.kr").get().getMusicStatus());
+        assertEquals(MusicStatus.CAN, memberRepository.findByEmail("s20030@gsm.hs.kr").get().getMusicStatus()); //이 회원은 그대로 CAN
     }
 }

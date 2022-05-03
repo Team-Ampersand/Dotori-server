@@ -1,6 +1,7 @@
 package com.server.Dotori.domain.stu_info.service;
 
 import com.server.Dotori.domain.member.dto.MemberDto;
+import com.server.Dotori.domain.member.enumType.Gender;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.stu_info.dto.*;
@@ -22,8 +23,6 @@ import javax.persistence.EntityManager;
 import java.util.Collections;
 import java.util.List;
 
-import static com.server.Dotori.domain.member.enumType.Gender.MAN;
-import static com.server.Dotori.domain.member.enumType.Gender.WOMAN;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -45,7 +44,7 @@ class StuInfoServiceTest {
                 .stuNum("2409")
                 .password("0809")
                 .email("s20032@gsm.hs.kr")
-                .gender(MAN)
+                .gender(Gender.MAN)
                 .build();
         memberRepository.save(
                 memberDto.toEntity(
@@ -196,12 +195,12 @@ class StuInfoServiceTest {
         stuInfoService.updateGender(
                 GenderUpdateDto.builder()
                         .receiverId(currentMemberUtil.getCurrentMember().getId())
-                        .gender(WOMAN)
+                        .gender(Gender.WOMAN)
                         .build()
         );
 
         //then
-        assertEquals(WOMAN, memberRepository.findByEmail("s20032@gsm.hs.kr").get().getGender());
+        assertEquals(Gender.WOMAN, memberRepository.findByEmail("s20032@gsm.hs.kr").get().getGender());
     }
 
     @Test

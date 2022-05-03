@@ -1,8 +1,8 @@
 package com.server.Dotori.domain.member;
 
-import com.server.Dotori.domain.member.enumType.Music;
+import com.server.Dotori.domain.member.enumType.MusicStatus;
 import com.server.Dotori.domain.member.enumType.Role;
-import com.server.Dotori.domain.member.enumType.SelfStudy;
+import com.server.Dotori.domain.member.enumType.SelfStudyStatus;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -33,8 +33,8 @@ public class MemberTest {
                         .password("1234")
                         .email("s20014@gsm.hs.kr")
                         .roles(Collections.singletonList(Role.ROLE_ADMIN))
-                        .music(Music.CAN)
-                        .selfStudy(SelfStudy.CAN)
+                        .musicStatus(MusicStatus.CAN)
+                        .selfStudyStatus(SelfStudyStatus.CAN)
                         .point(0L)
                         .build()
         );

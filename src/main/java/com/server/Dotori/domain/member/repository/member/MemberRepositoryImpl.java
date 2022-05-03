@@ -5,8 +5,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.server.Dotori.domain.main_page.dto.GetProfileDto;
 import com.server.Dotori.domain.massage.dto.MassageStudentsDto;
 import com.server.Dotori.domain.member.Member;
-import com.server.Dotori.domain.member.enumType.Massage;
-import com.server.Dotori.domain.member.enumType.SelfStudy;
+import com.server.Dotori.domain.member.enumType.MassageStatus;
+import com.server.Dotori.domain.member.enumType.SelfStudyStatus;
 import com.server.Dotori.domain.point.dto.GetAboutPointDto;
 import com.server.Dotori.domain.rule.dto.FindStusDto;
 import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
@@ -40,7 +40,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                         member.gender
                         )
                 ).where(
-                        member.selfStudy.eq(SelfStudy.APPLIED)
+                        member.selfStudyStatus.eq(SelfStudyStatus.APPLIED)
                 )
                 .orderBy(member.stuNum.asc())
                 .fetch();
@@ -63,7 +63,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                         )
                 )
                 .where(
-                        member.selfStudy.eq(SelfStudy.APPLIED)
+                        member.selfStudyStatus.eq(SelfStudyStatus.APPLIED)
                         .and(member.stuNum.like(id+"%"))
                 )
                 .orderBy(member.stuNum.asc())
@@ -80,10 +80,10 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         queryFactory
                 .update(member)
                 .where(
-                        member.selfStudy.eq(SelfStudy.APPLIED)
-                                .or(member.selfStudy.eq(SelfStudy.CANT))
+                        member.selfStudyStatus.eq(SelfStudyStatus.APPLIED)
+                                .or(member.selfStudyStatus.eq(SelfStudyStatus.CANT))
                 )
-                .set(member.selfStudy, SelfStudy.CAN)
+                .set(member.selfStudyStatus, SelfStudyStatus.CAN)
                 .execute();
     }
 
@@ -164,10 +164,10 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         queryFactory
                 .update(member)
                 .where(
-                        member.selfStudy.eq(SelfStudy.IMPOSSIBLE)
+                        member.selfStudyStatus.eq(SelfStudyStatus.IMPOSSIBLE)
                         .and(member.selfStudyExpiredDate.stringValue().substring(0,10).eq(String.valueOf(LocalDate.now())))
                 )
-                .set(member.selfStudy, SelfStudy.CAN)
+                .set(member.selfStudyStatus, SelfStudyStatus.CAN)
                 .set(member.selfStudyExpiredDate, (LocalDateTime) null)
                 .execute();
     }
@@ -181,10 +181,10 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         queryFactory
                 .update(member)
                 .where(
-                        member.massage.eq(Massage.CANT)
-                        .or(member.massage.eq(Massage.APPLIED))
+                        member.massageStatus.eq(MassageStatus.CANT)
+                        .or(member.massageStatus.eq(MassageStatus.APPLIED))
                 )
-                .set(member.massage, Massage.CAN)
+                .set(member.massageStatus, MassageStatus.CAN)
                 .execute();
     }
 
@@ -201,7 +201,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                         member.id, member.memberName, member.stuNum)
                 )
                 .where(
-                        member.massage.eq(Massage.APPLIED)
+                        member.massageStatus.eq(MassageStatus.APPLIED)
                 )
                 .orderBy(member.stuNum.asc())
                 .fetch();

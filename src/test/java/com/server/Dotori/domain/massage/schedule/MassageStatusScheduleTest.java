@@ -1,4 +1,4 @@
-package com.server.Dotori.domain.music.schedule;
+package com.server.Dotori.domain.massage.schedule;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -12,21 +12,21 @@ import org.springframework.scheduling.config.ScheduledTaskHolder;
 import java.util.Set;
 
 @SpringBootTest
-class MusicScheduleTest {
+public class MassageStatusScheduleTest {
 
     @Autowired
     private ScheduledTaskHolder scheduledTaskHolder;
 
     @Test
-    @DisplayName("매일 자정에 학생들의 음악신청 상태가 '가능'으로 변경하는 일정이 잘 예약되었는지 확인하는 테스트")
-    public void weekdayMusicStatusReset() {
+    @DisplayName("새벽 2시에 안마의자 신청 상태가 변경되는 스케쥴러가 동작하는지 확인하는 테스트")
+    public void everyNightMassageStatusChangeTest() {
         Set<ScheduledTask> scheduledTasks = scheduledTaskHolder.getScheduledTasks();
         scheduledTasks.forEach(scheduledTask -> scheduledTask.getTask().getRunnable().getClass().getDeclaredMethods());
 
         long count = scheduledTasks.stream()
                 .filter(scheduledTask -> scheduledTask.getTask() instanceof CronTask)
                 .map(scheduledTask -> (CronTask) scheduledTask.getTask())
-                .filter(cronTask -> cronTask.getExpression().equals("0 0 0 ? * MON-FRI") && cronTask.toString().equals("com.server.Dotori.domain.music.schedule.MusicSchedule.weekdayMusicStatusReset"))
+                .filter(cronTask -> cronTask.getExpression().equals("0 0 2 ? * MON-FRI") && cronTask.toString().equals("com.server.Dotori.domain.massage.schedule.MassageSchedule.updateMassageStatus"))
                 .count();
         Assertions.assertThat(count).isEqualTo(1L);
     }

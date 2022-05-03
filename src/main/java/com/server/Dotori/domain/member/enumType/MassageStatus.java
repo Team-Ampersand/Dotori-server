@@ -1,5 +1,5 @@
 package com.server.Dotori.domain.member.enumType;
 
-public enum Music {
+public enum MassageStatus {
     CAN, APPLIED, CANT
 }

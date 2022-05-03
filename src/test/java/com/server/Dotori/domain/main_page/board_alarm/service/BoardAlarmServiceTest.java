@@ -6,6 +6,7 @@ import com.server.Dotori.domain.main_page.dto.BoardAlarmDto;
 import com.server.Dotori.domain.main_page.service.BoardAlarmService;
 import com.server.Dotori.domain.member.dto.MemberDto;
 import com.server.Dotori.domain.member.enumType.Gender;
+import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.global.exception.DotoriException;
 import com.server.Dotori.global.util.CurrentMemberUtil;
@@ -24,8 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.server.Dotori.domain.member.enumType.Role.ROLE_ADMIN;
-import static com.server.Dotori.domain.member.enumType.Role.ROLE_MEMBER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -60,7 +59,7 @@ class BoardAlarmServiceTest {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 memberDto.getEmail(),
                 memberDto.getPassword(),
-                List.of(new SimpleGrantedAuthority(ROLE_ADMIN.name())));
+                List.of(new SimpleGrantedAuthority(Role.ROLE_ADMIN.name())));
         SecurityContext context = SecurityContextHolder.getContext();
         context.setAuthentication(token);
         System.out.println("=================================");
@@ -86,7 +85,7 @@ class BoardAlarmServiceTest {
 
         // then
         assertEquals("도토리 공지사항", boardAlarmInfo.getTitle());
-        assertEquals(ROLE_MEMBER.name(), boardAlarmInfo.getWriterRole().get(0).name());
+        assertEquals(Role.ROLE_MEMBER.name(), boardAlarmInfo.getWriterRole().get(0).name());
         assertEquals(LocalDate.now(), boardAlarmInfo.getLastBoardWriteDate());
     }
 

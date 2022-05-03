@@ -54,7 +54,7 @@ public class MemberMassageController {
     })
     public CommonResult cancelMassageMember() {
         LocalDateTime currentTime = LocalDateTime.now();
-        massageService.cancelMassage(currentTime.getDayOfWeek(), currentTime.getHour(), currentTime.getMinute());
+        massageService.cancelMassage(currentTime.getHour(), currentTime.getMinute());
         return responseService.getSuccessResult();
     }
 

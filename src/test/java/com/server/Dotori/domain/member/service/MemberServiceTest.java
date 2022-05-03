@@ -161,9 +161,9 @@ public class MemberServiceTest {
                         .point(1L)
                         .refreshToken(null)
                         .gender(Gender.MAN)
-                        .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
-                        .massage(Massage.CAN)
+                        .selfStudyStatus(SelfStudyStatus.CAN)
+                        .musicStatus(MusicStatus.CAN)
+                        .massageStatus(MassageStatus.CAN)
                         .build()
         );
 
@@ -186,9 +186,9 @@ public class MemberServiceTest {
                         .point(1L)
                         .refreshToken(null)
                         .gender(Gender.MAN)
-                        .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
-                        .massage(Massage.CAN)
+                        .selfStudyStatus(SelfStudyStatus.CAN)
+                        .musicStatus(MusicStatus.CAN)
+                        .massageStatus(MassageStatus.CAN)
                         .build()
         );
 
@@ -218,9 +218,9 @@ public class MemberServiceTest {
                         .point(1L)
                         .refreshToken(null)
                         .gender(Gender.PENDING)
-                        .selfStudy(SelfStudy.CAN)
-                        .music(Music.CAN)
-                        .massage(Massage.CAN)
+                        .selfStudyStatus(SelfStudyStatus.CAN)
+                        .musicStatus(MusicStatus.CAN)
+                        .massageStatus(MassageStatus.CAN)
                         .build()
         );
 

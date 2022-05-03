@@ -4,7 +4,7 @@ import com.server.Dotori.domain.massage.dto.MassageStudentsDto;
 import com.server.Dotori.domain.massage.repository.MassageRepository;
 import com.server.Dotori.domain.member.dto.MemberDto;
 import com.server.Dotori.domain.member.enumType.Gender;
-import com.server.Dotori.domain.member.enumType.Massage;
+import com.server.Dotori.domain.member.enumType.MassageStatus;
 import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.global.exception.DotoriException;
@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @Transactional
-public class MassageServiceTest {
+public class MassageStatusServiceTest {
 
     @Autowired MemberRepository memberRepository;
     @Autowired PasswordEncoder passwordEncoder;
@@ -77,7 +77,7 @@ public class MassageServiceTest {
     public void requestMassageTest() {
         massageService.requestMassage(DayOfWeek.WEDNESDAY, 20, 40);
 
-        assertThat(Massage.APPLIED).isEqualTo(currentMemberUtil.getCurrentMember().getMassage());
+        assertThat(MassageStatus.APPLIED).isEqualTo(currentMemberUtil.getCurrentMember().getMassageStatus());
         assertThat(1).isEqualTo(massageRepository.count());
     }
 
@@ -97,9 +97,9 @@ public class MassageServiceTest {
     @DisplayName("안마의자 신청 취소가 잘 되는지 검증")
     public void cancelMassageTest() {
         massageService.requestMassage(DayOfWeek.THURSDAY,20,30);
-        massageService.cancelMassage(DayOfWeek.THURSDAY, 20, 31);
+        massageService.cancelMassage(20, 31);
 
-        assertEquals(Massage.CANT, currentMemberUtil.getCurrentMember().getMassage());
+        assertEquals(MassageStatus.CANT, currentMemberUtil.getCurrentMember().getMassageStatus());
         assertEquals(0, massageRepository.count());
     }
 
@@ -119,7 +119,7 @@ public class MassageServiceTest {
         massageService.requestMassage(DayOfWeek.THURSDAY, 20, 40);
         Map<String, String> find = massageService.getMassageInfo();
 
-        assertEquals(String.valueOf(Massage.APPLIED), find.get("status"));
+        assertEquals(String.valueOf(MassageStatus.APPLIED), find.get("status"));
         assertEquals("1", find.get("count"));
 
     }
