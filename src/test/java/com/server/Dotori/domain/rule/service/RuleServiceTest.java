@@ -2,6 +2,7 @@ package com.server.Dotori.domain.rule.service;
 
 import com.server.Dotori.domain.member.dto.MemberDto;
 import com.server.Dotori.domain.member.enumType.Gender;
+import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.rule.dto.RuleGrantDto;
 import com.server.Dotori.domain.rule.dto.RulesCntAndDatesDto;
@@ -11,6 +12,10 @@ import com.server.Dotori.global.exception.DotoriException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +54,14 @@ public class RuleServiceTest {
                         passwordEncoder.encode(memberDto1.getPassword())
                 )
         );
+
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                memberDto1.getEmail(),
+                memberDto1.getPassword(),
+                List.of(new SimpleGrantedAuthority(Role.ROLE_ADMIN.name())));
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(token);
+        System.out.println(context);
 
         MemberDto memberDto2 = MemberDto.builder()
                 .memberName("송시현")
