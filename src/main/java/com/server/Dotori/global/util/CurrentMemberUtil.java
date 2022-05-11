@@ -16,8 +16,19 @@ public class CurrentMemberUtil {
 
     private final MemberRepository memberRepository;
 
+    public static String getMemberName(){
+        String memberName;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(principal instanceof UserDetails) {
+            memberName = ((Member) principal).getMemberName();
+        } else{
+            memberName = principal.toString();
+        }
+        return memberName;
+    }
+
     public static String getCurrentEmail(){
-        String email = null;
+        String email;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
             email = ((Member) principal).getEmail();
@@ -28,7 +39,7 @@ public class CurrentMemberUtil {
     }
 
     public Member getCurrentMember() {
-        String email = null;
+        String email;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal instanceof UserDetails) {
             email = ((Member) principal).getEmail();
