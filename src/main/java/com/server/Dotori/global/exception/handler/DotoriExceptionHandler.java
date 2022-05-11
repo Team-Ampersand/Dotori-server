@@ -17,7 +17,7 @@ public class DotoriExceptionHandler {
 
     @ExceptionHandler(value = {DotoriException.class})
     public ResponseEntity<ErrorResponse> handleDotoriException(DotoriException e) {
-        log.error("handleDotoriException throw DotoriException : {}", e.getErrorCode());
+        log.info("code : '{}', by : '{}'", e.getErrorCode(), e.getErrorBy());
         return ErrorResponse.toResponseEntity(e.getErrorCode());
     }
 

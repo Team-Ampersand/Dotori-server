@@ -10,7 +10,6 @@ import com.server.Dotori.global.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -81,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**/**").permitAll()
 
                 // Disallow everything else..
-                .anyRequest().authenticated();
+                .anyRequest().permitAll();
 
         http.exceptionHandling()
                 .accessDeniedHandler(new CustomAccessDeniedHandler())
