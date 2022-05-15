@@ -26,7 +26,7 @@ public class RefreshTokenController {
     /**
      * 토큰 재발급 Controller
      * @param request refreshToken, refreshRequestDto
-     * @return SingleResult
+     * @return SingResult - Map<String, String>
      * @author 노경준
      */
     @PutMapping("/refresh")
