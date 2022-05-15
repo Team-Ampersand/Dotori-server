@@ -21,6 +21,11 @@ public class CouncillorRuleController {
     private final RuleService ruleService;
     private final ResponseService responseService;
 
+    /**
+     * 메인 페이지에서 본인의 규정위반 내역을 확인하는 Controller
+     * @return SingleResult - List<FindViolationOfTheRuleResponseDto>
+     * @author 노경준
+     */
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
     })
