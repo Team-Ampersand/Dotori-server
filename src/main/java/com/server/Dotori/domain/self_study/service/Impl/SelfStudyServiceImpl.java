@@ -46,7 +46,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      */
     @Override
     @Transactional
-    public synchronized void requestSelfStudy(DayOfWeek dayOfWeek, int hour) {
+    public void requestSelfStudy(DayOfWeek dayOfWeek, int hour) {
         validDayOfWeekAndHour(dayOfWeek, hour, ErrorCode.SELF_STUDY_CANT_REQUEST_DATE, ErrorCode.SELF_STUDY_CANT_REQUEST_TIME);
 
         Member currentMember = currentMemberUtil.getCurrentMember();
