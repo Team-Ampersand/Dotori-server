@@ -47,7 +47,7 @@ public class MusicServiceImpl implements MusicService {
         isCanApplyMusicStatus();
 
         Music music = musicRepository.save(musicApplicationDto.saveToEntity(currentMember));
-        currentMember.updateMusic(MusicStatus.APPLIED);
+        currentMember.updateMusicStatus(MusicStatus.APPLIED);
         return music;
     }
 
@@ -80,7 +80,7 @@ public class MusicServiceImpl implements MusicService {
                 .orElseThrow(() -> new DotoriException(ErrorCode.MUSIC_NOT_FOUND));
 
         if (isNowDate(music)) {
-            music.getMember().updateMusic(MusicStatus.CAN);
+            music.getMember().updateMusicStatus(MusicStatus.CAN);
         }
         musicRepository.deleteById(music.getId());
     }

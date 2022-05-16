@@ -118,7 +118,7 @@ public class Member extends BaseTimeEntity implements UserDetails {
         return true;
     }
 
-    public void updateMusic(MusicStatus musicStatus) {
+    public void updateMusicStatus(MusicStatus musicStatus) {
         this.musicStatus = musicStatus != null ? musicStatus : this.musicStatus;
     }
 
