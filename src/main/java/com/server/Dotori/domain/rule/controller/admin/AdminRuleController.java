@@ -1,7 +1,7 @@
 package com.server.Dotori.domain.rule.controller.admin;
 
 import com.server.Dotori.domain.rule.dto.FindStusDto;
-import com.server.Dotori.domain.rule.dto.FindViolationOfTheRuleResponseDto;
+import com.server.Dotori.domain.rule.dto.ViolationOfTheRuleResponseDto;
 import com.server.Dotori.domain.rule.dto.RuleGrantDto;
 import com.server.Dotori.domain.rule.dto.RulesCntAndDatesDto;
 import com.server.Dotori.domain.rule.enumType.Rule;
@@ -65,7 +65,7 @@ public class AdminRuleController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
     })
     @GetMapping("/{stuNum}")
-    public SingleResult<List<FindViolationOfTheRuleResponseDto>> findViolationOfTheRules(@PathVariable("stuNum") String stuNum){
+    public SingleResult<List<ViolationOfTheRuleResponseDto>> findViolationOfTheRules(@PathVariable("stuNum") String stuNum){
         return responseService.getSingleResult(ruleService.findViolationOfTheRules(stuNum));
     }
 

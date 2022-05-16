@@ -88,10 +88,10 @@ public class RuleServiceImpl implements RuleService {
      * @author 노경준
      */
     @Override
-    public List<FindViolationOfTheRuleResponseDto> findViolationOfTheRules(String stuNum) {
+    public List<ViolationOfTheRuleResponseDto> findViolationOfTheRules(String stuNum) {
         if(!memberRepository.existsByStuNum(stuNum)) throw new DotoriException(ErrorCode.MEMBER_NOT_FOUND);
 
-        return getFindViolationOfTheRuleResponseDtos(stuNum);
+        return getViolationOfTheRuleResponseDtos(stuNum);
     }
 
     /**
@@ -110,10 +110,10 @@ public class RuleServiceImpl implements RuleService {
      * @author 노경준
      */
     @Override
-    public List<FindViolationOfTheRuleResponseDto> findRuleAtMainPage() {
+    public List<ViolationOfTheRuleResponseDto> findRuleAtMainPage() {
         String currentMemberStuNum = currentMemberUtil.getCurrentMember().getStuNum();
 
-        return getFindViolationOfTheRuleResponseDtos(currentMemberStuNum);
+        return getViolationOfTheRuleResponseDtos(currentMemberStuNum);
     }
 
     /**
@@ -166,15 +166,15 @@ public class RuleServiceImpl implements RuleService {
      * @return List<FindViolationOfTheRuleResponseDto>
      * @author 노경준
      */
-    private List<FindViolationOfTheRuleResponseDto> getFindViolationOfTheRuleResponseDtos(String stuNum) {
+    private List<ViolationOfTheRuleResponseDto> getViolationOfTheRuleResponseDtos(String stuNum) {
         List<FindIdAndRuleAndDateDto> result = ruleRepository.findViolationOfTheRules(stuNum);
 
         if(result.isEmpty()) throw new DotoriException(ErrorCode.RULE_NO_HISTORY);
 
-        List<FindViolationOfTheRuleResponseDto> response = new LinkedList<>();
+        List<ViolationOfTheRuleResponseDto> response = new LinkedList<>();
 
         for (FindIdAndRuleAndDateDto dto : result) {
-            FindViolationOfTheRuleResponseDto responseDto = FindViolationOfTheRuleResponseDto.builder()
+            ViolationOfTheRuleResponseDto responseDto = ViolationOfTheRuleResponseDto.builder()
                     .id(dto.getId())
                     .rule(dto.getRule())
                     .date(dto.getDate())

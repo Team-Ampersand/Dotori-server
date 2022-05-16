@@ -1,6 +1,6 @@
 package com.server.Dotori.domain.rule.controller.member;
 
-import com.server.Dotori.domain.rule.dto.FindViolationOfTheRuleResponseDto;
+import com.server.Dotori.domain.rule.dto.ViolationOfTheRuleResponseDto;
 import com.server.Dotori.domain.rule.service.RuleService;
 import com.server.Dotori.global.response.ResponseService;
 import com.server.Dotori.global.response.result.SingleResult;
@@ -30,7 +30,7 @@ public class MemberRuleController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
     })
     @GetMapping("/main")
-    public SingleResult<List<FindViolationOfTheRuleResponseDto>> findRuleAtMainPageMember(){
+    public SingleResult<List<ViolationOfTheRuleResponseDto>> findRuleAtMainPageMember(){
         return responseService.getSingleResult(ruleService.findRuleAtMainPage());
     }
 }
