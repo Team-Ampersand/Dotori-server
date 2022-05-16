@@ -8,7 +8,9 @@ import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.enumType.SelfStudyStatus;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.self_study.SelfStudy;
+import com.server.Dotori.domain.self_study.SelfStudyCount;
 import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
+import com.server.Dotori.domain.self_study.repository.SelfStudyCountRepository;
 import com.server.Dotori.domain.self_study.repository.SelfStudyRepository;
 import com.server.Dotori.global.exception.DotoriException;
 import com.server.Dotori.global.util.CurrentMemberUtil;
@@ -52,6 +54,7 @@ class SelfStudyStatusServiceTest {
     @Autowired private CurrentMemberUtil currentMemberUtil;
     @Autowired private SelfStudyService selfStudyService;
     @Autowired private SelfStudyRepository selfStudyRepository;
+    @Autowired private SelfStudyCountRepository selfStudyCountRepository;
     @Autowired
     EntityManager em;
 
@@ -95,6 +98,7 @@ class SelfStudyStatusServiceTest {
 
         assertEquals(SelfStudyStatus.APPLIED, currentMemberUtil.getCurrentMember().getSelfStudyStatus());
         assertEquals(1 , selfStudyRepository.findAll().size());
+        assertEquals(1L, selfStudyCountRepository.findSelfStudyCountById(1L).getCount());
     }
 
     @Test
@@ -110,7 +114,7 @@ class SelfStudyStatusServiceTest {
 
         latch.await();
 
-        long count = selfStudyRepository.count();
+        Long count = selfStudyCountRepository.findSelfStudyCountById(1L).getCount();
 
         System.out.println("count = " + count);
     }
@@ -192,6 +196,12 @@ class SelfStudyStatusServiceTest {
         ).limit(50).collect(Collectors.toList());
 
         selfStudyRepository.saveAll(selfStudyList);
+
+        SelfStudyCount findCount = selfStudyCountRepository.findSelfStudyCountById(1L);
+
+        for (int i = 0; i < 50; i++) {
+            findCount.addCount();
+        }
 
         //when //then
         assertThrows(

@@ -25,9 +25,6 @@ public class SelfStudyRepositoryImpl implements SelfStudyRepositoryCustom {
                         selfStudy.member.gender
                         )
                 )
-//                .where(
-//                        selfStudy.member.selfStudyStatus.eq(SelfStudyStatus.APPLIED)
-//                )
                 .innerJoin(selfStudy.member, member)
                 .orderBy(selfStudy.createdDate.asc())
                 .fetch();
@@ -43,12 +40,30 @@ public class SelfStudyRepositoryImpl implements SelfStudyRepositoryCustom {
                         selfStudy.member.gender
                         )
                 )
-                .where(
-//                        selfStudy.member.selfStudyStatus.eq(SelfStudyStatus.APPLIED)
-//                        .and(selfStudy.member.memberName.like("%" + memberName + "%"))
-                    selfStudy.member.memberName.like("%" + memberName + "%")
-                )
+                .where(selfStudy.member.memberName.like("%" + memberName + "%"))
                 .innerJoin(selfStudy.member, member)
+                .fetch();
+    }
+
+    /**
+     * 학년반별로 자습신청 된 회원을 조회하는 query
+     * @param id classId
+     * @return List - SelfStudyStudentsDto (id, stuNum, memberName, gender)
+     * @author 배태현
+     */
+    @Override
+    public List<SelfStudyStudentsDto> findBySelfStudyCategory(Long id) {
+        return queryFactory.from(selfStudy)
+                .select(Projections.fields(SelfStudyStudentsDto.class,
+                        member.id,
+                        member.stuNum,
+                        member.memberName,
+                        member.gender
+                        )
+                )
+                .where(member.stuNum.like(id+"%"))
+                .innerJoin(selfStudy.member, member)
+                .orderBy(member.stuNum.asc())
                 .fetch();
     }
 }
