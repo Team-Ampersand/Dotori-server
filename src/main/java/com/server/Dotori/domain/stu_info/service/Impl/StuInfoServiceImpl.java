@@ -58,7 +58,6 @@ public class StuInfoServiceImpl implements StuInfoService {
      * 권한을 업데이트하는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * 권한이 업데이트된 사용자는 로그인을 다시 해야한다. (공지를 해야할듯)
      * @param roleUpdateDto (receiverId, roles)
-     * @exception DotoriException (MEMBER_NOT_FOUND) 해당 Id에 해당하는 유저를 찾을 수 없을 때
      * @author 배태현
      */
     @Override
@@ -84,7 +83,6 @@ public class StuInfoServiceImpl implements StuInfoService {
     /**
      * 학번을 변경시키는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * @param stuNumUpdateDto (receiverId, stuNum)
-     * @exception DotoriException (MEMBER_NOT_FOUND) 해당 Id에 해당하는 유저를 찾을 수 없을 때
      * @exception DotoriException (MEMBER_ALREADY_JOIN_THIS_STUNUM) 해당 학번으로 이미 가입된 유저가 있을 때
      * @author 배태현
      */
@@ -102,7 +100,6 @@ public class StuInfoServiceImpl implements StuInfoService {
     /**
      * 학생의 이름을 변경시키는 서비스로직 (사감쌤, 개발자, 자치위원 사용가능)
      * @param memberNameUpdateDto (receiverId, username)
-     * @exception DotoriException (MEMBER_NOT_FOUND) 해당 Id에 해당하는 유저를 찾을 수 없을 때
      * @author 배태현
      */
     @Override
@@ -116,7 +113,6 @@ public class StuInfoServiceImpl implements StuInfoService {
     /**
      * 학생의 성별을 변경시키는 서비스 로직 (사감쌤, 개발자, 자치위원 사용가능)
      * @param genderUpdateDto (receiverId, gender)
-     * @exception DotoriException (MEMBER_NOT_FOUND) 해당 Id에 해당하는 유저를 찾을 수 없을 때
      * @author 배태현
      */
     @Override
@@ -146,6 +142,7 @@ public class StuInfoServiceImpl implements StuInfoService {
      * @param receiverId memberId
      * @exception DotoriException (MEMBER_NOT_FOUND) id로 회원을 찾지 못했을 때
      * @return Member Entity
+     * @author 배태현
      */
     private Member getMember(Long receiverId) {
         return memberRepository.findById(receiverId)

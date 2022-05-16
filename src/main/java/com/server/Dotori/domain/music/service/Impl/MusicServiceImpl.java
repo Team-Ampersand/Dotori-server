@@ -34,7 +34,6 @@ public class MusicServiceImpl implements MusicService {
      * 금요일, 토요일에는 음악신청 불가능
      * @param musicApplicationDto musicApplicationDto (musicUrl)
      * @param dayOfWeek 현재 요일
-     * @exception DotoriException (MUSIC_ALREADY) 음악신청 상태가 CAN이 아닐 때
      * @return Music
      * @author 배태현
      */
@@ -45,14 +44,11 @@ public class MusicServiceImpl implements MusicService {
 
         Member currentMember = currentMemberUtil.getCurrentMember();
 
-        if (isCanApplyMusicStatus()) {
-            Music music = musicRepository.save(musicApplicationDto.saveToEntity(currentMember));
-            currentMember.updateMusic(MusicStatus.APPLIED);
-            return music;
+        isCanApplyMusicStatus();
 
-        } else {
-            throw new DotoriException(ErrorCode.MUSIC_ALREADY);
-        }
+        Music music = musicRepository.save(musicApplicationDto.saveToEntity(currentMember));
+        currentMember.updateMusicStatus(MusicStatus.APPLIED);
+        return music;
     }
 
     /**
@@ -84,7 +80,7 @@ public class MusicServiceImpl implements MusicService {
                 .orElseThrow(() -> new DotoriException(ErrorCode.MUSIC_NOT_FOUND));
 
         if (isNowDate(music)) {
-            music.getMember().updateMusic(MusicStatus.CAN);
+            music.getMember().updateMusicStatus(MusicStatus.CAN);
         }
         musicRepository.deleteById(music.getId());
     }
@@ -112,11 +108,13 @@ public class MusicServiceImpl implements MusicService {
 
     /**
      * 현재 로그인 된 유저(요청을 보낸 유저)의 음악 신청 상태가 CAN인지 확인해주는 메서드
+     * @exception DotoriException (MUSIC_ALREADY) 음악신청 상태가 CAN이 아닐 때
      * @return boolean
      * @author 배태현
      */
     private boolean isCanApplyMusicStatus() {
-        return currentMemberUtil.getCurrentMember().getMusicStatus() == MusicStatus.CAN;
+        if (currentMemberUtil.getCurrentMember().getMusicStatus() != MusicStatus.CAN) throw new DotoriException(ErrorCode.MUSIC_ALREADY);
+        return true;
     }
 
     /**

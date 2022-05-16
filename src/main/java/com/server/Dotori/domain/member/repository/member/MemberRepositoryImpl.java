@@ -9,7 +9,6 @@ import com.server.Dotori.domain.member.enumType.MassageStatus;
 import com.server.Dotori.domain.member.enumType.SelfStudyStatus;
 import com.server.Dotori.domain.point.dto.GetAboutPointDto;
 import com.server.Dotori.domain.rule.dto.FindStusDto;
-import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
@@ -24,51 +23,6 @@ import static com.server.Dotori.domain.member.QMember.member;
 public class MemberRepositoryImpl implements MemberRepositoryCustom {
 
     private final JPAQueryFactory queryFactory;
-
-    /**
-     * 자습신청 상태가 '신청됨' 상태인 회원들을 학번별로 오름순으로 조회하는 query
-     * @return List - SelfStudyStudentsDto (id, stuNum, username)
-     * @author 배태현
-     */
-    @Override
-    public List<SelfStudyStudentsDto> findBySelfStudyAPLLIED() {
-        return queryFactory.from(member)
-                .select(Projections.fields(SelfStudyStudentsDto.class,
-                        member.id,
-                        member.stuNum,
-                        member.memberName,
-                        member.gender
-                        )
-                ).where(
-                        member.selfStudyStatus.eq(SelfStudyStatus.APPLIED)
-                )
-                .orderBy(member.stuNum.asc())
-                .fetch();
-    }
-
-    /**
-     * 학년반별로 자습신청 상태가 '신청됨' 인 회원을 조회하는 query
-     * @param id classId
-     * @return List - SelfStudyStudentsDto (id, stuNum, username)
-     * @author 배태현
-     */
-    @Override
-    public List<SelfStudyStudentsDto> findBySelfStudyCategory(Long id) {
-        return queryFactory.from(member)
-                .select(Projections.fields(SelfStudyStudentsDto.class,
-                        member.id,
-                        member.stuNum,
-                        member.memberName,
-                        member.gender
-                        )
-                )
-                .where(
-                        member.selfStudyStatus.eq(SelfStudyStatus.APPLIED)
-                        .and(member.stuNum.like(id+"%"))
-                )
-                .orderBy(member.stuNum.asc())
-                .fetch();
-    }
 
     /**
      * 자습신청 상태가 '신청됨', '취소' 상태인 회원의 자습신청 상태를 '가능'으로 update하는 쿼리

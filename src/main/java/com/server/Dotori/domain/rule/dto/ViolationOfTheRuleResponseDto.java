@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @Getter
-public class FindViolationOfTheRuleResponseDto {
+public class ViolationOfTheRuleResponseDto {
     private Long id;
     private Rule rule;
     private LocalDate date;
