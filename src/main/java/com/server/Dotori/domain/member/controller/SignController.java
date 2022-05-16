@@ -25,7 +25,7 @@ public class SignController {
     /**
      * 회원가입 Controller
      * @param memberDto username, stdNum, password, email, answer
-     * @return SuccessResult
+     * @return CommonResult - SuccessResult
      * @author 노경준
      */
     @PostMapping("/signup")
@@ -38,7 +38,7 @@ public class SignController {
     /**
      * 회원가입 이메일 인증 Controller
      * @param emailDto email
-     * @return SuccessResult
+     * @return CommonResult - SuccessResult
      * @author 노경준
      */
     @PostMapping("/signup/email")
@@ -51,7 +51,7 @@ public class SignController {
     /**
      * 회원가입 이메일 인증 확인 Controller
      * @param memberEmailKeyDto key
-     * @return SuccessResult
+     * @return CommonResult - SuccessResult
      * @author 노경준
      */
     @PostMapping("/signup/email/check")
@@ -64,7 +64,7 @@ public class SignController {
     /**
      * 로그인 Controller
      * @param memberLoginDto email, password
-     * @return SingleResult
+     * @return SingleResult - List<SignInResponseDto>
      * @author 노경준
      */
     @PostMapping("/signin")
