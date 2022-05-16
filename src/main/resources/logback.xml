@@ -4,6 +4,10 @@
 
     <property name="PROD_LOG_PATTERN"
               value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level--- [%thread] %logger{15} : %msg %n" />
+    <property name="LOGS_PATH"
+              value="/home/ec2-user/logs" />
+    <property name="BACKUP_PATH"
+              value="/home/ec2-user/backup" />
 
     <springProfile name="dev">
         <include resource="org/springframework/boot/logging/logback/defaults.xml" />
@@ -15,7 +19,7 @@
 
     <springProfile name="prod">
         <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>/home/ec2-user/logs/info/info-${BY_DATE}.log</file>
+            <file>${LOGS_PATH}/info/info-${BY_DATE}.log</file>
             <filter class="ch.qos.logback.classic.filter.LevelFilter">
                 <level>INFO</level>
                 <onMatch>ACCEPT</onMatch>
@@ -25,7 +29,7 @@
                 <pattern>${PROD_LOG_PATTERN}</pattern>
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>/home/ec2-user/backup/info/info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <fileNamePattern>${BACKUP_PATH}/info/info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
                 <maxFileSize>50MB</maxFileSize>
                 <maxHistory>30</maxHistory>
                 <totalSizeCap>1GB</totalSizeCap>
@@ -33,7 +37,7 @@
         </appender>
 
         <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>/home/ec2-user/logs/error/error-${BY_DATE}.log</file>
+            <file>${LOGS_PATH}/error/error-${BY_DATE}.log</file>
             <filter class="ch.qos.logback.classic.filter.LevelFilter">
                 <level>ERROR</level>
                 <onMatch>ACCEPT</onMatch>
@@ -43,7 +47,7 @@
                 <pattern>${PROD_LOG_PATTERN}</pattern>
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>/home/ec2-user/backup/error/error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <fileNamePattern>${BACKUP_PATH}/error/error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
                 <maxFileSize>50MB</maxFileSize>
                 <maxHistory>30</maxHistory>
                 <totalSizeCap>1GB</totalSizeCap>
@@ -51,7 +55,7 @@
         </appender>
 
         <appender name="FILE_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>/home/ec2-user/logs/warn/warn-${BY_DATE}.log</file>
+            <file>${LOGS_PATH}/warn/warn-${BY_DATE}.log</file>
             <filter class="ch.qos.logback.classic.filter.LevelFilter">
                 <level>WARN</level>
                 <onMatch>ACCEPT</onMatch>
@@ -61,7 +65,7 @@
                 <pattern>${PROD_LOG_PATTERN}</pattern>
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>/home/ec2-user/backup/warn/warn-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <fileNamePattern>${BACKUP_PATH}/warn/warn-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
                 <maxFileSize>50MB</maxFileSize>
                 <maxHistory>30</maxHistory>
                 <totalSizeCap>1GB</totalSizeCap>
