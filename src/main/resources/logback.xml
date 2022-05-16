@@ -15,7 +15,7 @@
 
     <springProfile name="prod">
         <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>~/logs/info/info-${BY_DATE}.log</file>
+            <file>/home/ec2-user/logs/info/info-${BY_DATE}.log</file>
             <filter class="ch.qos.logback.classic.filter.LevelFilter">
                 <level>INFO</level>
                 <onMatch>ACCEPT</onMatch>
@@ -25,7 +25,7 @@
                 <pattern>${PROD_LOG_PATTERN}</pattern>
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>~/backup/info/info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <fileNamePattern>/home/ec2-user/backup/info/info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
                 <maxFileSize>50MB</maxFileSize>
                 <maxHistory>30</maxHistory>
                 <totalSizeCap>1GB</totalSizeCap>
@@ -33,7 +33,7 @@
         </appender>
 
         <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>~/logs/error/error-${BY_DATE}.log</file>
+            <file>/home/ec2-user/logs/error/error-${BY_DATE}.log</file>
             <filter class="ch.qos.logback.classic.filter.LevelFilter">
                 <level>ERROR</level>
                 <onMatch>ACCEPT</onMatch>
@@ -43,7 +43,7 @@
                 <pattern>${PROD_LOG_PATTERN}</pattern>
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>~/backup/error/error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <fileNamePattern>/home/ec2-user/backup/error/error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
                 <maxFileSize>50MB</maxFileSize>
                 <maxHistory>30</maxHistory>
                 <totalSizeCap>1GB</totalSizeCap>
@@ -51,7 +51,7 @@
         </appender>
 
         <appender name="FILE_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>~/logs/warn/warn-${BY_DATE}.log</file>
+            <file>/home/ec2-user/logs/warn/warn-${BY_DATE}.log</file>
             <filter class="ch.qos.logback.classic.filter.LevelFilter">
                 <level>WARN</level>
                 <onMatch>ACCEPT</onMatch>
@@ -61,7 +61,7 @@
                 <pattern>${PROD_LOG_PATTERN}</pattern>
             </encoder>
             <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-                <fileNamePattern>~/backup/warn/warn-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+                <fileNamePattern>/home/ec2-user/backup/warn/warn-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
                 <maxFileSize>50MB</maxFileSize>
                 <maxHistory>30</maxHistory>
                 <totalSizeCap>1GB</totalSizeCap>
