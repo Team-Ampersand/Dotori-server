@@ -4,7 +4,9 @@ import com.server.Dotori.domain.member.Member;
 import com.server.Dotori.domain.member.enumType.SelfStudyStatus;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.self_study.SelfStudy;
+import com.server.Dotori.domain.self_study.SelfStudyCount;
 import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
+import com.server.Dotori.domain.self_study.repository.SelfStudyCountRepository;
 import com.server.Dotori.domain.self_study.repository.SelfStudyRepository;
 import com.server.Dotori.domain.self_study.service.SelfStudyService;
 import com.server.Dotori.global.exception.DotoriException;
@@ -30,6 +32,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     private final CurrentMemberUtil currentMemberUtil;
     private final MemberRepository memberRepository;
     private final SelfStudyRepository selfStudyRepository;
+    private final SelfStudyCountRepository selfStudyCountRepository;
 
     /**
      * 자습 신청 서비스로직 (로그인 된 유저 사용가능) <br>
@@ -47,19 +50,22 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         validDayOfWeekAndHour(dayOfWeek, hour, ErrorCode.SELF_STUDY_CANT_REQUEST_DATE, ErrorCode.SELF_STUDY_CANT_REQUEST_TIME);
 
         Member currentMember = currentMemberUtil.getCurrentMember();
-        long count = selfStudyRepository.count(); // 비관적 잠금이 걸린 count query
+        SelfStudyCount findCount = findSelfStudyCount(); // 비관적 잠금이 걸린 query
 
-        isSmallerThanFifty(count); // count가 50 미만인지 checking
+        isSmallerThanFifty(findCount.getCount()); // count가 50 미만인지 checking
         isVerifiedSelfStudy(SelfStudyStatus.CAN, ErrorCode.SELF_STUDY_ALREADY); // 회원의 자습신청 상태가 CAN인지 checking
 
         try {
             currentMember.updateSelfStudy(SelfStudyStatus.APPLIED);
 
+            findCount.addCount();
+
             selfStudyRepository.save(SelfStudy.builder()
                     .member(currentMember)
-                    .build());
+                    .build()
+            );
 
-        } catch (DataIntegrityViolationException e) { // TODO : 로깅 레벨에서 다시한번 체크 해야함
+        } catch (DataIntegrityViolationException e) { // TODO : controller advice로 처리하게 바꾸고 서비스 로직에서 try/catch 삭제하기
             throw new DotoriException(ErrorCode.SELF_STUDY_ALREADY);
         }
     }
@@ -79,11 +85,13 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         validDayOfWeekAndHour(dayOfWeek, hour, ErrorCode.SELF_STUDY_CANT_CANCEL_DATE, ErrorCode.SELF_STUDY_CANT_CANCEL_TIME);
 
         Member currentMember = currentMemberUtil.getCurrentMember();
+        SelfStudyCount findCount = findSelfStudyCount();
 
         isVerifiedSelfStudy(SelfStudyStatus.APPLIED, ErrorCode.SELF_STUDY_CANT_CANCEL); // 회원의 자습신청 상태가 APPLIED인지 checking
 
         currentMember.updateSelfStudy(SelfStudyStatus.CANT);
         selfStudyRepository.deleteByMemberId(currentMember.getId());
+        findCount.removeCount();
     }
 
     /**
@@ -127,14 +135,14 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Override
     @Transactional(readOnly = true)
     public List<SelfStudyStudentsDto> getSelfStudyStudentsByCategory(Long id) {
-        List<SelfStudyStudentsDto> selfStudyCategory = memberRepository.findBySelfStudyCategory(id);
+        List<SelfStudyStudentsDto> selfStudyCategory = selfStudyRepository.findBySelfStudyCategory(id);
 
         if (selfStudyCategory.isEmpty()) throw new DotoriException(ErrorCode.MEMBER_NOT_FOUND_BY_CLASS);
         return selfStudyCategory;
     }
 
     /**
-     * 자습신청 상태를 '신청가능'으로 변경하고, 자습신청 카운트 초기화, 자습신청 금지 만료기간이 되었다면 다시 신청할 수 있는 상태로 변경해주는 서비스로직 (Schedule)
+     * 자습신청 상태를 '신청가능'으로 변경하고, 자습신청 카운트 초기화, 자습신청 금지 만료기간이 되었다면 다시 신청할 수 있는 상태로 변경, 자습신청 카운트를 초기화 해주는 서비스로직 (Schedule)
      * @author 배태현
      */
     @Override
@@ -143,6 +151,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         selfStudyRepository.deleteAll();
         memberRepository.updateSelfStudyStatus();
         memberRepository.updateUnBanSelfStudy();
+        findSelfStudyCount().updateCount(0L);
     }
 
     /**
@@ -250,5 +259,14 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     private void updateSelfStudyAndExpiredDate(Member findMember, SelfStudyStatus selfStudyStatus, LocalDateTime localDateTime) {
         findMember.updateSelfStudy(selfStudyStatus);
         findMember.updateSelfStudyExpiredDate(localDateTime);
+    }
+
+    /**
+     * JPA 비관적 Lock이 적용된 자습신청 카운트를 조회하는 메서드
+     * @return SelfStudyCount Entity
+     * @author 배태현
+     */
+    private SelfStudyCount findSelfStudyCount() {
+        return selfStudyCountRepository.findSelfStudyCountById(1L);
     }
 }
