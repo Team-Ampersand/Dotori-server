@@ -114,7 +114,7 @@ class SelfStudyStatusServiceTest {
 
         latch.await();
 
-        long count = selfStudyRepository.count();
+        Long count = selfStudyCountRepository.findSelfStudyCountById(1L).getCount();
 
         System.out.println("count = " + count);
     }
