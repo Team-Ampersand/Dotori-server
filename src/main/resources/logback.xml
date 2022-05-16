@@ -1,18 +1,13 @@
 <configuration>
     <timestamp key="BY_DATE" datePattern="yyyy-MM-dd" />
-    <property name="DEV_LOG_PATTERN"
-              value="%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight(%-5level)--- [%thread] %cyan(%logger{15}) : %msg %n"/>
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
 
     <property name="PROD_LOG_PATTERN"
               value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level--- [%thread] %logger{15} : %msg %n" />
 
     <springProfile name="dev">
-        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-            <encoder>
-                <pattern>${DEV_LOG_PATTERN}</pattern>
-            </encoder>
-        </appender>
-
+        <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+        <property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/spring.log}"/>
         <root level="INFO">
             <appender-ref ref="CONSOLE" />
         </root>
@@ -33,7 +28,7 @@
                 <fileNamePattern>./backup/info/info-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
                 <maxFileSize>50MB</maxFileSize>
                 <maxHistory>30</maxHistory>
-                <totalSizeCap>3GB</totalSizeCap>
+                <totalSizeCap>1GB</totalSizeCap>
             </rollingPolicy>
         </appender>
 
@@ -51,7 +46,7 @@
                 <fileNamePattern>./backup/error/error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
                 <maxFileSize>50MB</maxFileSize>
                 <maxHistory>30</maxHistory>
-                <totalSizeCap>3GB</totalSizeCap>
+                <totalSizeCap>1GB</totalSizeCap>
             </rollingPolicy>
         </appender>
 
@@ -69,7 +64,7 @@
                 <fileNamePattern>./backup/warn/warn-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
                 <maxFileSize>50MB</maxFileSize>
                 <maxHistory>30</maxHistory>
-                <totalSizeCap>3GB</totalSizeCap>
+                <totalSizeCap>1GB</totalSizeCap>
             </rollingPolicy>
         </appender>
 
