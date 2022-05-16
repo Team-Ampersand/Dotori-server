@@ -23,7 +23,7 @@ public class MemberController {
     /**
      * 비밀번호 변경 Controller
      * @param memberPasswordDto oldPassword, newPassword
-     * @return SingleResult
+     * @return CommonResult - SuccessResult
      * @author 노경준
      */
     @PutMapping("/password")
@@ -40,7 +40,7 @@ public class MemberController {
     /**
      * 비밀번호 찾기(변경) 전 이메일 인증 Controller
      * @param emailDto email
-     * @return SuccessResult
+     * @return CommonResult - SuccessResult
      * @author 노경준
      */
     @PostMapping("/password/email")
@@ -53,7 +53,7 @@ public class MemberController {
     /**
      * 비밀번호 찾기(변경) 전 이메일 인증 확인 Controller
      * @param changePasswordEmailCheckDto email, key, newPassword
-     * @return SuccessResult
+     * @return CommonResult - SuccessResult
      * @author 노경준
      */
     @PostMapping("/password/email/check")
@@ -65,7 +65,7 @@ public class MemberController {
 
     /**
      * 로그아웃 Controller
-     * @return SuccessResult
+     * @return CommonResult - SuccessResult
      * @author 노경준
      */
     @DeleteMapping("/logout")
@@ -81,7 +81,7 @@ public class MemberController {
     /**
      * 회원탈퇴 Controller
      * @param withdrawlDto username, password
-     * @return SuccessResult
+     * @return CommonResult - SuccessResult
      * @author 노경준
      */
     @PostMapping("/withdrawal")
@@ -94,6 +94,12 @@ public class MemberController {
         return responseService.getSuccessResult();
     }
 
+    /**
+     * 성별변경 Controller
+     * @param setGenderDto email, gender
+     * @return CommonResult - SuccessResult
+     * @author 노경준
+     */
     @PutMapping("/gender")
     @ApiOperation(value="성별설정")
     public CommonResult setGender(@RequestBody SetGenderDto setGenderDto){

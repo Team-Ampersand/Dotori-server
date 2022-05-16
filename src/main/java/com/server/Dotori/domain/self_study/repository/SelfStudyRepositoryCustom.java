@@ -9,4 +9,6 @@ public interface SelfStudyRepositoryCustom {
     List<SelfStudyStudentsDto> findByCreateDate();
 
     List<SelfStudyStudentsDto> findByMemberName(String memberName);
+
+    List<SelfStudyStudentsDto> findBySelfStudyCategory(Long id);
 }
