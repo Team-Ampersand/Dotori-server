@@ -129,7 +129,7 @@ class MusicStatusServiceTest {
         Member currentMember = currentMemberUtil.getCurrentMember();
 
         //when
-        currentMember.updateMusic(MusicStatus.APPLIED);
+        currentMember.updateMusicStatus(MusicStatus.APPLIED);
 
         //then
         assertThrows(
