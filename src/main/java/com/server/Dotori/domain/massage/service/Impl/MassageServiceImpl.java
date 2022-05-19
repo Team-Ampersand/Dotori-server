@@ -110,6 +110,7 @@ public class MassageServiceImpl implements MassageService {
     @Transactional
     public void updateMassageStatus() {
         memberRepository.updateMassageStatus();
+        massageRepository.deleteAll();
         getMassageCount().clearCount();
 
     }
@@ -124,7 +125,7 @@ public class MassageServiceImpl implements MassageService {
     public Map<String, String> getMassageInfo() {
         Map<String, String> map = new HashMap<>();
         map.put("status",currentMemberUtil.getCurrentMember().getMassageStatus().toString());
-        map.put("count", String.valueOf(getMassageCount().getCount()));
+        map.put("count", String.valueOf(massageRepository.count()));
         return map;
     }
 
@@ -172,7 +173,7 @@ public class MassageServiceImpl implements MassageService {
      * @param count 현재 안마의자 신청 회원수
      */
     private void countValidate(Long count) {
-        if (count > 5L) throw new DotoriException(ErrorCode.MASSAGE_OVER);
+        if (count >= 5L) throw new DotoriException(ErrorCode.MASSAGE_OVER);
     }
 
     /**

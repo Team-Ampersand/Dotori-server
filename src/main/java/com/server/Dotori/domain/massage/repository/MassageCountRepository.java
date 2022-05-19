@@ -8,6 +8,6 @@ import javax.persistence.LockModeType;
 
 public interface MassageCountRepository extends JpaRepository<MassageCount, Long> {
 
-    @Lock(LockModeType.PESSIMISTIC_READ)
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     MassageCount findMassageCountById(Long id);
 }
