@@ -1,7 +1,9 @@
 package com.server.Dotori.domain.massage.service.Impl;
 
 import com.server.Dotori.domain.massage.Massage;
+import com.server.Dotori.domain.massage.MassageCount;
 import com.server.Dotori.domain.massage.dto.MassageStudentsDto;
+import com.server.Dotori.domain.massage.repository.MassageCountRepository;
 import com.server.Dotori.domain.massage.repository.MassageRepository;
 import com.server.Dotori.domain.massage.service.MassageService;
 import com.server.Dotori.domain.member.Member;
@@ -29,6 +31,7 @@ public class MassageServiceImpl implements MassageService {
     private final MassageRepository massageRepository;
     private final CurrentMemberUtil currentMemberUtil;
     private final MemberRepository memberRepository;
+    private final MassageCountRepository massageCountRepository;
 
     /**
      * 안마의자를 신청하는 로직
@@ -47,9 +50,10 @@ public class MassageServiceImpl implements MassageService {
      */
     @Override
     @Transactional
-    public synchronized void requestMassage(DayOfWeek dayOfWeek, int hour, int min) {
-        timeValidateRequestMassage(dayOfWeek, hour, min);
-        long count = massageRepository.count();
+    public void requestMassage(DayOfWeek dayOfWeek, int hour, int min) {
+        timeValidateMassage(dayOfWeek, hour, min);
+        MassageCount massageCount = getMassageCount();
+        Long count = massageCount.getCount();
         countValidate(count);
         Member currentMember = currentMemberUtil.getCurrentMember();
         massageStatusValidate(currentMember, MassageStatus.CAN);
@@ -59,11 +63,12 @@ public class MassageServiceImpl implements MassageService {
                     .member(currentMember)
                     .build()
             );
+            massageCount.addCount();
         } catch (DataIntegrityViolationException e) {
             throw new DotoriException(ErrorCode.MASSAGE_ALREADY);
         }
         currentMember.updateMassage(MassageStatus.APPLIED);
-        log.info("Current MassageRequest Student Count is {}", count+1);
+        log.info("Current MassageRequest Student Count is {}", count);
     }
 
     /**
@@ -74,7 +79,7 @@ public class MassageServiceImpl implements MassageService {
      * 안마의자 신청을 취소한 학생은 MASSAGE 테이블에서 삭제
      * @param hour 현재 시
      * @param min 현재 분
-     * @exception DotoriException (MASSAGE_CANT_CANCEL_THIS_TIME) 안마의자 신천 취소는 오후 8시부터 오후 10시까지만 신청 취소가 가능합니다.
+     * @exception DotoriException (MASSAGE_CANT_CANCEL_THIS_TIME) 안마의자 신청 취소는 오후 8시부터 오후 10시까지만 신청 취소가 가능합니다.
      * @exception DotoriException (MASSAGE_CANT_CANCEL_REQUEST) 안마의자 신청을 취소할 수 있는 상태가 아닙니다.
      * @author 김태민
      */
@@ -82,15 +87,17 @@ public class MassageServiceImpl implements MassageService {
     @Override
     @Transactional
     public void cancelMassage(int hour, int min) {
-        timeValidateCancelMassage(hour, min);
+        timeValidateMassage(hour, min);
         Member currentMember = currentMemberUtil.getCurrentMember();
         massageStatusValidate(currentMember, MassageStatus.APPLIED);
-        long count = massageRepository.count();
+        MassageCount massageCount = getMassageCount();
+        Long count = massageCount.getCount();
 
         massageRepository.deleteByMemberId(currentMember.getId());
         currentMember.updateMassage(MassageStatus.CANT);
+        massageCount.deductionCount();
 
-        log.info("Current MassageRequest Student Count is {}", count-1);
+        log.info("Current MassageRequest Student Count is {}", count-1L);
     }
 
     /**
@@ -104,6 +111,8 @@ public class MassageServiceImpl implements MassageService {
     public void updateMassageStatus() {
         memberRepository.updateMassageStatus();
         massageRepository.deleteAll();
+        getMassageCount().clearCount();
+
     }
 
     /**
@@ -134,22 +143,56 @@ public class MassageServiceImpl implements MassageService {
         return students;
     }
 
-    private void timeValidateRequestMassage(DayOfWeek dayOfWeek, int hour, int min) {
+    /**
+     * 안마의자를 신청할때 시간을 검증하는 로직
+     * Overloading
+     * @param dayOfWeek 현재 요일
+     * @param hour 현재 시
+     * @param min 현재 분
+     */
+    private void timeValidateMassage(DayOfWeek dayOfWeek, int hour, int min) {
         if (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY || dayOfWeek == DayOfWeek.SUNDAY) throw new DotoriException(ErrorCode.MASSAGE_CANT_REQUEST_THIS_DATE);
         if (!(hour >= 20 && hour < 21)) throw new DotoriException(ErrorCode.MASSAGE_CANT_REQUEST_THIS_TIME);
         if (!(min >= 20)) throw new DotoriException(ErrorCode.MASSAGE_CANT_REQUEST_THIS_TIME);
     }
 
-    private void timeValidateCancelMassage(int hour, int min) {
+    /**
+     * 안마의자 신청 취소를 할때 시간을 검증하는 로직
+     * Overloading
+     * 신청을 했다면 요일 검증을 필요없다고 판단하여 시,분만 검증
+     * @param hour 현재 시
+     * @param min 현재 분
+     */
+    private void timeValidateMassage(int hour, int min) {
         if (!(hour >= 20 && hour < 21)) throw new DotoriException(ErrorCode.MASSAGE_CANT_CANCEL_THIS_TIME);
         if (!(min >= 20)) throw new DotoriException(ErrorCode.MASSAGE_CANT_CANCEL_THIS_TIME);
     }
 
-    private void countValidate(long count) {
-        if (count > 5) throw new DotoriException(ErrorCode.MASSAGE_OVER);
+    /**
+     * 안마의자를 신청한 사람이 5명 미만인지 검증하는 로직
+     * @param count 현재 안마의자 신청 회원수
+     */
+    private void countValidate(Long count) {
+        if (count >= 5L) throw new DotoriException(ErrorCode.MASSAGE_OVER);
     }
 
+    /**
+     * 안마의자 신청 상태를 검증하는 로직
+     * @param currentMember 회원 자신
+     * @param massageStatus 해당 상태가 맞는지 검증하는 상태
+     */
     private void massageStatusValidate(Member currentMember, MassageStatus massageStatus) {
         if (!currentMember.getMassageStatus().equals(massageStatus)) throw new DotoriException(ErrorCode.MASSAGE_ALREADY);
     }
+
+    /**
+     * 안마의자 카운트를 반환해주는 로직 (캡슐화)
+     * 정적으로 1L primary key를 가진 MassageCount 엔티티를 반환하는 이유
+     * 한개의 컬럼으로 계속 count를 관리하기 떄문에 1L id를 가진 massageCount 컬럼으로 계속 관리하기 위해
+     * @return MassageCount
+     */
+    private MassageCount getMassageCount() {
+        return massageCountRepository.findMassageCountById(1L);
+    }
+
 }
