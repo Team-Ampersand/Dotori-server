@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
@@ -37,6 +38,7 @@ public class RefreshTokenController {
     public SingleResult<Map<String, String>> refresh(HttpServletRequest request, @RequestBody RefreshTokenDto refreshTokenDto){
         Map<String, String> data = refreshTokenService.refreshToken(jwtTokenProvider.resolveRefreshToken(request), refreshTokenDto);
         return responseService.getSingleResult(data);
+
     }
 
 }

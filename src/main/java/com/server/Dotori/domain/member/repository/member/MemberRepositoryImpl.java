@@ -15,7 +15,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static com.server.Dotori.domain.member.QMember.member;
 
 
@@ -30,7 +29,6 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
      */
     @Override
     public void updateSelfStudyStatus() {
-
         queryFactory
                 .update(member)
                 .where(
@@ -69,7 +67,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
      */
     @Override
     public GetProfileDto findProfileByMember(Member memberEntity) {
-        return queryFactory.from(member)
+        return queryFactory.from(member) // User   // user
                 .select(Projections.constructor(GetProfileDto.class,
                         member.id,
                         member.stuNum,
@@ -157,7 +155,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 .where(
                         member.massageStatus.eq(MassageStatus.APPLIED)
                 )
-                .orderBy(member.stuNum.asc())
+                .orderBy(member.createdDate.asc())
                 .fetch();
     }
 
