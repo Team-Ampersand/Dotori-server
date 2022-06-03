@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface MassageRepository extends JpaRepository<Massage, Long> {
+public interface MassageRepository extends JpaRepository<Massage, Long>, MassageRepositoryCustom {
 
     void deleteByMemberId(Long id);
 }
