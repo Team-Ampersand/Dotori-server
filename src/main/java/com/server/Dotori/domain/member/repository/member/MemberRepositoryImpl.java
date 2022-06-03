@@ -67,7 +67,7 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
      */
     @Override
     public GetProfileDto findProfileByMember(Member memberEntity) {
-        return queryFactory.from(member) // User   // user
+        return queryFactory.from(member)
                 .select(Projections.constructor(GetProfileDto.class,
                         member.id,
                         member.stuNum,
