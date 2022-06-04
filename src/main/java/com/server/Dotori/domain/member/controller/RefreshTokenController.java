@@ -37,6 +37,7 @@ public class RefreshTokenController {
     public SingleResult<Map<String, String>> refresh(HttpServletRequest request, @RequestBody RefreshTokenDto refreshTokenDto){
         Map<String, String> data = refreshTokenService.refreshToken(jwtTokenProvider.resolveRefreshToken(request), refreshTokenDto);
         return responseService.getSingleResult(data);
+
     }
 
 }

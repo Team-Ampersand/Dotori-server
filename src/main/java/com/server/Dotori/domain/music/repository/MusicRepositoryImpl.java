@@ -48,6 +48,7 @@ public class MusicRepositoryImpl implements MusicRepositoryCustom {
         return queryFactory
                 .select(Projections.fields(MusicResDto.class,
                         music.id,
+                        music.member.stuNum,
                         music.url,
                         music.member.memberName,
                         music.member.email,

@@ -137,7 +137,7 @@ public class MassageServiceImpl implements MassageService {
     @Override
     @Transactional(readOnly = true)
     public List<MassageStudentsDto> getMassageStudents() {
-        List<MassageStudentsDto> students = memberRepository.findMemberByMassageStatus();
+        List<MassageStudentsDto> students = massageRepository.findByMassageList();
         if (students.size() == 0) throw new DotoriException(ErrorCode.MASSAGE_ANYONE_NOT_REQUEST);
 
         return students;
