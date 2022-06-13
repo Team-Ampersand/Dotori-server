@@ -15,7 +15,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static com.server.Dotori.domain.member.QMember.member;
 
 
@@ -30,7 +29,6 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
      */
     @Override
     public void updateSelfStudyStatus() {
-
         queryFactory
                 .update(member)
                 .where(
@@ -140,25 +138,6 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
                 )
                 .set(member.massageStatus, MassageStatus.CAN)
                 .execute();
-    }
-
-    /**
-     * 안마의자 신청을 한 학생들을 조회하는 쿼리
-     * @return List<MassageStudentsDto> (id, stuNum, memberName)
-     * @author 김태민
-     */
-    @Override
-    public List<MassageStudentsDto> findMemberByMassageStatus() {
-        return queryFactory
-                .from(member)
-                .select(Projections.fields(MassageStudentsDto.class,
-                        member.id, member.memberName, member.stuNum)
-                )
-                .where(
-                        member.massageStatus.eq(MassageStatus.APPLIED)
-                )
-                .orderBy(member.stuNum.asc())
-                .fetch();
     }
 
     @Override
