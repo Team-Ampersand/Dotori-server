@@ -121,4 +121,41 @@ public class AdminSelfStudyController {
         selfStudyService.cancelBanSelfStudy(id);
         return responseService.getSuccessResult();
     }
+
+    /**
+     * 자습 내려갔는지 확인하는 컨트롤러
+     * @param memberId memberId
+     * @return SuccessResult
+     * @author 조재영
+     */
+    @PatchMapping("/selfstudy/check/{memberId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "자습 내려갔는지 확인", notes = "자습 내려갔는지 확인")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public CommonResult checkSelfStudy(@PathVariable Long memberId){
+        selfStudyService.checkSelfStudy(memberId);
+        return responseService.getSuccessResult();
+    }
+
+    /**
+     * 자습 내려갔는지 확인한걸 취소하는 컨트롤러
+     * @param memberId memberId
+     * @return SuccessResult
+     * @author 조재영
+     */
+    @PatchMapping("/selfstudy/uncheck/{memberId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ApiOperation(value = "자습 내려갔는지 확인취소", notes = "자습 내려갔는지 확인취소")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
+    })
+    public CommonResult uncheckSelfStudy(@PathVariable Long memberId){
+        selfStudyService.uncheckSelfStudy(memberId);
+        return responseService.getSuccessResult();
+    }
+
 }
