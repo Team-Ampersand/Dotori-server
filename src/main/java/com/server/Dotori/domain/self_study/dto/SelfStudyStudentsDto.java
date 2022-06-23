@@ -14,4 +14,6 @@ public class SelfStudyStudentsDto {
     private String stuNum;
     private String memberName;
     private Gender gender;
+    private Boolean selfStudyCheck;
+
 }

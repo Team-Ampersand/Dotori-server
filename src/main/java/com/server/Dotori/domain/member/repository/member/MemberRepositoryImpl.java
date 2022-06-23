@@ -178,6 +178,14 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
         return this.makeFindStusResponse(result);
     }
 
+    @Override
+    public void updateSelfStudyCheck() {
+        queryFactory
+                .update(member)
+                .where(member.selfStudyCheck.eq(true))
+                .set(member.selfStudyCheck, false);
+    }
+
     private List<FindStusDto> makeFindStusResponse(List<Member> result){
         return result.stream().map(
                         m -> new FindStusDto(

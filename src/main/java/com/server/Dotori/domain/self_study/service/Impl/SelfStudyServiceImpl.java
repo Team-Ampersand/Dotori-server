@@ -47,7 +47,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Override
     @Transactional
     public void requestSelfStudy(DayOfWeek dayOfWeek, int hour) {
-        validDayOfWeekAndHour(dayOfWeek, hour, ErrorCode.SELF_STUDY_CANT_REQUEST_DATE, ErrorCode.SELF_STUDY_CANT_REQUEST_TIME);
+        //validDayOfWeekAndHour(dayOfWeek, hour, ErrorCode.SELF_STUDY_CANT_REQUEST_DATE, ErrorCode.SELF_STUDY_CANT_REQUEST_TIME);
 
         Member currentMember = currentMemberUtil.getCurrentMember();
         SelfStudyCount findCount = findSelfStudyCount(); // 비관적 잠금이 걸린 query
@@ -151,6 +151,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         selfStudyRepository.deleteAll();
         memberRepository.updateSelfStudyStatus();
         memberRepository.updateUnBanSelfStudy();
+        memberRepository.updateSelfStudyCheck();
         findSelfStudyCount().updateCount(0L);
     }
 
@@ -189,6 +190,39 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Transactional
     public void cancelBanSelfStudy(Long id) {
         updateSelfStudyAndExpiredDate(getMember(id), SelfStudyStatus.CAN, null);
+    }
+
+    /**
+     * 자습신청하고 내려갔는지 확인하는 서비스 로직
+     * @param memberId
+     * @author 조재영
+     */
+    @Override
+    @Transactional
+    public void checkSelfStudy(Long memberId) {
+        changeCheck(memberId, true);
+    }
+
+    /**
+     * 자습신청하고 내려갔는지 확인하는 서비스 로직
+     * @param memberId
+     * @author 조재영
+     */
+    @Override
+    @Transactional
+    public void uncheckSelfStudy(Long memberId) {
+        changeCheck(memberId, false);
+    }
+
+    /**
+     * 자습신청하고 내려갔는지 확인 여부를 바꾸는 매서드
+     * @param memberId
+     * @param check 변환할 상태
+     */
+    private void changeCheck(Long memberId, Boolean check) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new DotoriException(ErrorCode.MEMBER_NOT_FOUND));
+        member.updateSelfStudyCheck(check);
     }
 
     /**

@@ -31,4 +31,6 @@ public interface MemberRepositoryCustom {
     List<FindStusDto> findStusByClassId(Long classId);
 
     List<FindStusDto> findStusByMemberName(String memberName);
+
+    void updateSelfStudyCheck();
 }

@@ -25,4 +25,8 @@ public interface SelfStudyService {
     void banSelfStudy(Long id);
 
     void cancelBanSelfStudy(Long id);
+
+    void checkSelfStudy(Long memberId);
+
+    void uncheckSelfStudy(Long memberId);
 }
