@@ -1,5 +1,6 @@
 package com.server.Dotori.domain.self_study.controller.developer;
 
+import com.server.Dotori.domain.self_study.dto.SelfStudyCheckDto;
 import com.server.Dotori.domain.self_study.service.SelfStudyService;
 import com.server.Dotori.global.response.ResponseService;
 import com.server.Dotori.global.response.result.CommonResult;
@@ -160,7 +161,7 @@ public class DeveloperSelfStudyController {
     }
 
     /**
-     * 자습 내려갔는지 확인하는 컨트롤러
+     * 자습 내려갔는지 확인한걸 취소하는 컨트롤러
      * @param memberId memberId
      * @return SuccessResult
      * @author 조재영
@@ -172,26 +173,8 @@ public class DeveloperSelfStudyController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
-    public CommonResult checkSelfStudy(@PathVariable Long memberId){
-        selfStudyService.checkSelfStudy(memberId);
-        return responseService.getSuccessResult();
-    }
-
-    /**
-     * 자습 내려갔는지 확인한걸 취소하는 컨트롤러
-     * @param memberId memberId
-     * @return SuccessResult
-     * @author 조재영
-     */
-    @PatchMapping("/selfstudy/uncheck/{memberId}")
-    @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "자습 내려갔는지 확인", notes = "자습 내려갔는지 확인")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 access_token", required = true, dataType = "String", paramType = "header"),
-            @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
-    })
-    public CommonResult uncheckSelfStudy(@PathVariable Long memberId){
-        selfStudyService.uncheckSelfStudy(memberId);
+    public CommonResult checkSelfStudy(@PathVariable Long memberId, @RequestBody SelfStudyCheckDto selfStudyCheckDto){
+        selfStudyService.checkSelfStudy(memberId, selfStudyCheckDto);
         return responseService.getSuccessResult();
     }
 

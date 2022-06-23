@@ -5,6 +5,7 @@ import com.server.Dotori.domain.member.enumType.SelfStudyStatus;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.self_study.SelfStudy;
 import com.server.Dotori.domain.self_study.SelfStudyCount;
+import com.server.Dotori.domain.self_study.dto.SelfStudyCheckDto;
 import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
 import com.server.Dotori.domain.self_study.repository.SelfStudyCountRepository;
 import com.server.Dotori.domain.self_study.repository.SelfStudyRepository;
@@ -199,19 +200,8 @@ public class SelfStudyServiceImpl implements SelfStudyService {
      */
     @Override
     @Transactional
-    public void checkSelfStudy(Long memberId) {
-        changeCheck(memberId, true);
-    }
-
-    /**
-     * 자습신청하고 내려갔는지 확인하는 서비스 로직
-     * @param memberId
-     * @author 조재영
-     */
-    @Override
-    @Transactional
-    public void uncheckSelfStudy(Long memberId) {
-        changeCheck(memberId, false);
+    public void checkSelfStudy(Long memberId, SelfStudyCheckDto selfStudyCheckDto) {
+        changeCheck(memberId, selfStudyCheckDto.getSelfStudyCheck());
     }
 
     /**
