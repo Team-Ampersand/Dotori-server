@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -68,6 +69,10 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     @OneToMany(mappedBy = "member")
     private List<RuleViolation> ruleViolations;
+
+    @Column(name = "self_study_check")
+    @Builder.Default
+    private Boolean selfStudyCheck = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -158,5 +163,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     public void updateMemberGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public void updateSelfStudyCheck(Boolean check){
+        this.selfStudyCheck=check;
     }
 }
