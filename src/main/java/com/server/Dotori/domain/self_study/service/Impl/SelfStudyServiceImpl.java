@@ -47,7 +47,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Override
     @Transactional
     public void requestSelfStudy(DayOfWeek dayOfWeek, int hour) {
-        //validDayOfWeekAndHour(dayOfWeek, hour, ErrorCode.SELF_STUDY_CANT_REQUEST_DATE, ErrorCode.SELF_STUDY_CANT_REQUEST_TIME);
+        validDayOfWeekAndHour(dayOfWeek, hour, ErrorCode.SELF_STUDY_CANT_REQUEST_DATE, ErrorCode.SELF_STUDY_CANT_REQUEST_TIME);
 
         Member currentMember = currentMemberUtil.getCurrentMember();
         SelfStudyCount findCount = findSelfStudyCount(); // 비관적 잠금이 걸린 query
