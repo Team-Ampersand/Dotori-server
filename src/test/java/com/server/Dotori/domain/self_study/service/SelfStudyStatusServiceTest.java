@@ -9,6 +9,7 @@ import com.server.Dotori.domain.member.enumType.SelfStudyStatus;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.self_study.SelfStudy;
 import com.server.Dotori.domain.self_study.SelfStudyCount;
+import com.server.Dotori.domain.self_study.dto.SelfStudyCheckDto;
 import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
 import com.server.Dotori.domain.self_study.repository.SelfStudyCountRepository;
 import com.server.Dotori.domain.self_study.repository.SelfStudyRepository;
@@ -422,5 +423,33 @@ class SelfStudyStatusServiceTest {
                 DotoriException.class,
                 () -> selfStudyService.banSelfStudy(0L)
         );
+    }
+
+    @Test
+    @DisplayName("자습 상태가 true로 변경이 잘되나요?")
+    public void changeTrueSelfStudyCheck(){
+        Member member = currentMemberUtil.getCurrentMember();
+
+        //given
+        SelfStudyCheckDto selfStudyCheckDto = new SelfStudyCheckDto(true);
+
+        //when
+        selfStudyService.checkSelfStudy(member.getId(), selfStudyCheckDto);
+
+        //then
+        assertEquals(member.getSelfStudyCheck(), true);
+    }
+
+    @Test
+    @DisplayName("자습 상태가 false로 변경이 잘되나요?")
+    public void changeFalseSelfStudyCheck(){
+        Member member = currentMemberUtil.getCurrentMember();
+        member.updateSelfStudyCheck(true);
+
+        SelfStudyCheckDto selfStudyCheckDto = new SelfStudyCheckDto(false);
+
+        selfStudyService.checkSelfStudy(member.getId(), selfStudyCheckDto);
+
+        assertEquals(member.getSelfStudyCheck(), false);
     }
 }
