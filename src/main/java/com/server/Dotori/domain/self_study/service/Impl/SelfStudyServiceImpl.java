@@ -5,6 +5,7 @@ import com.server.Dotori.domain.member.enumType.SelfStudyStatus;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.domain.self_study.SelfStudy;
 import com.server.Dotori.domain.self_study.SelfStudyCount;
+import com.server.Dotori.domain.self_study.dto.SelfStudyCheckDto;
 import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
 import com.server.Dotori.domain.self_study.repository.SelfStudyCountRepository;
 import com.server.Dotori.domain.self_study.repository.SelfStudyRepository;
@@ -151,6 +152,7 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         selfStudyRepository.deleteAll();
         memberRepository.updateSelfStudyStatus();
         memberRepository.updateUnBanSelfStudy();
+        memberRepository.updateSelfStudyCheck();
         findSelfStudyCount().updateCount(0L);
     }
 
@@ -189,6 +191,28 @@ public class SelfStudyServiceImpl implements SelfStudyService {
     @Transactional
     public void cancelBanSelfStudy(Long id) {
         updateSelfStudyAndExpiredDate(getMember(id), SelfStudyStatus.CAN, null);
+    }
+
+    /**
+     * 자습신청하고 내려갔는지 확인하는 서비스 로직
+     * @param memberId
+     * @author 조재영
+     */
+    @Override
+    @Transactional
+    public void checkSelfStudy(Long memberId, SelfStudyCheckDto selfStudyCheckDto) {
+        changeCheck(memberId, selfStudyCheckDto.getSelfStudyCheck());
+    }
+
+    /**
+     * 자습신청하고 내려갔는지 확인 여부를 바꾸는 매서드
+     * @param memberId
+     * @param check 변환할 상태
+     */
+    private void changeCheck(Long memberId, Boolean check) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new DotoriException(ErrorCode.MEMBER_NOT_FOUND));
+        member.updateSelfStudyCheck(check);
     }
 
     /**
