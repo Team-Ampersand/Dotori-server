@@ -69,6 +69,10 @@ public class Member extends BaseTimeEntity implements UserDetails {
     @OneToMany(mappedBy = "member")
     private List<RuleViolation> ruleViolations;
 
+    @Column(name = "self_study_check")
+    @Builder.Default
+    private Boolean selfStudyCheck = false;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // List<Role> 형태를 Stream을 사용하여 roles 원소의 값을 String으로 바꿔주는 Enum.name()을 이용하여 List<String>형태로 변환(GrantedAuthority의 생성자는 String 타입을 받기 때문)
@@ -158,5 +162,9 @@ public class Member extends BaseTimeEntity implements UserDetails {
 
     public void updateMemberGender(Gender gender) {
         this.gender = gender;
+    }
+
+    public void updateSelfStudyCheck(Boolean check){
+        this.selfStudyCheck=check;
     }
 }

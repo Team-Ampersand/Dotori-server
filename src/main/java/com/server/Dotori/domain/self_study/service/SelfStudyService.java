@@ -1,5 +1,6 @@
 package com.server.Dotori.domain.self_study.service;
 
+import com.server.Dotori.domain.self_study.dto.SelfStudyCheckDto;
 import com.server.Dotori.domain.self_study.dto.SelfStudyStudentsDto;
 
 import java.time.DayOfWeek;
@@ -25,4 +26,6 @@ public interface SelfStudyService {
     void banSelfStudy(Long id);
 
     void cancelBanSelfStudy(Long id);
+
+    void checkSelfStudy(Long memberId, SelfStudyCheckDto selfStudyCheckDto);
 }

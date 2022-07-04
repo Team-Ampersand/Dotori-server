@@ -22,7 +22,8 @@ public class SelfStudyRepositoryImpl implements SelfStudyRepositoryCustom {
                         selfStudy.member.id,
                         selfStudy.member.stuNum,
                         selfStudy.member.memberName,
-                        selfStudy.member.gender
+                        selfStudy.member.gender,
+                        selfStudy.member.selfStudyCheck
                         )
                 )
                 .innerJoin(selfStudy.member, member)
@@ -37,7 +38,8 @@ public class SelfStudyRepositoryImpl implements SelfStudyRepositoryCustom {
                         selfStudy.member.id,
                         selfStudy.member.stuNum,
                         selfStudy.member.memberName,
-                        selfStudy.member.gender
+                        selfStudy.member.gender,
+                        selfStudy.member.selfStudyCheck
                         )
                 )
                 .where(selfStudy.member.memberName.like("%" + memberName + "%"))
@@ -58,7 +60,8 @@ public class SelfStudyRepositoryImpl implements SelfStudyRepositoryCustom {
                         member.id,
                         member.stuNum,
                         member.memberName,
-                        member.gender
+                        member.gender,
+                        member.selfStudyCheck
                         )
                 )
                 .where(member.stuNum.like(id+"%"))
