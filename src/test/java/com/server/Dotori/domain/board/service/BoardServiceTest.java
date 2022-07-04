@@ -11,7 +11,6 @@ import com.server.Dotori.domain.member.enumType.Role;
 import com.server.Dotori.domain.member.repository.member.MemberRepository;
 import com.server.Dotori.global.exception.DotoriException;
 import com.server.Dotori.global.util.CurrentMemberUtil;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -91,8 +90,7 @@ class BoardServiceTest {
         );
 
         //then
-//        assertTrue(board.getId() != null);
-        Assertions.fail();
+        assertTrue(board.getId() != null);
     }
 
     @Test
