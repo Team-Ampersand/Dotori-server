@@ -57,19 +57,18 @@ jobs:
         format: YYYY-MM-DDTHH-mm-ss
         utcOffset: "+09:00"
 
-    - name: Dotori Server CI Discord Notification
+    - name: Dotori Server CI Success Discord Notification
       uses: sarisia/actions-status-discord@v1
-      if: ${{ job.status }}
+      if: ${{ success() }}
       with:
         title: 🎉 Dotori Server CI 🐿
         webhook: ${{ secrets.DISCORD_WEBHOOK }}
-#          color: 00FF00
+          color: 00FF00
 
-    - name: action-slack
-      uses: 8398a7/action-slack@v3
+    - name: Dotori Server CI Fail Discord Notification
+      uses: sarisia/actions-status-discord@v1
+      if: ${{ failure() }}
       with:
-        status: ${{ job.status }}
-        fields: repo,message,commit,author,action,eventName,ref,workflow,job,took,pullRequest
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      if: always()
+        title: ❌ Dotori Server CI 🐿
+        webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          color: FF0000
