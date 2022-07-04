@@ -63,7 +63,7 @@ jobs:
       with:
         title: 🎉 Dotori Server CI 🐿
         webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          color: 00FF00
+        color: 00FF00
 
     - name: Dotori Server CI Fail Discord Notification
       uses: sarisia/actions-status-discord@v1
@@ -71,4 +71,4 @@ jobs:
       with:
         title: ❌ Dotori Server CI 🐿
         webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          color: FF0000
+        color: FF0000
