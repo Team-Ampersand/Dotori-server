@@ -1,8 +1,6 @@
 name: Java CI with Gradle
 
 on:
-  push:
-    branches: [ develop ]
   pull_request:
     branches: [ master, develop ]
 
@@ -58,6 +56,14 @@ jobs:
       with:
         format: YYYY-MM-DDTHH-mm-ss
         utcOffset: "+09:00"
+
+    - name: Dotori Server CI Discord Notification
+        uses: sarisia/actions-status-discord@v1
+        if: ${{ job.status }}
+        with:
+          title: 🎉 Dotori Server CI 🐿
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+#          color: 00FF00
 
     - name: action-slack
       uses: 8398a7/action-slack@v3
