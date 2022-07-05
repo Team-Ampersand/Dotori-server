@@ -27,12 +27,14 @@ jobs:
 
     - name: Create application.yml
       run: |
-        mkdir -p ./src/main/resources
-        mkdir -p ./src/test/resources
-        aws s3 cp s3://dotori-s3/yml/application.yml ./src/main/resources/application.yml
-        aws s3 cp s3://dotori-s3/yml/application-dev.yml ./src/main/resources/application-dev.yml
-        aws s3 cp s3://dotori-s3/yml/application-prod.yml ./src/main/resources/application-prod.yml
-        aws s3 cp s3://dotori-s3/yml/application-test.yml ./src/test/resources/application.yml
+        touch ./src/main/resources/application.yml
+        echo "${{ secrets.APPLICATION_YML }}" >> ./src/main/resources/application.yml
+
+    - name: Create application-test.yml
+      run: |
+        mkdir ./src/test/resources
+        touch ./src/test/resources/application.yml
+        echo "${{ secrets.APPLICATION_TEST_YML }}" >> ./src/test/resources/application.yml
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
