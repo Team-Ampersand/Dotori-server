@@ -1,0 +1,18 @@
+version: 0.0
+os: linux
+
+files:
+  - source: /
+    destination: /home/ec2-user/dotori-app
+    overwrite: yes
+
+permissions:
+  - object: /home/ec2-user/dotori-app/
+    owner: root
+    group: root
+    mode: 755
+
+hooks:
+  ApplicationStart:
+    - location: scripts/deploy.sh
+      runas: root
