@@ -5,7 +5,7 @@ on:
     branches: [ master ]
 
 jobs:
-  CD:
+  Prod-CD:
     runs-on: ubuntu-latest
 
     steps:

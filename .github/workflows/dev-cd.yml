@@ -5,7 +5,7 @@ on:
     branches: [ develop ]
 
 jobs:
-  CD:
+  Dev-CD:
     runs-on: ubuntu-latest
 
     steps:
