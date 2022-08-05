@@ -1,9 +1,11 @@
 package com.server.Dotori.domain.board.service.Impl;
 
 import com.server.Dotori.domain.board.Board;
+import com.server.Dotori.domain.board.BoardImage;
 import com.server.Dotori.domain.board.dto.BoardDto;
 import com.server.Dotori.domain.board.dto.BoardGetDto;
 import com.server.Dotori.domain.board.dto.BoardGetIdDto;
+import com.server.Dotori.domain.board.repository.BoardImageRepository;
 import com.server.Dotori.domain.board.repository.BoardRepository;
 import com.server.Dotori.domain.board.service.BoardService;
 import com.server.Dotori.domain.board.service.S3Service;
@@ -19,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
@@ -26,6 +30,7 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
     private final CurrentMemberUtil currentMemberUtil;
     private final S3Service s3Service;
+    private final BoardImageRepository boardImageRepository;
 
     /**
      * 공지사항을 생성하는 서비스로직 (기자위, 사감쌤, 개발자만 가능)
@@ -34,15 +39,20 @@ public class BoardServiceImpl implements BoardService {
      * @author 배태현
      */
     @Override
-    public Board createBoard(BoardDto boardDto, MultipartFile multipartFileList) {
+    public Board createBoard(BoardDto boardDto, List<MultipartFile> multipartFileList) {
         Member currentMember = currentMemberUtil.getCurrentMember();
-        String uploadFile = null;
-
+        List<String> uploadFile = null;
+        Board board = null;
         try {
             uploadFile = s3Service.uploadFile(multipartFileList);
-            return boardRepository.save(boardDto.saveToEntity(currentMember, uploadFile));
+            board = boardRepository.save(boardDto.saveToEntity(currentMember));
+            for (String uploadFileUrl : uploadFile) {
+                boardImageRepository.save(new BoardImage(null,board,uploadFileUrl));
+            }
+
+            return board;
         } catch (NullPointerException e) {
-            return boardRepository.save(boardDto.saveToEntity(currentMember, uploadFile));
+            return boardRepository.save(boardDto.saveToEntity(currentMember));
         }
     }
 
@@ -110,9 +120,9 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void deleteBoard(Long boardId) {
         Board board = getBoard(boardId);
-
+        String url = boardImageRepository.findBoardImageByBoardId(boardId);
         try {
-            s3Service.deleteFile(board.getUrl().substring(54));
+            s3Service.deleteFile(url.substring(54));
             boardRepository.deleteById(board.getId());
         } catch (NullPointerException e) {
             boardRepository.deleteById(board.getId());
