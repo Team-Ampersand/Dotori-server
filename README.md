@@ -15,5 +15,5 @@ Dotori, Dormitory를 담다.
 4. 각자 맡은 feature 이상의 무리한 작업을 금지합니다! 
 -> 다른 팀원이 작업하고 있을 수도 있어요 😭
 
-5. merge 작업 후 brach 삭제 권한은 brach 생성자에게만 있어요!
+5. merge 작업 후 branch 삭제 권한은 branch 생성자에게만 있어요!
 ```
