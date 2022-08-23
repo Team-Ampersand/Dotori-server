@@ -29,7 +29,7 @@ import java.util.List;
 public class BoardServiceImpl implements BoardService {
 
     @Value("${cloud.aws.s3.url}")
-    private String address;
+    private String AWS_S3_ADDRESS;
 
     private final BoardRepository boardRepository;
     private final CurrentMemberUtil currentMemberUtil;
@@ -59,7 +59,7 @@ public class BoardServiceImpl implements BoardService {
     private BoardImage saveToUrl(Board board,String uploadFileUrl) {
         BoardImage boardImage = BoardImage.builder()
                 .board(board)
-                .url(address+ uploadFileUrl)
+                .url(AWS_S3_ADDRESS + uploadFileUrl)
                 .build();
         return boardImage;
     }
