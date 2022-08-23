@@ -1,5 +1,6 @@
 package com.server.Dotori.domain.board;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -7,9 +8,9 @@ import javax.persistence.*;
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
-@Entity @Table(name = "BoardImage")
-@Getter @Builder @Setter
-@AllArgsConstructor @NoArgsConstructor
+@Entity @Table(name = "board_image")
+@Getter @Builder
+@AllArgsConstructor @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardImage {
 
     @Id
@@ -17,6 +18,7 @@ public class BoardImage {
     @Column(name = "board_image_id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "board_id",nullable = false)
     private Board board;
