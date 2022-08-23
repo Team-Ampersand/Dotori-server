@@ -15,6 +15,7 @@ import com.server.Dotori.global.exception.ErrorCode;
 import com.server.Dotori.global.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,9 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
+
+    @Value("${cloud.aws.s3.url}")
+    private String address;
 
     private final BoardRepository boardRepository;
     private final CurrentMemberUtil currentMemberUtil;
@@ -55,7 +59,7 @@ public class BoardServiceImpl implements BoardService {
     private BoardImage saveToUrl(Board board,String uploadFileUrl) {
         BoardImage boardImage = BoardImage.builder()
                 .board(board)
-                .url("https://dotori-s3.s3.ap-northeast-2.amazonaws.com/img/" + uploadFileUrl)
+                .url(address+ uploadFileUrl)
                 .build();
         return boardImage;
     }
