@@ -31,7 +31,6 @@ public class BoardServiceImpl implements BoardService {
     private final CurrentMemberUtil currentMemberUtil;
     private final S3Service s3Service;
     private final BoardImageRepository boardImageRepository;
-
     /**
      * 공지사항을 생성하는 서비스로직 (기자위, 사감쌤, 개발자만 가능)
      * @param boardDto boardDto
@@ -41,17 +40,24 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Board createBoard(BoardDto boardDto, List<MultipartFile> multipartFileList) {
         Member currentMember = currentMemberUtil.getCurrentMember();
-        List<String> uploadFile = null;
         try {
-            uploadFile = s3Service.uploadFile(multipartFileList);
+            List<String> uploadFile = s3Service.uploadFile(multipartFileList);
             Board board = boardRepository.save(boardDto.saveToEntity(currentMember));
             for (String uploadFileUrl : uploadFile) {
-                boardImageRepository.save(new BoardImage(null,board,uploadFileUrl));
+                boardImageRepository.save(saveToUrl(board,uploadFileUrl));
             }
             return board;
         } catch (NullPointerException e) {
             return boardRepository.save(boardDto.saveToEntity(currentMember));
         }
+    }
+
+    private BoardImage saveToUrl(Board board,String uploadFileUrl) {
+        BoardImage boardImage = BoardImage.builder()
+                .board(board)
+                .url("https://dotori-s3.s3.ap-northeast-2.amazonaws.com/img/" + uploadFileUrl)
+                .build();
+        return boardImage;
     }
 
     /**
@@ -85,9 +91,10 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardGetIdDto getBoardById(Long boardId) {
         Board board = getBoard(boardId);
-
+        List<BoardImage> boardImages = boardImageRepository.getBoardImageByBoardId(boardId);
         ModelMapper modelMapper = new ModelMapper();
         BoardGetIdDto map = modelMapper.map(board, BoardGetIdDto.class);
+        map.setBoardImages(boardImages);
         map.setRoles(board.getMember().getRoles());
 
         return map;
@@ -116,11 +123,15 @@ public class BoardServiceImpl implements BoardService {
      * @author 배태현
      */
     @Override
+    @Transactional
     public void deleteBoard(Long boardId) {
         Board board = getBoard(boardId);
-        String url = boardImageRepository.findBoardImageByBoardId(boardId);
+        List<BoardImage> boardImages = boardImageRepository.getBoardImageByBoardId(boardId);
         try {
-            s3Service.deleteFile(url.substring(54));
+            for(BoardImage boardImage : boardImages){
+                s3Service.deleteFile(boardImage.getUrl().substring(54));
+                boardImageRepository.deleteByBoardId(board.getId());
+            }
             boardRepository.deleteById(board.getId());
         } catch (NullPointerException e) {
             boardRepository.deleteById(board.getId());
@@ -138,4 +149,5 @@ public class BoardServiceImpl implements BoardService {
         return boardRepository.findById(boardId)
                 .orElseThrow(() -> new DotoriException(ErrorCode.BOARD_NOT_FOUND));
     }
+
 }
