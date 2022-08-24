@@ -1,7 +1,7 @@
 package com.server.Dotori.domain.board;
 
-import com.server.Dotori.global.entity.BaseTimeEntity;
 import com.server.Dotori.domain.member.Member;
+import com.server.Dotori.global.entity.BaseTimeEntity;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,9 +28,6 @@ public class Board extends BaseTimeEntity {
 
     @Column(name = "board_content", length = 5000, nullable = false)
     private String content;
-
-    @Column(name = "board_image_url")
-    private String url;
 
     public void updateBoard(String title, String content) {
         this.title = title != null ? title : this.title;

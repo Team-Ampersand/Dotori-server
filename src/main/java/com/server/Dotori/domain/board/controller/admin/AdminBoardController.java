@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/admin")
@@ -42,7 +43,7 @@ public class AdminBoardController {
             @ApiImplicitParam(name = "RefreshToken", value = "로그인 성공 후 refresh_token", required = false, dataType = "String", paramType = "header")
     })
     public CommonResult createBoardAdmin(
-            @RequestPart(value = "files", required = false) MultipartFile multipartFile,
+            @RequestPart(value = "files", required = false) List<MultipartFile> multipartFile,
             @Valid @RequestPart(value = "boardDto") BoardDto boardDto
     ) {
         boardService.createBoard(boardDto, multipartFile);

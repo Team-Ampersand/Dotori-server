@@ -6,7 +6,6 @@ plugins {
 	// *** Q-Type error *** //
 	id "io.franzbecker.gradle-lombok" version "3.0.0"
 	id 'jacoco' // jacoco
-
 }
 
 group = 'com.server'

@@ -22,7 +22,7 @@ public class EmailSender {
      */
     public void send(String receivers, String key) {
         String subject = "🎈[DOTORI] 인증 키";
-        String message = "<p style=\"color:blueviolet\">안녕하세요 Dotori 계정에 사용할 일회용 코드에 대한 요청을 받았습니다.</p>";;
+        String message = "<p style=\"color:blueviolet\">안녕하세요 Dotori 계정에 사용할 일회용 코드에 대한 요청을 받았습니다.</p>";
             message += "<p>일회용 코드: " + key + "</p>";
             message += "<p>이 코드를 요청하지 않은 경우 이 메일을 무시하셔도 됩니다. 다른 사람이 실수로 귀하의 이메일 주소를 입력했을 수 있습니다.</p>";
             message += "<p>감사합니다 Dotori 계정 팀</p>";
