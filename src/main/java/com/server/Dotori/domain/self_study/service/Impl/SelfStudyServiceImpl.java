@@ -56,19 +56,14 @@ public class SelfStudyServiceImpl implements SelfStudyService {
         isSmallerThanFifty(findCount.getCount()); // count가 50 미만인지 checking
         isVerifiedSelfStudy(SelfStudyStatus.CAN, ErrorCode.SELF_STUDY_ALREADY); // 회원의 자습신청 상태가 CAN인지 checking
 
-        try {
-            currentMember.updateSelfStudy(SelfStudyStatus.APPLIED);
+        currentMember.updateSelfStudy(SelfStudyStatus.APPLIED);
 
-            findCount.addCount();
+        findCount.addCount();
 
-            selfStudyRepository.save(SelfStudy.builder()
-                    .member(currentMember)
-                    .build()
-            );
-
-        } catch (DataIntegrityViolationException e) { // TODO : controller advice로 처리하게 바꾸고 서비스 로직에서 try/catch 삭제하기
-            throw new DotoriException(ErrorCode.SELF_STUDY_ALREADY);
-        }
+        selfStudyRepository.save(SelfStudy.builder()
+                .member(currentMember)
+                .build()
+        );
     }
 
     /**

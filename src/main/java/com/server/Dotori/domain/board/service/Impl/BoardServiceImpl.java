@@ -44,16 +44,16 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Board createBoard(BoardDto boardDto, List<MultipartFile> multipartFileList) {
         Member currentMember = currentMemberUtil.getCurrentMember();
-        try {
-            List<String> uploadFile = s3Service.uploadFile(multipartFileList);
-            Board board = boardRepository.save(boardDto.saveToEntity(currentMember));
-            for (String uploadFileUrl : uploadFile) {
-                boardImageRepository.save(saveToUrl(board,uploadFileUrl));
-            }
-            return board;
-        } catch (NullPointerException e) {
+
+        if(multipartFileList == null){
             return boardRepository.save(boardDto.saveToEntity(currentMember));
         }
+        List<String> uploadFile = s3Service.uploadFile(multipartFileList);
+        Board board = boardRepository.save(boardDto.saveToEntity(currentMember));
+        for (String uploadFileUrl : uploadFile) {
+            boardImageRepository.save(saveToUrl(board,uploadFileUrl));
+        }
+        return board;
     }
 
     private BoardImage saveToUrl(Board board,String uploadFileUrl) {
@@ -131,15 +131,14 @@ public class BoardServiceImpl implements BoardService {
     public void deleteBoard(Long boardId) {
         Board board = getBoard(boardId);
         List<BoardImage> boardImages = boardImageRepository.getBoardImageByBoardId(boardId);
-        try {
-            for(BoardImage boardImage : boardImages){
-                s3Service.deleteFile(boardImage.getUrl().substring(54));
-                boardImageRepository.deleteByBoardId(board.getId());
-            }
-            boardRepository.deleteById(board.getId());
-        } catch (NullPointerException e) {
+        if(boardImages == null){
             boardRepository.deleteById(board.getId());
         }
+        for(BoardImage boardImage : boardImages){
+            s3Service.deleteFile(boardImage.getUrl().substring(54));
+            boardImageRepository.deleteByBoardId(board.getId());
+        }
+        boardRepository.deleteById(board.getId());
     }
 
     /**
