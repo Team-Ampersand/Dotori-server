@@ -18,6 +18,7 @@ import com.server.Dotori.global.util.CurrentMemberUtil;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -181,7 +182,7 @@ class SelfStudyStatusServiceTest {
 
         //when //then
         assertThrows(
-                DotoriException.class,
+                DataIntegrityViolationException.class,
                 () -> selfStudyService.requestSelfStudy(DayOfWeek.MONDAY, 20)
         );
     }

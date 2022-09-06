@@ -57,16 +57,11 @@ public class MassageServiceImpl implements MassageService {
         countValidate(count);
         Member currentMember = currentMemberUtil.getCurrentMember();
         massageStatusValidate(currentMember, MassageStatus.CAN);
-
-        try {
-            massageRepository.save(Massage.builder()
-                    .member(currentMember)
-                    .build()
-            );
-            massageCount.addCount();
-        } catch (DataIntegrityViolationException e) {
-            throw new DotoriException(ErrorCode.MASSAGE_ALREADY);
-        }
+        massageRepository.save(Massage.builder()
+                .member(currentMember)
+                .build()
+        );
+        massageCount.addCount();
         currentMember.updateMassage(MassageStatus.APPLIED);
         log.info("Current MassageRequest Student Count is {}", count);
     }

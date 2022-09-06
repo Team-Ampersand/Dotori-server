@@ -15,6 +15,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -90,7 +91,7 @@ public class MemberExceptionTest {
         memberService.signup(memberDto1);
 
         // then
-        Assertions.assertThrows(DotoriException.class, () -> memberService.signup(memberDto2));
+        Assertions.assertThrows(DataIntegrityViolationException.class, () -> memberService.signup(memberDto2));
     }
 
     @Test
