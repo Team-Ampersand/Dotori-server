@@ -182,8 +182,9 @@ public class MemberRepositoryImpl implements MemberRepositoryCustom {
     public void updateSelfStudyCheck() {
         queryFactory
                 .update(member)
-                .where(member.selfStudyCheck.eq(true))
-                .set(member.selfStudyCheck, false);
+                .set(member.selfStudyCheck, false)
+                .where(member.selfStudyCheck.isTrue())
+                .execute();
     }
 
     private List<FindStusDto> makeFindStusResponse(List<Member> result){
