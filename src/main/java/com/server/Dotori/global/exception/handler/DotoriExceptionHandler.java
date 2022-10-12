@@ -3,6 +3,7 @@ package com.server.Dotori.global.exception.handler;
 import com.server.Dotori.global.exception.DotoriException;
 import com.server.Dotori.global.exception.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -38,4 +39,9 @@ public class DotoriExceptionHandler {
 
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(DataIntegrityViolationException e){
+        log.error("handleDataIntegrityViolationException throw DataIntegrityViolationException");
+        return ErrorResponse.toResponseEntity(HttpStatus.CONFLICT, e.getMessage());
+    }
 }

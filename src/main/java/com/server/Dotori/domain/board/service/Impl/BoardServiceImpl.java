@@ -1,9 +1,11 @@
 package com.server.Dotori.domain.board.service.Impl;
 
 import com.server.Dotori.domain.board.Board;
+import com.server.Dotori.domain.board.BoardImage;
 import com.server.Dotori.domain.board.dto.BoardDto;
 import com.server.Dotori.domain.board.dto.BoardGetDto;
 import com.server.Dotori.domain.board.dto.BoardGetIdDto;
+import com.server.Dotori.domain.board.repository.BoardImageRepository;
 import com.server.Dotori.domain.board.repository.BoardRepository;
 import com.server.Dotori.domain.board.service.BoardService;
 import com.server.Dotori.domain.board.service.S3Service;
@@ -13,20 +15,26 @@ import com.server.Dotori.global.exception.ErrorCode;
 import com.server.Dotori.global.util.CurrentMemberUtil;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
+    @Value("${cloud.aws.s3.url}")
+    private String AWS_S3_ADDRESS;
+
     private final BoardRepository boardRepository;
     private final CurrentMemberUtil currentMemberUtil;
     private final S3Service s3Service;
-
+    private final BoardImageRepository boardImageRepository;
     /**
      * 공지사항을 생성하는 서비스로직 (기자위, 사감쌤, 개발자만 가능)
      * @param boardDto boardDto
@@ -34,16 +42,26 @@ public class BoardServiceImpl implements BoardService {
      * @author 배태현
      */
     @Override
-    public Board createBoard(BoardDto boardDto, MultipartFile multipartFileList) {
+    public Board createBoard(BoardDto boardDto, List<MultipartFile> multipartFileList) {
         Member currentMember = currentMemberUtil.getCurrentMember();
-        String uploadFile = null;
 
-        try {
-            uploadFile = s3Service.uploadFile(multipartFileList);
-            return boardRepository.save(boardDto.saveToEntity(currentMember, uploadFile));
-        } catch (NullPointerException e) {
-            return boardRepository.save(boardDto.saveToEntity(currentMember, uploadFile));
+        if(multipartFileList == null){
+            return boardRepository.save(boardDto.saveToEntity(currentMember));
         }
+        List<String> uploadFile = s3Service.uploadFile(multipartFileList);
+        Board board = boardRepository.save(boardDto.saveToEntity(currentMember));
+        for (String uploadFileUrl : uploadFile) {
+            boardImageRepository.save(saveToUrl(board,uploadFileUrl));
+        }
+        return board;
+    }
+
+    private BoardImage saveToUrl(Board board,String uploadFileUrl) {
+        BoardImage boardImage = BoardImage.builder()
+                .board(board)
+                .url(AWS_S3_ADDRESS + uploadFileUrl)
+                .build();
+        return boardImage;
     }
 
     /**
@@ -77,9 +95,10 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardGetIdDto getBoardById(Long boardId) {
         Board board = getBoard(boardId);
-
+        List<BoardImage> boardImages = boardImageRepository.getBoardImageByBoardId(boardId);
         ModelMapper modelMapper = new ModelMapper();
         BoardGetIdDto map = modelMapper.map(board, BoardGetIdDto.class);
+        map.setBoardImages(boardImages);
         map.setRoles(board.getMember().getRoles());
 
         return map;
@@ -108,15 +127,18 @@ public class BoardServiceImpl implements BoardService {
      * @author 배태현
      */
     @Override
+    @Transactional
     public void deleteBoard(Long boardId) {
         Board board = getBoard(boardId);
-
-        try {
-            s3Service.deleteFile(board.getUrl().substring(54));
-            boardRepository.deleteById(board.getId());
-        } catch (NullPointerException e) {
+        List<BoardImage> boardImages = boardImageRepository.getBoardImageByBoardId(boardId);
+        if(boardImages == null){
             boardRepository.deleteById(board.getId());
         }
+        for(BoardImage boardImage : boardImages){
+            s3Service.deleteFile(boardImage.getUrl().substring(54));
+            boardImageRepository.deleteByBoardId(board.getId());
+        }
+        boardRepository.deleteById(board.getId());
     }
 
     /**
@@ -130,4 +152,5 @@ public class BoardServiceImpl implements BoardService {
         return boardRepository.findById(boardId)
                 .orElseThrow(() -> new DotoriException(ErrorCode.BOARD_NOT_FOUND));
     }
+
 }

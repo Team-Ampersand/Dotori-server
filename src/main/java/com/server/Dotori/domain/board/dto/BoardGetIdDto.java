@@ -1,5 +1,6 @@
 package com.server.Dotori.domain.board.dto;
 
+import com.server.Dotori.domain.board.BoardImage;
 import com.server.Dotori.domain.member.enumType.Role;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,7 +17,7 @@ public class BoardGetIdDto {
     private String title;
     private String content;
     private List<Role> roles;
-    private String url;
+    private List<BoardImage> boardImages;
 
     @CreatedDate
     private LocalDateTime createdDate;

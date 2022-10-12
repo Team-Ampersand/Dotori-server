@@ -20,18 +20,13 @@ public class BoardDto {
     @Size(min = 1, max = 5000)
     private String content;
 
-    public Board saveToEntity(Member member, String url) {
+    public Board saveToEntity(Member member) {
         Board board = Board.builder()
                 .title(title)
                 .content(content)
                 .member(member)
-                .url("https://dotori-s3.s3.ap-northeast-2.amazonaws.com/img/" + url)
                 .build();
-        try {
-            if (url.isEmpty()) board.setUrl(null);
-        } catch (NullPointerException e) {
-            board.setUrl(null);
-        }
         return board;
     }
+
 }

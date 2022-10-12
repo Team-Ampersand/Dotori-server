@@ -46,18 +46,15 @@ public class MemberServiceImpl implements MemberService {
         String password = memberDto.getPassword();
         String email = memberDto.getEmail();
 
-        try {
-            if(!emailCertificateRepository.existsByEmail(email)){
-                if (!memberRepository.existsByEmailAndStuNum(email, stuNum)) {
-                    Member result = memberRepository.save(
-                            memberDto.toEntity(passwordEncoder.encode(password))
-                    );
-                    return result.getId();
-                } else throw new DotoriException(ErrorCode.MEMBER_ALREADY);
-            } else throw new DotoriException(ErrorCode.MEMBER_EMAIL_HAS_NOT_BEEN_CERTIFICATE);
-        } catch (DataIntegrityViolationException e) {
+        if(emailCertificateRepository.existsByEmail(email))
+            throw new DotoriException(ErrorCode.MEMBER_EMAIL_HAS_NOT_BEEN_CERTIFICATE);
+        if(memberRepository.existsByEmailAndStuNum(email, stuNum))
             throw new DotoriException(ErrorCode.MEMBER_ALREADY);
-        }
+        Member result = memberRepository.save(
+            memberDto.toEntity(passwordEncoder.encode(password))
+        );
+
+        return result.getId();
     }
 
     /**
